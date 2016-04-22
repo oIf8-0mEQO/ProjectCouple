@@ -15,6 +15,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
 import group50.coupletones.App;
 import group50.coupletones.R;
 import group50.coupletones.auth.GoogleUser;
@@ -56,6 +57,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+        OptionalPendingResult<GoogleSignInResult> pendingResult =
+                Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+
+        //TODO: Refactor this
+        if (pendingResult.isDone()) {
+            Log.d(TAG, "Silent sign in handled");
+            handleSignInResult(pendingResult.get());
+        }
 
         findViewById(R.id.sign_in_button).setOnClickListener(this);
     }

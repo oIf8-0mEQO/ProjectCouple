@@ -8,46 +8,19 @@ package group50.coupletones.auth;
 /**
  * The user represents a single user in the app.
  */
-public class User {
+public abstract class User {
     /**
-     * The id of the user. Immutable.
+     * @return The id of the user
      */
-    private final String id;
-
-    /**
-     * The name of the user. Immutable.
-     */
-    private final String name;
-
-    /**
-     * The email of the user. Immutable
-     */
-    private final String email;
-
-    /**
-     * Creates a new user with a given name and email.
-     *
-     * @param id    The idof the user
-     * @param name  The name of the user
-     * @param email The email of the user
-     */
-    public User(String id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-    }
+    public abstract String getId();
 
     /**
      * @return The name of the user
      */
-    public String getName() {
-        return name;
-    }
+    public abstract String getName();
 
     /**
      * @return The email of the user
      */
-    public String getEmail() {
-        return email;
-    }
+    public abstract String getEmail();
 }

@@ -1,3 +1,8 @@
+/**
+ * @author Henry Mao
+ * @since 4/22/16.
+ */
+
 package group50.coupletones.auth;
 
 /**

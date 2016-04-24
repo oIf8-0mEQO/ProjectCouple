@@ -34,12 +34,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
      */
     private static final int RC_SIGN_IN = 9001;
 
-    /**
-     * The instance of the Google API client
-     */
-    //TODO: Consider moving this to the App class
-    private GoogleApiClient mGoogleApiClient;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,13 +47,15 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+        App.instance().setGoogleApiClient(
+                new GoogleApiClient.Builder(this)
+                        .enableAutoManage(this, this)
+                        .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                        .build()
+        );
 
         OptionalPendingResult<GoogleSignInResult> pendingResult =
-                Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+                Auth.GoogleSignInApi.silentSignIn(App.instance().getGoogleApiClient());
 
         //TODO: Refactor this
         if (pendingResult.isDone()) {
@@ -86,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
      * Opens an Android Intent and asks Google to sign in.
      */
     private void onSignIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(App.instance().getGoogleApiClient());
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 

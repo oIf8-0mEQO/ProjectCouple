@@ -5,6 +5,7 @@
 
 package group50.coupletones;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import group50.coupletones.auth.User;
 
 /**
@@ -16,6 +17,11 @@ public class App {
      * The local user of the app
      */
     private User localUser;
+
+    /**
+     * The instance of the Google API client
+     */
+    private GoogleApiClient googleApiClient;
 
     /**
      * @return The instance of the app singleton
@@ -41,4 +47,18 @@ public class App {
         this.localUser = localUser;
     }
 
+    /**
+     * @return The Google API Client instance
+     */
+    public GoogleApiClient getGoogleApiClient() {
+        return googleApiClient;
+    }
+
+    /**
+     * Sets the Google API Client instance
+     * @param googleApiClient The Google API Client
+     */
+    public void setGoogleApiClient(GoogleApiClient googleApiClient) {
+        this.googleApiClient = googleApiClient;
+    }
 }

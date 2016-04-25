@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">CoupleTones</string>
     <string name="google_login">Login with Google</string>
+    <string name="pier_sans">fonts/pier-regular.otf</string>
 </resources>

@@ -15,6 +15,18 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
     super(Listener.class);
   }
 
+  /**
+   * Use this factory method to create a new instance of FavoriteLocationsFragment.
+   */
+
+  public static FavoriteLocationsFragment build() {
+    FavoriteLocationsFragment fragment = new FavoriteLocationsFragment();
+    Bundle args = new Bundle();
+    // TODO: Set arguments
+    fragment.setArguments(args);
+    return fragment;
+  }
+
   @Override
   protected int getResourceId() {
     return R.layout.fragment_favorite_locations;
@@ -40,17 +52,5 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
    */
   public interface Listener {
     // TODO: Fill with interface methods
-  }
-
-  /**
-   * Use this factory method to create a new instance of FavoriteLocationsFragment.
-   */
-
-  public static FavoriteLocationsFragment build() {
-    FavoriteLocationsFragment fragment = new FavoriteLocationsFragment();
-    Bundle args = new Bundle();
-    // TODO: Set arguments
-    fragment.setArguments(args);
-    return fragment;
   }
 }

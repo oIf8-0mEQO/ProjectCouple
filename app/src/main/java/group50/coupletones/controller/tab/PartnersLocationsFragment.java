@@ -15,6 +15,17 @@ public class PartnersLocationsFragment extends TabFragment<PartnersLocationsFrag
     super(Listener.class);
   }
 
+  /**
+   * Use this factory method to create a new instance of FavoriteLocationsFragment.
+   */
+  public static PartnersLocationsFragment build() {
+    PartnersLocationsFragment fragment = new PartnersLocationsFragment();
+    Bundle args = new Bundle();
+    // TODO: Set arguments
+    fragment.setArguments(args);
+    return fragment;
+  }
+
   @Override
   protected int getResourceId() {
     return R.layout.fragment_partners_locations;
@@ -40,16 +51,5 @@ public class PartnersLocationsFragment extends TabFragment<PartnersLocationsFrag
    */
   public interface Listener {
     // TODO: Fill with interface methods
-  }
-
-  /**
-   * Use this factory method to create a new instance of FavoriteLocationsFragment.
-   */
-  public static PartnersLocationsFragment build() {
-    PartnersLocationsFragment fragment = new PartnersLocationsFragment();
-    Bundle args = new Bundle();
-    // TODO: Set arguments
-    fragment.setArguments(args);
-    return fragment;
   }
 }

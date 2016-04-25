@@ -72,11 +72,6 @@ public class MainActivity extends AppCompatActivity implements
   }
 
   @Override
-  public void onFragmentInteraction(Uri uri) {
-
-  }
-
-  @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
 

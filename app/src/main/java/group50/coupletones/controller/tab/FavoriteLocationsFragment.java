@@ -1,12 +1,7 @@
 package group50.coupletones.controller.tab;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import group50.coupletones.R;
 
 /**
@@ -17,9 +12,16 @@ import group50.coupletones.R;
  * Use the {@link Factory} factory class to
  * create an instance of this fragment.
  */
-public class FavoriteLocationsFragment extends Fragment {
+public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFragment.Listener> {
 
-  private Listener mListener;
+  public FavoriteLocationsFragment() {
+    super(Listener.class);
+  }
+
+  @Override
+  protected int getResourceId() {
+    return R.layout.fragment_favorite_locations;
+  }
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -27,37 +29,6 @@ public class FavoriteLocationsFragment extends Fragment {
     if (getArguments() != null) {
       //TODO: Read arguments
     }
-  }
-
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-    Bundle savedInstanceState) {
-    // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_favorite_locations, container, false);
-  }
-
-  // TODO: Rename method, update argument and hook method into UI event
-  public void onButtonPressed(Uri uri) {
-
-  }
-
-  @Override
-  public void onAttach(Context context) {
-    super.onAttach(context);
-
-    // Attempt to attach listener
-    if (context instanceof Listener) {
-      mListener = (Listener) context;
-    } else {
-      throw new RuntimeException(context.toString()
-        + " must implement " + Listener.class.getName());
-    }
-  }
-
-  @Override
-  public void onDetach() {
-    super.onDetach();
-    mListener = null;
   }
 
   /**
@@ -75,15 +46,12 @@ public class FavoriteLocationsFragment extends Fragment {
   }
 
   /**
-   * Use this factory method to create a new instance of
-   * this fragment using the provided parameters.
-   * @return A new instance of fragment FavoriteLocationsFragment.
+   * Use this factory method to create a new instance of FavoriteLocationsFragment.
    */
-  // TODO: Rename and change types and number of parameters
-  public static class Factory
-    implements group50.coupletones.util.Factory<Fragment> {
+  public static class Factory extends FragmentFactory<FavoriteLocationsFragment> {
     @Override
-    public Fragment build() {
+    public FavoriteLocationsFragment build() {
+      // TODO: Rename and change types and number of parameters
       FavoriteLocationsFragment fragment = new FavoriteLocationsFragment();
       Bundle args = new Bundle();
       fragment.setArguments(args);

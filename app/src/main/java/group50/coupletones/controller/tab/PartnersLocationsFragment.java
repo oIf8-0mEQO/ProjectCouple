@@ -7,7 +7,7 @@ import group50.coupletones.R;
 /**
  * A simple {@link Fragment} subclass for the Favorite Locations tab.
  * Activities that contain this fragment must implement the {@link Listener} interface to handle interaction events.
- * Use the {@link Factory} factory class to create an instance of this fragment.
+ * Use the {@link PartnersLocationsFragment#build} factory class to create an instance of this fragment.
  */
 public class PartnersLocationsFragment extends TabFragment<PartnersLocationsFragment.Listener> {
 
@@ -45,14 +45,11 @@ public class PartnersLocationsFragment extends TabFragment<PartnersLocationsFrag
   /**
    * Use this factory method to create a new instance of FavoriteLocationsFragment.
    */
-  public static class Factory extends FragmentFactory<PartnersLocationsFragment> {
-    @Override
-    public PartnersLocationsFragment build() {
-      PartnersLocationsFragment fragment = new PartnersLocationsFragment();
-      Bundle args = new Bundle();
-      // TODO: Set arguments
-      fragment.setArguments(args);
-      return fragment;
-    }
+  public static PartnersLocationsFragment build() {
+    PartnersLocationsFragment fragment = new PartnersLocationsFragment();
+    Bundle args = new Bundle();
+    // TODO: Set arguments
+    fragment.setArguments(args);
+    return fragment;
   }
 }

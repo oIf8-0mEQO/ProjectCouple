@@ -6,12 +6,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import group50.coupletones.R;
-import group50.coupletones.util.Factory;
 
 /**
  * A TabFragment represents an fragment that is meant to be a tab in
  * MainActivity.
+ *
  * @author Henry Mao
  */
 abstract class TabFragment<L> extends Fragment {
@@ -30,7 +29,7 @@ abstract class TabFragment<L> extends Fragment {
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
-    Bundle savedInstanceState) {
+                           Bundle savedInstanceState) {
     // Inflate the layout for this fragment
     return inflater.inflate(getResourceId(), container, false);
   }
@@ -52,12 +51,5 @@ abstract class TabFragment<L> extends Fragment {
   public void onDetach() {
     super.onDetach();
     listener = null;
-  }
-
-  /**
-   * Extend this factory to handle fragment creation
-   */
-  static abstract class FragmentFactory<F extends Fragment> implements Factory<F> {
-
   }
 }

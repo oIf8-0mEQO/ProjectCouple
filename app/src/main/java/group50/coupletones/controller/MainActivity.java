@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity implements
 
     // Initialize tabs
     tabs = new HashMap<>();
-    tabs.put(R.id.partnerLocations, new PartnersLocationsFragment.Factory().build());
-    tabs.put(R.id.favoriteLocations, new FavoriteLocationsFragment.Factory().build());
+    tabs.put(R.id.partnerLocations, PartnersLocationsFragment.build());
+    tabs.put(R.id.favoriteLocations, FavoriteLocationsFragment.build());
 
     // Create default fragment
     Fragment defaultFragment = tabs.get(R.id.partnerLocations);
@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements
 
   /**
    * Sets the content of the MainActivity with the given fragment
+   *
    * @param fragment The fragment to set for the main content
    */
   private void setFragment(Fragment fragment) {

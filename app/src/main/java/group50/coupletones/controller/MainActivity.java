@@ -1,5 +1,6 @@
 package group50.coupletones.controller;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
@@ -8,12 +9,14 @@ import android.util.Log;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import group50.coupletones.R;
+import group50.coupletones.controller.tab.FavoriteLocationsFragment;
 
 /**
  * The main activity that contains the main tab menu bar. Handles each
  * tab page as a fragment and renders them accordingly.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+  FavoriteLocationsFragment.OnFragmentInteractionListener {
 
   private static final String TAG = "MainActivity";
 
@@ -66,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
     mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
     mBottomBar.mapColorForTab(1, 0xFF5D4037);
     mBottomBar.mapColorForTab(2, "#7B1FA2");
+  }
+
+  @Override
+  public void onFragmentInteraction(Uri uri) {
+
   }
 
   @Override

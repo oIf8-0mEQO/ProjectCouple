@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Log.d(TAG, "Silent sign in handled");
             handleSignInResult(pendingResult.get());
         }
+
         TextView tv=(TextView)findViewById(R.id.sign_in_button);
         Typeface face=Typeface.createFromAsset(getAssets(),"fonts/pier-regular.otf");
         tv.setTypeface(face);

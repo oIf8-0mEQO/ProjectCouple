@@ -16,7 +16,7 @@ import group50.coupletones.controller.tab.FavoriteLocationsFragment;
  * tab page as a fragment and renders them accordingly.
  */
 public class MainActivity extends AppCompatActivity implements
-  FavoriteLocationsFragment.OnFragmentInteractionListener {
+  FavoriteLocationsFragment.Listener {
 
   private static final String TAG = "MainActivity";
 

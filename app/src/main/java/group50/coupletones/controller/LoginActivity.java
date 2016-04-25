@@ -8,6 +8,7 @@ package group50.coupletones.controller;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import group50.coupletones.App;
 import group50.coupletones.R;
 import group50.coupletones.auth.GoogleUser;
@@ -65,6 +67,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         if (pendingResult.isDone()) {
             Log.d(TAG, "Silent sign in handled");
             handleSignInResult(pendingResult.get());
+        }else{
+          Log.d(TAG, "Silent sign in being handled");
+          // There's no immediate result ready, displays some progress indicator and waits for the
+          // async callback.
+          pendingResult.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+            @Override
+            public void onResult(@NonNull
+              GoogleSignInResult result) {
+              Log.d(TAG, "Silent sign in handled: "+ result.getStatus());
+              handleSignInResult(result);
+            }
+          });
         }
         TextView tv=(TextView)findViewById(R.id.sign_in_button);
         Typeface face=Typeface.createFromAsset(getAssets(),"fonts/pier-regular.otf");

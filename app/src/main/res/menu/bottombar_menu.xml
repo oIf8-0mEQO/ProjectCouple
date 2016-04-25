@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<!-- Icons: android:icon="@drawable/logo" -->
+	<item
+			android:id="@+id/partnerLocations"
+			android:title="@string/partner_locations" />
+	<item
+			android:id="@+id/favoriteLocations"
+			android:title="@string/favorite_locations" />
+	<item
+			android:id="@+id/settings"
+			android:title="@string/settings" />
+</menu>

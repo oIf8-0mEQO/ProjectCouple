@@ -80,9 +80,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
           });
         }
-        TextView tv=(TextView)findViewById(R.id.sign_in_button);
-        Typeface face=Typeface.createFromAsset(getAssets(),"fonts/pier-regular.otf");
-        tv.setTypeface(face);
+
+        TextView coupleTones_text = (TextView) findViewById(R.id.sign_in_button);
+        Typeface pierSans = Typeface.createFromAsset(getAssets(), getString(R.string.pier_sans));
+        coupleTones_text.setTypeface(pierSans);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
     }
 

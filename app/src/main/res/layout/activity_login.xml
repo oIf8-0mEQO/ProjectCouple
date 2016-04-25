@@ -9,40 +9,42 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingBottom="@dimen/activity_vertical_margin"
         tools:context=".controller.LoginActivity"
-    android:background="#fff">
+        android:background="#fff">
 
+    <!-- Login Button -->
     <Button
-            android:id="@+id/sign_in_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="67dp"
-        android:layout_below="@+id/imageView"
+        android:layout_below="@+id/logotext"
         android:layout_centerHorizontal="true"
-        android:background="#a6dcd7"
+        android:background="@drawable/roundedbutton"
         android:text="@string/google_login"
-        android:fontFamily="Helvetica Neue"
         android:textColor="#fff"
         android:maxWidth="200dp"
         android:minWidth="200dp"
         android:textAllCaps="false"
         android:textSize="16dp" />
 
+    <!-- CoupleTones text -->
     <ImageView
         android:layout_width="250dp"
         android:layout_height="47dp"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
-        android:id="@+id/imageView"
+        android:id="@+id/logotext"
         android:src="@drawable/loginpg"
-        android:layout_below="@+id/imageView2"
+        android:layout_below="@+id/logo"
         android:layout_centerHorizontal="true" />
 
+    <!-- CoupleTones logo -->
     <ImageView
         android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:scaleType="fitXY"
         android:adjustViewBounds="true"
-        android:id="@+id/imageView2"
+        android:id="@+id/logo"
         android:src="@drawable/logo"
         android:layout_marginTop="123dp"
         android:layout_alignParentTop="true"

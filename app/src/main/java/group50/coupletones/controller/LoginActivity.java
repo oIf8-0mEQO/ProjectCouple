@@ -6,10 +6,13 @@
 package group50.coupletones.controller;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -24,6 +27,7 @@ import group50.coupletones.auth.GoogleUser;
  * The LoginActivity controls the login page of the app.
  */
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+
     /**
      * The tag used for this activity
      */
@@ -66,7 +70,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             Log.d(TAG, "Silent sign in handled");
             handleSignInResult(pendingResult.get());
         }
-
+        TextView tv=(TextView)findViewById(R.id.sign_in_button);
+        Typeface face=Typeface.createFromAsset(getAssets(),"fonts/pier-regular.otf");
+        tv.setTypeface(face);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
     }
 
@@ -122,4 +128,5 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             App.instance().setLocalUser(null);
         }
     }
+
 }

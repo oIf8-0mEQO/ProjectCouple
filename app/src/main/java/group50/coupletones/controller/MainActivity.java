@@ -5,18 +5,22 @@ import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import group50.coupletones.R;
 import group50.coupletones.controller.tab.FavoriteLocationsFragment;
+import group50.coupletones.controller.tab.PartnersLocationsFragment;
+
+import java.util.HashMap;
 
 /**
  * The main activity that contains the main tab menu bar. Handles each
  * tab page as a fragment and renders them accordingly.
  */
 public class MainActivity extends AppCompatActivity implements
-  FavoriteLocationsFragment.Listener, OnMenuTabClickListener {
+  FavoriteLocationsFragment.Listener,
+  PartnersLocationsFragment.Listener,
+  OnMenuTabClickListener {
 
   private static final String TAG = "MainActivity";
 
@@ -25,13 +29,23 @@ public class MainActivity extends AppCompatActivity implements
    */
   private BottomBar mBottomBar;
 
+  /**
+   * A map of IDs to the respective fragments
+   */
+  private HashMap<Integer, Fragment> tabs;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
+    // Initialize tabs
+    tabs = new HashMap<>();
+    tabs.put(R.id.partnerLocations, new PartnersLocationsFragment.Factory().build());
+    tabs.put(R.id.favoriteLocations, new FavoriteLocationsFragment.Factory().build());
+
     // Create default fragment
-    Fragment defaultFragment = new FavoriteLocationsFragment.Factory().build();
+    Fragment defaultFragment = tabs.get(R.id.partnerLocations);
     setFragment(defaultFragment);
 
     mBottomBar = BottomBar.attach(this, savedInstanceState);
@@ -49,14 +63,10 @@ public class MainActivity extends AppCompatActivity implements
   public void onMenuTabSelected(
     @IdRes
       int menuItemId) {
-    Log.d(TAG, "onMenuTabSelected: " + menuItemId);
-    switch (menuItemId) {
-      case R.id.partnerLocations:
-        break;
-      case R.id.favoriteLocations:
-        break;
-      case R.id.settings:
-        break;
+
+    // When a tab is selected, handle switching fragments
+    if (tabs.containsKey(menuItemId)) {
+      setFragment(tabs.get(menuItemId));
     }
   }
 
@@ -64,14 +74,10 @@ public class MainActivity extends AppCompatActivity implements
   public void onMenuTabReSelected(
     @IdRes
       int menuItemId) {
-    Log.d(TAG, "onMenuTabReSelected: " + menuItemId);
-    switch (menuItemId) {
-      case R.id.partnerLocations:
-        break;
-      case R.id.favoriteLocations:
-        break;
-      case R.id.settings:
-        break;
+
+    // When a tab is selected, handle switching fragments
+    if (tabs.containsKey(menuItemId)) {
+      setFragment(tabs.get(menuItemId));
     }
   }
 
@@ -92,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements
     getSupportFragmentManager()
       .beginTransaction()
       .replace(R.id.fragment_container, fragment) // Replace whatever is in the fragment_container view
-      .addToBackStack(null) // Add the transaction to the back stack if needed
-      .commit();  // Commit the transaction
+      .addToBackStack(null)                       // Add the transaction to the back stack if needed
+      .commit();                                  // Commit the transaction
   }
 }

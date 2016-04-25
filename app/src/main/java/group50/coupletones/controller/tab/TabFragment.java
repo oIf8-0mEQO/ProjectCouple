@@ -23,6 +23,9 @@ abstract class TabFragment<L> extends Fragment {
     this.listenerClass = listenerClass;
   }
 
+  /**
+   * @return The ID of the XML layout for this fragment
+   */
   protected abstract int getResourceId();
 
   @Override

@@ -9,15 +9,15 @@ import group50.coupletones.R;
  * Activities that contain this fragment must implement the {@link Listener} interface to handle interaction events.
  * Use the {@link Factory} factory class to create an instance of this fragment.
  */
-public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFragment.Listener> {
+public class PartnersLocationsFragment extends TabFragment<PartnersLocationsFragment.Listener> {
 
-  public FavoriteLocationsFragment() {
+  public PartnersLocationsFragment() {
     super(Listener.class);
   }
 
   @Override
   protected int getResourceId() {
-    return R.layout.fragment_favorite_locations;
+    return R.layout.fragment_partners_locations;
   }
 
   @Override
@@ -45,10 +45,10 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
   /**
    * Use this factory method to create a new instance of FavoriteLocationsFragment.
    */
-  public static class Factory extends FragmentFactory<FavoriteLocationsFragment> {
+  public static class Factory extends FragmentFactory<PartnersLocationsFragment> {
     @Override
-    public FavoriteLocationsFragment build() {
-      FavoriteLocationsFragment fragment = new FavoriteLocationsFragment();
+    public PartnersLocationsFragment build() {
+      PartnersLocationsFragment fragment = new PartnersLocationsFragment();
       Bundle args = new Bundle();
       // TODO: Set arguments
       fragment.setArguments(args);

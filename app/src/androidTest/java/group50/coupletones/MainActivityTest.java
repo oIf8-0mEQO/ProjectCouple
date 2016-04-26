@@ -6,18 +6,16 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.test.ActivityInstrumentationTestCase2;
-import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.PartnersLocationsFragment;
-import org.assertj.core.api.Condition;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Henry Mao
@@ -49,6 +47,30 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     List<Fragment> fragments = supportFragmentManager.getFragments();
     // There should be only one fragment active upon launch
+    assertThat(fragments).hasSize(1);
+    // Test to make sure the fragment is a PartnersLocationsFragment
+    assertThat(fragments.get(0)).isOfAnyClassIn(PartnersLocationsFragment.class);
+  }
+
+  @Test
+  public void testTabTap1() throws Exception {
+    FragmentManager supportFragmentManager = activity.getSupportFragmentManager();
+
+    activity.onMenuTabSelected(R.id.favoriteLocations);
+    List<Fragment> fragments = supportFragmentManager.getFragments();
+    // There should be only one fragment active upon launch
+    assertThat(fragments).hasSize(2);
+    // Test to make sure the fragment is a PartnersLocationsFragment
+    assertThat(fragments.get(1)).isOfAnyClassIn(FavoriteLocationsFragment.class);
+  }
+
+  @Test
+  public void testTabTap2() throws Exception {
+    FragmentManager supportFragmentManager = activity.getSupportFragmentManager();
+
+    activity.onMenuTabSelected(R.id.partnerLocations);
+    List<Fragment> fragments = supportFragmentManager.getFragments();
+    // There should be one fragment since the default is already set to this fragment
     assertThat(fragments).hasSize(1);
     // Test to make sure the fragment is a PartnersLocationsFragment
     assertThat(fragments.get(0)).isOfAnyClassIn(PartnersLocationsFragment.class);

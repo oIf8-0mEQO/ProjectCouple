@@ -30,11 +30,9 @@ test:
        # wait for it to have booted
        - circle-android wait-for-boot
        # run tests  against the emulator.
-       - ./gradlew connectedAndroidTest
+       - ./gradlew connectedAndroidTest createDebugCoverageReport
        # copy the build outputs to artifacts
-       # cp -r Unit_test/app/build/outputs $CIRCLE_ARTIFACTS
+       - cp -r app/build/outputs $CIRCLE_ARTIFACTS
+       - cp -r app/build/reports $CIRCLE_ARTIFACTS
        # copy the test results to the test results directory.
-       # cp -r Unit_test/app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
-
-       # Create coverage report
-       - ./gradlew jacocoTestReport
+       - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS

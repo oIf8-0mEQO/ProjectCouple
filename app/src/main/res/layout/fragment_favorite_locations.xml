@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Toolbar Settings for Your Locations Page -->
+<android.support.v7.widget.Toolbar
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:id="@+id/toolbar"
+	android:layout_width="match_parent"
+	android:layout_height="70dp"
+	android:background="?attr/colorPrimary"
+	app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+	app:layout_scrollFlags="scroll|enterAlways"
+	app:layout_collapseMode="pin">
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<!-- Centered Your Locations title -->
+		<ImageView
+			android:src="@drawable/yourlocations_title"
+			android:layout_width="wrap_content"
+			android:layout_height="fill_parent"
+            android:layout_marginLeft="?attr/actionBarSize"
+            android:layout_marginRight="?attr/actionBarSize"
+			android:layout_marginTop="7dp"
+			android:layout_marginBottom="4dp"
+			android:layout_gravity="center" />
+
+		<!-- Left side search button -->
+        <!--
+        <ImageButton
+            android:id="@+id/btn_settings"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginRight="?attr/actionBarSize"
+            android:layout_gravity="start|center_vertical"
+            android:src="@drawable/backarrow"
+            style="@style/Widget.AppCompat.ActionButton" />-->
+
+		<!-- Right side add button -->
+		<!--
+        <ImageButton
+            android:id="@+id/btn_search"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_magnify_white_24dp"
+            style="@style/Widget.AppCompat.ActionButton" />
+            -->
+
+	</FrameLayout>
+</android.support.v7.widget.Toolbar>

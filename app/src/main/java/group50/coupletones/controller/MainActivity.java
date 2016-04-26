@@ -56,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements
     mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
     mBottomBar.mapColorForTab(1, 0xFF5D4037);
     mBottomBar.mapColorForTab(2, "#7B1FA2");
+
+    // Setting custom font for BottomBar
+    mBottomBar.setTypeFace(getString(R.string.pier_sans));
   }
 
   @Override

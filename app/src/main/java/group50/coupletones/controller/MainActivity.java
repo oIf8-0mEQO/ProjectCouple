@@ -13,6 +13,7 @@ import com.roughike.bottombar.OnMenuTabClickListener;
 import group50.coupletones.R;
 import group50.coupletones.controller.tab.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.PartnersLocationsFragment;
+import group50.coupletones.controller.tab.SettingsFragment;
 
 import java.util.HashMap;
 
@@ -22,7 +23,7 @@ import java.util.HashMap;
  */
 public class MainActivity extends AppCompatActivity implements
   FavoriteLocationsFragment.Listener,
-  PartnersLocationsFragment.Listener,
+  PartnersLocationsFragment.Listener, SettingsFragment.Listener,
   OnMenuTabClickListener {
 
   private static final String TAG = "MainActivity";
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements
     tabs = new HashMap<>();
     tabs.put(R.id.partnerLocations, PartnersLocationsFragment.build());
     tabs.put(R.id.favoriteLocations, FavoriteLocationsFragment.build());
+    tabs.put(R.id.settings, SettingsFragment.build());
 
     mBottomBar = BottomBar.attach(this, savedInstanceState);
     mBottomBar.setItemsFromMenu(R.menu.bottombar_menu, this);

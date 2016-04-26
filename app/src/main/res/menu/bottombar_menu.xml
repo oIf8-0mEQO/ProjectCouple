@@ -3,11 +3,15 @@
 	<!-- Icons: android:icon="@drawable/logo" -->
 	<item
 			android:id="@+id/partnerLocations"
-			android:title="@string/partner_locations" />
+			android:title="@string/partner_locations"
+			android:icon="@drawable/home_icon" />
 	<item
 			android:id="@+id/favoriteLocations"
-			android:title="@string/favorite_locations" />
+			android:title="@string/favorite_locations"
+			android:icon="@drawable/myfaves_icon" />
+
 	<item
 			android:id="@+id/settings"
-			android:title="@string/settings" />
+			android:title="@string/settings"
+			android:icon="@drawable/settingsicon" />
 </menu>

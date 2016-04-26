@@ -45,8 +45,7 @@ public class MainActivity extends AppCompatActivity implements
     tabs.put(R.id.favoriteLocations, FavoriteLocationsFragment.build());
 
     // Create default fragment
-    Fragment defaultFragment = tabs.get(R.id.partnerLocations);
-    setFragment(defaultFragment);
+    Fragment defaultFragment = tabs.get(R.id.favoriteLocations);
 
     mBottomBar = BottomBar.attach(this, savedInstanceState);
     mBottomBar.setItemsFromMenu(R.menu.bottombar_menu, this);

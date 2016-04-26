@@ -39,15 +39,6 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
     if (getArguments() != null) {
       //TODO: Read arguments
     }
-    // Set ActionBar title
-    getActivity().setTitle(getString(R.string.faves_title));
-  }
-
-  @Override
-  public void onResume() {
-    super.onResume();
-    // Update ActionBar title
-    getActivity().setTitle(getString(R.string.faves_title));
   }
 
   /**

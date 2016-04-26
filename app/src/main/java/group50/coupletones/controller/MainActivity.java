@@ -1,5 +1,6 @@
 package group50.coupletones.controller;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements
     mBottomBar.mapColorForTab(1, 0xFF5D4037);
     mBottomBar.mapColorForTab(2, "#7B1FA2");
 
-    // Setting custom font for BottomBar
+    // Setting custom font for tabs
     mBottomBar.setTypeFace(getString(R.string.pier_sans));
   }
 
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements
     if (tabs.containsKey(menuItemId)) {
       setFragment(tabs.get(menuItemId));
     }
+
   }
 
   @Override
@@ -106,4 +108,5 @@ public class MainActivity extends AppCompatActivity implements
       .addToBackStack(null)                       // Add the transaction to the back stack if needed
       .commit();                                  // Commit the transaction
   }
+
 }

@@ -1,5 +1,6 @@
 package group50.coupletones.controller.tab;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import group50.coupletones.R;
@@ -15,10 +16,10 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
     super(Listener.class);
   }
 
+
   /**
    * Use this factory method to create a new instance of FavoriteLocationsFragment.
    */
-
   public static FavoriteLocationsFragment build() {
     FavoriteLocationsFragment fragment = new FavoriteLocationsFragment();
     Bundle args = new Bundle();

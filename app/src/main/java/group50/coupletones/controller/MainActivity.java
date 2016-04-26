@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements
     // Setting colors for different tabs when there's more than three of them.
     // You can set colors for tabs in three different ways as shown below.
     //TODO: Use constants!
+
+    mBottomBar.setActiveTabColor("#a6dcd7");
     mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
     mBottomBar.mapColorForTab(1, 0xFF5D4037);
     mBottomBar.mapColorForTab(2, "#7B1FA2");

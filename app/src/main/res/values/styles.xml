@@ -9,19 +9,18 @@
 	</style>
 
 	<!-- Application theme with action bar -->
-	<style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light">
+	<style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
 		<item name="colorPrimary">@color/colorPrimary</item>
-		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-		<item name="colorAccent">@color/colorAccent</item>
-		<item name="android:actionBarStyle">@style/ActionBarStyle</item>
+		<item name="actionBarStyle">@style/MyActionBar</item>
 	</style>
 
-	<!-- Action bar theme -->
-	<style name="ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-		<item name="colorPrimary">@color/colorPrimary</item>
-		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-		<item name="colorAccent">@color/colorAccent</item>
+	<style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
 		<item name="background">@color/colorPrimary</item>
+		<item name="titleTextStyle">@style/MyActionBarTitle</item>
+	</style>
+
+	<style name="MyActionBarTitle" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+		<item name="android:textColor">@color/actionBarColor</item>
 	</style>
 
 	<style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>

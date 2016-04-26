@@ -6,11 +6,14 @@ import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toolbar;
+
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import group50.coupletones.R;
 import group50.coupletones.controller.tab.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.PartnersLocationsFragment;
+import group50.coupletones.controller.tab.SettingsFragment;
 
 import java.util.HashMap;
 
@@ -20,7 +23,7 @@ import java.util.HashMap;
  */
 public class MainActivity extends AppCompatActivity implements
   FavoriteLocationsFragment.Listener,
-  PartnersLocationsFragment.Listener,
+  PartnersLocationsFragment.Listener, SettingsFragment.Listener,
   OnMenuTabClickListener {
 
   private static final String TAG = "MainActivity";
@@ -44,18 +47,10 @@ public class MainActivity extends AppCompatActivity implements
     tabs = new HashMap<>();
     tabs.put(R.id.partnerLocations, PartnersLocationsFragment.build());
     tabs.put(R.id.favoriteLocations, FavoriteLocationsFragment.build());
+    tabs.put(R.id.settings, SettingsFragment.build());
 
     mBottomBar = BottomBar.attach(this, savedInstanceState);
     mBottomBar.setItemsFromMenu(R.menu.bottombar_menu, this);
-
-    // Setting colors for different tabs when there's more than three of them.
-    // You can set colors for tabs in three different ways as shown below.
-    //TODO: Use constants!
-
-    mBottomBar.setActiveTabColor("#a6dcd7");
-    mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
-    mBottomBar.mapColorForTab(1, 0xFF5D4037);
-    mBottomBar.mapColorForTab(2, "#7B1FA2");
 
     // Setting custom font for tabs
     mBottomBar.setTypeFace(getString(R.string.pier_sans));

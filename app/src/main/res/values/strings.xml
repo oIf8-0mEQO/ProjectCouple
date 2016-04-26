@@ -6,4 +6,6 @@
     <string name="settings">Settings</string>
     <string name="favorite_locations">Faves</string>
     <string name="partner_locations">Home</string>
+    <string name="faves_title">Your Locations</string>
+    <string name="home_title">CoupleTones</string>
 </resources>

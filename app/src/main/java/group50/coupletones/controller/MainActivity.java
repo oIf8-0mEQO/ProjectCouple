@@ -48,15 +48,6 @@ public class MainActivity extends AppCompatActivity implements
     mBottomBar = BottomBar.attach(this, savedInstanceState);
     mBottomBar.setItemsFromMenu(R.menu.bottombar_menu, this);
 
-    // Setting colors for different tabs when there's more than three of them.
-    // You can set colors for tabs in three different ways as shown below.
-    //TODO: Use constants!
-
-    mBottomBar.setActiveTabColor("#a6dcd7");
-    mBottomBar.mapColorForTab(0, ContextCompat.getColor(this, R.color.colorAccent));
-    mBottomBar.mapColorForTab(1, 0xFF5D4037);
-    mBottomBar.mapColorForTab(2, "#7B1FA2");
-
     // Setting custom font for tabs
     mBottomBar.setTypeFace(getString(R.string.pier_sans));
   }

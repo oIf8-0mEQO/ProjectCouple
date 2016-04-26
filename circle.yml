@@ -35,3 +35,6 @@ test:
        # cp -r Unit_test/app/build/outputs $CIRCLE_ARTIFACTS
        # copy the test results to the test results directory.
        # cp -r Unit_test/app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
+
+       # Create coverage report
+       - ./gradlew jacocoTestReport

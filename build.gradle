@@ -15,6 +15,9 @@ buildscript {
     }
 }
 
+// set flag whether we are on a build server
+ext.isCi = ("true".equals(System.getenv("TRAVIS")) || "true".equals(System.getenv("CIRCLECI")))
+
 allprojects {
     repositories {
         jcenter()

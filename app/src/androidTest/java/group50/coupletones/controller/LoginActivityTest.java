@@ -5,6 +5,6 @@ package group50.coupletones.controller;
  *
  * @author Henry
  */
-public class LoginTest {
+public class LoginActivityTest {
 
 }

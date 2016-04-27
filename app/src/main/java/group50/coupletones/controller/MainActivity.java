@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements
 
     // Setting custom font for tabs
     mBottomBar.setTypeFace(getString(R.string.pier_sans));
+
+    // Hide bottom bar shadow
+    mBottomBar.hideShadow();
   }
 
   @Override

@@ -13,6 +13,7 @@ import group50.coupletones.auth.User;
  */
 public class App {
   private static final App instance = new App();
+
   /**
    * The local user of the app
    */
@@ -21,6 +22,7 @@ public class App {
   /**
    * The instance of the Google API client
    */
+  //TODO: Consider dependency injection framework if too many singletons
   private GoogleApiClient googleApiClient;
 
   /**

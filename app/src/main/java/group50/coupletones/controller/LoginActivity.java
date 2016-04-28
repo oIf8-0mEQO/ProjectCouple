@@ -16,15 +16,12 @@ import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.GoogleUser;
+import group50.coupletones.util.Taggable;
 
 /**
  * The LoginActivity controls the login page of the app.
  */
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-  /**
-   * The tag used for this activity
-   */
-  private static final String TAG = "LoginActivity";
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, Taggable {
 
   private Authenticator<GoogleAuthenticator, GoogleUser, ConnectionResult> auth;
 

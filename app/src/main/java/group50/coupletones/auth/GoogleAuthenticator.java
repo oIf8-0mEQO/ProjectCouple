@@ -10,6 +10,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import group50.coupletones.App;
+import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Function;
 
 /**
@@ -18,11 +19,9 @@ import group50.coupletones.util.function.Function;
  */
 public class GoogleAuthenticator implements
   Authenticator<GoogleAuthenticator, GoogleUser, ConnectionResult>,
-  GoogleApiClient.OnConnectionFailedListener {
-
-  //TODO: Reconsider constant?
-  private static final String TAG = GoogleAuthenticator.class.getSimpleName();
-
+  GoogleApiClient.OnConnectionFailedListener,
+  Taggable {
+  
   /**
    * The request code for sign in intent
    */
@@ -87,14 +86,14 @@ public class GoogleAuthenticator implements
 
     //TODO: Refactor this
     if (pendingResult.isDone()) {
-      Log.d(TAG, "Silent sign in handled");
+      Log.d(getTag(), "Silent sign in handled");
       handleSignInResult(pendingResult.get());
     } else {
-      Log.d(TAG, "Silent sign in being handled...");
+      Log.d(getTag(), "Silent sign in being handled...");
       // There's no immediate result ready, displays some progress indicator and waits for the
       // async callback.
       pendingResult.setResultCallback(result -> {
-          Log.d(TAG, "Silent sign in handled: " + result.getStatus());
+        Log.d(getTag(), "Silent sign in handled: " + result.getStatus());
           handleSignInResult(result);
         }
       );
@@ -135,7 +134,7 @@ public class GoogleAuthenticator implements
    * @param result The GoogleSignInResult
    */
   private void handleSignInResult(GoogleSignInResult result) {
-    Log.d(TAG, "handleSignInResult: " + result.isSuccess());
+    Log.d(getTag(), "handleSignInResult: " + result.isSuccess());
     if (result.isSuccess()) {
       // Signed in successfully, store authenticated user
       GoogleUser localUser = new GoogleUser(result.getSignInAccount());
@@ -152,7 +151,7 @@ public class GoogleAuthenticator implements
   @Override
   public void onConnectionFailed(ConnectionResult connectionResult) {
     //TODO: Improve error handling
-    Log.e(TAG, "Failed to login: " + connectionResult.getErrorMessage());
+    Log.e(getTag(), "Failed to login: " + connectionResult.getErrorMessage());
     failCallback.apply(connectionResult);
   }
 

@@ -105,10 +105,40 @@
                         android:id="@+id/your_email"
                         android:text="joannesemailyay@gmail.com"
                         android:textColor="@color/subtitleColor"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         android:layout_below="@+id/your_account_header"
                         android:layout_marginTop="6dp"
                         />
+
+                    <!-- Edit Profile Button -->
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Edit Profile"
+                        android:textColor="@color/actionBarColor"
+                        android:id="@+id/edit_profile_button"
+                        android:textAllCaps="false"
+                        android:minWidth="100dp"
+                        android:minHeight="40dp"
+                        android:textSize="16dp"
+                        android:background="@drawable/roundedbutton"
+                        android:layout_alignTop="@+id/your_name_header"
+                        android:layout_alignParentEnd="true"/>
+
+                    <!-- Log out Button -->
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Log Out"
+                        android:textColor="@color/actionBarColor"
+                        android:id="@+id/logout_button"
+                        android:textAllCaps="false"
+                        android:minWidth="100dp"
+                        android:minHeight="40dp"
+                        android:textSize="16dp"
+                        android:background="@drawable/roundedbutton"
+                        android:layout_alignTop="@+id/your_account_header"
+                        android:layout_alignStart="@+id/edit_profile_button"/>
 
                 </RelativeLayout>
             </LinearLayout>
@@ -191,10 +221,25 @@
                         android:id="@+id/partner_email"
                         android:text="LOLcodyisdumb@gmail.com"
                         android:textColor="@color/subtitleColor"
-                        android:textSize="18sp"
+                        android:textSize="14sp"
                         android:layout_below="@+id/partner_account_header"
                         android:layout_marginTop="6dp"
                         />
+
+                    <!-- Remove partner button -->
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Remove Partner"
+                        android:textColor="@color/actionBarColor"
+                        android:id="@+id/remove_partner_button"
+                        android:textAllCaps="false"
+                        android:minWidth="150dp"
+                        android:minHeight="40dp"
+                        android:textSize="16dp"
+                        android:background="@drawable/roundedbutton"
+                        android:layout_alignTop="@+id/partner_name_header"
+                        android:layout_alignParentEnd="true"/>
 
                 </RelativeLayout>
             </LinearLayout>

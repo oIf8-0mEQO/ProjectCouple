@@ -47,6 +47,9 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> {
         }
     }
 
+    /**
+     * A method that sets the font of each textview on the Settings Fragment.
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,6 +66,9 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> {
         TextView partnerName = (TextView) v.findViewById(R.id.partner_name);
         TextView partnerAccountText = (TextView) v.findViewById(R.id.partner_account_header);
         TextView partnerAccount = (TextView) v.findViewById(R.id.partner_email);
+        TextView editProfileButton = (TextView) v.findViewById(R.id.edit_profile_button);
+        TextView logoutButton = (TextView) v.findViewById(R.id.logout_button);
+        TextView removePartnerButton = (TextView) v.findViewById(R.id.remove_partner_button);
         yourProfileText.setTypeface(pierSans);
         yourNameText.setTypeface(pierSans);
         yourName.setTypeface(pierSans);
@@ -73,6 +79,9 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> {
         partnerName.setTypeface(pierSans);
         partnerAccountText.setTypeface(pierSans);
         partnerAccount.setTypeface(pierSans);
+        editProfileButton.setTypeface(pierSans);
+        logoutButton.setTypeface(pierSans);
+        removePartnerButton.setTypeface(pierSans);
         return v;
     }
 

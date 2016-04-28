@@ -18,7 +18,7 @@ import javax.inject.Singleton;
 public class AuthenticatorModule {
   @Singleton
   @Provides
-  static Authenticator<GoogleAuthenticator, User, String> provide(GoogleAuthenticator auth) {
+  static Authenticator<User, String> provide(GoogleAuthenticator auth) {
     return auth;
   }
 }

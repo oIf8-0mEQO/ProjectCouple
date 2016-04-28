@@ -21,7 +21,7 @@ import javax.inject.Inject;
  * @author Henry Mao
  */
 public class GoogleAuthenticator implements
-  Authenticator<GoogleAuthenticator, User, String>,
+  Authenticator<User, String>,
   GoogleApiClient.OnConnectionFailedListener,
   Taggable {
 

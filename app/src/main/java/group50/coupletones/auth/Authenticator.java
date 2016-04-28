@@ -10,8 +10,7 @@ import group50.coupletones.util.callback.SuccessCallback;
  *
  * @author Henry Mao
  */
-public interface Authenticator<T extends Authenticator, S, F>
-  extends SuccessCallback<T, S>, FailCallback<T, F> {
+public interface Authenticator<S, F> extends SuccessCallback<Authenticator, S>, FailCallback<Authenticator, F> {
 
   /**
    * Binds the authenticator with a given activity.
@@ -19,7 +18,7 @@ public interface Authenticator<T extends Authenticator, S, F>
    *
    * @param activity The activity that is attempting to initiate sign in
    */
-  T bind(FragmentActivity activity);
+  Authenticator bind(FragmentActivity activity);
 
   /**
    * Attempts to sign in the user automatically by using silent
@@ -27,7 +26,7 @@ public interface Authenticator<T extends Authenticator, S, F>
    *
    * @return This instance
    */
-  T autoSignIn();
+  Authenticator autoSignIn();
 
   /**
    * Attempts to sign in the user by promting the user for login
@@ -35,7 +34,7 @@ public interface Authenticator<T extends Authenticator, S, F>
    *
    * @return This instance
    */
-  T signIn();
+  Authenticator signIn();
 
   /**
    * Method that handles the intent result callback.

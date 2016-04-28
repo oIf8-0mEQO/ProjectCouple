@@ -15,7 +15,6 @@ import android.widget.Toast;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
-import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.User;
 import group50.coupletones.util.Taggable;
 
@@ -30,7 +29,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
    * The object used for authentication
    */
   @Inject
-  public Authenticator<GoogleAuthenticator, User, String> auth;
+  public Authenticator<User, String> auth;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

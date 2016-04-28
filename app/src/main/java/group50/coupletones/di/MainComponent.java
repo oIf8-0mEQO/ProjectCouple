@@ -3,7 +3,6 @@ package group50.coupletones.di;
 import dagger.Component;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.Authenticator;
-import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.User;
 import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.di.module.ApplicationModule;
@@ -26,7 +25,7 @@ import javax.inject.Singleton;
 )
 public interface MainComponent {
 
-  Authenticator<GoogleAuthenticator, User, String> auth();
+  Authenticator<User, String> auth();
 
   CoupleTones app();
 

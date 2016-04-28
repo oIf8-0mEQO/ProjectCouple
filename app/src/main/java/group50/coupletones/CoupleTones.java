@@ -6,8 +6,6 @@
 package group50.coupletones;
 
 import android.app.Application;
-import group50.coupletones.auth.Authenticator;
-import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.User;
 
 /**
@@ -16,12 +14,12 @@ import group50.coupletones.auth.User;
  * Lifecycle of instance persists as long as the app is running.
  */
 //TODO: Consider dependency injection framework if too many singletons
-public class App extends Application {
+public class CoupleTones extends Application {
 
   /**
    * The static instance of App.
    */
-  private static App instance;
+  private static CoupleTones instance;
   /**
    * The local user of the app
    */
@@ -30,7 +28,7 @@ public class App extends Application {
   /**
    * @return The instance of the app singleton
    */
-  public static App instance() {
+  public static CoupleTones instance() {
     return instance;
   }
 

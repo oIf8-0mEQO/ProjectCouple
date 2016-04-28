@@ -9,7 +9,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
-import group50.coupletones.App;
+import group50.coupletones.CoupleTones;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Function;
 
@@ -133,11 +133,11 @@ public class GoogleAuthenticator implements
     if (result.isSuccess()) {
       // Signed in successfully, store authenticated user
       GoogleUser localUser = new GoogleUser(result.getSignInAccount());
-      App.instance().setLocalUser(localUser);
+      CoupleTones.instance().setLocalUser(localUser);
       successCallback.apply(localUser);
     } else {
       // Signed out, show unauthenticated UI.
-      App.instance().setLocalUser(null);
+      CoupleTones.instance().setLocalUser(null);
       //TODO: Is returning null appropriate?
       successCallback.apply(null);
     }

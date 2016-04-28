@@ -7,8 +7,8 @@ package group50.coupletones;
 
 import android.app.Application;
 import group50.coupletones.auth.User;
-import group50.coupletones.di.DaggerMainComponent;
-import group50.coupletones.di.MainComponent;
+import group50.coupletones.di.AppComponent;
+import group50.coupletones.di.DaggerAppComponent;
 import group50.coupletones.di.module.ApplicationModule;
 
 /**
@@ -21,7 +21,7 @@ public class CoupleTones extends Application {
   /**
    * The main dependency injection component
    */
-  private static MainComponent component;
+  private static AppComponent component;
   /**
    * The local user of the app
    */
@@ -30,7 +30,7 @@ public class CoupleTones extends Application {
   /**
    * @return The main dependency injection component
    */
-  public static MainComponent component() {
+  public static AppComponent component() {
     return component;
   }
 
@@ -62,7 +62,7 @@ public class CoupleTones extends Application {
   public void onCreate() {
     super.onCreate();
 
-    component = DaggerMainComponent
+    component = DaggerAppComponent
       .builder()
       .applicationModule(new ApplicationModule(this))
       .build();

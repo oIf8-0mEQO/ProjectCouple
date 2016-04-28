@@ -15,6 +15,7 @@ import group50.coupletones.util.function.Function;
 
 /**
  * Handles Google Authentication
+ *
  * @author Henry Mao
  */
 public class GoogleAuthenticator implements
@@ -47,9 +48,13 @@ public class GoogleAuthenticator implements
   private GoogleApiClient apiClient;
 
   /**
+   * Binds the authenticator with a given activity.
+   * Required to get the authenticator working
+   *
    * @param activity The activity that is attempting to initiate sign in
    */
-  public GoogleAuthenticator(FragmentActivity activity) {
+  @Override
+  public GoogleAuthenticator bind(FragmentActivity activity) {
     this.activity = activity;
 
     /*
@@ -68,11 +73,14 @@ public class GoogleAuthenticator implements
       .enableAutoManage(this.activity, this)
       .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
       .build();
+
+    return this;
   }
 
   /**
    * Attempts to sign in the user automatically by using silent
    * sign in.
+   *
    * @return This instance
    */
   @Override
@@ -100,6 +108,7 @@ public class GoogleAuthenticator implements
   /**
    * Attempts to sign in the user.
    * Opens an Android Intent and asks Google to sign in.
+   *
    * @return This instance
    */
   @Override
@@ -111,9 +120,10 @@ public class GoogleAuthenticator implements
 
   /**
    * Method that handles the intent result callback
+   *
    * @param requestCode The request code of the intent
-   * @param resultCode The result code of the intent
-   * @param data The data of the intent
+   * @param resultCode  The result code of the intent
+   * @param data        The data of the intent
    */
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -126,6 +136,7 @@ public class GoogleAuthenticator implements
 
   /**
    * Handles the sign in request. Called after the sign in request is complete.
+   *
    * @param result The GoogleSignInResult
    */
   private void handleSignInResult(GoogleSignInResult result) {

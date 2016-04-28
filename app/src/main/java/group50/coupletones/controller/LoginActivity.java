@@ -16,22 +16,33 @@ import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.User;
+import group50.coupletones.di.DaggerMainComponent;
 import group50.coupletones.util.Taggable;
+
+import javax.inject.Inject;
 
 /**
  * The LoginActivity controls the login page of the app.
  */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, Taggable {
 
-  private Authenticator<GoogleAuthenticator, User, String> auth;
+  /**
+   * The object used for authentication
+   */
+  @Inject
+  public Authenticator<GoogleAuthenticator, User, String> auth;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    // Dependency Injection
+    DaggerMainComponent.create().inject(this);
+
     setContentView(R.layout.activity_login);
 
     // Create Google Authenticator for automatic sign in.
-    auth = new GoogleAuthenticator(this);
+    auth.bind(this);
     auth.autoSignIn();
     auth.onSuccess(this::onUserLogin);
 

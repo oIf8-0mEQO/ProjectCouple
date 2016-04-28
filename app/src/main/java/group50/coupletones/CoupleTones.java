@@ -7,6 +7,8 @@ package group50.coupletones;
 
 import android.app.Application;
 import group50.coupletones.auth.User;
+import group50.coupletones.di.DaggerMainComponent;
+import group50.coupletones.di.MainComponent;
 
 /**
  * A singleton object that holds global data.
@@ -20,10 +22,16 @@ public class CoupleTones extends Application {
    * The static instance of App.
    */
   private static CoupleTones instance;
+
   /**
    * The local user of the app
    */
   private User localUser;
+
+  /**
+   * The main Dagger DI component
+   */
+  private MainComponent component;
 
   /**
    * @return The instance of the app singleton
@@ -42,6 +50,7 @@ public class CoupleTones extends Application {
   /**
    * Sets the local user of the app. This method should only be
    * during login/logout events.
+   *
    * @param localUser The local user object
    */
   public void setLocalUser(User localUser) {
@@ -59,5 +68,7 @@ public class CoupleTones extends Application {
   public void onCreate() {
     super.onCreate();
     instance = this;
+
+    component = DaggerMainComponent.builder().build();
   }
 }

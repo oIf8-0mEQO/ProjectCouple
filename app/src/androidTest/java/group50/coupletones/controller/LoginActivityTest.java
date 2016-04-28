@@ -33,11 +33,10 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
   }
 
   /**
-   * Test the default tab when the app launches
+   * Test the login
    */
   @Test
   public void testAuth() {
 
   }
-
 }

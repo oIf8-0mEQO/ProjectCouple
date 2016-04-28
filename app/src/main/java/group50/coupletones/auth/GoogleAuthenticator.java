@@ -18,32 +18,33 @@ import group50.coupletones.util.function.Function;
  * @author Henry Mao
  */
 public class GoogleAuthenticator implements
-  Authenticator<GoogleAuthenticator, GoogleUser, ConnectionResult>,
+  Authenticator<GoogleAuthenticator, User, String>,
   GoogleApiClient.OnConnectionFailedListener,
   Taggable {
-  
+
   /**
    * The request code for sign in intent
    */
-  //TODO: Reconsider constant?
   private static final int RC_SIGN_IN = 9001;
 
   /**
    * The activity initiating authentication
    */
-  private final FragmentActivity activity;
-  /**
-   * The sign in options
-   */
-  private final GoogleSignInOptions gso;
+  private FragmentActivity activity;
+
   /**
    * The callback function upon success
    */
-  private Function<GoogleUser, GoogleUser> successCallback;
+  private Function<User, User> successCallback;
   /**
    * The callback function upon failure
    */
-  private Function<ConnectionResult, ConnectionResult> failCallback;
+  private Function<String, String> failCallback;
+
+  /**
+   * The Google API client instance
+   */
+  private GoogleApiClient apiClient;
 
   /**
    * @param activity The activity that is attempting to initiate sign in
@@ -55,23 +56,18 @@ public class GoogleAuthenticator implements
      * Configure sign-in to request the user's ID, email address, and basic
      * profile. ID and basic profile are included in DEFAULT_SIGN_IN.
      */
-    gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
       .requestEmail()
       .build();
 
-    // Lazy initialization of Google API Client
-    if (App.instance().getGoogleApiClient() == null) {
-
-      /* Build a GoogleApiClient with access to the Google Sign-In API and the
-      * options specified by gso.
+      /*
+       * Build a GoogleApiClient with access to the Google Sign-In API and the
+       * options specified by gso.
       */
-      App.instance().setGoogleApiClient(
-        new GoogleApiClient.Builder(this.activity)
-          .enableAutoManage(this.activity, this)
-          .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-          .build()
-      );
-    }
+    apiClient = new GoogleApiClient.Builder(this.activity)
+      .enableAutoManage(this.activity, this)
+      .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+      .build();
   }
 
   /**
@@ -82,7 +78,7 @@ public class GoogleAuthenticator implements
   @Override
   public GoogleAuthenticator autoSignIn() {
     OptionalPendingResult<GoogleSignInResult> pendingResult =
-      Auth.GoogleSignInApi.silentSignIn(App.instance().getGoogleApiClient());
+      Auth.GoogleSignInApi.silentSignIn(apiClient);
 
     //TODO: Refactor this
     if (pendingResult.isDone()) {
@@ -108,9 +104,8 @@ public class GoogleAuthenticator implements
    */
   @Override
   public GoogleAuthenticator signIn() {
-    Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(App.instance().getGoogleApiClient());
+    Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(apiClient);
     activity.startActivityForResult(signInIntent, RC_SIGN_IN);
-
     return this;
   }
 
@@ -152,7 +147,7 @@ public class GoogleAuthenticator implements
   public void onConnectionFailed(ConnectionResult connectionResult) {
     //TODO: Improve error handling
     Log.e(getTag(), "Failed to login: " + connectionResult.getErrorMessage());
-    failCallback.apply(connectionResult);
+    failCallback.apply(connectionResult.getErrorMessage());
   }
 
   /**
@@ -160,7 +155,7 @@ public class GoogleAuthenticator implements
    * @return This instance
    */
   @Override
-  public GoogleAuthenticator onSuccess(Function<GoogleUser, GoogleUser> callback) {
+  public GoogleAuthenticator onSuccess(Function<User, User> callback) {
     successCallback = callback;
     return this;
   }
@@ -170,7 +165,7 @@ public class GoogleAuthenticator implements
    * @return This instance
    */
   @Override
-  public GoogleAuthenticator onFail(Function<ConnectionResult, ConnectionResult> callback) {
+  public GoogleAuthenticator onFail(Function<String, String> callback) {
     failCallback = callback;
     return this;
   }

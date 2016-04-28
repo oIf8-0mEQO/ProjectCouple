@@ -5,7 +5,7 @@ import com.google.android.gms.maps.model.LatLng;
 /**
  * Created by Joseph on 6/25/2016.
  */
-public abstract class Location implements Storable {
+public abstract class Location implements {
 
     private String name;
     private LatLng position;

@@ -39,7 +39,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             {
                 if (distanceInMiles(i.getPosition(), new LatLng(location.getLatitude(), location.getLongitude())) < 0.1)
                 {
-                    SomeOtherClass.sendNotification(i);//TODO: properly implement this method call
+                    System.out.println(i);//TODO: properly implement this method call
                 }
             }
         }
@@ -54,7 +54,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
     GoogleMap.OnMapClickListener clickListener = new GoogleMap.OnMapClickListener() {
         @Override
         public void onMapClick(LatLng latLng) {
-            String name = UIClass.inputName();//TODO: properly implement this method call
+            String name = mockMethod2();//TODO: properly implement this method call
             favLocations.add(new FavoriteLocation(name, latLng));
             populateMap();
         }
@@ -125,7 +125,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         try
         {
             List<Address> locations = geocoder.getFromLocationName(nameLocation, 10);
-            Address pickedAddress = UIClass.displayLocations(locations);//TODO: properly implement this method
+            Address pickedAddress = mockMethod1(locations);//TODO: properly implement this method
             favLocations.add(new Location(pickedAddress.getAddressLine(0), new LatLong(pickedAddress.getLatitude(), pickedAddress.getLongitude())));
         }
         catch(IOException e)
@@ -133,5 +133,15 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             //TODO: write exception handling code
         }
     }
-    
+
+    //Mock Methods//
+    private Address mockMethod1(List<Address> list)
+    {
+        return list.get(0);
+    }
+    private String mockMethod2()
+    {
+        return "test name";
+    }
+
 }

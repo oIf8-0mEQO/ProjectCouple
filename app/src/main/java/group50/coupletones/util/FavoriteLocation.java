@@ -5,7 +5,7 @@ import com.google.android.gms.maps.model.LatLng;
 /**
  * Created by Joseph on 6/25/2016.
  */
-public class FavoriteLocation extends  Location implements Storable {
+public class FavoriteLocation extends  Location implements {
 
     public FavoriteLocation(String name, LatLng position)
     {

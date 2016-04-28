@@ -1,4 +1,4 @@
-package group50.coupletones.di;
+package group50.coupletones.di.module;
 
 import dagger.Module;
 import dagger.Provides;
@@ -7,7 +7,9 @@ import group50.coupletones.CoupleTones;
 import javax.inject.Singleton;
 
 /**
- * Created by henry on 4/28/16.
+ * The dependency injection module that provides the main application singleton.
+ * @author Henry Mao
+ * @since 28/4/2016
  */
 @Module
 public class ApplicationModule {

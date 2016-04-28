@@ -13,6 +13,8 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Function;
 
+import javax.inject.Inject;
+
 /**
  * Handles Google Authentication
  *
@@ -27,25 +29,31 @@ public class GoogleAuthenticator implements
    * The request code for sign in intent
    */
   private static final int RC_SIGN_IN = 9001;
-
+  /**
+   * Private instance to the CoupleTones app instance
+   */
+  private final CoupleTones app;
   /**
    * The activity initiating authentication
    */
   private FragmentActivity activity;
-
   /**
    * The callback function upon success
    */
-  private Function<User, User> successCallback;
+  private Function<User, User> successCallback = x -> null;
   /**
    * The callback function upon failure
    */
-  private Function<String, String> failCallback;
-
+  private Function<String, String> failCallback = x -> null;
   /**
    * The Google API client instance
    */
   private GoogleApiClient apiClient;
+
+  @Inject
+  public GoogleAuthenticator(CoupleTones app) {
+    this.app = app;
+  }
 
   /**
    * Binds the authenticator with a given activity.
@@ -144,11 +152,11 @@ public class GoogleAuthenticator implements
     if (result.isSuccess()) {
       // Signed in successfully, store authenticated user
       GoogleUser localUser = new GoogleUser(result.getSignInAccount());
-      CoupleTones.instance().setLocalUser(localUser);
+      app.setLocalUser(localUser);
       successCallback.apply(localUser);
     } else {
       // Signed out, show unauthenticated UI.
-      CoupleTones.instance().setLocalUser(null);
+      app.setLocalUser(null);
       //TODO: Is returning null appropriate?
       successCallback.apply(null);
     }

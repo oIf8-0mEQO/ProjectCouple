@@ -9,35 +9,29 @@ import android.app.Application;
 import group50.coupletones.auth.User;
 import group50.coupletones.di.DaggerMainComponent;
 import group50.coupletones.di.MainComponent;
+import group50.coupletones.di.module.ApplicationModule;
 
 /**
  * A singleton object that holds global data.
  * Represents the main Android application.
  * Lifecycle of instance persists as long as the app is running.
  */
-//TODO: Consider dependency injection framework if too many singletons
 public class CoupleTones extends Application {
 
   /**
-   * The static instance of App.
+   * The main dependency injection component
    */
-  private static CoupleTones instance;
-
+  private static MainComponent component;
   /**
    * The local user of the app
    */
   private User localUser;
 
   /**
-   * The main Dagger DI component
+   * @return The main dependency injection component
    */
-  private MainComponent component;
-
-  /**
-   * @return The instance of the app singleton
-   */
-  public static CoupleTones instance() {
-    return instance;
+  public static MainComponent component() {
+    return component;
   }
 
   /**
@@ -67,8 +61,10 @@ public class CoupleTones extends Application {
   @Override
   public void onCreate() {
     super.onCreate();
-    instance = this;
 
-    component = DaggerMainComponent.builder().build();
+    component = DaggerMainComponent
+      .builder()
+      .applicationModule(new ApplicationModule(this))
+      .build();
   }
 }

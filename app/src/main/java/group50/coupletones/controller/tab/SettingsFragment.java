@@ -8,8 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+
 import org.w3c.dom.Text;
 
+import group50.coupletones.App;
 import group50.coupletones.R;
 
 /**
@@ -58,9 +63,9 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> {
                 getString(R.string.pier_sans));
         TextView yourProfileText = (TextView) v.findViewById(R.id.my_profile_header);
         TextView yourNameText = (TextView) v.findViewById(R.id.your_name_header);
-        TextView yourName = (TextView) v.findViewById(R.id.your_name);
+        String yourName = App.instance().getLocalUser().getName();
         TextView yourAccountText = (TextView) v.findViewById(R.id.your_account_header);
-        TextView yourAccount = (TextView) v.findViewById(R.id.your_email);
+        String yourAccount = App.instance().getLocalUser().getEmail(); v.findViewById(R.id.your_email);
         TextView partnersProfileText = (TextView) v.findViewById(R.id.partners_profile_text);
         TextView partnerNameText = (TextView) v.findViewById(R.id.partner_name_header);
         TextView partnerName = (TextView) v.findViewById(R.id.partner_name);
@@ -71,9 +76,9 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> {
         //TextView removePartnerButton = (TextView) v.findViewById(R.id.remove_partner_button);
         yourProfileText.setTypeface(pierSans);
         yourNameText.setTypeface(pierSans);
-        yourName.setTypeface(pierSans);
+        yourNameText.setText(yourName);
         yourAccountText.setTypeface(pierSans);
-        yourAccount.setTypeface(pierSans);
+        yourAccountText.setText(yourAccount);
         partnersProfileText.setTypeface(pierSans);
         partnerNameText.setTypeface(pierSans);
         partnerName.setTypeface(pierSans);

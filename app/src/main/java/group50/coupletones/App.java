@@ -48,6 +48,13 @@ public class App {
   }
 
   /**
+   * @return True if and only if the local user is logged into the app.
+   */
+  public boolean isLoggedIn() {
+    return localUser != null;
+  }
+
+  /**
    * @return The Google API Client instance
    */
   public GoogleApiClient getGoogleApiClient() {

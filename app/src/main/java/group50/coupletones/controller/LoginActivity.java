@@ -13,11 +13,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.OptionalPendingResult;
 import group50.coupletones.App;
 import group50.coupletones.R;
 import group50.coupletones.auth.GoogleUser;
@@ -42,12 +40,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_login);
 
-    // Configure sign-in to request the user's ID, email address, and basic
-    // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-      .requestEmail()
-      .build();
 
+    //TODO: This code should be moved
     // Build a GoogleApiClient with access to the Google Sign-In API and the
     // options specified by gso.
     App.instance().setGoogleApiClient(
@@ -56,24 +50,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
         .build()
     );
-
-    OptionalPendingResult<GoogleSignInResult> pendingResult =
-      Auth.GoogleSignInApi.silentSignIn(App.instance().getGoogleApiClient());
-
-    //TODO: Refactor this
-    if (pendingResult.isDone()) {
-      Log.d(TAG, "Silent sign in handled");
-      handleSignInResult(pendingResult.get());
-    } else {
-      Log.d(TAG, "Silent sign in being handled");
-      // There's no immediate result ready, displays some progress indicator and waits for the
-      // async callback.
-      pendingResult.setResultCallback(result -> {
-          Log.d(TAG, "Silent sign in handled: " + result.getStatus());
-          handleSignInResult(result);
-        }
-      );
-    }
 
     TextView coupleTones_text = (TextView) findViewById(R.id.sign_in_button);
     Typeface pierSans = Typeface.createFromAsset(getAssets(), getString(R.string.pier_sans));

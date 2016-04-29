@@ -2,8 +2,9 @@
 <resources>
     <color name="colorPrimary">#a6dcd7</color>
     <color name="colorPrimaryDark">#a6dcd7</color>
-    <color name="colorAccent">#ffc5d3</color>
-    <color name="actionBarColor">#ffffff</color>
+    <color name="colorAccent">#77b9b3</color>
+    <color name="disconnectColor">#ff98b2</color>
+    <color name="white">#ffffff</color>
     <color name="subtitleColor">#bebebe</color>
     <color name="textColor">#747474</color>
     <color name="transparentBg">#00000000</color>

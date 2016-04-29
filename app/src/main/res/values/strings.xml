@@ -8,4 +8,6 @@
     <string name="partner_locations">Home</string>
     <string name="faves_title">Your Locations</string>
     <string name="home_title">CoupleTones</string>
+    <string name="logout">Log Out</string>
+    <string name="disconnect">Disconnect with Partner</string>
 </resources>

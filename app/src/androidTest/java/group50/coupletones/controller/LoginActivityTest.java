@@ -23,16 +23,19 @@ import javax.inject.Singleton;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * The LoginActivity test to test the LoginActivity
- *
  * @author Henry Mao
  * @since 4/27/16.
  */
 @RunWith(AndroidJUnit4.class)
 public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginActivity> {
+  // Time out for activities
+  private final int TIMEOUT = 5000;
 
   // The LoginActivity
   private LoginActivity activity;
@@ -42,6 +45,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
   }
 
   @Before
+  @Override
   public void setUp() throws Exception {
     super.setUp();
 
@@ -64,6 +68,21 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     verify(activity.auth).bind(activity);
     verify(activity.auth).onSuccess(any());
     verify(activity.auth).autoSignIn();
+  }
+
+  /**
+   * Test the login button click and if it calls sign in for the authenticator
+   */
+  @Test
+  public void testOnClick() {
+    activity = getActivity();
+
+    activity.runOnUiThread(() -> {
+      Button button = (Button) activity.findViewById(R.id.sign_in_button);
+      button.performClick();
+      // Verify sign in is called
+      verify(activity.auth).signIn();
+    });
   }
 
   /**
@@ -93,6 +112,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         return auth;
       });
 
+    // Silent sign in is called upon onCreate, so monitor must be setup before getActivity()
     Instrumentation.ActivityMonitor activityMonitor = getInstrumentation()
       .addMonitor(MainActivity.class.getName(), null, false);
 
@@ -101,25 +121,10 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     // Activity should have auto signed in
 
     //Watch for the timeout 5 seconds, if the expected activity was created.
-    Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+    Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, TIMEOUT);
     // next activity is opened and captured.
     assertThat(nextActivity).isInstanceOf(MainActivity.class);
     nextActivity.finish();
-  }
-
-  /**
-   * Test the login button click and if it calls sign in for the authenticator
-   */
-  @Test
-  public void testOnClick() {
-    activity = getActivity();
-
-    activity.runOnUiThread(() -> {
-      Button button = (Button) activity.findViewById(R.id.sign_in_button);
-      button.performClick();
-      // Verify sign in is called
-      verify(activity.auth).signIn();
-    });
   }
 
   /**
@@ -137,10 +142,11 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
       return invocation;
     });
 
+    activity = getActivity();
+
+    // Monitor must be setup after activity
     Instrumentation.ActivityMonitor activityMonitor = getInstrumentation()
       .addMonitor(MainActivity.class.getName(), null, false);
-
-    activity = getActivity();
 
     successWrapper.obj.apply(mock(User.class));
 
@@ -156,7 +162,6 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
    */
   @Test
   public void testOnUserLoginFailure() {
-
     Authenticator<User, String> auth = CoupleTones.component().auth();
     final Wrapper<Function<User, User>> successWrapper = new Wrapper<>();
 
@@ -166,28 +171,24 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
       return invocation;
     });
 
-    // Disable auto sign in
-    //TODO: Why is this set to begin with?
-    when(auth.autoSignIn()).then(invocation -> auth);
+    this.activity = getActivity();
 
+    // Monitor must be setup after activity
     Instrumentation.ActivityMonitor activityMonitor = getInstrumentation()
       .addMonitor(MainActivity.class.getName(), null, false);
 
-    activity = getActivity();
-
     assertThat(successWrapper.obj).isNotNull();
-    activity.runOnUiThread(() -> successWrapper.obj.apply(null));
+    this.activity.runOnUiThread(() -> successWrapper.obj.apply(null));
 
     //Watch for the timeout
     //example values 5000 if in ms, or 5 if it's in seconds.
-    Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+    Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, TIMEOUT);
     // next activity is opened and captured.
     assertThat(nextActivity).isNull();
   }
 
   /**
    * The dependency injection component for the entire app using mocks.
-   *
    * @author Henry Mao
    * @since 28/4/2016
    */
@@ -203,7 +204,6 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
 
   /**
    * A simple class that wraps an object. Used for tests with lambda expressions where values must be effectively final.
-   *
    * @param <T>
    */
   class Wrapper<T> {

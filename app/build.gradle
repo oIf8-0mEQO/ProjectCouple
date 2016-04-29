@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "group50.coupletones"
-        minSdkVersion 19
+		minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -31,7 +31,7 @@ android {
     }
 
     dexOptions {
-        if(isCi) {
+        if (isCi) {
             // CircleCi allow max 4G memory for all processes together and dex does exceed it
             // with his parallel execution. Shrink the javaMaxHeapSize does it only per dex process
             // but the combination exceed the max memory and to less value let it run for long time.
@@ -51,10 +51,18 @@ retrolambda {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.google.android.gms:play-services-auth:8.3.0'
-    compile 'com.android.support:appcompat-v7:23.2.1'
-    compile 'org.hamcrest:hamcrest-all:1.3'
-    compile 'com.roughike:bottom-bar:1.3.3'
+	
+	compile 'com.google.android.gms:play-services-auth:8.3.0'
+	compile 'com.android.support:appcompat-v7:23.0.0-alpha2'
+	compile 'org.hamcrest:hamcrest-all:1.3'
+	compile 'com.roughike:bottom-bar:1.3.3'
+	compile 'com.google.android.gms:play-services:8.3.0'
+	compile 'com.google.android.gms:play-services-ads:8.3.0'
+	compile 'com.google.android.gms:play-services-identity:8.3.0'
+	compile 'com.google.android.gms:play-services-gcm:8.3.0'
+
+	compile 'com.android.support:cardview-v7:23.2.+'
+	compile 'com.android.support:recyclerview-v7:23.2.+'
 
     // Dagger DI
     apt 'com.google.dagger:dagger-compiler:2.4'

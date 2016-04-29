@@ -18,4 +18,9 @@
     <string name="partner_email">codyisdumblol@gmail.com</string>
     <string name="logout">Log Out</string>
     <string name="disconnect">Disconnect with Partner</string>
+    <string name="location_name">Location Name</string>
+    <string name="location_address">Address</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="delete_location">Delete Location</string>
+    <string name="title_activity_edit_location">EditLocationActivity</string>
 </resources>

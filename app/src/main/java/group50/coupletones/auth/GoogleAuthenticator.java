@@ -1,14 +1,24 @@
 package group50.coupletones.auth;
 
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.service.carrier.CarrierMessagingService;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+
+import java.util.Objects;
+
 import group50.coupletones.CoupleTones;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Function;
@@ -106,7 +116,7 @@ public class GoogleAuthenticator implements
       // There's no immediate result ready, displays some progress indicator and waits for the
       // async callback.
       pendingResult.setResultCallback(result -> {
-        Log.d(getTag(), "Silent sign in handled: " + result.getStatus());
+          Log.d(getTag(), "Silent sign in handled: " + result.getStatus());
           handleSignInResult(result);
         }
       );
@@ -124,6 +134,11 @@ public class GoogleAuthenticator implements
   public GoogleAuthenticator signIn() {
     Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(apiClient);
     activity.startActivityForResult(signInIntent, RC_SIGN_IN);
+    return this;
+  }
+
+  public GoogleAuthenticator signOut(ResultCallback<Status> cb) {
+    Auth.GoogleSignInApi.signOut(apiClient).setResultCallback(cb);
     return this;
   }
 

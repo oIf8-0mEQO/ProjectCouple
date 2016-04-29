@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 
 import org.w3c.dom.Text;
 
@@ -129,16 +131,30 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> {
   }
 
   private void signOut() {
-    Auth.GoogleSignInApi.signOut(app.apiClient).setResultCallback(
-      new ResultCallback<AsyncTask.Status>() {
+    Auth.GoogleSignInApi.signOut(this::updateUI).setResultCallback(
+      new ResultCallback<Status>() {
         @Override
-        public void onResult(Status status) {
+        public void onResult(AsyncTask.Status status) {
           // [START_EXCLUDE]
           updateUI(false);
           // [END_EXCLUDE]
         }
       });
   }
+
+  private void updateUI(boolean signedIn) {
+    TextView StatusTextView = (TextView) getActivity().findViewById(R.id.status);
+    if (signedIn) {
+      getActivity().findViewById(R.id.sign_in_button).setVisibility(View.GONE);
+      getActivity().findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+    } else {
+      StatusTextView.setText(R.string.signed_out);
+
+      getActivity().findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+      getActivity().findViewById(R.id.sign_out_and_disconnect).setVisibility(View.GONE);
+    }
+  }
+
 
   private void setupEditPartnerButton(LayoutInflater inflater, ViewGroup container) {
     View v = inflater.inflate(R.layout.fragment_settings, container, false);

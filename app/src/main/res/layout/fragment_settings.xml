@@ -219,7 +219,7 @@
             android:textColor="@color/actionBarColor"
             android:id="@+id/logout_button"
             android:textAllCaps="false"
-            android:minWidth="350dp"
+            android:minWidth="345dp"
             android:minHeight="40dp"
             android:textSize="16dp"
             android:background="@drawable/roundedbutton"

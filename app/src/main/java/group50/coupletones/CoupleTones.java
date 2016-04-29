@@ -35,6 +35,14 @@ public class CoupleTones extends Application {
   }
 
   /**
+   * Should ONLY be set for unit testing
+   * @param component The component to set
+   */
+  public static void setComponent(AppComponent component) {
+    CoupleTones.component = component;
+  }
+
+  /**
    * @return The local user. If the user is not logged in, null is returned.
    */
   public User getLocalUser() {

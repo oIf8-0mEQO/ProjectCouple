@@ -8,6 +8,7 @@ import javax.inject.Singleton;
 
 /**
  * The dependency injection module that provides the main application singleton.
+ *
  * @author Henry Mao
  * @since 28/4/2016
  */
@@ -24,7 +25,7 @@ public class ApplicationModule {
    */
   @Provides
   @Singleton
-  CoupleTones application() {
+  CoupleTones provide() {
     return application;
   }
 }

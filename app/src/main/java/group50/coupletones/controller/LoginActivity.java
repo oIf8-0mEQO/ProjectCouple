@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,8 +43,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     // Create Google Authenticator for automatic sign in.
     auth.bind(this);
-    auth.autoSignIn();
     auth.onSuccess(this::onUserLogin);
+    auth.autoSignIn();
 
     TextView coupleTones_text = (TextView) findViewById(R.id.sign_in_button);
     Typeface pierSans = Typeface.createFromAsset(getAssets(), getString(R.string.pier_sans));
@@ -63,6 +64,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     if (user != null) {
       Intent intent = new Intent(this, MainActivity.class);
       startActivity(intent);
+      Log.d(getTag(), "Logged in successfully");
     } else {
       //TODO: Remove? For debug. Use string constant
       Toast.makeText(this, "Please Login", Toast.LENGTH_SHORT).show();

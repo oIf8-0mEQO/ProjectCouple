@@ -23,7 +23,7 @@ import javax.inject.Singleton;
     ApplicationModule.class
   }
 )
-public interface MainComponent {
+public interface AppComponent {
 
   Authenticator<User, String> auth();
 

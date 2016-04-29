@@ -140,34 +140,22 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> {
       });
   }
 
-
-  private void setupEditPartnerButtonButton(LayoutInflater inflater, ViewGroup container) {
+  private void setupEditPartnerButton(LayoutInflater inflater, ViewGroup container) {
     View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
-    Button editPartnerButton = (Button) v.findViewById(R.id.);
+    Button editPartnerButton = (Button) v.findViewById(R.id.edit_partner_button);
+    editPartnerButton.setOnClickListener(new View.OnClickListener() {
 
-
-  }
-  @Override
-  public void onClick(View v) {
-    switch (v.getId()) {
-      // ...
-      case R.id.logout_button:
-        app.getsignOut();
-        break;
-      // ...
-    }
-  }
-
-  @Override
-  public void onClick(View v) {
-    switch (v.getId()) {
-      // ...
-      case R.id.remove_partner_button:
-        signOut();
-        break;
-      // ...
-    }
+      public void onClick(View v) {
+        switch (v.getId()) {
+          // ...
+          case R.id.edit_partner_button:
+            //pop-up dialog fragment;
+            break;
+          // ...
+        }
+      }
+    });
   }
 
   /**

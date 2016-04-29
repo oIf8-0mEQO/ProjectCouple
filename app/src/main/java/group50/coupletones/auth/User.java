@@ -6,21 +6,21 @@
 package group50.coupletones.auth;
 
 /**
- * The user represents a single user in the app.
+ * The user interface represents a single user in the app.
  */
-public abstract class User {
+public interface User {
   /**
    * @return The id of the user
    */
-  public abstract String getId();
+  String getId();
 
   /**
    * @return The name of the user
    */
-  public abstract String getName();
+  String getName();
 
   /**
    * @return The email of the user
    */
-  public abstract String getEmail();
+  String getEmail();
 }

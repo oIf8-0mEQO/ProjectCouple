@@ -6,4 +6,5 @@
     <color name="actionBarColor">#ffffff</color>
     <color name="subtitleColor">#bebebe</color>
     <color name="textColor">#747474</color>
+    <color name="transparentBg">#00000000</color>
 </resources>

@@ -1,12 +1,11 @@
-package group50.coupletones;
+package group50.coupletones.controller;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.test.ActivityInstrumentationTestCase2;
-import group50.coupletones.controller.MainActivity;
-import group50.coupletones.controller.tab.FavoriteLocationsFragment;
+import group50.coupletones.R;
 import group50.coupletones.controller.tab.PartnersLocationsFragment;
 import org.junit.Before;
 import org.junit.Test;

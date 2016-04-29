@@ -11,7 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
  * Represents a User logged in via Google sign in.
  * Wraps the GoogleSignInAccount object.
  */
-public class GoogleUser extends User {
+public class GoogleUser implements User {
 
   private final GoogleSignInAccount account;
 

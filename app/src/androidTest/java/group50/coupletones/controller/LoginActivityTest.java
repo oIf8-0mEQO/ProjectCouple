@@ -36,7 +36,6 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
 
   // The LoginActivity
   private LoginActivity activity;
-  private Function<User, String> successCallback;
 
   public LoginActivityTest() {
     super(LoginActivity.class);
@@ -51,17 +50,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         .builder()
         .build());
 
-    // Bind stub methods
-    Authenticator<User, String> auth = CoupleTones.component().auth();
-    when(auth.onSuccess(any())).then(invocation -> {
-      successCallback = (Function) invocation.getArguments()[0];
-      return invocation;
-    });
-
-    // Injecting the Instrumentation instance is required
-    // for your test to run with AndroidJUnitRunner.
     injectInstrumentation(InstrumentationRegistry.getInstrumentation());
-    activity = getActivity();
   }
 
   /**
@@ -69,9 +58,53 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
    */
   @Test
   public void testOnCreate() {
+    activity = getActivity();
+
     // Verify some Authenticator methods were called
     verify(activity.auth).bind(activity);
+    verify(activity.auth).onSuccess(any());
     verify(activity.auth).autoSignIn();
+  }
+
+  /**
+   * Test that auto sign in works when the user is already logged in
+   */
+  @Test
+  public void testAutoSignIn() throws Exception {
+    Authenticator<User, String> auth = CoupleTones.component().auth();
+
+    final Wrapper<Function<User, User>> successWrapper = new Wrapper<>();
+
+    // When the activity binds a success function, call it immediately.
+    when(auth.onSuccess(any()))
+      .then(invocation -> {
+        successWrapper.obj = (Function) invocation.getArguments()[0];
+        return invocation;
+      });
+
+    /*
+     * When autoSignIn is called, automatically call the success function
+     * to simulate user "already logged in" to app.
+     */
+    when(auth.autoSignIn())
+      .then(invocation -> {
+        assertThat(successWrapper.obj).isNotNull();
+        successWrapper.obj.apply(mock(User.class));
+        return auth;
+      });
+
+    Instrumentation.ActivityMonitor activityMonitor = getInstrumentation()
+      .addMonitor(MainActivity.class.getName(), null, false);
+
+    activity = getActivity();
+
+    // Activity should have auto signed in
+
+    //Watch for the timeout 5 seconds, if the expected activity was created.
+    Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+    // next activity is opened and captured.
+    assertThat(nextActivity).isInstanceOf(MainActivity.class);
+    nextActivity.finish();
   }
 
   /**
@@ -79,6 +112,8 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
    */
   @Test
   public void testOnClick() {
+    activity = getActivity();
+
     activity.runOnUiThread(() -> {
       Button button = (Button) activity.findViewById(R.id.sign_in_button);
       button.performClick();
@@ -92,15 +127,25 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
    */
   @Test
   public void testOnUserLoginSuccess() {
+    // Bind stub methods
+    Authenticator<User, String> auth = CoupleTones.component().auth();
+    final Wrapper<Function<User, User>> successWrapper = new Wrapper<>();
+
+    // When the activity binds a success function, call it immediately.
+    when(auth.onSuccess(any())).then(invocation -> {
+      successWrapper.obj = (Function) invocation.getArguments()[0];
+      return invocation;
+    });
+
     Instrumentation.ActivityMonitor activityMonitor = getInstrumentation()
       .addMonitor(MainActivity.class.getName(), null, false);
 
-    User mockUser = mock(User.class);
-    successCallback.apply(mockUser);
+    activity = getActivity();
 
-    //Watch for the timeout
-    //example values 5000 if in ms, or 5 if it's in seconds.
-    Activity nextActivity = (MainActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
+    successWrapper.obj.apply(mock(User.class));
+
+    //Watch for the timeout 5 seconds, if the expected activity was created.
+    Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
     // next activity is opened and captured.
     assertThat(nextActivity).isInstanceOf(MainActivity.class);
     nextActivity.finish();
@@ -111,10 +156,27 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
    */
   @Test
   public void testOnUserLoginFailure() {
+
+    Authenticator<User, String> auth = CoupleTones.component().auth();
+    final Wrapper<Function<User, User>> successWrapper = new Wrapper<>();
+
+    // When the activity binds a success function, call it immediately.
+    when(auth.onSuccess(any())).then(invocation -> {
+      successWrapper.obj = (Function) invocation.getArguments()[0];
+      return invocation;
+    });
+
+    // Disable auto sign in
+    //TODO: Why is this set to begin with?
+    when(auth.autoSignIn()).then(invocation -> auth);
+
     Instrumentation.ActivityMonitor activityMonitor = getInstrumentation()
       .addMonitor(MainActivity.class.getName(), null, false);
 
-    activity.runOnUiThread(() -> successCallback.apply(null));
+    activity = getActivity();
+
+    assertThat(successWrapper.obj).isNotNull();
+    activity.runOnUiThread(() -> successWrapper.obj.apply(null));
 
     //Watch for the timeout
     //example values 5000 if in ms, or 5 if it's in seconds.
@@ -137,5 +199,14 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     }
   )
   public static interface TestAppComponent extends AppComponent {
+  }
+
+  /**
+   * A simple class that wraps an object. Used for tests with lambda expressions where values must be effectively final.
+   *
+   * @param <T>
+   */
+  class Wrapper<T> {
+    T obj;
   }
 }

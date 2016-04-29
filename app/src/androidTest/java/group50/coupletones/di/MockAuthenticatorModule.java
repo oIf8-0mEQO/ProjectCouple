@@ -13,6 +13,7 @@ import static org.mockito.Mockito.mock;
  * Mock Authenticator Module
  *
  * @author Henry Mao
+ * @since 28/4/2016
  */
 @Module
 public class MockAuthenticatorModule {

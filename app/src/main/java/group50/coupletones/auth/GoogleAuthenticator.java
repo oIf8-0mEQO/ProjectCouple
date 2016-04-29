@@ -20,6 +20,7 @@ import javax.inject.Inject;
  *
  * @author Henry Mao
  */
+//TODO: Unit test
 public class GoogleAuthenticator implements
   Authenticator<User, String>,
   GoogleApiClient.OnConnectionFailedListener,

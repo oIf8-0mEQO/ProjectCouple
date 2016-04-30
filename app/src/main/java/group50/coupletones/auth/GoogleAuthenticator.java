@@ -137,8 +137,11 @@ public class GoogleAuthenticator implements
     return this;
   }
 
-  public GoogleAuthenticator signOut(ResultCallback<Status> cb) {
-    Auth.GoogleSignInApi.signOut(apiClient).setResultCallback(cb);
+  /**
+   * Attempts to sign out the user.
+   */
+  public GoogleAuthenticator signOut() {
+    Auth.GoogleSignInApi.signOut(apiClient);
     return this;
   }
 

@@ -29,7 +29,7 @@ import group50.coupletones.controller.MainActivity;
  * Activities that contain this fragment must implement the {@link Listener} interface to handle interaction events.
  * Use the {@link SettingsFragment#build} factory class to create an instance of this fragment.
  */
-public class SettingsFragment extends TabFragment<SettingsFragment.Listener> {
+public class SettingsFragment extends TabFragment<SettingsFragment.Listener> implements View.OnClickListener {
 
   public SettingsFragment() {
     super(Listener.class);
@@ -82,6 +82,11 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> {
     String yourName = user.getId();
     TextView yourAccountText = (TextView) v.findViewById(R.id.your_account_header);
     String yourAccount = user.getEmail();
+    yourProfileText.setTypeface(pierSans);
+    yourNameText.setTypeface(pierSans);
+    yourNameText.setText(yourName);
+    yourAccountText.setTypeface(pierSans);
+    yourAccountText.setText(yourAccount);
 
     // Partner's Profile Cardview
     // TODO: Change partner's name/email to get keys from backend
@@ -90,29 +95,40 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> {
     TextView partnerName = (TextView) v.findViewById(R.id.partner_name);
     TextView partnerAccountText = (TextView) v.findViewById(R.id.partner_account_header);
     TextView partnerAccount = (TextView) v.findViewById(R.id.partner_email);
-
-    TextView logoutButton = (TextView) v.findViewById(R.id.logout_button);
-    yourProfileText.setTypeface(pierSans);
-    yourNameText.setTypeface(pierSans);
-    yourNameText.setText(yourName);
-    yourAccountText.setTypeface(pierSans);
-    yourAccountText.setText(yourAccount);
     partnersProfileText.setTypeface(pierSans);
     partnerNameText.setTypeface(pierSans);
     partnerName.setTypeface(pierSans);
     partnerAccountText.setTypeface(pierSans);
     partnerAccount.setTypeface(pierSans);
+    v.findViewById(R.id.edit_partner_button).setOnClickListener(this);
+
+    // Logout Button at Bottom
+    TextView logoutButton = (TextView) v.findViewById(R.id.logout_button);
     logoutButton.setTypeface(pierSans);
+    v.findViewById(R.id.logout_button).setOnClickListener(this);
+
     return v;
   }
 
-
+  /**
+   * Actions taken when a Button is clicked.
+   */
   @Override
   public void onClick(View v) {
     switch (v.getId()) {
 
+      // A dialog box will pop-up to allow user to edit/remove partner.
+      case R.id.edit_partner_button:
+
+        // TODO: Implement dialog box(?) to allow for edit textfield of partner's name and remove
+        //       connected partner from backend.
+
+
+        break;
+
+      // signOut() is called to sign out the user.
       case R.id.logout_button:
-        auth.signOut();
+        auth.signOut(); // TODO: Figure out why method can't be called (callback?)
         if (user.getId() == null)
           updateUI();
         else

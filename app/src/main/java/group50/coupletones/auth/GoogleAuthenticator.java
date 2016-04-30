@@ -139,6 +139,7 @@ public class GoogleAuthenticator implements
 
   /**
    * Attempts to sign out the user.
+   * TODO: Fix implementation with call from SettingsFragment (callback?)
    */
   public GoogleAuthenticator signOut() {
     Auth.GoogleSignInApi.signOut(apiClient);

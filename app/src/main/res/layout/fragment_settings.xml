@@ -36,7 +36,7 @@
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                                             android:id="@+id/card_view"
                                             android:layout_width="match_parent"
-                                            android:layout_height="240dp"
+                                            android:layout_height="230dp"
                                             android:layout_marginLeft="8dp"
                                             android:layout_marginRight="8dp"
                                             android:layout_marginTop="72dp"
@@ -58,7 +58,7 @@
                         android:id="@+id/my_profile_header"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="MY PROFILE"
+                        android:text="@string/my_profile"
                         android:textColor="@color/subtitleColor"
                         android:textSize="16sp" />
 
@@ -67,7 +67,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/your_name_header"
-                        android:text="Name:"
+                        android:text="@string/name_header"
                         android:textColor="@color/textColor"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -80,7 +80,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/your_name"
-                        android:text="Joanne Cho"
+                        android:text="@string/your_name"
                         android:textColor="@color/subtitleColor"
                         android:textSize="18sp"
                         android:layout_below="@+id/your_name_header"
@@ -92,7 +92,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/your_account_header"
-                        android:text="Google Account:"
+                        android:text="@string/google_account_header"
                         android:textColor="@color/textColor"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -105,7 +105,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/your_email"
-                        android:text="joannesemailyay@gmail.com"
+                        android:text="@string/your_email"
                         android:textColor="@color/subtitleColor"
                         android:textSize="14sp"
                         android:layout_below="@+id/your_account_header"
@@ -121,10 +121,10 @@
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                                             android:id="@+id/card_view_2"
                                             android:layout_width="match_parent"
-                                            android:layout_height="240dp"
+                                            android:layout_height="230dp"
                                             android:layout_marginLeft="8dp"
                                             android:layout_marginRight="8dp"
-                                            android:layout_marginTop="320dp"
+                                            android:layout_marginTop="310dp"
                                             android:layout_marginBottom="10dp"
                                             card_view:cardCornerRadius="0dp"
                                             card_view:cardElevation="2dp">
@@ -144,7 +144,7 @@
                         android:id="@+id/partners_profile_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="PARTNER'S PROFILE"
+                        android:text="@string/partner_profile"
                         android:textColor="@color/subtitleColor"
                         android:textSize="16sp" />
 
@@ -153,7 +153,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/partner_name_header"
-                        android:text="Name:"
+                        android:text="@string/name_header"
                         android:textColor="@color/textColor"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -162,51 +162,42 @@
                         />
 
                     <!-- Partner name -->
-                    <TextView
+                    <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/partner_name"
-                        android:text="Cody Pham"
+                        android:inputType="textPersonName"
+                        android:text="@string/partner_name"
+                        android:ems="10"
                         android:textColor="@color/subtitleColor"
-                        android:textSize="18sp"
-                        android:layout_below="@+id/partner_name_header"
-                        android:layout_marginTop="6dp"
-                        />
+                        android:id="@+id/partner_name"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignLeft="@+id/partner_name_header"
+                        android:layout_below="@+id/partner_name_header" />
 
                     <!-- Google Account: -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/partner_account_header"
-                        android:text="Google Account:"
+                        android:text="@string/google_account_header"
                         android:textColor="@color/textColor"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:layout_below="@+id/partner_name"
-                        android:layout_marginTop="30dp"
-                        />
+                        android:layout_marginTop="60dp"
+                        android:layout_below="@+id/partner_name_header" />
 
                     <!-- Partner email -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/partner_email"
-                        android:text="LOLcodyisdumb@gmail.com"
+                        android:text="@string/partner_email"
                         android:textColor="@color/subtitleColor"
                         android:textSize="14sp"
                         android:layout_below="@+id/partner_account_header"
                         android:layout_marginTop="6dp"
                         />
-
-                    <!-- Edit Partner Button -->
-                    <ImageButton
-                        android:id="@+id/edit_partner_button"
-                        android:src="@drawable/pencil_icon"
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:background="@color/transparentBg"
-                        android:layout_alignTop="@+id/card_view_2"
-                        android:layout_alignParentEnd="true"/>
 
                 </RelativeLayout>
             </LinearLayout>
@@ -216,15 +207,33 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Log Out"
-            android:textColor="@color/actionBarColor"
+            android:text="@string/logout"
+            android:textColor="@color/white"
             android:id="@+id/logout_button"
             android:textAllCaps="false"
             android:minWidth="345dp"
             android:minHeight="40dp"
             android:textSize="16dp"
-            android:background="@drawable/roundedbutton"
+            android:background="@color/colorPrimary"
             android:layout_below="@+id/card_view_2"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="12dp"
+            android:layout_centerInParent="true"
+            />
+
+        <!-- Disconnect Button -->
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/disconnect"
+            android:textColor="@color/white"
+            android:id="@+id/disconnect_button"
+            android:textAllCaps="false"
+            android:minWidth="345dp"
+            android:minHeight="40dp"
+            android:textSize="16dp"
+            android:background="@color/disconnectColor"
+            android:layout_below="@+id/logout_button"
             android:layout_marginTop="1dp"
             android:layout_marginBottom="12dp"
             android:layout_centerInParent="true"

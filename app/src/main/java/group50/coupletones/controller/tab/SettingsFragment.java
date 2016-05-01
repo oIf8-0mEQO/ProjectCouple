@@ -1,7 +1,14 @@
 package group50.coupletones.controller.tab;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import group50.coupletones.R;
 
@@ -38,6 +45,43 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> {
         if (getArguments() != null) {
             //TODO: Read arguments
         }
+    }
+
+    /**
+     * A method that sets the font of each textview on the Settings Fragment.
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_settings, container, false);
+        Typeface pierSans = Typeface.createFromAsset(getActivity().getAssets(),
+                getString(R.string.pier_sans));
+        TextView yourProfileText = (TextView) v.findViewById(R.id.my_profile_header);
+        TextView yourNameText = (TextView) v.findViewById(R.id.your_name_header);
+        TextView yourName = (TextView) v.findViewById(R.id.your_name);
+        TextView yourAccountText = (TextView) v.findViewById(R.id.your_account_header);
+        TextView yourAccount = (TextView) v.findViewById(R.id.your_email);
+        TextView partnersProfileText = (TextView) v.findViewById(R.id.partners_profile_text);
+        TextView partnerNameText = (TextView) v.findViewById(R.id.partner_name_header);
+        TextView partnerName = (TextView) v.findViewById(R.id.partner_name);
+        TextView partnerAccountText = (TextView) v.findViewById(R.id.partner_account_header);
+        TextView partnerAccount = (TextView) v.findViewById(R.id.partner_email);
+        TextView logoutButton = (TextView) v.findViewById(R.id.logout_button);
+        TextView disconnectButton = (TextView) v.findViewById(R.id.disconnect_button);
+
+        yourProfileText.setTypeface(pierSans);
+        yourNameText.setTypeface(pierSans);
+        yourName.setTypeface(pierSans);
+        yourAccountText.setTypeface(pierSans);
+        yourAccount.setTypeface(pierSans);
+        partnersProfileText.setTypeface(pierSans);
+        partnerNameText.setTypeface(pierSans);
+        partnerName.setTypeface(pierSans);
+        partnerAccountText.setTypeface(pierSans);
+        partnerAccount.setTypeface(pierSans);
+        logoutButton.setTypeface(pierSans);
+        disconnectButton.setTypeface(pierSans);
+        return v;
     }
 
     /**

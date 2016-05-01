@@ -1,19 +1,16 @@
 package group50.coupletones.controller;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toolbar;
-
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import group50.coupletones.R;
 import group50.coupletones.controller.tab.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.PartnersLocationsFragment;
 import group50.coupletones.controller.tab.SettingsFragment;
+import group50.coupletones.util.Taggable;
 
 import java.util.HashMap;
 
@@ -24,9 +21,8 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity implements
   FavoriteLocationsFragment.Listener,
   PartnersLocationsFragment.Listener, SettingsFragment.Listener,
-  OnMenuTabClickListener {
-
-  private static final String TAG = "MainActivity";
+  OnMenuTabClickListener,
+  Taggable {
 
   /**
    * The bottom tab bar handler
@@ -54,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements
 
     // Setting custom font for tabs
     mBottomBar.setTypeFace(getString(R.string.pier_sans));
+
+    // Hide bottom bar shadow
+    mBottomBar.hideShadow();
   }
 
   @Override
@@ -90,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements
 
   /**
    * Sets the content of the MainActivity with the given fragment
-   *
    * @param fragment The fragment to set for the main content
    */
   private void setFragment(Fragment fragment) {

@@ -4,14 +4,23 @@
 	<item
 			android:id="@+id/partnerLocations"
 			android:title="@string/partner_locations"
-			android:icon="@drawable/home_icon" />
+		android:layout_width = "30dp"
+		android:layout_height= "30dp"
+		android:scaleType="center"
+			android:icon="@drawable/home_icon1" />
 	<item
 			android:id="@+id/favoriteLocations"
 			android:title="@string/favorite_locations"
+		android:layout_width = "30dp"
+		android:layout_height= "30dp"
+		android:scaleType="center"
 			android:icon="@drawable/faves_icon" />
 
 	<item
 			android:id="@+id/settings"
 			android:title="@string/settings"
-			android:icon="@drawable/settingsicon" />
+		android:layout_width = "30dp"
+		android:layout_height= "30dp"
+		android:scaleType="center"
+			android:icon="@drawable/settings_icon1" />
 </menu>

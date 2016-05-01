@@ -13,6 +13,8 @@ import android.location.LocationManager;
 import android.content.pm.PackageManager;
 import android.content.Context;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -90,14 +92,16 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
         }
     }
 
-
     public void search(String nameLocation)
     {
         try
         {
             List<Address> locations = geocoder.getFromLocationName(nameLocation, 10);
             Address pickedAddress = mockMethod1(locations);//TODO: properly implement this method
-            favLocations.add(new FavoriteLocation(pickedAddress.getAddressLine(0), new LatLng(pickedAddress.getLatitude(), pickedAddress.getLongitude())));
+            FavoriteLocation newLocation = new FavoriteLocation(pickedAddress.getAddressLine(0), new LatLng(pickedAddress.getLatitude(), pickedAddress.getLongitude()));
+            favLocations.add(newLocation);
+            CameraUpdate update = CameraUpdateFactory.newLatLng(newLocation.getPosition());
+            mMap.moveCamera(update);
         }
         catch(IOException e)
         {

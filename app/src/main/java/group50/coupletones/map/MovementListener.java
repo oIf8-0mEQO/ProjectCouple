@@ -58,7 +58,7 @@ public class MovementListener implements LocationListener {
     public void onStatusChanged(String provider, int status, Bundle extra) {}
 
     /**Finds the distance in miles between two locations given by the gps.*/
-    double distanceInMiles(LatLng location1, LatLng location2)
+    private double distanceInMiles(LatLng location1, LatLng location2)
     {
         double distLatKilometers = (location1.latitude - location2.latitude)/110.54;
         double distLongKilometers = (location1.longitude - location2.longitude)/(111.32*Math.cos(location1.latitude - location2.latitude));

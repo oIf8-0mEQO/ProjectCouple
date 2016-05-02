@@ -18,6 +18,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.SphericalUtil;
+import com.google.maps.android.geometry.*;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -60,11 +62,12 @@ public class MovementListener implements LocationListener {
     /**Finds the distance in miles between two locations given by the gps.*/
     private double distanceInMiles(LatLng location1, LatLng location2)
     {
-        double distLatKilometers = (location1.latitude - location2.latitude)/110.54;
+        return 0.621371 * SphericalUtil.computeDistanceBetween(location1, location2);
+        /*double distLatKilometers = (location1.latitude - location2.latitude)/110.54;
         double distLongKilometers = (location1.longitude - location2.longitude)/(111.32*Math.cos(location1.latitude - location2.latitude));
         double distKilometers = Math.sqrt(Math.pow(distLatKilometers, 2) + Math.pow(distLongKilometers, 2));
         double distMiles = 0.621371*distKilometers;
-        return distMiles;
+        return distMiles;*/
     }
 
 }

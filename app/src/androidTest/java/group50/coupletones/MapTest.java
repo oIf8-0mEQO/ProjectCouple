@@ -17,6 +17,8 @@ import java.util.List;
 import group50.coupletones.map.FavoriteLocation;
 import group50.coupletones.map.Map;
 import group50.coupletones.map.MovementListener;
+import group50.coupletones.map.NearbyLocationHandler;
+import group50.coupletones.map.NotificationObserver;
 import group50.coupletones.map.ProximityHandler;
 
 /**
@@ -30,7 +32,6 @@ public class MapTest {
     public void setUp()
     {
         locations = new ArrayList<>();
-        locations.add(new FavoriteLocation("loc1", new LatLng(0, 0)));
         locations.add(new FavoriteLocation("loc2", new LatLng(60, 60)));
         locations.add(new FavoriteLocation("loc3", new LatLng(-20, -20)));
     }
@@ -47,44 +48,33 @@ public class MapTest {
         {
             list.add(new Location(""));
         }
-        list.get(0).setLatitude(0.001);     list.get(0).setLongitude(0.001);
-        list.get(1).setLatitude(-0.001);    list.get(0).setLongitude(0.001);
-        list.get(2).setLatitude(0.001);     list.get(0).setLongitude(-0.001);
-        list.get(3).setLatitude(-0.001);    list.get(0).setLongitude(-0.001);
-        list.get(4).setLatitude(0);         list.get(0).setLongitude(0);
-        list.get(5).setLatitude(0.0012);    list.get(0).setLongitude(0.0012);
-        list.get(6).setLatitude(-0.0012);   list.get(0).setLongitude(0.0012);
-        list.get(7).setLatitude(0.0012);    list.get(0).setLongitude(-0.0012);
-        list.get(8).setLatitude(-0.0012);   list.get(0).setLongitude(-0.0012);
-        list.get(9).setLatitude(60.001);    list.get(0).setLongitude(60.001);
-        list.get(10).setLatitude(-60.001);  list.get(0).setLongitude(60.001);
-        list.get(11).setLatitude(60.001);   list.get(0).setLongitude(-60.001);
-        list.get(12).setLatitude(-60.001);  list.get(0).setLongitude(-60.001);
-        list.get(14).setLatitude(60.0015);  list.get(0).setLongitude(60.0015);
-        list.get(15).setLatitude(-60.0015); list.get(0).setLongitude(60.0015);
-        list.get(16).setLatitude(60.0015);  list.get(0).setLongitude(-60.0015);
-        list.get(17).setLatitude(-60.0015); list.get(0).setLongitude(-60.0015);
+        list.get(0).setLatitude(60.001);    list.get(0).setLongitude(60.001);
+        list.get(1).setLatitude(-60.001);  list.get(1).setLongitude(60.001);
+        list.get(2).setLatitude(60.001);   list.get(2).setLongitude(-60.001);
+        list.get(3).setLatitude(-60.001);  list.get(3).setLongitude(-60.001);
+        list.get(4).setLatitude(60.0015);  list.get(4).setLongitude(60.0015);
+        list.get(5).setLatitude(-60.0015); list.get(5).setLongitude(60.0015);
+        list.get(6).setLatitude(60.0015);  list.get(6).setLongitude(-60.0015);
+        list.get(7).setLatitude(-60.0015); list.get(7).setLongitude(-60.0015);
 
         for (int i = 0; i < 18; i++)
         {
             listener.onLocationChanged(list.get(i));
         }
 
-        verify(mock, times(5)).onNearby(locations.get(0));
-        verify(mock, times(4)).onNearby(locations.get(1));
-        verify(mock, times(0)).onNearby(locations.get(2));
+        verify(mock, times(4)).onNearby(locations.get(0));
+        verify(mock, times(0)).onNearby(locations.get(1));
     }
 
     @Test
-    public void testSearch()
+    public void testNotificationTimer()
     {
-
+        NotificationObserver mock = mock(NotificationObserver.class);
+        ProximityHandler handler = new NearbyLocationHandler();
+        handler.register(mock);
+        handler.onNearby(new FavoriteLocation());
+        handler.onNearby(new FavoriteLocation("", null, System.currentTimeMillis()));
+        verify(mock, times(1)).onNotification();
     }
-
-    /*@Test
-    public void test()
-    {
-
-    }*/
 
 }

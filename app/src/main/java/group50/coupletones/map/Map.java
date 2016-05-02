@@ -33,6 +33,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
     private GoogleMap mMap;
     private List<FavoriteLocation> favLocations = new LinkedList<FavoriteLocation>();
     private Geocoder geocoder = new Geocoder(this);
+    private ProximityHandler proximityHandler = new NearbyLocationHandler();
 
     GoogleMap.OnMapClickListener clickListener = new GoogleMap.OnMapClickListener() {
         @Override
@@ -73,9 +74,14 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
             Log.d("test2", "outs");
             mMap.setMyLocationEnabled(true);
         }
-        locationManager.requestLocationUpdates(locationProvider, 0, 0, new MovementListener((FavoriteLocation)->{}, favLocations));//TODO: create actual ProximityHandler class
+        locationManager.requestLocationUpdates(locationProvider, 0, 0, new MovementListener(proximityHandler, favLocations));//TODO: create actual ProximityHandler class
         this.populateMap();
         mMap.setOnMapClickListener(clickListener);
+    }
+
+    public void registerNotificationObserver(NotificationObserver observer)
+    {
+        proximityHandler.register(observer);
     }
 
     /**Draws all of the favorited locations as markers on the map.*/

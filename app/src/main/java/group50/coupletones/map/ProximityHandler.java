@@ -7,4 +7,6 @@ public interface ProximityHandler {
 
     public void onNearby(FavoriteLocation nearbyLocation);
 
+    public void register(NotificationObserver observer);
+
 }

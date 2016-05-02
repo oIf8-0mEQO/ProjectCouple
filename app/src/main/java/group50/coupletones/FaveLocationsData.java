@@ -10,9 +10,9 @@ import group50.coupletones.R;
  * Created by sharmaine on 5/1/16.
  */
 public class FaveLocationsData {
-    private static final String[] locationNames = {"Tapex", "Disneyland", "UCSD"};
-    private static final String[] locationAddresses = {"La Jolla, CA", "Anaheim, CA", "La Jolla, CA"};
-    private static final int[] icons = {R.drawable.target_icon, R.drawable.target_icon, R.drawable.target_icon};
+    private static final String[] locationNames = {"Tapex", "Disneyland", "UCSD", "Tapex", "Disneyland", "UCSD", "Tapex", "Disneyland", "UCSD"};
+    private static final String[] locationAddresses = {"La Jolla, CA", "Anaheim, CA", "La Jolla, CA", "La Jolla, CA", "Anaheim, CA", "La Jolla, CA", "La Jolla, CA", "Anaheim, CA", "La Jolla, CA"};
+    private static final int[] icons = {R.drawable.target_icon, R.drawable.target_icon, R.drawable.target_icon, R.drawable.target_icon, R.drawable.target_icon, R.drawable.target_icon, R.drawable.target_icon, R.drawable.target_icon, R.drawable.target_icon};
 
     public static List<FaveLocation> getFaveLocations() {
         List<FaveLocation> data = new ArrayList<>();

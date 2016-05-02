@@ -120,7 +120,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
       // A dialog box will pop-up to allow user to edit/remove partner.
       case R.id.edit_partner_button:
 
-        // TODO: Implement dialog box(?) to allow for edit textfield of partner's name and remove
+        // TODO: Implement dialog box(?) to allow edit text-field of partner's name and remove
         //       connected partner from backend.
 
 

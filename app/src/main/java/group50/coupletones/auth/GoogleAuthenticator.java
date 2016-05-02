@@ -24,6 +24,7 @@ import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Function;
 
 import javax.inject.Inject;
+import javax.security.auth.callback.Callback;
 
 /**
  * Handles Google Authentication
@@ -142,6 +143,13 @@ public class GoogleAuthenticator implements
    * TODO: Fix implementation with call from SettingsFragment (callback?)
    */
   public GoogleAuthenticator signOut() {
+
+    /* Auth.GoogleSignInApi.signOut(apiClient).setResultCallback(new ResultCallback<Status>() {
+      @Override
+      public void onResult(Status status) {
+      }
+    });
+    return this; */
     Auth.GoogleSignInApi.signOut(apiClient);
     return this;
   }

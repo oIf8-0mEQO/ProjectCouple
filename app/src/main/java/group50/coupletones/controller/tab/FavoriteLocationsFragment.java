@@ -3,6 +3,7 @@ package group50.coupletones.controller.tab;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import group50.coupletones.R;
 public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFragment.Listener> {
   private RecyclerView favesList;
   private ListAdapter adapter;
+  private CardView cv;
 
   public FavoriteLocationsFragment() {
     super(Listener.class);

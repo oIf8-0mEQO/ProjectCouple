@@ -1,6 +1,7 @@
 package group50.coupletones;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,10 +50,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         private TextView name, address;
         private ImageView icon;
         private View container;
+        private CardView cv;
 
         public ListViewHolder(View itemView) {
             super(itemView);
-
+            cv = (CardView)itemView.findViewById(R.id.cv);
             name = (TextView)itemView.findViewById(R.id.list_item_name);
             address = (TextView)itemView.findViewById(R.id.list_item_address);
             icon = (ImageView)itemView.findViewById(R.id.list_item_icon);

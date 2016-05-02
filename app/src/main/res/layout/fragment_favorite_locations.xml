@@ -30,6 +30,15 @@
                 android:layout_marginTop="6dp"
                 android:src="@drawable/yourlocations_title"/>
 
+            <ImageButton
+                android:id="@+id/btn_search"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="15dp"
+                android:layout_gravity="right|center_vertical"
+                android:src="@drawable/add_icon"
+                style="@style/Widget.AppCompat.ActionButton" />
+
         </android.support.v7.widget.Toolbar>
 
 

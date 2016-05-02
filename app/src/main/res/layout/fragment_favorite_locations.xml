@@ -1,62 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context=".MainActivity">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:padding="16dp">
 
-    <!-- Toolbar Settings for Your Locations Page -->
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:background="?attr/colorPrimary"
-        app:layout_collapseMode="pin"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
-        <!-- Centered Your Locations title -->
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center"
-            android:layout_marginBottom="4dp"
-            android:layout_marginEnd="7dp"
-            android:layout_marginLeft="?attr/actionBarSize"
-            android:layout_marginRight="?attr/actionBarSize"
-            android:layout_marginTop="6dp"
-            android:src="@drawable/yourlocations_title"/>
-
-        <!-- Right side add button -->
-        <ImageButton
-            android:id="@+id/btn_search"
-            style="@style/Widget.AppCompat.ActionButton"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="15dp"
-            android:src="@drawable/add_icon"/>
-
-    </android.support.v7.widget.Toolbar>
-
-    <RelativeLayout
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/toolbar">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/favorite_locations_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </android.support.v7.widget.RecyclerView>
-
-    </RelativeLayout>
-
+        android:id="@+id/favorite_locations_list"/>
 
 </RelativeLayout>

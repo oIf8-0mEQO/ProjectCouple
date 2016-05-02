@@ -21,7 +21,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     private List<FaveLocation> data;
     private LayoutInflater inflater;
 
-    public ListAdapter (List<FaveLocation> data, Context context) {
+    public ListAdapter(List<FaveLocation> data, Context context) {
         this.inflater = LayoutInflater.from(context);
         this.data = data;
     }
@@ -54,10 +54,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
 
         public ListViewHolder(View itemView) {
             super(itemView);
-            cv = (CardView)itemView.findViewById(R.id.cv);
-            name = (TextView)itemView.findViewById(R.id.list_item_name);
-            address = (TextView)itemView.findViewById(R.id.list_item_address);
-            icon = (ImageView)itemView.findViewById(R.id.list_item_icon);
+            cv = (CardView) itemView.findViewById(R.id.cv);
+            name = (TextView) itemView.findViewById(R.id.list_item_name);
+            address = (TextView) itemView.findViewById(R.id.list_item_address);
+            icon = (ImageView) itemView.findViewById(R.id.list_item_icon);
             container = itemView.findViewById(R.id.list_item);
         }
     }

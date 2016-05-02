@@ -3,6 +3,14 @@ package group50.coupletones.controller.tab;
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import group50.coupletones.FaveLocationsData;
+import group50.coupletones.ListAdapter;
 import group50.coupletones.R;
 
 /**
@@ -11,6 +19,8 @@ import group50.coupletones.R;
  * Use the {@link FavoriteLocationsFragment#build} factory class to create an instance of this fragment.
  */
 public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFragment.Listener> {
+  private RecyclerView favesList;
+  private ListAdapter adapter;
 
   public FavoriteLocationsFragment() {
     super(Listener.class);
@@ -39,6 +49,17 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
     if (getArguments() != null) {
       //TODO: Read arguments
     }
+  }
+
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                           Bundle savedInstanceState) {
+    View v = inflater.inflate(R.layout.fragment_favorite_locations, container, false);
+    favesList = (RecyclerView) v.findViewById(R.id.favorite_locations_list);
+    favesList.setLayoutManager(new LinearLayoutManager(getActivity()));
+    adapter = new ListAdapter(FaveLocationsData.getFaveLocations(), getActivity());
+    favesList.setAdapter(adapter);
+    return v;
   }
 
   /**

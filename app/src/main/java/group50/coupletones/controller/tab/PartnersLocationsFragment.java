@@ -16,8 +16,6 @@ import group50.coupletones.R;
  */
 public class PartnersLocationsFragment extends TabFragment<PartnersLocationsFragment.Listener> {
 
-    private RecyclerView favesList;
-
     public PartnersLocationsFragment() {
         super(Listener.class);
     }
@@ -44,14 +42,6 @@ public class PartnersLocationsFragment extends TabFragment<PartnersLocationsFrag
         if (getArguments() != null) {
             //TODO: Read arguments
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_favorite_locations, container, false);
-        favesList = (RecyclerView) v.findViewById(R.id.favorite_locations_list);
-        return v;
     }
 
     /**

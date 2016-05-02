@@ -8,3 +8,4 @@
 /build
 /captures
 /server/node_modules
+*.log

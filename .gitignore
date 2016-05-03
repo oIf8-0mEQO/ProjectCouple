@@ -7,6 +7,3 @@
 .DS_Store
 /build
 /captures
-app/app-debug.apk
-app/app-release.apk
-signedapk.jks

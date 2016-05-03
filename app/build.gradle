@@ -5,22 +5,12 @@ apply plugin: 'jacoco-android'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    signingConfigs {
-        release {
-            storeFile file('C:\\Users\\brandon\\Documents\\CoupleTones\\signedapk.jks')
-            storePassword '1couple'
-            keyAlias 'brandon_android_signed_apk'
-            keyPassword '1couple'
-        }
-    }
-
-
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "group50.coupletones"
-        minSdkVersion 21
+		minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -30,7 +20,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
         }
         debug {
             testCoverageEnabled true
@@ -62,18 +51,18 @@ retrolambda {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+	
+	compile 'com.google.android.gms:play-services-auth:8.3.0'
+	compile 'com.android.support:appcompat-v7:23.0.0-alpha2'
+	compile 'org.hamcrest:hamcrest-all:1.3'
+	compile 'com.roughike:bottom-bar:1.3.3'
+	compile 'com.google.android.gms:play-services:8.3.0'
+	compile 'com.google.android.gms:play-services-ads:8.3.0'
+	compile 'com.google.android.gms:play-services-identity:8.3.0'
+	compile 'com.google.android.gms:play-services-gcm:8.3.0'
 
-    compile 'com.google.android.gms:play-services-auth:8.3.0'
-    compile 'com.android.support:appcompat-v7:23.0.0-alpha2'
-    compile 'org.hamcrest:hamcrest-all:1.3'
-    compile 'com.roughike:bottom-bar:1.3.3'
-    compile 'com.google.android.gms:play-services:8.3.0'
-    compile 'com.google.android.gms:play-services-ads:8.3.0'
-    compile 'com.google.android.gms:play-services-identity:8.3.0'
-    compile 'com.google.android.gms:play-services-gcm:8.3.0'
-
-    compile 'com.android.support:cardview-v7:23.2.+'
-    compile 'com.android.support:recyclerview-v7:23.2.+'
+	compile 'com.android.support:cardview-v7:23.2.+'
+	compile 'com.android.support:recyclerview-v7:23.2.+'
 
     // Dagger DI
     apt 'com.google.dagger:dagger-compiler:2.4'

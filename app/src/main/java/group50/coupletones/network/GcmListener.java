@@ -1,4 +1,4 @@
-package group50.coupletones.util.network;
+package group50.coupletones.network;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -46,6 +46,7 @@ public class GcmListener extends GcmListenerService implements MessageNetwork, T
     @Override
     public void onMessageReceived(String from, Bundle data) {
         super.onMessageReceived(from, data);
+        Log.d(getTag(), "Received!");
         String message = data.getString("message");
         Log.d(getTag(), message);
     }

@@ -1,4 +1,4 @@
-package group50.coupletones.util.network;
+package group50.coupletones.network;
 
 import group50.coupletones.util.function.Function;
 

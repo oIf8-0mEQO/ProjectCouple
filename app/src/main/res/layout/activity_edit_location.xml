@@ -34,7 +34,6 @@
             android:layout_gravity="center" />
 
         <!-- Left side back button -->
-
         <ImageButton
             android:id="@+id/btn_backarrow"
             android:layout_width="?attr/actionBarSize"
@@ -118,7 +117,7 @@
             android:textColor="@color/white"
             android:background="@color/disconnectColor"
             android:layout_below="@+id/save_changes_button"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
             android:layout_alignStart="@+id/location_address"
             android:layout_alignEnd="@+id/location_address"
             android:layout_centerInParent="true" />

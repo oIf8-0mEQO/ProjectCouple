@@ -21,10 +21,13 @@ gcm.on('error', console.log);
  * Upstream called by client to the server when the client enters a location.
  */
 gcm.on('message', (messageId, from, category, data) => {
-	console.log('received message', arguments);
+	console.log('received message', messageId);
+	console.log('received from', from);
+	console.log('received data', data);
 });
 
-gcm.send("some guy",
+var deviceId = "eQxKfJvITU4:APA91bGg6kxFf5cldPy-5gkjZTn1mZECk82wPoPnZJPvs7y3fT52J8fogs8Lt8wFN9VLk3CAYwzl8EPf8Fu3fDU7M6k3xijm_hfg7NpchenKLzk2Am6o9DwBqx-S7NB804Cdk0mGPGEL";
+gcm.send(deviceId,
 	{message: 'hello world'},
 	{delivery_receipt_requested: true},
 	(err, messageId, to) => {

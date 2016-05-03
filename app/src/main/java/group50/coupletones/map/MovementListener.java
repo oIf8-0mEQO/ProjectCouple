@@ -63,11 +63,6 @@ public class MovementListener implements LocationListener {
     private double distanceInMiles(LatLng location1, LatLng location2)
     {
         return 0.621371 * SphericalUtil.computeDistanceBetween(location1, location2);
-        /*double distLatKilometers = (location1.latitude - location2.latitude)/110.54;
-        double distLongKilometers = (location1.longitude - location2.longitude)/(111.32*Math.cos(location1.latitude - location2.latitude));
-        double distKilometers = Math.sqrt(Math.pow(distLatKilometers, 2) + Math.pow(distLongKilometers, 2));
-        double distMiles = 0.621371*distKilometers;
-        return distMiles;*/
     }
 
 }

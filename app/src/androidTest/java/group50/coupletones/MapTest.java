@@ -20,6 +20,7 @@ import group50.coupletones.map.MovementListener;
 import group50.coupletones.map.NearbyLocationHandler;
 import group50.coupletones.map.NotificationObserver;
 import group50.coupletones.map.ProximityHandler;
+import group50.coupletones.map.VisitedLocation;
 
 /**
  * Created by Joseph on 5/28/2016.
@@ -69,12 +70,20 @@ public class MapTest {
     @Test
     public void testNotificationTimer()
     {
+        NotificationObserver observer = new NotificationObserver() {
+            int count = 0;
+            @Override
+            public void onNotification(VisitedLocation location) {
+                assert (count==0);
+                count++;
+            }
+        };
         NotificationObserver mock = mock(NotificationObserver.class);
         ProximityHandler handler = new NearbyLocationHandler();
-        handler.register(mock);
-        handler.onNearby(new FavoriteLocation());
-        handler.onNearby(new FavoriteLocation("", null, System.currentTimeMillis()));
-        verify(mock, times(1)).onNotification();
+        handler.register(observer);
+        FavoriteLocation shouldNotifyOnce = new FavoriteLocation();
+        handler.onNearby(shouldNotifyOnce);
+        handler.onNearby(shouldNotifyOnce);
     }
 
 }

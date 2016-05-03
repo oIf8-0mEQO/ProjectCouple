@@ -16,6 +16,7 @@ import android.content.Context;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -28,11 +29,11 @@ import java.util.List;
 import group50.coupletones.R;
 import group50.coupletones.map.FavoriteLocation;
 
-public class Map extends FragmentActivity implements OnMapReadyCallback {
+public class Map extends MapFragment implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private List<FavoriteLocation> favLocations = new LinkedList<FavoriteLocation>();
-    private Geocoder geocoder = new Geocoder(this);
+    private Geocoder geocoder = new Geocoder(this.getContext());
     private ProximityHandler proximityHandler = new NearbyLocationHandler();
 
     GoogleMap.OnMapClickListener clickListener = new GoogleMap.OnMapClickListener() {
@@ -45,13 +46,9 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        getMapAsync(this);
     }
 
 
@@ -62,10 +59,10 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        LocationManager locationManager = (LocationManager) this.getContext().getSystemService(Context.LOCATION_SERVICE);
         String locationProvider = LocationManager.GPS_PROVIDER;
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
+        if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this.getActivity(),
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     100);
             Log.d("test1", "ins");
@@ -74,7 +71,7 @@ public class Map extends FragmentActivity implements OnMapReadyCallback {
             Log.d("test2", "outs");
             mMap.setMyLocationEnabled(true);
         }
-        locationManager.requestLocationUpdates(locationProvider, 0, 0, new MovementListener(proximityHandler, favLocations));//TODO: create actual ProximityHandler class
+        locationManager.requestLocationUpdates(locationProvider, 0, 0, new MovementListener(proximityHandler, favLocations));
         this.populateMap();
         mMap.setOnMapClickListener(clickListener);
     }

@@ -140,7 +140,7 @@ public class GoogleAuthenticator implements
 
   /**
    * Attempts to sign out the user.
-   * TODO: Fix implementation with call from SettingsFragment (callback?)
+   * TODO: Edit redundancies
    */
   public GoogleAuthenticator signOut() {
 

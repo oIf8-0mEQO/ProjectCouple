@@ -100,12 +100,13 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     partnerName.setTypeface(pierSans);
     partnerAccountText.setTypeface(pierSans);
     partnerAccount.setTypeface(pierSans);
-    v.findViewById(R.id.edit_partner_button).setOnClickListener(this);
 
-    // Logout Button at Bottom
+
+    // Logout/Disconnect Buttons at Bottom
     TextView logoutButton = (TextView) v.findViewById(R.id.logout_button);
     logoutButton.setTypeface(pierSans);
     v.findViewById(R.id.logout_button).setOnClickListener(this);
+    v.findViewById(R.id.disconnect_button).setOnClickListener(this);
 
     return v;
   }
@@ -118,22 +119,23 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     switch (v.getId()) {
 
       // A dialog box will pop-up to allow user to edit/remove partner.
-      case R.id.edit_partner_button:
-
-        // TODO: Implement dialog box(?) to allow edit text-field of partner's name and remove
-        //       connected partner from backend.
-
-
+      case R.id.disconnect_button:
+        /** TODO: Once server is done, break connection between partners
+         *
+         *  -Set partnerPtr = nullptr
+         *  -Clear partner's location history (3am function call?)
+         *  -Clear partner's cardview so both textfields are empty
+         *  -???
+         */
         break;
 
       // signOut() is called to sign out the user.
       case R.id.logout_button:
-        auth.signOut(); // TODO: Figure out why method can't be called (callback?)
+        auth.signOut();
         if (user.getId() == null)
           updateUI();
         else
           Toast.makeText(getContext(), "Sign Out Unsuccessful", Toast.LENGTH_SHORT).show();
-
         break;
     }
   }

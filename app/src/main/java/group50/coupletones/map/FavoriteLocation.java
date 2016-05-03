@@ -60,4 +60,10 @@ public class FavoriteLocation implements Location {
         return (System.currentTimeMillis() - time > 600000);
     }
 
+    /**@Return the most recent time this location was visited as a long.*/
+    protected long getTime()
+    {
+        return time;
+    }
+
 }

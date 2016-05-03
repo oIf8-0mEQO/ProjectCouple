@@ -26,7 +26,7 @@ public class NearbyLocationHandler implements ProximityHandler {
         {
             for(NotificationObserver i : observers)
             {
-                i.onNotification(nearbyLocation);
+                i.onNotification(new VisitedLocation(nearbyLocation, System.currentTimeMillis()));
             }
             nearbyLocation.setCooldown();
         }

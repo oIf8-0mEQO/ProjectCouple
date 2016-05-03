@@ -5,6 +5,6 @@ package group50.coupletones.map;
  */
 public interface NotificationObserver {
 
-    public void onNotification(FavoriteLocation location);
+    public void onNotification(VisitedLocation location);
 
 }

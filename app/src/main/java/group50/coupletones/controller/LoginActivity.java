@@ -52,6 +52,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     findViewById(R.id.sign_in_button).setOnClickListener(this);
   }
 
+
+
   /**
    * Handles the user login event by switching to MainActivity upon
    * successful login.

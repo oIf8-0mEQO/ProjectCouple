@@ -2,7 +2,7 @@
  * @auhor Henry Mao
  * @since 5/4/16.
  */
-
+"use strict";
 /**
  * A route is an abstract class that defines a way to handle a type of
  * message received on the server side sent upstream from the client.
@@ -19,8 +19,8 @@ class Router {
 	 * Handles when the route is called by the client
 	 * @param data A JSON representing the data the client sent.
 	 */
-	handle(data) {
-
+	receive(data) {
+		throw "Receive not implemented in: " + this;
 	}
 }
 

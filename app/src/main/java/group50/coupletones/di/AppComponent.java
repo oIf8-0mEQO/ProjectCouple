@@ -8,8 +8,8 @@ import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.AuthenticatorModule;
 import group50.coupletones.di.module.NetworkModule;
-import group50.coupletones.network.GcmMessageHandler;
 import group50.coupletones.network.NetworkManager;
+import group50.coupletones.network.gcm.GcmMessageHandler;
 
 import javax.inject.Singleton;
 

@@ -9,20 +9,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-
 import com.google.android.gms.gcm.GcmListenerService;
-
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
-import group50.coupletones.network.NetworkManager;
 import group50.coupletones.util.Taggable;
-import group50.coupletones.util.function.Function;
 
 /**
- * Created by sharmaine on 5/2/16.
+ * @author sharmaine
+ * @since 5/2/16.
  */
-public class GcmListener extends GcmListenerService implements NetworkManager, Taggable {
-  @Override
+public class GcmListener extends GcmListenerService implements Taggable {
+
   public void send(String message) {
     Intent intent = new Intent(this, MainActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -50,10 +47,5 @@ public class GcmListener extends GcmListenerService implements NetworkManager, T
     Log.d(getTag(), "Received!");
     String message = data.getString("message");
     Log.d(getTag(), message);
-  }
-
-  @Override
-  public void onReceive(Function callBack) {
-
   }
 }

@@ -5,27 +5,19 @@
 
 package group50.coupletones.controller;
 
-import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-
-import java.io.IOException;
-
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.User;
+import group50.coupletones.network.NetworkManager;
 import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;
@@ -40,6 +32,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
    */
   @Inject
   public Authenticator<User, String> auth;
+  @Inject
+  public NetworkManager network;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +41,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     // Dependency Injection
     CoupleTones.component().inject(this);
+
+    network.register(this);
 
     setContentView(R.layout.activity_login);
 
@@ -59,15 +55,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Typeface pierSans = Typeface.createFromAsset(getAssets(), getString(R.string.pier_sans));
     coupleTones_text.setTypeface(pierSans);
     findViewById(R.id.sign_in_button).setOnClickListener(this);
-
-    getRegId();
   }
-
-
 
   /**
    * Handles the user login event by switching to MainActivity upon
    * successful login.
+   *
    * @param user The user that logged in
    * @return The user
    */

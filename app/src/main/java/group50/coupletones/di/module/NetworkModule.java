@@ -3,6 +3,7 @@ package group50.coupletones.di.module;
 import dagger.Module;
 import dagger.Provides;
 import group50.coupletones.network.NetworkManager;
+import group50.coupletones.network.gcm.GcmManager;
 
 import javax.inject.Singleton;
 
@@ -14,18 +15,13 @@ import javax.inject.Singleton;
  */
 @Module
 public class NetworkModule {
-  private final NetworkManager manager;
-
-  public NetworkModule(NetworkManager manager) {
-    this.manager = manager;
-  }
 
   /**
    * Expose the application to the graph.
    */
-  @Provides
   @Singleton
-  NetworkManager provide() {
+  @Provides
+  NetworkManager provide(GcmManager manager) {
     return manager;
   }
 }

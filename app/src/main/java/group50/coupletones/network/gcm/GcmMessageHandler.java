@@ -11,13 +11,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.gms.gcm.GcmReceiver;
 import group50.coupletones.CoupleTones;
+import group50.coupletones.network.NetworkManager;
 
 import javax.inject.Inject;
 
 public class GcmMessageHandler extends IntentService {
 
   @Inject
-  private NetworkManager network;
+  public NetworkManager network;
 
   public GcmMessageHandler() {
     super("GcmMessageHandler");

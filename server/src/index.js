@@ -8,5 +8,9 @@
 
 var GCM = require("./gcm");
 var RegistrationRoute = require("./routes/registrationRoute");
+var PartnerRoute = require("./routes/partnerRoute");
+var MapRoute = require("./routes/mapRoute");
 
 GCM.registerRoute(new RegistrationRoute());
+GCM.registerRoute(new PartnerRoute());
+GCM.registerRoute(new MapRoute());

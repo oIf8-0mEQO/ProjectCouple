@@ -17,6 +17,7 @@ import org.w3c.dom.Text;
 
 import javax.inject.Inject;
 
+import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.GoogleUser;
@@ -39,8 +40,9 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
    * The instance of the GoogleUser and Object for authentication.
    */
   @Inject
-  GoogleUser user;
   public Authenticator<User, String> auth;
+  @Inject
+  public CoupleTones app;
 
   /**
    * Use this factory method to create a new instance of SettingsFragment.
@@ -61,6 +63,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    CoupleTones.component().inject(this);
     if (getArguments() != null) {
       //TODO: Read arguments
     }
@@ -77,16 +80,22 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
       getString(R.string.pier_sans));
 
     // User's Profile CardView
+    // TODO: REMEMBER to change Strings
     TextView yourProfileText = (TextView) v.findViewById(R.id.my_profile_header);
     TextView yourNameText = (TextView) v.findViewById(R.id.your_name_header);
-    String yourName = user.getId();
+    TextView yourName = (TextView) v.findViewById(R.id.your_name);
+    // yourName = (TextView) app.getLocalUser();
+    // String userName = user.getName();
+    yourName.setText(app.getLocalUser().getName());
     TextView yourAccountText = (TextView) v.findViewById(R.id.your_account_header);
-    String yourAccount = user.getEmail();
+    TextView yourAccount = (TextView) v.findViewById(R.id.your_email);
+    //String userAccount = user.getEmail();
+    //yourAccount.setText(user.getEmail());
     yourProfileText.setTypeface(pierSans);
     yourNameText.setTypeface(pierSans);
-    yourNameText.setText(yourName);
+    yourName.setTypeface(pierSans);
     yourAccountText.setTypeface(pierSans);
-    yourAccountText.setText(yourAccount);
+    yourAccount.setTypeface(pierSans);
 
     // Partner's Profile CardView
     // TODO: Change partner's name/email to get keys from backend
@@ -123,7 +132,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
          *
          *  -Set partnerPtr = nullptr
          *  -Clear partner's location history (3am function call?)
-         *  -Clear partner's cardview so both textfields are empty
+         *  -Clear partner's CardView so both TextFields are empty
          *  -???
          */
         break;
@@ -131,10 +140,10 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
       // signOut() is called to sign out the user.
       case R.id.logout_button:
         auth.signOut();
-        if (user.getId() == null)
+        //if (user.getId() == null)
           updateUI();
-        else
-          Toast.makeText(getContext(), "Sign Out Unsuccessful", Toast.LENGTH_SHORT).show();
+        //else
+        //  Toast.makeText(getContext(), "Sign Out Unsuccessful", Toast.LENGTH_SHORT).show();
         break;
     }
   }

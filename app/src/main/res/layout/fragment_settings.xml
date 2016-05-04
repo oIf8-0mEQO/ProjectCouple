@@ -80,7 +80,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/your_name"
-                        android:text="@string/your_name"
                         android:textColor="@color/subtitleColor"
                         android:textSize="18sp"
                         android:layout_below="@+id/your_name_header"

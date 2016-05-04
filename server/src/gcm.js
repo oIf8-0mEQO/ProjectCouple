@@ -44,7 +44,7 @@ gcm.on('message', (messageId, from, category, data) => {
 		var route = routes[data.type];
 
 		if (route) {
-			route.receive(data);
+			route.receive(messageId, from, data);
 		} else {
 			console.error("Received invalid message: " + data + " \n    from " + from)
 		}

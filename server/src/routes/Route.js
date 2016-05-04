@@ -17,10 +17,12 @@ class Router {
 
 	/**
 	 * Handles when the route is called by the client
+	 * @param messageId ID of the message
+	 * @param from The ID of the user who sent this message
 	 * @param data A JSON representing the data the client sent.
 	 */
-	receive(data) {
-		throw "Receive not implemented in: " + this;
+	receive(messageId, from, data) {
+		throw "Receive not implemented in: " + this.id;
 	}
 }
 

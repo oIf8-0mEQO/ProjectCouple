@@ -9,7 +9,4 @@
 var GCM = require("./gcm");
 var RegistrationRoute = require("./routes/RegistrationRoute");
 
-// An associative map of all users connected
-var connectedUsers = {};
-
 GCM.registerRoute(new RegistrationRoute());

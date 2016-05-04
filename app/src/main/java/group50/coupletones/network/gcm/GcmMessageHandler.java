@@ -1,5 +1,5 @@
 
-package group50.coupletones.network;
+package group50.coupletones.network.gcm;
 
 /**
  * Created by Agneev on 22-04-2016.

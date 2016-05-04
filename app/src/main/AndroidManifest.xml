@@ -21,10 +21,10 @@
             android:theme="@style/AppTheme">
         </activity>
 
-        <service android:name=".network.GcmListener"></service>
+        <service android:name=".network.gcm.GcmListener"></service>
 
         <receiver
-            android:name=".network.GcmReceiver"
+            android:name=".network.gcm.GcmReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
 
             <intent-filter>
@@ -33,6 +33,6 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".network.GcmMessageHandler"></service>
+        <service android:name=".network.gcm.GcmMessageHandler"></service>
     </application>
 </manifest>

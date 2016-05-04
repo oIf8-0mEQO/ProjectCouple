@@ -40,10 +40,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
    */
   @Inject
   public Authenticator<User, String> auth;
-  // TODO: CLEAN UP CODE
-  private String PROJECT_NUMBER = "794558589013";
-  private GoogleCloudMessaging gcm;
-  private String regid;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -103,47 +99,5 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     auth.onActivityResult(requestCode, resultCode, data);
-  }
-
-  public void getRegId() {
-    // TODO
-    new AsyncTask<Void, Void, String>() {
-
-      @Override
-      protected String doInBackground(Void... params) {
-        String msg = "";
-        try {
-          if(gcm == null) {
-            gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
-          }
-
-          regid = gcm.register(PROJECT_NUMBER);
-          msg = "Device registered, registration ID=" + regid;
-          Log.i("GCM", "!!!!! " + regid);
-
-          //TODO DELETE
-          try {
-            Bundle data = new Bundle();
-            data.putString("email", "hello@sharmaine.me");
-            data.putString("my_action","SAY_HELLO");
-            String id = "3722ewhdjklhksand1no";
-            gcm.send(PROJECT_NUMBER + "@gcm.googleapis.com", id, data);
-            msg = "Sent message";
-          } catch (IOException ex) {
-            msg = "Error :" + ex.getMessage();
-          }
-          return msg;
-
-        } catch(IOException ex) {
-          msg = "Error: " + ex.getMessage();
-        }
-        return msg;
-      }
-
-      @Override
-      protected void onPostExecute(String msg) {
-        Log.d(getTag(), "Debug message");
-      }
-    }.execute(null, null, null);
   }
 }

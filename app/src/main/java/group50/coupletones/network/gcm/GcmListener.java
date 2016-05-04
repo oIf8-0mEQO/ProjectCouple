@@ -1,4 +1,4 @@
-package group50.coupletones.network;
+package group50.coupletones.network.gcm;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,6 +14,7 @@ import com.google.android.gms.gcm.GcmListenerService;
 
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
+import group50.coupletones.network.NetworkManager;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Function;
 

@@ -1,7 +1,8 @@
 package group50.coupletones.network;
 
 /**
- * Created by Agneev on 22-04-2016.
+ * @author Henry Mao
+ * @since 22-04-2016.
  */
 
 import android.app.Activity;

@@ -8,6 +8,7 @@ import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.AuthenticatorModule;
 import group50.coupletones.di.module.NetworkModule;
+import group50.coupletones.network.GcmMessageHandler;
 import group50.coupletones.network.NetworkManager;
 
 import javax.inject.Singleton;
@@ -35,4 +36,6 @@ public interface AppComponent {
   NetworkManager network();
 
   void inject(LoginActivity activity);
+
+  void inject(GcmMessageHandler receiver);
 }

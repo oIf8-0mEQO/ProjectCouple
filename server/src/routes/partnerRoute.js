@@ -24,7 +24,7 @@ class PartnerRoute extends Route {
 	}
 
 	receive(messageId, from, data) {
-		var gcmUser = App.gcmUsers[from];
+		var gcmUser = App.getUserByDevice(from);
 		if (gcmUser) {
 			console.log("User " + gcmUser + " attempting to partner with " + data.partner);
 			var partner = App.getUserByEmail(data.partner);

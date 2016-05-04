@@ -95,28 +95,34 @@ public class Map extends MapFragment implements OnMapReadyCallback {
         }
     }
 
-    public void search(String nameLocation)
+    public List<Address> search(String nameLocation)
     {
         try
         {
             List<Address> locations = geocoder.getFromLocationName(nameLocation, 10);
-            Address pickedAddress = mockMethod1(locations);//TODO: properly implement this method
-            FavoriteLocation newLocation = new FavoriteLocation(pickedAddress.getAddressLine(0), new LatLng(pickedAddress.getLatitude(), pickedAddress.getLongitude()));
-            favLocations.add(newLocation);
-            CameraUpdate update = CameraUpdateFactory.newLatLng(newLocation.getPosition());
+            if (locations.size() == 0)
+            {
+                return locations;
+            }
+            CameraUpdate update = CameraUpdateFactory.newLatLng(new LatLng(locations.get(0).getLatitude(), locations.get(0).getLongitude()));
             mMap.moveCamera(update);
+            return locations;
         }
         catch(IOException e)
         {
+            return null;
             //TODO: write exception handling code
         }
     }
 
-    //Mock Methods//
-    private Address mockMethod1(List<Address> list)
+    public void addLocation(FavoriteLocation location)
     {
-        return list.get(0);
+        favLocations.add(location);
+        CameraUpdate update = CameraUpdateFactory.newLatLng(location.getPosition());
+        mMap.moveCamera(update);
     }
+
+
     private String mockMethod2()
     {
         return "test name";

@@ -23,4 +23,5 @@
     <string name="save_changes">Save Changes</string>
     <string name="delete_location">Delete Location</string>
     <string name="title_activity_edit_location">EditLocationActivity</string>
+    <string name="title_activity_add_partner">AddPartnerActivity</string>
 </resources>

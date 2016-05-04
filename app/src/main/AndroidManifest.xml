@@ -19,11 +19,14 @@
         <activity
             android:name=".controller.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".controller.EditLocationActivity"
             android:label="@string/title_activity_edit_location"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".controller.AddPartnerActivity"
+            android:label="@string/title_activity_add_partner"></activity>
     </application>
 
 </manifest>

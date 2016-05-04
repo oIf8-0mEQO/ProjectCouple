@@ -5,9 +5,15 @@
 
 package group50.coupletones.controller;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +39,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
   @Inject
   public Authenticator<User, String> auth;
 
+  private BroadcastReceiver mRegistrationBroadcastReceiver;
+  private boolean isReceiverRegistered;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -52,14 +61,46 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     coupleTones_text.setTypeface(pierSans);
     findViewById(R.id.sign_in_button).setOnClickListener(this);
 
+    //TODO: Temp
+    mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+      @Override
+      public void onReceive(Context context, Intent intent) {
+        SharedPreferences sharedPreferences =
+          PreferenceManager.getDefaultSharedPreferences(context);
+        boolean sentToken = sharedPreferences
+          .getBoolean(RegistrationIntentService.SENT_TOKEN_TO_SERVER, false);
+        if (sentToken) {
+          Log.d(getTag(), "Token retrieved and sent to server! You can now use gcmsender to send downstream messages to this app.");
+        } else {
+          Log.d(getTag(), "Error when fetching token!");
+        }
+      }
+    };
+    registerReceiver();
+
+    // Registration service
     Intent intent = new Intent(this, RegistrationIntentService.class);
     startService(intent);
+  }
+
+  @Override
+  protected void onPause() {
+    LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
+    isReceiverRegistered = false;
+    super.onPause();
+  }
+
+  private void registerReceiver() {
+    if (!isReceiverRegistered) {
+      LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+        new IntentFilter(RegistrationIntentService.REGISTRATION_COMPLETE));
+      isReceiverRegistered = true;
+    }
   }
 
   /**
    * Handles the user login event by switching to MainActivity upon
    * successful login.
-   *
    * @param user The user that logged in
    * @return The user
    */

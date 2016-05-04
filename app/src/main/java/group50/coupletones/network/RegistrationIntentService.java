@@ -21,10 +21,10 @@ import group50.coupletones.R;
  */
 public class RegistrationIntentService extends IntentService {
 
-    private static final String TAG = "RegIntentService";
-    private static final String[] TOPICS = {"global"};
     public static final String SENT_TOKEN_TO_SERVER = "sentTokenToServer";
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
+  private static final String TAG = "RegIntentService";
+  private static final String[] TOPICS = { "global" };
 
     public RegistrationIntentService() {
         super(TAG);
@@ -55,7 +55,8 @@ public class RegistrationIntentService extends IntentService {
             // sent to your server. If the boolean is false, send the token to your server,
             // otherwise your server should have already received the token.
             sharedPreferences.edit().putBoolean(SENT_TOKEN_TO_SERVER, true).apply();
-            // [END register_for_gcm]
+
+          // [END register_for_gcm]
         } catch (Exception e) {
             Log.d(TAG, "Failed to complete token refresh", e);
             // If an exception happens while fetching the new token or updating our registration data

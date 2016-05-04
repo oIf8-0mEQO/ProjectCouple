@@ -26,7 +26,7 @@ gcm.on('message', (messageId, from, category, data) => {
 	console.log('received data', data);
 });
 
-var deviceId = "eQxKfJvITU4:APA91bGg6kxFf5cldPy-5gkjZTn1mZECk82wPoPnZJPvs7y3fT52J8fogs8Lt8wFN9VLk3CAYwzl8EPf8Fu3fDU7M6k3xijm_hfg7NpchenKLzk2Am6o9DwBqx-S7NB804Cdk0mGPGEL";
+var deviceId = "cMAW30NTz94:APA91bH0VstK2GUfr-SKIp9GebzNaY51p27OG8qwtbrxfumRT_iaVKi3-PZnVxx0Ilt6vqQpSXUHUCgW35UT5yfGlu_x6Std8BgBz0_T36l5qqPChr-rS2Q2IMwZbKns4BGGDHs1V8CD";
 gcm.send(deviceId,
 	{message: 'hello world'},
 	{delivery_receipt_requested: true},
@@ -38,12 +38,3 @@ gcm.send(deviceId,
 		}
 	}
 );
-
-/*
- var n = new Notification(SERVER_API_KEY);
-
- var message = new gcm.Message();
- message.addData('key1', 'msg1');
-
- n.send([], message);
- */

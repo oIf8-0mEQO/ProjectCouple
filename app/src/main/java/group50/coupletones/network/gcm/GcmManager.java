@@ -8,6 +8,7 @@ import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import group50.coupletones.network.Message;
 import group50.coupletones.network.NetworkManager;
@@ -22,6 +23,7 @@ public class GcmManager implements NetworkManager, Taggable {
   private String PROJECT_NUMBER = "794558589013";
   private GoogleCloudMessaging gcm;
   private String regid;
+  private HashMap<String, MessageReceiver> receivers;
 
   @Override
   public AsyncTask<Void, Void, Boolean> send(Message message) {
@@ -67,5 +69,21 @@ public class GcmManager implements NetworkManager, Taggable {
       }
 
     }.execute(null, null, null);
+  }
+
+  public void register(String type, MessageReceiver receiver) {
+    if (receivers.containsKey(type)) {
+      throw new RuntimeException();
+    } else {
+      receivers.put(type, receiver);
+    }
+  }
+
+  public void unregister(String type) {
+    if (receivers.containsKey(type)) {
+      receivers.remove(type);
+    } else {
+      throw new RuntimeException();
+    }
   }
 }

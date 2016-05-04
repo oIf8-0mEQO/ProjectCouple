@@ -15,4 +15,8 @@ public interface NetworkManager {
   void onReceive(Function callBack);
 
   AsyncTask<Void, Void, Boolean> register(Context context);
+
+  void register(String type, MessageReceiver receiver);
+
+  void unregister(String type);
 }

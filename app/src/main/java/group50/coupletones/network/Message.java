@@ -6,7 +6,9 @@ import android.os.Bundle;
  * Created by sharmaine on 5/4/16.
  */
 public interface Message {
-    String getId();
-    String getType();
-    Bundle getData();
+  String getId();
+
+  String getType();
+
+  Bundle getData();
 }

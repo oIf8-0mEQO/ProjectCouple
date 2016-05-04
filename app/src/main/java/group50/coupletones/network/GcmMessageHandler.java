@@ -17,42 +17,42 @@ import android.widget.Toast;
 
 public class GcmMessageHandler extends IntentService {
 
-    String msg;
-    private Handler handler;
+  String msg;
+  private Handler handler;
 
-    public GcmMessageHandler() {
-        super("GcmMessageHandler");
-    }
+  public GcmMessageHandler() {
+    super("GcmMessageHandler");
+  }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        handler = new Handler();
-    }
+  @Override
+  public void onCreate() {
+    super.onCreate();
+    handler = new Handler();
+  }
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
-        Bundle extras = intent.getExtras();
+  @Override
+  protected void onHandleIntent(Intent intent) {
+    Bundle extras = intent.getExtras();
 
-        GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
+    GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
 
-        String messageType = gcm.getMessageType(intent);
+    String messageType = gcm.getMessageType(intent);
 
-        msg = extras.getString("message");
-        showToast();
+    msg = extras.getString("message");
+    showToast();
 
-        Log.i("GCM", "Received: (" + messageType + ") " + extras.getString("message"));
+    Log.i("GCM", "Received: (" + messageType + ") " + extras.getString("message"));
 
-        GcmReceiver.completeWakefulIntent(intent);
-    }
+    GcmReceiver.completeWakefulIntent(intent);
+  }
 
-    public void showToast() {
-        handler.post(new Runnable() {
+  public void showToast() {
+    handler.post(new Runnable() {
 
-            @Override
-            public void run() {
-                Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
+      @Override
+      public void run() {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+      }
+    });
+  }
 }

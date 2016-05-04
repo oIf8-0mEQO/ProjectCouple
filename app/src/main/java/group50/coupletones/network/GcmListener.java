@@ -21,38 +21,38 @@ import group50.coupletones.util.function.Function;
  * Created by sharmaine on 5/2/16.
  */
 public class GcmListener extends GcmListenerService implements NetworkManager, Taggable {
-    @Override
-    public void send(String message) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-                PendingIntent.FLAG_ONE_SHOT);
+  @Override
+  public void send(String message) {
+    Intent intent = new Intent(this, MainActivity.class);
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        PendingIntent.FLAG_ONE_SHOT);
 
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.faves_icon)
-                .setContentTitle("GCM OutgoingMessage")
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setSound(defaultSoundUri)
-                .setContentIntent(pendingIntent);
+    Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
+        .setSmallIcon(R.drawable.faves_icon)
+        .setContentTitle("GCM OutgoingMessage")
+        .setContentText(message)
+        .setAutoCancel(true)
+        .setSound(defaultSoundUri)
+        .setContentIntent(pendingIntent);
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    NotificationManager notificationManager =
+        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
-    }
+    notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+  }
 
-    @Override
-    public void onMessageReceived(String from, Bundle data) {
-        super.onMessageReceived(from, data);
-        Log.d(getTag(), "Received!");
-        String message = data.getString("message");
-        Log.d(getTag(), message);
-    }
+  @Override
+  public void onMessageReceived(String from, Bundle data) {
+    super.onMessageReceived(from, data);
+    Log.d(getTag(), "Received!");
+    String message = data.getString("message");
+    Log.d(getTag(), message);
+  }
 
-    @Override
-    public void onReceive(Function callBack) {
+  @Override
+  public void onReceive(Function callBack) {
 
-    }
+  }
 }

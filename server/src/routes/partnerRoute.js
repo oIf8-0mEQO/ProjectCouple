@@ -6,6 +6,7 @@
 
 var Route = require("./route");
 var App = require("../app");
+var GCM = require("../gcm");
 
 /**
  * A route that handles partner pairing registration. This is called when a client
@@ -20,7 +21,7 @@ var App = require("../app");
  */
 class PartnerRoute extends Route {
 	constructor() {
-		super("registration");
+		super("partner");
 	}
 
 	receive(messageId, from, data) {
@@ -30,8 +31,17 @@ class PartnerRoute extends Route {
 			var partner = App.getUserByEmail(data.partner);
 
 			if (partner) {
-				//TODO: Send request to partner
+				// Send request to partner
+				GCM.send(partner.id, {
+					type: "partner-request",
+					partner: gcmUser.email
+				});
 			} else {
+				//TODO: Reject the request
+				GCM.send(partner.id, {
+					type: "partner-reject",
+					partner: gcmUser.email
+				});
 				console.error("Invalid partner: " + data.partner);
 			}
 		} else {

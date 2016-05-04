@@ -6,6 +6,7 @@
 
 var Route = require("./route");
 var App = require("../app");
+var User = require("../user");
 
 /**
  * A route that handles registration calls. This is called when a client
@@ -20,7 +21,7 @@ class RegistrationRoute extends Route {
 		var email = data.email;
 		if (email) {
 			console.log("User " + email + " registering with server...");
-			App.gcmUsers[from] = email;
+			App.addUser(new User(from, email));
 		} else {
 			console.error("Invalid data sent to route: " + this.id);
 		}

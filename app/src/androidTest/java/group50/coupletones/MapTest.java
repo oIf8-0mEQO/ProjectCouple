@@ -33,8 +33,8 @@ public class MapTest {
     public void setUp()
     {
         locations = new ArrayList<>();
-        locations.add(new FavoriteLocation("loc2", new LatLng(60, 60)));
-        locations.add(new FavoriteLocation("loc3", new LatLng(-20, -20)));
+        locations.add(0, new FavoriteLocation("loc2", new LatLng(60, 60)));
+        locations.add(1, new FavoriteLocation("loc3", new LatLng(-20, -20)));
     }
 
     @Test

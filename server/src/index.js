@@ -7,6 +7,6 @@
 "use strict";
 
 var GCM = require("./gcm");
-var RegistrationRoute = require("./routes/RegistrationRoute");
+var RegistrationRoute = require("./routes/registrationRoute");
 
 GCM.registerRoute(new RegistrationRoute());

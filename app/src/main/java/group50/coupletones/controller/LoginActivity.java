@@ -67,6 +67,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     getRegId();
   }
 
+
+
   /**
    * Handles the user login event by switching to MainActivity upon
    * successful login.

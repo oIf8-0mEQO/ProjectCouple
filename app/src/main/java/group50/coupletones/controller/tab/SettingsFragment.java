@@ -67,6 +67,8 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> {
         TextView partnerAccountText = (TextView) v.findViewById(R.id.partner_account_header);
         TextView partnerAccount = (TextView) v.findViewById(R.id.partner_email);
         TextView logoutButton = (TextView) v.findViewById(R.id.logout_button);
+        TextView disconnectButton = (TextView) v.findViewById(R.id.disconnect_button);
+
         yourProfileText.setTypeface(pierSans);
         yourNameText.setTypeface(pierSans);
         yourName.setTypeface(pierSans);
@@ -78,6 +80,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> {
         partnerAccountText.setTypeface(pierSans);
         partnerAccount.setTypeface(pierSans);
         logoutButton.setTypeface(pierSans);
+        disconnectButton.setTypeface(pierSans);
         return v;
     }
 

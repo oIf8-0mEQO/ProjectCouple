@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import group50.coupletones.network.Message;
 import group50.coupletones.network.NetworkManager;
+import group50.coupletones.network.receiver.MessageReceiver;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Function;
 

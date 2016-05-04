@@ -7,6 +7,8 @@ import group50.coupletones.auth.User;
 import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.AuthenticatorModule;
+import group50.coupletones.di.module.NetworkModule;
+import group50.coupletones.network.NetworkManager;
 
 import javax.inject.Singleton;
 
@@ -19,8 +21,9 @@ import javax.inject.Singleton;
 @Singleton
 @Component(
   modules = {
+    ApplicationModule.class,
     AuthenticatorModule.class,
-    ApplicationModule.class
+    NetworkModule.class
   }
 )
 public interface AppComponent {
@@ -28,6 +31,8 @@ public interface AppComponent {
   Authenticator<User, String> auth();
 
   CoupleTones app();
+
+  NetworkManager network();
 
   void inject(LoginActivity activity);
 }

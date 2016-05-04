@@ -8,6 +8,15 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
 
+    signingConfigs {
+        release {
+            storeFile file("release.keystore")
+            storePassword "coupletones"
+            keyAlias "coupletones"
+            keyPassword "coupletones"
+        }
+    }
+
     defaultConfig {
         applicationId "group50.coupletones"
 		minSdkVersion 21
@@ -16,13 +25,17 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debug {
             testCoverageEnabled true
+            // Check if we want the same configs
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -47,6 +60,7 @@ android {
 
 retrolambda {
     defaultMethods true
+    include 'Debug', 'Release'
 }
 
 dependencies {

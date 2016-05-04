@@ -20,7 +20,7 @@ import group50.coupletones.util.function.Function;
 /**
  * Created by sharmaine on 5/2/16.
  */
-public class GcmListener extends GcmListenerService implements MessageNetwork, Taggable {
+public class GcmListener extends GcmListenerService implements NetworkManager, Taggable {
     @Override
     public void send(String message) {
         Intent intent = new Intent(this, MainActivity.class);
@@ -31,7 +31,7 @@ public class GcmListener extends GcmListenerService implements MessageNetwork, T
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.faves_icon)
-                .setContentTitle("GCM Message")
+                .setContentTitle("GCM OutgoingMessage")
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)

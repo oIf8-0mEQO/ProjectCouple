@@ -51,12 +51,16 @@ public class AddPartnerActivity extends AppCompatActivity
          * -Switch to SettingsFragment
          *
          */
+        MainActivity act = (MainActivity) getActivity(MainActivity);
+        act.setFragment(act.getTabs().get(R.id.settings));
         break;
 
       // Switches to AddPartnerActivity.
       case R.id.skip_button:
+        MainActivity act = (MainActivity) getActivity();
+        act.setFragment(act.getTabs().get(R.id.settings));
         Intent i = new Intent(AddPartnerActivity.this, SettingsFragment.class);
-
+        startActivity(i);
         Log.d(getTag(), "Switched to SettingsFragment Successfully");
         break;
     }

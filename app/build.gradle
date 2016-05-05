@@ -105,4 +105,8 @@ dependencies {
     androidTestCompile "org.mockito:mockito-core:1.+"
     androidTestCompile 'com.google.dexmaker:dexmaker:1.2'
     androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
+    compile 'com.google.android.gms:play-services-maps:8.3.0'
+    compile 'com.google.maps.android:android-maps-utils:0.4.3'
 }
+
+apply plugin: 'com.google.gms.google-services'

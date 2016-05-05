@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="group50.coupletones"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="group50.coupletones">
 
     <application
             android:name="CoupleTones"
@@ -41,5 +41,15 @@
         </receiver>
 
         <service android:name=".network.gcm.GcmMessageHandler"></service>
-    </application>
+		<meta-data
+			android:name="com.google.android.geo.API_KEY"
+			android:value="AIzaSyA3oZznWLtXHfTY6XSKP2Krbd9rR2nxwi4"/>
+	</application>
+	
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 </manifest>

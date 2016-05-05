@@ -1,26 +1,32 @@
 package group50.coupletones.controller;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.tab.SettingsFragment;
+import group50.coupletones.network.NetworkManager;
 import group50.coupletones.util.Taggable;
+
+import javax.inject.Inject;
 
 public class AddPartnerActivity extends AppCompatActivity
   implements View.OnClickListener, Taggable {
 
+  @Inject
+  public NetworkManager network;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    CoupleTones.component().inject(this);
+
     setContentView(R.layout.activity_add_partner);
 
     TextView add_partner_text = (TextView) findViewById(R.id.connect_message);
@@ -51,6 +57,8 @@ public class AddPartnerActivity extends AppCompatActivity
          * -Switch to SettingsFragment
          *
          */
+
+
         break;
 
       // Switches to AddPartnerActivity.

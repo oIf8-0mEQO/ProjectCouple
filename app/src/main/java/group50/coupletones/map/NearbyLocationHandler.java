@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import group50.coupletones.network.NetworkManager;
+
 /**
  * Created by Joseph on 5/1/2016.
  */

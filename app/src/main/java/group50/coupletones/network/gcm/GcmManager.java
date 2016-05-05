@@ -2,17 +2,24 @@ package group50.coupletones.network.gcm;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
+
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+
 import java.io.IOException;
 import java.util.HashMap;
+
+import group50.coupletones.network.IncomingMessage;
 import group50.coupletones.network.Message;
 import group50.coupletones.network.NetworkManager;
+import group50.coupletones.network.OutgoingMessage;
 import group50.coupletones.network.receiver.MessageReceiver;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Function;
 
 import javax.inject.Inject;
+
 import java.io.IOException;
 
 /**
@@ -30,7 +37,7 @@ public class GcmManager implements NetworkManager, Taggable {
   }
 
   @Override
-  public AsyncTask<Void, Void, Boolean> send(Message message) {
+  public AsyncTask<Void, Void, Boolean> send(OutgoingMessage message) {
     return new AsyncTask<Void, Void, Boolean>() {
 
       @Override
@@ -52,6 +59,7 @@ public class GcmManager implements NetworkManager, Taggable {
 
   }
 
+  @Override
   public AsyncTask<Void, Void, Boolean> register(Context context) {
     return new AsyncTask<Void, Void, Boolean>() {
 
@@ -75,6 +83,7 @@ public class GcmManager implements NetworkManager, Taggable {
     }.execute(null, null, null);
   }
 
+  @Override
   public void register(String type, MessageReceiver receiver) {
     if (receivers.containsKey(type)) {
       throw new RuntimeException();
@@ -83,11 +92,18 @@ public class GcmManager implements NetworkManager, Taggable {
     }
   }
 
+  @Override
   public void unregister(String type) {
     if (receivers.containsKey(type)) {
       receivers.remove(type);
     } else {
       throw new RuntimeException();
     }
+  }
+
+  public void handleReceive(Bundle extras) {
+    IncomingMessage msg = new IncomingMessage(extras.getString("type"), extras);
+    MessageReceiver messageReceiver = receivers.get(msg.getType());
+    messageReceiver.onReceive(msg);
   }
 }

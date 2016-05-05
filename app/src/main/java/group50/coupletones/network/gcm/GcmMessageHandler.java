@@ -9,7 +9,9 @@ package group50.coupletones.network.gcm;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
+
 import com.google.android.gms.gcm.GcmReceiver;
+
 import group50.coupletones.CoupleTones;
 import group50.coupletones.network.NetworkManager;
 
@@ -36,7 +38,7 @@ public class GcmMessageHandler extends IntentService {
   protected void onHandleIntent(Intent intent) {
     Bundle extras = intent.getExtras();
 
-    //TODO: Call NetworkManager.handleReceive(extras);
+    ((GcmManager) network).handleReceive(extras);
 
     GcmReceiver.completeWakefulIntent(intent);
   }

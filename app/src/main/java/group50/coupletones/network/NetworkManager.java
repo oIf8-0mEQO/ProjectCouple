@@ -11,7 +11,7 @@ import group50.coupletones.util.function.Function;
  * @since 5/2/16
  */
 public interface NetworkManager {
-  AsyncTask<Void, Void, Boolean> send(Message message);
+  AsyncTask<Void, Void, Boolean> send(OutgoingMessage message);
 
   void onReceive(Function callBack);
 

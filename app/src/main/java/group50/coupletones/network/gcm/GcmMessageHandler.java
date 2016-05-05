@@ -31,7 +31,7 @@ public class GcmMessageHandler extends IntentService {
     super.onCreate();
 
     // Dependency Injection
-   // CoupleTones.component().inject(this);
+    CoupleTones.component().inject(this);
   }
 
   @Override

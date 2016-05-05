@@ -17,19 +17,16 @@ public class OutgoingMessage implements Message {
    * The id of the message
    */
   private final String id;
-  /**
-   * The id of the message type
-   */
-  private final String type;
+
   /**
    * The data to send to the server.
    */
   private final Bundle data;
 
   public OutgoingMessage(String type) {
-    this.type = type;
-    this.id = hashId.encode(currentId++);
     this.data = new Bundle();
+    this.setString("type", type);
+    this.id = hashId.encode(currentId++);
   }
 
   public String getId() {
@@ -38,7 +35,7 @@ public class OutgoingMessage implements Message {
 
   @Override
   public String getType() {
-    return type;
+    return getString("type");
   }
 
   @Override

@@ -79,13 +79,6 @@ public class GcmManager implements NetworkManager, Taggable {
 
           regid = gcm.register(PROJECT_NUMBER);
           Log.i("GCM", "Registered: " + regid);
-
-          // Notify server of registration
-          send(
-            (OutgoingMessage) new OutgoingMessage("registration")
-              .setString("email", app.getLocalUser().getEmail())
-          );
-
         } catch (IOException ex) {
           ex.printStackTrace();
           return false;

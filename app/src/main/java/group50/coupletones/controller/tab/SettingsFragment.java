@@ -1,16 +1,20 @@
 package group50.coupletones.controller.tab;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
 import group50.coupletones.R;
+import group50.coupletones.controller.AddPartnerActivity;
 
 /**
  * A simple {@link Fragment} subclass for the Favorite Locations tab.
@@ -42,6 +46,18 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Button button = (Button) getActivity().findViewById(R.id.add_partner_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.i("clicks","You Clicked B1");
+                Intent i=new Intent(SettingsFragment.this.getActivity(), AddPartnerActivity.class);
+                startActivity(i);
+            }
+        });
+
+
+
         if (getArguments() != null) {
             //TODO: Read arguments
         }

@@ -51,27 +51,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Typeface pierSans = Typeface.createFromAsset(getAssets(), getString(R.string.pier_sans));
     coupleTones_text.setTypeface(pierSans);
     findViewById(R.id.sign_in_button).setOnClickListener(this);
-
-    // TODO: TEMP Login Bypass for testing - REMOVE BEFORE MILESTONE
-    onUserLogin(new User() {
-
-      @Override
-      public String getId() {
-        return "testerID";
-      }
-
-      @Override
-      public String getName() {
-        return "testerName";
-      }
-
-      @Override
-      public String getEmail() {
-        return "testerID@email.com";
-      }
-    });
   }
-
 
 
   /**

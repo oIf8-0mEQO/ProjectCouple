@@ -20,7 +20,7 @@ import javax.inject.Inject;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
-import group50.coupletones.auth.GoogleUser;
+import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.User;
 import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.controller.MainActivity;
@@ -40,7 +40,8 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
    * The instance of the GoogleUser and Object for authentication.
    */
   @Inject
-  public Authenticator<User, String> auth;
+  //public Authenticator<User, String> auth;
+  public GoogleAuthenticator auth;
   @Inject
   public CoupleTones app;
 
@@ -84,13 +85,10 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     TextView yourProfileText = (TextView) v.findViewById(R.id.my_profile_header);
     TextView yourNameText = (TextView) v.findViewById(R.id.your_name_header);
     TextView yourName = (TextView) v.findViewById(R.id.your_name);
-    // yourName = (TextView) app.getLocalUser();
-    // String userName = user.getName();
     yourName.setText(app.getLocalUser().getName());
     TextView yourAccountText = (TextView) v.findViewById(R.id.your_account_header);
     TextView yourAccount = (TextView) v.findViewById(R.id.your_email);
-    //String userAccount = user.getEmail();
-    //yourAccount.setText(user.getEmail());
+    yourAccount.setText(app.getLocalUser().getEmail());
     yourProfileText.setTypeface(pierSans);
     yourNameText.setTypeface(pierSans);
     yourName.setTypeface(pierSans);
@@ -102,8 +100,10 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     TextView partnersProfileText = (TextView) v.findViewById(R.id.partners_profile_text);
     TextView partnerNameText = (TextView) v.findViewById(R.id.partner_name_header);
     TextView partnerName = (TextView) v.findViewById(R.id.partner_name);
+    // partnerName.setText(app.getLocalUser().getPartnerName());
     TextView partnerAccountText = (TextView) v.findViewById(R.id.partner_account_header);
     TextView partnerAccount = (TextView) v.findViewById(R.id.partner_email);
+    // partnerAccount.setText(app.getLocalUser().getPartnerEmail());
     partnersProfileText.setTypeface(pierSans);
     partnerNameText.setTypeface(pierSans);
     partnerName.setTypeface(pierSans);
@@ -141,7 +141,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
       case R.id.logout_button:
         auth.signOut();
         //if (user.getId() == null)
-          updateUI();
+        updateUI();
         //else
         //  Toast.makeText(getContext(), "Sign Out Unsuccessful", Toast.LENGTH_SHORT).show();
         break;

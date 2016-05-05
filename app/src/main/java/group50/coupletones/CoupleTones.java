@@ -11,7 +11,8 @@ import group50.coupletones.di.AppComponent;
 import group50.coupletones.di.DaggerAppComponent;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.network.NetworkManager;
-import group50.coupletones.network.receiver.PartnerRejectReceiver;
+import group50.coupletones.network.message.MessageType;
+import group50.coupletones.network.receiver.ErrorReceiver;
 import group50.coupletones.network.receiver.PartnerRequestReceiver;
 
 /**
@@ -75,14 +76,15 @@ public class CoupleTones extends Application {
     super.onCreate();
 
     component = DaggerAppComponent
-        .builder()
-        .applicationModule(new ApplicationModule(this))
-        .build();
+      .builder()
+      .applicationModule(new ApplicationModule(this))
+      .build();
 
     // Register network
     NetworkManager network = component().network();
     network.register(this);
     network.register(new PartnerRequestReceiver(this));
-    network.register(new PartnerRejectReceiver(this));
+    network.register(MessageType.RECEIVE_PARTNER_REJECT.value, new ErrorReceiver(this));
+    network.register(MessageType.RECEIVE_MAP_REJECT.value, new ErrorReceiver(this));
   }
 }

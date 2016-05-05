@@ -40,8 +40,8 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
    * The instance of the GoogleUser and Object for authentication.
    */
   @Inject
-  //public Authenticator<User, String> auth;
-  public GoogleAuthenticator auth;
+  public Authenticator<User, String> auth;
+  //public GoogleAuthenticator auth;
   @Inject
   public CoupleTones app;
 

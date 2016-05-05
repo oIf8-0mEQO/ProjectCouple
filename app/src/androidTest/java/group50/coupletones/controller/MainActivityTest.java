@@ -5,20 +5,15 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.test.ActivityInstrumentationTestCase2;
-import dagger.Component;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.User;
 import group50.coupletones.controller.tab.PartnersLocationsFragment;
-import group50.coupletones.di.AppComponent;
-import group50.coupletones.di.MockApplicationModule;
-import group50.coupletones.di.MockAuthenticatorModule;
-import group50.coupletones.di.module.NetworkModule;
+import group50.coupletones.di.DaggerMockAppComponent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.inject.Singleton;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,7 +42,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     super.setUp();
 
     CoupleTones.setComponent(
-      DaggerMainActivityTest_TestAppComponent
+      DaggerMockAppComponent
         .builder()
         .build());
 
@@ -116,14 +111,16 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
   /*
   @Test
   public void testTabTap2() throws Exception {
-    FragmentManager supportFragmentManager = activity.getSupportFragmentManager();
+    activity.runOnUiThread(() -> {
+      FragmentManager supportFragmentManager = activity.getSupportFragmentManager();
 
-    activity.onMenuTabSelected(R.id.favoriteLocations);
-    List<Fragment> fragments = supportFragmentManager.getFragments();
-    // There should be only one fragment active upon launch
-    assertThat(fragments).hasSize(2);
-    // Test to make sure the fragment is a PartnersLocationsFragment
-    assertThat(fragments.get(1)).isOfAnyClassIn(FavoriteLocationsFragment.class);
+      activity.onMenuTabSelected(R.id.favoriteLocations);
+      List<Fragment> fragments = supportFragmentManager.getFragments();
+      // There should be only one fragment active upon launch
+      assertThat(fragments).hasSize(2);
+      // Test to make sure the fragment is a PartnersLocationsFragment
+      assertThat(fragments.get(1)).isOfAnyClassIn(FavoriteLocationsFragment.class);
+    });
   }*/
 
   /**
@@ -142,21 +139,5 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     assertThat(fragments).hasSize(1);
     // Test to make sure the fragment is a PartnersLocationsFragment
     assertThat(fragments.get(0)).isOfAnyClassIn(defaultTabClass);
-  }
-
-  /**
-   * The dependency injection component for the entire app using mocks.
-   * @author Henry Mao
-   * @since 28/4/2016
-   */
-  @Singleton
-  @Component(
-    modules = {
-      MockAuthenticatorModule.class,
-      MockApplicationModule.class,
-      NetworkModule.class
-    }
-  )
-  public static interface TestAppComponent extends AppComponent {
   }
 }

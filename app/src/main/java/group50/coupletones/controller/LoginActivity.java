@@ -17,7 +17,6 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.User;
-import group50.coupletones.network.NetworkManager;
 import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;

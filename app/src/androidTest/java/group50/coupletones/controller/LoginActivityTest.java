@@ -6,27 +6,19 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.Button;
-import dagger.Component;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.User;
-import group50.coupletones.di.AppComponent;
-import group50.coupletones.di.MockApplicationModule;
-import group50.coupletones.di.MockAuthenticatorModule;
-import group50.coupletones.di.module.NetworkModule;
+import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.util.function.Function;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.inject.Singleton;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * The LoginActivity test to test the LoginActivity
@@ -51,7 +43,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     super.setUp();
 
     CoupleTones.setComponent(
-      DaggerLoginActivityTest_TestAppComponent
+      DaggerMockAppComponent
         .builder()
         .build());
 
@@ -207,23 +199,6 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     // next activity is opened and captured.
     assertThat(nextActivity).isNull();
   }
-
-  /**
-   * The dependency injection component for the entire app using mocks.
-   * @author Henry Mao
-   * @since 28/4/2016
-   */
-  @Singleton
-  @Component(
-    modules = {
-      MockAuthenticatorModule.class,
-      MockApplicationModule.class,
-      NetworkModule.class
-    }
-  )
-  public static interface TestAppComponent extends AppComponent {
-  }
-
   /**
    * A simple class that wraps an object. Used for tests with lambda expressions where values must be effectively final.
    * @param <T>

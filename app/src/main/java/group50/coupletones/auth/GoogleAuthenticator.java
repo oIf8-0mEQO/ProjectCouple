@@ -1,30 +1,21 @@
 package group50.coupletones.auth;
 
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.service.carrier.CarrierMessagingService;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-
-import java.util.Objects;
-
 import group50.coupletones.CoupleTones;
+import group50.coupletones.network.NetworkManager;
+import group50.coupletones.network.message.OutgoingMessage;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Function;
 
 import javax.inject.Inject;
-import javax.security.auth.callback.Callback;
 
 /**
  * Handles Google Authentication
@@ -61,10 +52,15 @@ public class GoogleAuthenticator implements
    * The Google API client instance
    */
   private GoogleApiClient apiClient;
+  /**
+   * THe network manager
+   */
+  private NetworkManager network;
 
   @Inject
-  public GoogleAuthenticator(CoupleTones app) {
+  public GoogleAuthenticator(CoupleTones app, NetworkManager network) {
     this.app = app;
+    this.network = network;
   }
 
   /**
@@ -181,6 +177,13 @@ public class GoogleAuthenticator implements
       // Signed in successfully, store authenticated user
       GoogleUser localUser = new GoogleUser(result.getSignInAccount());
       app.setLocalUser(localUser);
+
+      // Notify server of registration
+      network.send(
+        (OutgoingMessage) new OutgoingMessage("registration")
+          .setString("email", localUser.getEmail())
+      );
+
       successCallback.apply(localUser);
     } else {
       // Signed out, show unauthenticated UI.

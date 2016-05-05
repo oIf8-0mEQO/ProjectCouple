@@ -203,7 +203,7 @@
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageButton"
+                        android:id="@+id/add_partner_button"
                         android:src="@drawable/addbox_button"
                         android:background="@color/transparentBg"
                         android:layout_toEndOf="@+id/partner_name"

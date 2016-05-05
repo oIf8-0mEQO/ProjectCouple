@@ -24,4 +24,9 @@
     <string name="delete_location">Delete Location</string>
     <string name="title_activity_edit_location">EditLocationActivity</string>
     <string name="title_activity_add_partner">AddPartnerActivity</string>
+    <string name="connect_message">Connect with your partner.</string>
+    <string name="connection">Connect</string>
+    <string name="skip">Skip this Step</string>
+    <string name="email_address">Partner\'s Email Address</string>
+
 </resources>

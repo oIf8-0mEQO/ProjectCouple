@@ -10,6 +10,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import group50.coupletones.CoupleTones;
+import group50.coupletones.network.NetworkManager;
+import group50.coupletones.network.message.OutgoingMessage;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Function;
 
@@ -50,10 +52,15 @@ public class GoogleAuthenticator implements
    * The Google API client instance
    */
   private GoogleApiClient apiClient;
+  /**
+   * THe network manager
+   */
+  private NetworkManager network;
 
   @Inject
-  public GoogleAuthenticator(CoupleTones app) {
+  public GoogleAuthenticator(CoupleTones app, NetworkManager network) {
     this.app = app;
+    this.network = network;
   }
 
   /**
@@ -106,7 +113,7 @@ public class GoogleAuthenticator implements
       // There's no immediate result ready, displays some progress indicator and waits for the
       // async callback.
       pendingResult.setResultCallback(result -> {
-        Log.d(getTag(), "Silent sign in handled: " + result.getStatus());
+          Log.d(getTag(), "Silent sign in handled: " + result.getStatus());
           handleSignInResult(result);
         }
       );
@@ -124,6 +131,22 @@ public class GoogleAuthenticator implements
   public GoogleAuthenticator signIn() {
     Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(apiClient);
     activity.startActivityForResult(signInIntent, RC_SIGN_IN);
+    return this;
+  }
+
+  /**
+   * Attempts to sign out the user.
+   * TODO: Edit redundancies
+   */
+  public GoogleAuthenticator signOut() {
+
+    /* Auth.GoogleSignInApi.signOut(apiClient).setResultCallback(new ResultCallback<Status>() {
+      @Override
+      public void onResult(Status status) {
+      }
+    });
+    return this; */
+    Auth.GoogleSignInApi.signOut(apiClient);
     return this;
   }
 
@@ -154,6 +177,13 @@ public class GoogleAuthenticator implements
       // Signed in successfully, store authenticated user
       GoogleUser localUser = new GoogleUser(result.getSignInAccount());
       app.setLocalUser(localUser);
+
+      // Notify server of registration
+      network.send(
+        (OutgoingMessage) new OutgoingMessage("registration")
+          .setString("email", localUser.getEmail())
+      );
+
       successCallback.apply(localUser);
     } else {
       // Signed out, show unauthenticated UI.

@@ -37,6 +37,14 @@ public interface Authenticator<S, F> extends SuccessCallback<Authenticator, S>, 
   Authenticator signIn();
 
   /**
+   * Attempts to sign in the user by prompting the user for login
+   * credentials.
+   *
+   * @return This instance
+   */
+  Authenticator signOut();
+
+  /**
    * Method that handles the intent result callback.
    * <p>
    * This method must be called to by the activity to properly handle

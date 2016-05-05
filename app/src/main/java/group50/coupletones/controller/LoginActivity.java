@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
@@ -52,6 +53,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     findViewById(R.id.sign_in_button).setOnClickListener(this);
   }
 
+
   /**
    * Handles the user login event by switching to MainActivity upon
    * successful login.
@@ -80,7 +82,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         auth.signIn();
         break;
     }
-
   }
 
   @Override

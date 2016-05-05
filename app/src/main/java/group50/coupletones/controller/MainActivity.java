@@ -12,6 +12,8 @@ import group50.coupletones.controller.tab.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.PartnersLocationsFragment;
 import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.network.NetworkManager;
+import group50.coupletones.network.receiver.PartnerRejectReceiver;
+import group50.coupletones.network.receiver.PartnerRequestReceiver;
 import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;
@@ -27,18 +29,16 @@ public class MainActivity extends AppCompatActivity implements
   OnMenuTabClickListener,
   Taggable {
 
+  @Inject
+  public NetworkManager network;
   /**
    * The bottom tab bar handler
    */
   private BottomBar mBottomBar;
-
   /**
    * A map of IDs to the respective fragments
    */
   private HashMap<Integer, Fragment> tabs;
-
-  @Inject
-  public NetworkManager network;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,10 @@ public class MainActivity extends AppCompatActivity implements
     // Dependency Injection
     CoupleTones.component().inject(this);
 
+    // Register network
     network.register(this);
+    network.register(new PartnerRequestReceiver(this));
+    network.register(new PartnerRejectReceiver(this));
 
     setContentView(R.layout.activity_main);
 

@@ -14,6 +14,7 @@ import group50.coupletones.auth.User;
 import group50.coupletones.di.AppComponent;
 import group50.coupletones.di.MockApplicationModule;
 import group50.coupletones.di.MockAuthenticatorModule;
+import group50.coupletones.di.module.NetworkModule;
 import group50.coupletones.util.function.Function;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,6 +54,26 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
       DaggerLoginActivityTest_TestAppComponent
         .builder()
         .build());
+
+    //TODO: DRY
+    // Stub getLocalUser method
+    when(CoupleTones.component().app().getLocalUser())
+      .thenReturn(new User() {
+        @Override
+        public String getId() {
+          return "mockuser";
+        }
+
+        @Override
+        public String getName() {
+          return "Mock User";
+        }
+
+        @Override
+        public String getEmail() {
+          return "mock@mock.com";
+        }
+      });
 
     injectInstrumentation(InstrumentationRegistry.getInstrumentation());
   }
@@ -196,7 +217,8 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
   @Component(
     modules = {
       MockAuthenticatorModule.class,
-      MockApplicationModule.class
+      MockApplicationModule.class,
+      NetworkModule.class
     }
   )
   public static interface TestAppComponent extends AppComponent {

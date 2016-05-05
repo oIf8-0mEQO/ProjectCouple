@@ -5,15 +5,24 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.test.ActivityInstrumentationTestCase2;
+import dagger.Component;
+import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
+import group50.coupletones.auth.User;
 import group50.coupletones.controller.tab.PartnersLocationsFragment;
+import group50.coupletones.di.AppComponent;
+import group50.coupletones.di.MockApplicationModule;
+import group50.coupletones.di.MockAuthenticatorModule;
+import group50.coupletones.di.module.NetworkModule;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.inject.Singleton;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Henry Mao
@@ -36,6 +45,31 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
   @Before
   public void setUp() throws Exception {
     super.setUp();
+
+    CoupleTones.setComponent(
+      DaggerMainActivityTest_TestAppComponent
+        .builder()
+        .build());
+
+    //TODO: DRY
+    // Stub getLocalUser method
+    when(CoupleTones.component().app().getLocalUser())
+      .thenReturn(new User() {
+        @Override
+        public String getId() {
+          return "mockuser";
+        }
+
+        @Override
+        public String getName() {
+          return "Mock User";
+        }
+
+        @Override
+        public String getEmail() {
+          return "mock@mock.com";
+        }
+      });
 
     // Injecting the Instrumentation instance is required
     // for your test to run with AndroidJUnitRunner.
@@ -108,5 +142,21 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     assertThat(fragments).hasSize(1);
     // Test to make sure the fragment is a PartnersLocationsFragment
     assertThat(fragments.get(0)).isOfAnyClassIn(defaultTabClass);
+  }
+
+  /**
+   * The dependency injection component for the entire app using mocks.
+   * @author Henry Mao
+   * @since 28/4/2016
+   */
+  @Singleton
+  @Component(
+    modules = {
+      MockAuthenticatorModule.class,
+      MockApplicationModule.class,
+      NetworkModule.class
+    }
+  )
+  public static interface TestAppComponent extends AppComponent {
   }
 }

@@ -32,8 +32,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
    */
   @Inject
   public Authenticator<User, String> auth;
-  @Inject
-  public NetworkManager network;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +39,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     // Dependency Injection
     CoupleTones.component().inject(this);
-
-    network.register(this);
 
     setContentView(R.layout.activity_login);
 

@@ -6,12 +6,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
+import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.tab.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.PartnersLocationsFragment;
 import group50.coupletones.controller.tab.SettingsFragment;
+import group50.coupletones.network.NetworkManager;
 import group50.coupletones.util.Taggable;
 
+import javax.inject.Inject;
 import java.util.HashMap;
 
 /**
@@ -34,9 +37,18 @@ public class MainActivity extends AppCompatActivity implements
    */
   private HashMap<Integer, Fragment> tabs;
 
+  @Inject
+  public NetworkManager network;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+    // Dependency Injection
+    CoupleTones.component().inject(this);
+
+    network.register(this);
+
     setContentView(R.layout.activity_main);
 
     // Initialize tabs

@@ -5,6 +5,7 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.User;
 import group50.coupletones.controller.LoginActivity;
+import group50.coupletones.controller.MainActivity;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.AuthenticatorModule;
 import group50.coupletones.di.module.NetworkModule;
@@ -36,6 +37,8 @@ public interface AppComponent {
   NetworkManager network();
 
   void inject(LoginActivity activity);
+
+  void inject(MainActivity activity);
 
   void inject(GcmMessageHandler receiver);
 }

@@ -11,6 +11,8 @@ import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.AuthenticatorModule;
 import group50.coupletones.di.module.NetworkModule;
+import group50.coupletones.di.module.ProximityModule;
+import group50.coupletones.map.ProximityHandler;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.gcm.GcmMessageHandler;
 
@@ -27,7 +29,8 @@ import javax.inject.Singleton;
   modules = {
     ApplicationModule.class,
     AuthenticatorModule.class,
-    NetworkModule.class
+    NetworkModule.class,
+    ProximityModule.class
   }
 )
 public interface AppComponent {
@@ -37,6 +40,8 @@ public interface AppComponent {
   CoupleTones app();
 
   NetworkManager network();
+
+  ProximityHandler proximity();
 
   void inject(AddPartnerActivity activity);
 

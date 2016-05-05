@@ -1,12 +1,9 @@
 package group50.coupletones.map;
 
+import javax.inject.Inject;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.inject.Inject;
-
-import group50.coupletones.network.NetworkManager;
 
 /**
  * Created by Joseph on 5/1/2016.
@@ -15,6 +12,7 @@ public class NearbyLocationHandler implements ProximityHandler {
 
   List<NotificationObserver> observers;
 
+  @Inject
   public NearbyLocationHandler() {
     observers = new LinkedList<>();
   }

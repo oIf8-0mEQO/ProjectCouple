@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-
-import org.w3c.dom.Text;
+import group50.coupletones.controller.AddPartnerActivity;
 
 import javax.inject.Inject;
 
@@ -109,6 +107,8 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     partnerName.setTypeface(pierSans);
     partnerAccountText.setTypeface(pierSans);
     partnerAccount.setTypeface(pierSans);
+    // Add Partner ImageButton
+    v.findViewById(R.id.add_partner_button).setOnClickListener(this);
 
     // Logout/Disconnect Buttons at Bottom
     TextView logoutButton = (TextView) v.findViewById(R.id.logout_button);
@@ -126,7 +126,14 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
   public void onClick(View v) {
     switch (v.getId()) {
 
-      // A dialog box will pop-up to allow user to edit/remove partner.
+      // Switches to AddPartnerActivity.
+      case R.id.add_partner_button:
+        Intent i = new Intent(getContext(), AddPartnerActivity.class);
+        startActivity(i);
+        Log.d(getTag(), "Switched to AddPartnerActivity Successfully");
+        break;
+
+      // Allows user to disconnect from partner.
       case R.id.disconnect_button:
         /** TODO: Once server is done, break connection between partners
          *
@@ -152,8 +159,8 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
    * After a successful signOut(), user will be taken to Login page.
    */
   private void updateUI() {
-    Intent intent = new Intent(getContext(), LoginActivity.class);
-    startActivity(intent);
+    Intent i = new Intent(getContext(), LoginActivity.class);
+    startActivity(i);
     Log.d(getTag(), "Signed Out Successfully");
   }
 

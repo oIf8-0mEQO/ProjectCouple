@@ -24,11 +24,12 @@ public class OutgoingMessage implements Message {
   /**
    * The data to send to the server.
    */
-  private Bundle data;
+  private final Bundle data;
 
   public OutgoingMessage(String type) {
     this.type = type;
     this.id = hashId.encode(currentId++);
+    this.data = new Bundle();
   }
 
   public String getId() {

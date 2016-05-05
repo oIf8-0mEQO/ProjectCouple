@@ -7,7 +7,6 @@ package group50.coupletones.network;
 
 import android.content.Context;
 import android.os.AsyncTask;
-
 import group50.coupletones.network.message.MessageReceiver;
 import group50.coupletones.network.message.OutgoingMessage;
 import group50.coupletones.util.Identifiable;
@@ -30,6 +29,11 @@ public interface NetworkManager {
    */
   AsyncTask<Void, Void, Boolean> register(Context context);
 
+  /**
+   * Shorthand method for register for receives that are identifiable
+   *
+   * @param receiver A message receiver that implements Identifiable
+   */
   default void register(MessageReceiver receiver) {
     if (receiver instanceof Identifiable) {
       register(((Identifiable) receiver).getId(), receiver);

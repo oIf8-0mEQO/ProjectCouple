@@ -21,6 +21,10 @@ public interface Message {
     return getData().getFloat(key);
   }
 
+  default double getDouble(String key) {
+    return getData().getDouble(key);
+  }
+
   default int getInt(String key) {
     return getData().getInt(key);
   }
@@ -32,6 +36,11 @@ public interface Message {
 
   default Message setFloat(String key, float value) {
     getData().getFloat(key, value);
+    return this;
+  }
+
+  default Message setDouble(String key, double value) {
+    getData().getDouble(key, value);
     return this;
   }
 

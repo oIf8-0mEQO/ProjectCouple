@@ -1,7 +1,6 @@
-package group50.coupletones.network;
+package group50.coupletones.network.message;
 
 import android.os.Bundle;
-
 import org.hashids.Hashids;
 
 /**
@@ -32,7 +31,6 @@ public class OutgoingMessage implements Message {
     this.id = hashId.encode(currentId++);
   }
 
-  @Override
   public String getId() {
     return id;
   }

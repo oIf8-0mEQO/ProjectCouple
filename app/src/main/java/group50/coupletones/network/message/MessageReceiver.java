@@ -1,6 +1,4 @@
-package group50.coupletones.network.receiver;
-
-import group50.coupletones.network.Message;
+package group50.coupletones.network.message;
 
 /**
  * Represents an object that can handle a message reception

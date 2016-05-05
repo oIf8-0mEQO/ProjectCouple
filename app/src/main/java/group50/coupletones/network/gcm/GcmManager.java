@@ -4,23 +4,17 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-
-import java.io.IOException;
-import java.util.HashMap;
-
-import group50.coupletones.network.IncomingMessage;
-import group50.coupletones.network.Message;
 import group50.coupletones.network.NetworkManager;
-import group50.coupletones.network.OutgoingMessage;
-import group50.coupletones.network.receiver.MessageReceiver;
+import group50.coupletones.network.message.IncomingMessage;
+import group50.coupletones.network.message.MessageReceiver;
+import group50.coupletones.network.message.OutgoingMessage;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Function;
 
 import javax.inject.Inject;
-
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * @author sharmaine

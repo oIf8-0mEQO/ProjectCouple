@@ -1,8 +1,6 @@
-package group50.coupletones.network;
+package group50.coupletones.network.message;
 
 import android.os.Bundle;
-
-import org.hashids.Hashids;
 
 /**
  * Created by sharmaine on 5/4/16.

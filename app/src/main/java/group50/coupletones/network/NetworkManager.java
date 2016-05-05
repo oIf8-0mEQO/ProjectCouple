@@ -2,8 +2,8 @@ package group50.coupletones.network;
 
 import android.content.Context;
 import android.os.AsyncTask;
-
-import group50.coupletones.network.receiver.MessageReceiver;
+import group50.coupletones.network.message.MessageReceiver;
+import group50.coupletones.network.message.OutgoingMessage;
 import group50.coupletones.util.function.Function;
 
 /**

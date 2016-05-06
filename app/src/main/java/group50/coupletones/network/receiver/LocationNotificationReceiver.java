@@ -28,7 +28,7 @@ public class LocationNotificationReceiver implements MessageReceiver, Identifiab
 
   @Override
   public void onReceive(Message message) {
-    String locationName = message.getString("location");
+    String locationName = message.getString("name");
     String locationTime = message.getString("time");
     // TODO: Make strings
     String title = "Partner visited " + locationName;

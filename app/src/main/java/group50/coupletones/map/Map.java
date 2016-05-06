@@ -3,11 +3,15 @@ package group50.coupletones.map;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.text.InputType;
 import android.util.Log;
+import android.widget.EditText;
+
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -31,12 +35,21 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     public void onMapClick(LatLng latLng) {
       AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
       builder.setTitle(R.string.location_name_box);
-      String name = mockMethod2();//TODO: properly implement this method call
-      FavoriteLocation clickedLocation = new FavoriteLocation(name, latLng);
-      app.getLocalUser().getFavoriteLocations().add(clickedLocation);
-      CameraUpdate update = CameraUpdateFactory.newLatLng(clickedLocation.getPosition());
-      mMap.moveCamera(update);
-      populateMap();
+      final EditText input = new EditText(getContext());
+      input.setInputType(InputType.TYPE_CLASS_TEXT);
+      builder.setView(input);
+      builder.setPositiveButton(R.string.location_name_accept, new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+          String name = input.getText().toString();
+          FavoriteLocation clickedLocation = new FavoriteLocation(name, latLng);
+          app.getLocalUser().getFavoriteLocations().add(clickedLocation);
+          CameraUpdate update = CameraUpdateFactory.newLatLng(clickedLocation.getPosition());
+          mMap.moveCamera(update);
+          populateMap();
+        }
+      });
+      builder.show();
     }
   };
 
@@ -82,6 +95,7 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     locationManager.requestLocationUpdates(locationProvider, 0, 0, new MovementListener(proximityManager, app.getLocalUser().getFavoriteLocations()));
     this.populateMap();
     mMap.setOnMapClickListener(clickListener);
+    mMap.setMyLocationEnabled(true);
   }
 
   public void registerNotificationObserver(ProximityObserver observer) {
@@ -123,9 +137,5 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     mMap.moveCamera(update);
   }
 
-
-  private String mockMethod2() {
-    return "test name";
-  }
 
 }

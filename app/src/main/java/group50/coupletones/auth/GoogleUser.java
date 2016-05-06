@@ -5,7 +5,11 @@
 
 package group50.coupletones.auth;
 
+import android.content.SharedPreferences;
+
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
+import group50.coupletones.controller.AddPartnerActivity;
 
 /**
  * Represents a User logged in via Google sign in.
@@ -70,16 +74,23 @@ public class GoogleUser implements LocalUser {
    * Save User data onto phone
    */
   @Override
-  public void save(){
-    // TODO: Implementation
+  public void save(Storage s){
+  // TODO: Implementation
+    SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
+    SharedPreferences.Editor editor = sharedPreferences.edit();
+    editor.putString("Partner's Name: ", );
+    editor.putString("Partner's Email: ", );
+    editor.apply();
   }
 
   /**
    * Load User data from phone
    */
   @Override
-  public void load(){
+  public void load(Storage S){
     // TODO: Implementation
+    SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
+
   }
 
 

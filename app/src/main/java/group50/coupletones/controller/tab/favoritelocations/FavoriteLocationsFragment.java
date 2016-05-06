@@ -1,4 +1,4 @@
-package group50.coupletones.controller.tab;
+package group50.coupletones.controller.tab.favoritelocations;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
+import group50.coupletones.controller.tab.TabFragment;
 
 import javax.inject.Inject;
 

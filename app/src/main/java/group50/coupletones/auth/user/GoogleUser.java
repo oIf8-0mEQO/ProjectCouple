@@ -3,14 +3,14 @@
  * @since 4/22/16.
  */
 
-package group50.coupletones.auth;
+package group50.coupletones.auth.user;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import group50.coupletones.map.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.FavoriteLocation;
+import group50.coupletones.util.storage.Storage;
 
 import java.util.ArrayList;
 import java.util.List;
-import group50.coupletones.util.storage.Storage;
 
 /**
  * Represents a User logged in via Google sign in.

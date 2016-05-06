@@ -1,6 +1,4 @@
-package group50.coupletones;
-
-import android.widget.ImageView;
+package group50.coupletones.controller.tab.partnerslocations;
 
 /**
  * Created by joannecho on 5/5/16.
@@ -17,20 +15,20 @@ public class PartnerLocation {
     return name;
   }
 
-  public String getAddress() {
-    return address;
-  }
-
-  public int getIconId() {
-    return iconId;
-  }
-
   public void setName(String name) {
     this.name = name;
   }
 
+  public String getAddress() {
+    return address;
+  }
+
   public void setAddress(String address) {
     this.address = address;
+  }
+
+  public int getIconId() {
+    return iconId;
   }
 
   public void setIconId(int iconId) {

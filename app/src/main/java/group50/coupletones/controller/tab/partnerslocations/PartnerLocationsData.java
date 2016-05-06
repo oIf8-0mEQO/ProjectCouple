@@ -1,10 +1,9 @@
-package group50.coupletones;
+package group50.coupletones.controller.tab.partnerslocations;
+
+import group50.coupletones.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import group50.coupletones.PartnerLocation;
-import group50.coupletones.R;
 
 /**
  * Created by joannecho on 5/5/16.

@@ -1,4 +1,4 @@
-package group50.coupletones.map;
+package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.location.Address;
 import com.google.android.gms.maps.model.LatLng;

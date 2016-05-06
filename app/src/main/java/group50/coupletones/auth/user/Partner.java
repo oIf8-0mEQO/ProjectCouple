@@ -1,4 +1,4 @@
-package group50.coupletones.auth;
+package group50.coupletones.auth.user;
 
 /**
  * Created by brandon on 5/5/2016.

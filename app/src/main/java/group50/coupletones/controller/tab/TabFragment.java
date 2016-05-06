@@ -13,12 +13,12 @@ import android.view.ViewGroup;
  *
  * @author Henry Mao
  */
-abstract class TabFragment<L> extends Fragment {
+public abstract class TabFragment<L> extends Fragment {
 
   private final Class<L> listenerClass;
   protected L listener;
 
-  TabFragment(Class<L> listenerClass) {
+  public TabFragment(Class<L> listenerClass) {
     this.listenerClass = listenerClass;
   }
 

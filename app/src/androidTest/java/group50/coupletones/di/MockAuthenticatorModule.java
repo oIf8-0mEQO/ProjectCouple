@@ -3,7 +3,7 @@ package group50.coupletones.di;
 import dagger.Module;
 import dagger.Provides;
 import group50.coupletones.auth.Authenticator;
-import group50.coupletones.auth.User;
+import group50.coupletones.auth.user.User;
 
 import javax.inject.Singleton;
 

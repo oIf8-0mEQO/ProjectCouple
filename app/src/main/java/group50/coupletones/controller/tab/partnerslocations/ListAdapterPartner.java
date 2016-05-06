@@ -1,7 +1,6 @@
-package group50.coupletones.controller.tab;
+package group50.coupletones.controller.tab.partnerslocations;
 
 import android.content.Context;
-import android.location.Address;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,19 +9,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import group50.coupletones.R;
-import group50.coupletones.map.FavoriteLocation;
 
 import java.util.List;
 
 /**
- * Created by sharmaine on 4/29/16.
+ * Created by joannecho on 5/5/16.
  */
-public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteLocationsListAdapter.ListViewHolder> {
+public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.ListViewHolder> {
 
-  private List<FavoriteLocation> data;
+  private List<PartnerLocation> data;
   private LayoutInflater inflater;
 
-  public FavoriteLocationsListAdapter(List<FavoriteLocation> data, Context context) {
+  public ListAdapterPartner(List<PartnerLocation> data, Context context) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
   }
@@ -35,14 +33,10 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
 
   @Override
   public void onBindViewHolder(ListViewHolder holder, int position) {
-    FavoriteLocation location = data.get(position);
+    PartnerLocation location = data.get(position);
     holder.name.setText(location.getName());
-    holder.address.setText(location.getName());
-    Address address = location.getAddress();
-    holder.address.setText(address != null ? address.getFeatureName() : "");
-    holder.icon.setImageResource(R.drawable.target_icon);
-    //TODO: Implement custom icons?
-    //holder.icon.setImageResource(location.getIconId());
+    holder.address.setText(location.getAddress());
+    holder.icon.setImageResource(location.getIconId());
   }
 
   @Override
@@ -67,4 +61,3 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
     }
   }
 }
-

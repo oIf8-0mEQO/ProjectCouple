@@ -12,6 +12,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.Status;
 import group50.coupletones.CoupleTones;
+import group50.coupletones.auth.user.GoogleUser;
+import group50.coupletones.auth.user.User;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.OutgoingMessage;
 import group50.coupletones.util.Taggable;

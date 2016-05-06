@@ -2,8 +2,8 @@ package group50.coupletones.di.module;
 
 import dagger.Module;
 import dagger.Provides;
-import group50.coupletones.map.MapProximityManager;
-import group50.coupletones.map.ProximityManager;
+import group50.coupletones.controller.tab.favoritelocations.map.MapProximityManager;
+import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 
 import javax.inject.Singleton;
 

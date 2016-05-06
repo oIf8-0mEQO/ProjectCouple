@@ -3,9 +3,9 @@
  * @since 4/22/16.
  */
 
-package group50.coupletones.auth;
+package group50.coupletones.auth.user;
 
-import group50.coupletones.map.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.FavoriteLocation;
 
 import java.util.List;
 

@@ -2,11 +2,11 @@ package group50.coupletones;
 
 import android.location.Location;
 import com.google.android.gms.maps.model.LatLng;
-import group50.coupletones.auth.User;
-import group50.coupletones.map.FavoriteLocation;
-import group50.coupletones.map.MapProximityManager;
-import group50.coupletones.map.ProximityObserver;
-import group50.coupletones.map.VisitedLocation;
+import group50.coupletones.auth.user.User;
+import group50.coupletones.controller.tab.favoritelocations.map.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.MapProximityManager;
+import group50.coupletones.controller.tab.favoritelocations.map.ProximityObserver;
+import group50.coupletones.controller.tab.favoritelocations.map.VisitedLocation;
 import org.junit.Test;
 
 import java.util.ArrayList;

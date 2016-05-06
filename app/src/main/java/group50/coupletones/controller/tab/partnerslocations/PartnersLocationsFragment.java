@@ -1,4 +1,4 @@
-package group50.coupletones.controller.tab;
+package group50.coupletones.controller.tab.partnerslocations;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,11 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import group50.coupletones.ListAdapterPartner;
-import group50.coupletones.PartnerLocationsData;
-import group50.coupletones.ListAdapter;
 import group50.coupletones.R;
+import group50.coupletones.controller.tab.TabFragment;
 
 /**
  * A simple {@link Fragment} subclass for the Favorite Locations tab.
@@ -33,9 +30,6 @@ public class PartnersLocationsFragment extends TabFragment<PartnersLocationsFrag
    */
   public static PartnersLocationsFragment build() {
     PartnersLocationsFragment fragment = new PartnersLocationsFragment();
-    Bundle args = new Bundle();
-    // TODO: Set arguments
-    fragment.setArguments(args);
     return fragment;
   }
 

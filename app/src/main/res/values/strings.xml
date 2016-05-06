@@ -29,5 +29,5 @@
     <string name="connection">Connect</string>
     <string name="skip">Skip this Step</string>
     <string name="email_address">Partner\'s Email Address</string>
-
+    <string name="location_name_box">New Location</string>
 </resources>

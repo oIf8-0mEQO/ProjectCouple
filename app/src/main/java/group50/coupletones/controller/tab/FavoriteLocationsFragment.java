@@ -53,14 +53,6 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
   }
 
   @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    if (getArguments() != null) {
-      //TODO: Read arguments
-    }
-  }
-
-  @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_favorite_locations, container, false);
@@ -68,15 +60,15 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
     favesList.setLayoutManager(new LinearLayoutManager(getActivity()));
     adapter = new ListAdapter(FaveLocationsData.getFaveLocations(), getActivity());
     favesList.setAdapter(adapter);
-
     v.findViewById(R.id.btn_add).setOnClickListener(this);
-
     return v;
   }
 
   @Override
-  public void onClick(View v) {
-    switch (v.getId()) {
+  public void onClick(View v)
+  {
+    switch (v.getId())
+    {
       case R.id.btn_add:
         MainActivity act = (MainActivity) getActivity();
         act.setFragment(act.getTabs().get(R.id.map));

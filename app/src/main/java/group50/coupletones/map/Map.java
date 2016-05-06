@@ -2,6 +2,7 @@ package group50.coupletones.map;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Service;
 import android.content.ContextWrapper;
 import android.location.Address;
@@ -30,13 +31,19 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
+import group50.coupletones.auth.GoogleUser;
 import group50.coupletones.map.FavoriteLocation;
 
 public class Map extends SupportMapFragment implements OnMapReadyCallback {
 
+  @Inject
+  public CoupleTones app;
+
   private GoogleMap mMap;
-  private List<FavoriteLocation> favLocations = new LinkedList<FavoriteLocation>();
   //private Geocoder geocoder;
   private ProximityHandler proximityHandler = new NearbyLocationHandler();
 
@@ -54,8 +61,13 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
   GoogleMap.OnMapClickListener clickListener = new GoogleMap.OnMapClickListener() {
     @Override
     public void onMapClick(LatLng latLng) {
+      AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+      builder.setTitle(R.string.location_name_box);
       String name = mockMethod2();//TODO: properly implement this method call
-      favLocations.add(new FavoriteLocation(name, latLng));
+      FavoriteLocation clickedLocation = new FavoriteLocation(name, latLng);
+      app.getLocalUser().getFavoriteLocations().add(clickedLocation);
+      CameraUpdate update = CameraUpdateFactory.newLatLng(clickedLocation.getPosition());
+      mMap.moveCamera(update);
       populateMap();
     }
   };
@@ -63,6 +75,7 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    CoupleTones.component().inject(this);
     getMapAsync(this);
     //geocoder = new Geocoder(getActivity().getApplicationContext());
   }
@@ -87,7 +100,7 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
       Log.d("test2", "outs");
       mMap.setMyLocationEnabled(true);
     }
-    locationManager.requestLocationUpdates(locationProvider, 0, 0, new MovementListener(proximityHandler, favLocations));
+    locationManager.requestLocationUpdates(locationProvider, 0, 0, new MovementListener(proximityHandler, app.getLocalUser().getFavoriteLocations()));
     this.populateMap();
     mMap.setOnMapClickListener(clickListener);
   }
@@ -103,7 +116,7 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     mMap.clear();
     MarkerOptions markerSettings = new MarkerOptions();
     markerSettings.draggable(false);
-    for (FavoriteLocation i : favLocations) {
+    for (FavoriteLocation i : app.getLocalUser().getFavoriteLocations()) {
       markerSettings.position(i.getPosition());
       markerSettings.title(i.getName());
       mMap.addMarker(markerSettings);
@@ -126,7 +139,7 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
   }*/
 
   public void addLocation(FavoriteLocation location) {
-    favLocations.add(location);
+    app.getLocalUser().getFavoriteLocations().add(location);
     CameraUpdate update = CameraUpdateFactory.newLatLng(location.getPosition());
     mMap.moveCamera(update);
   }

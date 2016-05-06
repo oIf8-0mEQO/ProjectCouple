@@ -13,6 +13,7 @@ import group50.coupletones.controller.tab.PartnersLocationsFragment;
 import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.map.Map;
+import group50.coupletones.network.NetworkManager;
 import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;

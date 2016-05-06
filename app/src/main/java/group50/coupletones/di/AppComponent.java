@@ -1,5 +1,7 @@
 package group50.coupletones.di;
 
+import com.google.android.gms.maps.SupportMapFragment;
+
 import dagger.Component;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.Authenticator;
@@ -10,6 +12,7 @@ import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.AuthenticatorModule;
+import group50.coupletones.map.Map;
 import group50.coupletones.di.module.NetworkModule;
 import group50.coupletones.di.module.ProximityModule;
 import group50.coupletones.map.ProximityHandler;
@@ -44,6 +47,8 @@ public interface AppComponent {
   ProximityHandler proximity();
 
   void inject(AddPartnerActivity activity);
+
+  void inject(Map fragment);
 
   void inject(MainActivity activity);
 

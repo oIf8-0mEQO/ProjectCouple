@@ -27,7 +27,7 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
   public CoupleTones app;
 
   private RecyclerView favesList;
-  private ListAdapter adapter;
+  private FavoriteLocationsListAdapter adapter;
   private CardView cv;
 
   public FavoriteLocationsFragment() {
@@ -62,7 +62,7 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
     View v = inflater.inflate(R.layout.fragment_favorite_locations, container, false);
     favesList = (RecyclerView) v.findViewById(R.id.favorite_locations_list);
     favesList.setLayoutManager(new LinearLayoutManager(getActivity()));
-    adapter = new ListAdapter(app.getLocalUser().getFavoriteLocations(), getActivity());
+    adapter = new FavoriteLocationsListAdapter(app.getLocalUser().getFavoriteLocations(), getActivity());
     favesList.setAdapter(adapter);
     v.findViewById(R.id.btn_add).setOnClickListener(this);
     return v;

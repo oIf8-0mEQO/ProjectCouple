@@ -66,7 +66,6 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     super.onCreate(savedInstanceState);
     CoupleTones.component().inject(this);
     getMapAsync(this);
-    //geocoder = new Geocoder(getActivity().getApplicationContext());
   }
 
 
@@ -90,10 +89,6 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     this.populateMap();
     mMap.setOnMapClickListener(clickListener);
     mMap.setMyLocationEnabled(true);
-  }
-
-  public void registerNotificationObserver(ProximityObserver observer) {
-    proximityManager.register(observer);
   }
 
   /**

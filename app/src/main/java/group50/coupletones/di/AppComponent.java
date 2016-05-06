@@ -1,5 +1,6 @@
 package group50.coupletones.di;
 
+import android.location.Geocoder;
 import dagger.Component;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.Authenticator;
@@ -9,13 +10,8 @@ import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.SettingsFragment;
-import group50.coupletones.di.module.ApplicationModule;
-import group50.coupletones.di.module.AuthenticatorModule;
-import group50.coupletones.di.module.NetworkModule;
-import group50.coupletones.di.module.ProximityModule;
-import group50.coupletones.map.LocationService;
-import group50.coupletones.map.Map;
-import group50.coupletones.map.ProximityManager;
+import group50.coupletones.di.module.*;
+import group50.coupletones.map.*;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.gcm.GcmMessageHandler;
 
@@ -33,7 +29,8 @@ import javax.inject.Singleton;
     ApplicationModule.class,
     AuthenticatorModule.class,
     NetworkModule.class,
-    ProximityModule.class
+    ProximityModule.class,
+    GeocoderModule.class
   }
 )
 public interface AppComponent {
@@ -45,6 +42,12 @@ public interface AppComponent {
   NetworkManager network();
 
   ProximityManager proximity();
+
+  Geocoder geocoder();
+
+  void inject(VisitedLocation fragment);
+
+  void inject(FavoriteLocation fragment);
 
   void inject(FavoriteLocationsFragment fragment);
 

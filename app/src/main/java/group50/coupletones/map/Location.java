@@ -1,5 +1,6 @@
 package group50.coupletones.map;
 
+import android.location.Address;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -7,8 +8,9 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public interface Location {
 
-  public LatLng getPosition();
+  LatLng getPosition();
 
-  public String getName();
+  String getName();
 
+  Address getAddress();
 }

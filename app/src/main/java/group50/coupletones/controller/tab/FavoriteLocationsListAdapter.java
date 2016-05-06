@@ -1,6 +1,7 @@
 package group50.coupletones.controller.tab;
 
 import android.content.Context;
+import android.location.Address;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,12 +17,12 @@ import java.util.List;
 /**
  * Created by sharmaine on 4/29/16.
  */
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
+public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteLocationsListAdapter.ListViewHolder> {
 
   private List<FavoriteLocation> data;
   private LayoutInflater inflater;
 
-  public ListAdapter(List<FavoriteLocation> data, Context context) {
+  public FavoriteLocationsListAdapter(List<FavoriteLocation> data, Context context) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
   }
@@ -37,9 +38,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     FavoriteLocation location = data.get(position);
     holder.name.setText(location.getName());
     holder.address.setText(location.getName());
-    //TODO: Implement these methods
-    //holder.address.setText(location.getAddress());
+    Address address = location.getAddress();
+    holder.address.setText(address != null ? address.getFeatureName() : "");
     holder.icon.setImageResource(R.drawable.target_icon);
+    //TODO: Implement custom icons?
     //holder.icon.setImageResource(location.getIconId());
   }
 

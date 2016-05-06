@@ -205,9 +205,21 @@
                         android:id="@+id/add_partner_button"
                         android:src="@drawable/addbox_button"
                         android:background="@color/transparentBg"
-                        android:layout_toEndOf="@+id/partner_name"
                         android:layout_marginLeft="30dp"
-                        android:layout_alignTop="@+id/partner_name" />
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"/>
+
+                    <!-- No Parter Message -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/null_partner_name"
+                        android:textSize="25sp"
+                        android:textColor="@color/subtitleColor"
+                        android:id="@+id/null_partner"
+                        android:layout_below="@+id/partner_name_header"
+                        android:layout_marginTop="10dp"
+                        android:layout_centerHorizontal="true"/>
 
                 </RelativeLayout>
             </LinearLayout>

@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
@@ -15,12 +18,13 @@ import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.User;
 import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
+import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 
 /**
  * A simple {@link Fragment} subclass for the Settings tab.
- * Activities that contain this fragment must implement the {@link Listener} interface to handle interaction events.
+ * Activities that contains this fragment must implement the {@link Listener} interface to handle interaction events.
  * Use the {@link SettingsFragment#build} factory class to create an instance of this fragment.
  */
 public class SettingsFragment extends TabFragment<SettingsFragment.Listener> implements View.OnClickListener {
@@ -81,31 +85,52 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     yourName.setText(app.getLocalUser().getName());
     TextView yourAccountText = (TextView) v.findViewById(R.id.your_account_header);
     TextView yourAccount = (TextView) v.findViewById(R.id.your_email);
+    TextView null_partner = (TextView) v.findViewById(R.id.null_partner);
+
     yourAccount.setText(app.getLocalUser().getEmail());
     yourProfileText.setTypeface(pierSans);
     yourNameText.setTypeface(pierSans);
     yourName.setTypeface(pierSans);
     yourAccountText.setTypeface(pierSans);
     yourAccount.setTypeface(pierSans);
+    null_partner.setTypeface(pierSans);
 
     // Partner's Profile CardView
-    // TODO: Change partner's name/email to get keys from backend
+    // TODO: Change partner's name/email to getCollection keys from backend
     TextView partnersProfileText = (TextView) v.findViewById(R.id.partners_profile_text);
     TextView partnerNameText = (TextView) v.findViewById(R.id.partner_name_header);
     TextView partnerName = (TextView) v.findViewById(R.id.partner_name);
     TextView partnerAccountText = (TextView) v.findViewById(R.id.partner_account_header);
     TextView partnerAccount = (TextView) v.findViewById(R.id.partner_email);
 
+    ImageButton add_partner_button = (ImageButton) v.findViewById(R.id.add_partner_button);
+
+    // Control visibility and customizability of Partner Name and Partner Email
     if (app.getLocalUser().getPartner() != null) {
       partnerName.setText(app.getLocalUser().getPartner().getName());
       partnerAccount.setText(app.getLocalUser().getPartner().getEmail());
+      partnerName.setVisibility(View.VISIBLE);
+      partnerAccount.setVisibility(View.VISIBLE);
+
     }
+
+    else{
+      add_partner_button.setVisibility(View.VISIBLE);
+      partnerNameText.setVisibility(View.INVISIBLE);
+      partnerName.setVisibility(View.INVISIBLE);
+      partnerAccountText.setVisibility(View.INVISIBLE);
+      partnerAccount.setVisibility(View.INVISIBLE);
+      null_partner.setVisibility(View.VISIBLE);
+
+    }
+
     //TODO: Handle when it's null
     partnersProfileText.setTypeface(pierSans);
     partnerNameText.setTypeface(pierSans);
     partnerName.setTypeface(pierSans);
     partnerAccountText.setTypeface(pierSans);
     partnerAccount.setTypeface(pierSans);
+
     // Add Partner ImageButton
     v.findViewById(R.id.add_partner_button).setOnClickListener(this);
 
@@ -136,13 +161,9 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
 
       // Allows user to disconnect from partner.
       case R.id.disconnect_button:
-        /** TODO: Once server is done, break connection between partners
-         *
-         *  -Set partnerPtr = nullptr
-         *  -Clear partner's location history (3am function call?)
-         *  -Clear partner's CardView so both TextFields are empty
-         *  -???
-         */
+        app.getLocalUser().setPartner(null);
+        app.getLocalUser().save(new Storage(getActivity()
+          .getSharedPreferences("user", getActivity().MODE_PRIVATE)));
         break;
 
       // signOut() is called to sign out the user.
@@ -163,7 +184,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
 
 
   /**
-   * This interface must be implemented by activities that contain this
+   * This interface must be implemented by activities that contains this
    * fragment to allow an interaction in this fragment to be communicated
    * to the activity and potentially other fragments contained in that
    * activity.

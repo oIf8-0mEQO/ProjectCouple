@@ -19,6 +19,7 @@ import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.map.Map;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.util.Taggable;
+import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements
         // The user tapped on the notification.
         // This means the user wants to add a new partner
         app.getLocalUser().setPartner(new Partner(extras.getString("name"), extras.getString("email")));
+        app.getLocalUser().save(new Storage(getSharedPreferences("user", MODE_PRIVATE)));
       }
     }
   }

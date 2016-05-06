@@ -16,7 +16,7 @@ import group50.coupletones.R;
 
 /**
  * A simple {@link Fragment} subclass for the Favorite Locations tab.
- * Activities that contain this fragment must implement the {@link Listener} interface to handle interaction events.
+ * Activities that contains this fragment must implement the {@link Listener} interface to handle interaction events.
  * Use the {@link PartnersLocationsFragment#build} factory class to create an instance of this fragment.
  */
 public class PartnersLocationsFragment extends TabFragment<PartnersLocationsFragment.Listener> {
@@ -44,13 +44,6 @@ public class PartnersLocationsFragment extends TabFragment<PartnersLocationsFrag
     return R.layout.fragment_partners_locations;
   }
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    if (getArguments() != null) {
-      //TODO: Read arguments
-    }
-  }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,

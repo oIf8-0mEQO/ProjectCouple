@@ -10,6 +10,7 @@ import group50.coupletones.map.FavoriteLocation;
 
 import java.util.ArrayList;
 import java.util.List;
+import group50.coupletones.util.storage.Storage;
 
 /**
  * Represents a User logged in via Google sign in.
@@ -70,6 +71,7 @@ public class GoogleUser implements LocalUser {
 
   /**
    * Sets partner
+   *
    * @param partner
    */
   @Override
@@ -81,17 +83,35 @@ public class GoogleUser implements LocalUser {
    * Save User data onto phone
    */
   @Override
-  public void save(){
-    // TODO: Implementation
+  public void save(Storage s) {
+    if (getPartner() != null) {
+      s.setString("partnerName", getPartner().getName());
+      s.setString("partnerEmail", getPartner().getEmail());
+    } else {
+      s.delete("partnerName");
+      s.delete("partnerEmail");
+    }
+
+    s.setBoolean("hasPartner", getPartner() != null);
+
+    // TODO: Implement Save FaveLocations
   }
 
   /**
    * Load User data from phone
    */
   @Override
-  public void load(){
-    // TODO: Implementation
+  public void load(Storage s) {
+    if (s.contains("hasPartner") && s.getBoolean("hasPartner")) {
+      String name = s.getString("partnerName");
+      String email = s.getString("partnerEmail");
+      Partner partner = new Partner(name, email);
+      setPartner(partner);
+    } else {
+      setPartner(null);
+    }
+
+    // TODO: Implement Load FaveLocations
+
   }
-
-
 }

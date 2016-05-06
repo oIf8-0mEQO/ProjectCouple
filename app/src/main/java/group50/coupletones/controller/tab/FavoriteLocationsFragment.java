@@ -17,7 +17,7 @@ import javax.inject.Inject;
 
 /**
  * A simple {@link Fragment} subclass for the Favorite Locations tab.
- * Activities that contain this fragment must implement the {@link Listener} interface to handle interaction events.
+ * Activities that contains this fragment must implement the {@link Listener} interface to handle interaction events.
  * Use the {@link FavoriteLocationsFragment#build} factory class to create an instance of this fragment.
  */
 public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFragment.Listener>

@@ -1,5 +1,6 @@
 package group50.coupletones.auth;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -16,6 +17,7 @@ import group50.coupletones.network.message.OutgoingMessage;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Function;
+import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 
@@ -67,7 +69,7 @@ public class GoogleAuthenticator implements
 
   /**
    * Binds the authenticator with a given activity.
-   * Required to get the authenticator working
+   * Required to getCollection the authenticator working
    *
    * @param activity The activity that is attempting to initiate sign in
    */
@@ -200,6 +202,7 @@ public class GoogleAuthenticator implements
       // Signed in successfully, store authenticated user
       GoogleUser localUser = new GoogleUser(result.getSignInAccount());
       app.setLocalUser(localUser);
+      app.getLocalUser().load(new Storage(activity.getSharedPreferences("user", Context.MODE_PRIVATE)));
 
       // Notify server of registration
       network.send(

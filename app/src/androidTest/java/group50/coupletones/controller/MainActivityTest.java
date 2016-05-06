@@ -119,7 +119,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
       // There should be only one fragment active upon launch
       assertThat(fragments).hasSize(2);
       // Test to make sure the fragment is a PartnersLocationsFragment
-      assertThat(fragments.get(1)).isOfAnyClassIn(FavoriteLocationsFragment.class);
+      assertThat(fragments.getCollection(1)).isOfAnyClassIn(FavoriteLocationsFragment.class);
     });
   }*/
 

@@ -5,11 +5,8 @@
 
 package group50.coupletones.auth;
 
-import group50.coupletones.util.storage.Storage;
-
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-
-import group50.coupletones.controller.AddPartnerActivity;
+import group50.coupletones.util.storage.Storage;
 
 /**
  * Represents a User logged in via Google sign in.
@@ -93,7 +90,7 @@ public class GoogleUser implements LocalUser {
   @Override
   public void load(Storage s) {
 
-    if (s.contain("hasPartner"))
+    if (s.contains("hasPartner"))
       if (s.getBoolean("hasPartner")) {
         String name = s.getString("name");
         String email = s.getString("email");

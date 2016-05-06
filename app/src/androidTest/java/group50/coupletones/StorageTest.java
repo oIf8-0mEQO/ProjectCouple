@@ -2,15 +2,10 @@ package group50.coupletones;
 
 import android.app.Activity;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.ActivityInstrumentationTestCase2;
-
+import group50.coupletones.util.storage.Storage;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import group50.coupletones.util.storage.Storage;
-
-import static junit.framework.Assert.assertEquals;
-import static org.assertj.core.api.Java6Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
@@ -33,7 +28,7 @@ public class StorageTest {
     public void testContain() {
 
     storage.write("mac", 0);
-    assertTrue(storage.contain("mac"));
+      assertTrue(storage.contains("mac"));
   }
 
 

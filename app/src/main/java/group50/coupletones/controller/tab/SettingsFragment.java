@@ -20,7 +20,7 @@ import javax.inject.Inject;
 
 /**
  * A simple {@link Fragment} subclass for the Settings tab.
- * Activities that contain this fragment must implement the {@link Listener} interface to handle interaction events.
+ * Activities that contains this fragment must implement the {@link Listener} interface to handle interaction events.
  * Use the {@link SettingsFragment#build} factory class to create an instance of this fragment.
  */
 public class SettingsFragment extends TabFragment<SettingsFragment.Listener> implements View.OnClickListener {
@@ -89,7 +89,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     yourAccount.setTypeface(pierSans);
 
     // Partner's Profile CardView
-    // TODO: Change partner's name/email to get keys from backend
+    // TODO: Change partner's name/email to getCollection keys from backend
     TextView partnersProfileText = (TextView) v.findViewById(R.id.partners_profile_text);
     TextView partnerNameText = (TextView) v.findViewById(R.id.partner_name_header);
     TextView partnerName = (TextView) v.findViewById(R.id.partner_name);
@@ -165,7 +165,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
 
 
   /**
-   * This interface must be implemented by activities that contain this
+   * This interface must be implemented by activities that contains this
    * fragment to allow an interaction in this fragment to be communicated
    * to the activity and potentially other fragments contained in that
    * activity.

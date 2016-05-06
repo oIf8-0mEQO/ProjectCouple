@@ -1,6 +1,5 @@
 package group50.coupletones.controller.tab;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -9,14 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import group50.coupletones.FaveLocationsData;
 import group50.coupletones.ListAdapter;
 import group50.coupletones.R;
 
 /**
  * A simple {@link Fragment} subclass for the Favorite Locations tab.
- * Activities that contain this fragment must implement the {@link Listener} interface to handle interaction events.
+ * Activities that contains this fragment must implement the {@link Listener} interface to handle interaction events.
  * Use the {@link FavoriteLocationsFragment#build} factory class to create an instance of this fragment.
  */
 public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFragment.Listener> {
@@ -65,7 +63,7 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
     }
 
     /**
-     * This interface must be implemented by activities that contain this
+     * This interface must be implemented by activities that contains this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.

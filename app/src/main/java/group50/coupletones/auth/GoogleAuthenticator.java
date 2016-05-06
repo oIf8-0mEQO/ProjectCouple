@@ -67,7 +67,7 @@ public class GoogleAuthenticator implements
 
   /**
    * Binds the authenticator with a given activity.
-   * Required to get the authenticator working
+   * Required to getCollection the authenticator working
    *
    * @param activity The activity that is attempting to initiate sign in
    */

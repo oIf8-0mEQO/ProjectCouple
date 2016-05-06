@@ -11,7 +11,7 @@ public interface Message {
   Bundle getData();
 
   /**
-   * Short-hand functions to get various data from the message.
+   * Short-hand functions to getCollection various data from the message.
    */
   default String getString(String key) {
     return getData().getString(key);

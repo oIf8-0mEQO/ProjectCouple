@@ -2,96 +2,107 @@ package group50.coupletones.util.storage;
 
 import android.content.SharedPreferences;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 
 /**
  * Created by Calvin on 4/24/2016.
  */
-
 public class Storage {
-  SharedPreferences.Editor editor;
-  String suffix;
-  int collectionLength;
-  private SharedPreferences settings;
+  private final SharedPreferences preference;
+  private final String suffix;
 
-  public Storage(SharedPreferences preferences) {
-    settings = preferences;
-    editor = settings.edit();
-    suffix = "";
-    collectionLength = 0;
+  public Storage(SharedPreferences preferences, String suffix) {
+    this.preference = preferences;
+    this.suffix = suffix;
   }
 
+  public Storage(SharedPreferences preferences) {
+    this(preferences, "");
+  }
 
-  public boolean contain(String name) {
-    return settings.contains(name + suffix);
+  public boolean contains(String name) {
+    return preference.contains(name + suffix);
   }
 
 
   public int getInt(String name) {
-    return settings.getInt(name + suffix, 0);
+    return preference.getInt(name + suffix, 0);
   }
 
 
   public float getFloat(String name) {
-    return settings.getFloat(name + suffix, 0);
+    return preference.getFloat(name + suffix, 0);
   }
 
 
   public String getString(String name) {
-    return settings.getString(name + suffix, "");
+    return preference.getString(name + suffix, null);
   }
 
   public boolean getBoolean(String name) {
-    return settings.getBoolean(name + suffix, false);
+    return preference.getBoolean(name + suffix, false);
   }
 
 
-  public Collection<Storable> get(String name, Class<?> type) {
-    Collection<Storable> list = new ArrayList<Storable>();
-    try {
-      Storable object = (Storable) type.newInstance();
-      for (int i = 0; i < collectionLength; i++) {
-        object.load(this);
-        list.add(object);
-        suffix = suffix.substring(0, suffix.length() - 1);
+  public Collection<Storable> getCollection(String name, Class<?> type) {
+    Collection<Storable> list = new LinkedList<>();
+
+    if (contains(name)) {
+      int collectionLength = getInt(name);
+
+      try {
+        Storable object = (Storable) type.newInstance();
+        for (int i = 0; i < collectionLength; i++) {
+          Storage arrStorage = new Storage(preference, i + "");
+          object.load(arrStorage);
+          list.add(object);
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
       }
-    } catch (Exception e) {
-      e.printStackTrace();
     }
+
     return list;
   }
 
 
-  public void setString(String name, int value) {
-    editor.putInt(name + suffix, value);
-    editor.commit();
+  public void setInt(String name, int value) {
+    preference
+      .edit()
+      .putInt(name + suffix, value)
+      .apply();
   }
 
 
-  public void setString(String name, float value) {
-    editor.putFloat(name + suffix, value);
-    editor.commit();
+  public void setFloat(String name, float value) {
+    preference
+      .edit()
+      .putFloat(name + suffix, value)
+      .apply();
   }
 
 
   public void setString(String name, String value) {
-    editor.putString(name + suffix, value);
-    editor.commit();
+    preference
+      .edit().putString(name + suffix, value)
+      .apply();
   }
 
   public void setBoolean(String name, boolean value) {
-    editor.putBoolean(name + suffix, value);
-    editor.commit();
+    preference
+      .edit()
+      .putBoolean(name + suffix, value)
+      .apply();
   }
 
 
-  public void setCollection(String name, Collection<Storable> list) {
-    collectionLength = 0;
-    for (Storable obj : list) {
-      obj.save(this);
-      suffix = suffix + "0";
-      collectionLength++;
+  public void setCollection(String name, Collection<Storable> collection) {
+    int i = 0;
+    for (Storable obj : collection) {
+      obj.save(new Storage(preference, i + ""));
+      i++;
     }
+    setInt(name, i);
   }
 }

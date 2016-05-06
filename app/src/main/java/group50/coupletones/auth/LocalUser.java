@@ -6,24 +6,14 @@ package group50.coupletones.auth;
 public interface LocalUser extends User {
 
   /**
-   * @return The id of the user
+   * @return The partner of the user
    */
-  String getId();
-
-  /**
-   * @return The name of the user
-   */
-  String getName();
-
-  /**
-   * @return The email of the user
-   */
-  String getEmail();
+  User getPartner();
 
   /**
    * @return The partner of the user
    */
-  User getPartner();
+  void setPartner(Partner partner);
 
 
 }

@@ -4,28 +4,34 @@ package group50.coupletones.auth;
  * Created by brandon on 5/5/2016.
  */
 public class Partner implements User {
-  String namePartner, emailPartner;
+  String name, email;
 
   public Partner(String name, String email) {
-    namePartner = name;
-    emailPartner = email;
+    this.name = name;
+    this.email = email;
   }
 
-    /**
-     * @return null
-     */
-    @Override
-    public String getId() { return null; }
+  /**
+   * @return The email of the partner
+   */
+  @Override
+  public String getId() {
+    return getEmail();
+  }
 
-    /**
-     * @return The name of the partner
-     */
-    @Override
-    public String getName() { return namePartner; }
+  /**
+   * @return The name of the partner
+   */
+  @Override
+  public String getName() {
+    return name;
+  }
 
-    /**
-     * @return The email of the partner
-     */
-    @Override
-    public String getEmail() { return emailPartner; }
+  /**
+   * @return The email of the partner
+   */
+  @Override
+  public String getEmail() {
+    return email;
+  }
 }

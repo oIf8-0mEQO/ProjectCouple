@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 import group50.coupletones.CoupleTones;
+import group50.coupletones.R;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -37,7 +38,7 @@ public class MapProximityManager implements ProximityManager, LocationListener {
    * Finds the distance in miles between two locations given by the gps.
    */
   private static double distanceInMiles(LatLng location1, LatLng location2) {
-    return 0.000621371 * SphericalUtil.computeDistanceBetween(location1, location2);
+    return (1/ R.integer.miles_to_meters) * SphericalUtil.computeDistanceBetween(location1, location2);
   }
 
   public void register(ProximityObserver observer) {

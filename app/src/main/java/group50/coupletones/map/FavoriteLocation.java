@@ -19,14 +19,27 @@ public class FavoriteLocation implements Location {
   private LatLng position;
   private long time;
 
+  /**
+   * Default constructor with meaningless initial values.
+   */
   public FavoriteLocation() {
     this("", new LatLng(0, 0), 0);
   }
 
+  /**
+   * Creates a favorite location that is off cooldown
+   * @param name user given name of the location
+   * @param position gps coordinates of the location
+   */
   public FavoriteLocation(String name, LatLng position) {
     this(name, position, 0);
   }
 
+  /**
+   * @param name user given name of the location
+   * @param position gps coordinates of the location
+   * @param time sets the cooldown as if the location was last triggered at the given time
+   */
   public FavoriteLocation(String name, LatLng position, long time) {
     //DI
     CoupleTones.component().inject(this);

@@ -27,6 +27,10 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
 
   private GoogleMap mMap;
 
+  /**
+   * Creates a OnMapClickListener that opens a dialog box asking the user for a name of a favorite location. When the user accepts the name
+   * a new favorite location is created at the clicked spot with the submitted name.
+   */
   private GoogleMap.OnMapClickListener clickListener = new GoogleMap.OnMapClickListener() {
     @Override
     public void onMapClick(LatLng latLng) {
@@ -121,12 +125,6 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
       //TODO: write exception handling code
     }
   }*/
-
-  public void addLocation(FavoriteLocation location) {
-    app.getLocalUser().getFavoriteLocations().add(location);
-    CameraUpdate update = CameraUpdateFactory.newLatLng(location.getPosition());
-    mMap.moveCamera(update);
-  }
 
 
 }

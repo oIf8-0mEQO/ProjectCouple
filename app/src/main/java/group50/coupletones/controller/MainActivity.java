@@ -8,11 +8,14 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
+import group50.coupletones.auth.Authenticator;
+import group50.coupletones.auth.GoogleAuthenticator;
+import group50.coupletones.auth.User;
 import group50.coupletones.controller.tab.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.PartnersLocationsFragment;
 import group50.coupletones.controller.tab.SettingsFragment;
-import group50.coupletones.network.NetworkManager;
 import group50.coupletones.map.Map;
+import group50.coupletones.network.NetworkManager;
 import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;
@@ -30,6 +33,10 @@ public class MainActivity extends AppCompatActivity implements
 
   @Inject
   public NetworkManager network;
+
+  @Inject
+  public Authenticator<User, String> auth;
+
   /**
    * The bottom tab bar handler
    */
@@ -66,6 +73,18 @@ public class MainActivity extends AppCompatActivity implements
   }
 
   @Override
+  protected void onStart() {
+    super.onStart();
+    ((GoogleAuthenticator) auth).connect();
+  }
+
+  @Override
+  protected void onStop() {
+    super.onStop();
+    ((GoogleAuthenticator) auth).disconnect();
+  }
+
+  @Override
   public void onMenuTabSelected(
     @IdRes
       int menuItemId) {
@@ -74,7 +93,6 @@ public class MainActivity extends AppCompatActivity implements
     if (tabs.containsKey(menuItemId)) {
       setFragment(tabs.get(menuItemId));
     }
-
   }
 
   @Override

@@ -2,8 +2,10 @@ package group50.coupletones.auth;
 
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
+import com.google.android.gms.common.api.Status;
 import group50.coupletones.util.callback.FailCallback;
 import group50.coupletones.util.callback.SuccessCallback;
+import group50.coupletones.util.function.Consumer;
 
 /**
  * An abstraction for objects that handle user authentication.
@@ -42,7 +44,7 @@ public interface Authenticator<S, F> extends SuccessCallback<Authenticator, S>, 
    *
    * @return This instance
    */
-  Authenticator signOut();
+  GoogleAuthenticator signOut(Consumer<Status> consumer);
 
   /**
    * Method that handles the intent result callback.

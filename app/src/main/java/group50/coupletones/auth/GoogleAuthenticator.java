@@ -9,10 +9,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.Status;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.OutgoingMessage;
 import group50.coupletones.util.Taggable;
+import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Function;
 
 import javax.inject.Inject;
@@ -86,11 +88,32 @@ public class GoogleAuthenticator implements
        * options specified by gso.
       */
     apiClient = new GoogleApiClient.Builder(this.activity)
-      .enableAutoManage(this.activity, this)
+      .addOnConnectionFailedListener(this)
       .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
       .build();
 
     return this;
+  }
+
+  public void connect() {
+    if (apiClient != null) {
+      apiClient.connect();
+      Log.d(getTag(), "API connect called: " + apiClient.isConnected());
+    }
+  }
+
+  public void disconnect() {
+    if (apiClient != null && apiClient.isConnected()) {
+      apiClient.disconnect();
+    }
+  }
+
+  public boolean isConnected() {
+    if (apiClient != null) {
+      return apiClient.isConnected();
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -136,17 +159,17 @@ public class GoogleAuthenticator implements
 
   /**
    * Attempts to sign out the user.
-   * TODO: Edit redundancies
    */
-  public GoogleAuthenticator signOut() {
+  @Override
+  public GoogleAuthenticator signOut(Consumer<Status> consumer) {
+    Log.d(getTag(), "API isConnected: " + apiClient.isConnected());
+    if (apiClient.isConnected()) {
+      app.setLocalUser(null);
+      Auth.GoogleSignInApi.signOut(apiClient)
+        .setResultCallback(consumer::accept);
+      Auth.GoogleSignInApi.revokeAccess(apiClient);
+    }
 
-    /* Auth.GoogleSignInApi.signOut(apiClient).setResultCallback(new ResultCallback<Status>() {
-      @Override
-      public void onResult(Status status) {
-      }
-    });
-    return this; */
-    Auth.GoogleSignInApi.signOut(apiClient);
     return this;
   }
 

@@ -110,6 +110,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
       partnerName.setVisibility(View.VISIBLE);
       partnerAccount.setVisibility(View.VISIBLE);
       null_partner.setVisibility(View.INVISIBLE);
+      add_partner_button.setVisibility(View.INVISIBLE);
 
     }
 

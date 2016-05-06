@@ -4,7 +4,8 @@ package group50.coupletones.auth.user;
  * Created by brandon on 5/5/2016.
  */
 public class Partner implements User {
-  String name, email;
+  private final String name;
+  private final String email;
 
   public Partner(String name, String email) {
     this.name = name;

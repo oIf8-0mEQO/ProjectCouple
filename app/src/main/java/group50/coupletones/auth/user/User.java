@@ -27,9 +27,4 @@ public interface User {
    * @return The email of the user
    */
   String getEmail();
-
-  /**
-   * @Return The a list of the users favoite locations.
-   */
-  List<FavoriteLocation> getFavoriteLocations();
 }

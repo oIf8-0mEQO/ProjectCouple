@@ -1,12 +1,9 @@
-package group50.coupletones;
+package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.location.Location;
 import com.google.android.gms.maps.model.LatLng;
-import group50.coupletones.auth.user.User;
-import group50.coupletones.controller.tab.favoritelocations.map.FavoriteLocation;
-import group50.coupletones.controller.tab.favoritelocations.map.MapProximityManager;
-import group50.coupletones.controller.tab.favoritelocations.map.ProximityObserver;
-import group50.coupletones.controller.tab.favoritelocations.map.VisitedLocation;
+import group50.coupletones.CoupleTones;
+import group50.coupletones.auth.user.MockLocalUser;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -29,27 +26,7 @@ public class ProximityManagerTest {
 
     // Stub the user
     when(CoupleTones.component().app().getLocalUser())
-      .thenReturn(new User() {
-        @Override
-        public String getId() {
-          return "mockuser";
-        }
-
-        @Override
-        public String getName() {
-          return "Mock User";
-        }
-
-        @Override
-        public String getEmail() {
-          return "mock@mock.com";
-        }
-
-        @Override
-        public List<FavoriteLocation> getFavoriteLocations() {
-          return locations;
-        }
-      });
+      .thenReturn(new MockLocalUser());
 
     MapProximityManager proximity = (MapProximityManager) CoupleTones.component().proximity();
 

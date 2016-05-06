@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.test.ActivityInstrumentationTestCase2;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
+import group50.coupletones.auth.user.MockLocalUser;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.tab.favoritelocations.map.FavoriteLocation;
 import group50.coupletones.controller.tab.partnerslocations.PartnersLocationsFragment;
@@ -51,27 +52,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     //TODO: DRY
     // Stub getLocalUser method
     when(CoupleTones.component().app().getLocalUser())
-      .thenReturn(new User() {
-        @Override
-        public String getId() {
-          return "mockuser";
-        }
-
-        @Override
-        public String getName() {
-          return "Mock User";
-        }
-
-        @Override
-        public String getEmail() {
-          return "mock@mock.com";
-        }
-
-        @Override
-        public List<FavoriteLocation> getFavoriteLocations() {
-          return Collections.emptyList();
-        }
-      });
+      .thenReturn(new MockLocalUser());
 
     // Injecting the Instrumentation instance is required
     // for your test to run with AndroidJUnitRunner.

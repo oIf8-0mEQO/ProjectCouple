@@ -9,16 +9,13 @@ import android.widget.Button;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
+import group50.coupletones.auth.user.MockLocalUser;
 import group50.coupletones.auth.user.User;
-import group50.coupletones.controller.tab.favoritelocations.map.FavoriteLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.util.function.Function;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.Collections;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -26,6 +23,7 @@ import static org.mockito.Mockito.*;
 
 /**
  * The LoginActivity test to test the LoginActivity
+ *
  * @author Henry Mao
  * @since 4/27/16.
  */
@@ -54,27 +52,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     //TODO: DRY
     // Stub getLocalUser method
     when(CoupleTones.component().app().getLocalUser())
-      .thenReturn(new User() {
-        @Override
-        public String getId() {
-          return "mockuser";
-        }
-
-        @Override
-        public String getName() {
-          return "Mock User";
-        }
-
-        @Override
-        public String getEmail() {
-          return "mock@mock.com";
-        }
-
-        @Override
-        public List<FavoriteLocation> getFavoriteLocations() {
-          return Collections.emptyList();
-        }
-      });
+      .thenReturn(new MockLocalUser());
 
     injectInstrumentation(InstrumentationRegistry.getInstrumentation());
   }
@@ -208,8 +186,10 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     // next activity is opened and captured.
     assertThat(nextActivity).isNull();
   }
+
   /**
    * A simple class that wraps an object. Used for tests with lambda expressions where values must be effectively final.
+   *
    * @param <T>
    */
   class Wrapper<T> {

@@ -2,16 +2,13 @@ package group50.coupletones.map;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.text.InputType;
 import android.util.Log;
 import android.widget.EditText;
-
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -69,7 +66,6 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     super.onCreate(savedInstanceState);
     CoupleTones.component().inject(this);
     getMapAsync(this);
-    //geocoder = new Geocoder(getActivity().getApplicationContext());
   }
 
 
@@ -80,8 +76,6 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
   public void onMapReady(GoogleMap googleMap) {
     mMap = googleMap;
     mMap.getUiSettings().setZoomControlsEnabled(true);
-    LocationManager locationManager = (LocationManager) this.getContext().getSystemService(Context.LOCATION_SERVICE);
-    String locationProvider = LocationManager.GPS_PROVIDER;
     if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
       ActivityCompat.requestPermissions(this.getActivity(),
         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -92,16 +86,11 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
       Log.d("test2", "outs");
       mMap.setMyLocationEnabled(true);
     }
-    locationManager.requestLocationUpdates(locationProvider, 0, 0, new MovementListener(proximityManager, app.getLocalUser().getFavoriteLocations()));
     this.populateMap();
     mMap.setOnMapClickListener(clickListener);
     mMap.setMyLocationEnabled(true);
     CameraUpdate initial = CameraUpdateFactory.newLatLngZoom(new LatLng(32.880234, -117.236106), 15);
     mMap.moveCamera(initial);
-  }
-
-  public void registerNotificationObserver(ProximityObserver observer) {
-    proximityManager.register(observer);
   }
 
   /**

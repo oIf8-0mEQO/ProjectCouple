@@ -1,6 +1,7 @@
 package group50.coupletones.di;
 
 import dagger.Component;
+import group50.coupletones.di.module.ProximityModule;
 
 import javax.inject.Singleton;
 
@@ -15,7 +16,8 @@ import javax.inject.Singleton;
   modules = {
     MockAuthenticatorModule.class,
     MockApplicationModule.class,
-    MockNetworkModule.class
+    MockNetworkModule.class,
+    ProximityModule.class
   }
 )
 public interface MockAppComponent extends AppComponent {

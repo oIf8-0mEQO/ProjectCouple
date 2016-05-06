@@ -29,22 +29,26 @@ public class Storage {
   }
 
 
-  public int readInt(String name) {
+  public int getInt(String name) {
     return settings.getInt(name + suffix, 0);
   }
 
 
-  public float readFloat(String name) {
+  public float getFloat(String name) {
     return settings.getFloat(name + suffix, 0);
   }
 
 
-  public String readString(String name) {
+  public String getString(String name) {
     return settings.getString(name + suffix, "");
   }
 
+  public boolean getBoolean(String name) {
+    return settings.getBoolean(name + suffix, false);
+  }
 
-  public Collection<Storable> read(String name, Class<?> type) {
+
+  public Collection<Storable> get(String name, Class<?> type) {
     Collection<Storable> list = new ArrayList<Storable>();
     try {
       Storable object = (Storable) type.newInstance();
@@ -60,25 +64,30 @@ public class Storage {
   }
 
 
-  public void write(String name, int value) {
+  public void setString(String name, int value) {
     editor.putInt(name + suffix, value);
     editor.commit();
   }
 
 
-  public void write(String name, float value) {
+  public void setString(String name, float value) {
     editor.putFloat(name + suffix, value);
     editor.commit();
   }
 
 
-  public void write(String name, String value) {
+  public void setString(String name, String value) {
     editor.putString(name + suffix, value);
     editor.commit();
   }
 
+  public void setBoolean(String name, boolean value) {
+    editor.putBoolean(name + suffix, value);
+    editor.commit();
+  }
 
-  public void write(String name, Collection<Storable> list) {
+
+  public void setCollection(String name, Collection<Storable> list) {
     collectionLength = 0;
     for (Storable obj : list) {
       obj.save(this);

@@ -78,8 +78,8 @@ public class GoogleUser implements LocalUser {
   public void save(Storage s) {
 
     if (getPartner() != null) {
-      s.write("Partner's Name: ", getPartner().getName());
-      s.setString("Partner's Email: ", getPartner().getEmail());
+      s.setString("partnerName", getPartner().getName());
+      s.setString("partnerEmail", getPartner().getEmail());
       s.setBoolean("hasPartner", true);
     } else
       s.setBoolean("hasPartner", false);
@@ -93,13 +93,14 @@ public class GoogleUser implements LocalUser {
   @Override
   public void load(Storage s) {
 
-    if (getBoolean("hasPartner")) {
-      name = s.getString(partnerName);
-      email = s.getString(partnerEmail);
-      Partner partner = new Partner(name, email);
-      setPartner(partner);
-    } else
-      setPartner(null);
+    if (s.contain("hasPartner"))
+      if (s.getBoolean("hasPartner")) {
+        getPartner().getName() = s.getString(partnerName);
+        getPartner().getEmail() = s.getString(partnerEmail);
+        Partner partner = new Partner(name, email);
+        setPartner(partner);
+      } else
+        setPartner(null);
 
     // TODO: Implement Load FaveLocations
 

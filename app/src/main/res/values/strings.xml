@@ -28,5 +28,9 @@
     <string name="connection">Connect</string>
     <string name="skip">Skip this Step</string>
     <string name="email_address">Partner\'s Email Address</string>
+    <string name="title_activity_partner_request">PartnerRequestActivity</string>
+    <string name="partner_request">has sent you a partner request.</string>
+    <string name="accept">Accept</string>
+    <string name="reject">Reject</string>
 
 </resources>

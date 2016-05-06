@@ -3,43 +3,51 @@
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
-            android:name="CoupleTones"
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:supportsRtl="true"
-            android:theme="@style/AppTheme">
+        android:name=".CoupleTones"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
         <activity android:name=".controller.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
-                android:name=".controller.MainActivity"
-                android:label="@string/title_activity_main"
-                android:theme="@style/AppTheme">
+            android:name=".controller.MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme">
         </activity>
 
-        <service android:name=".network.gcm.GcmListener"></service>
+        <service android:name=".network.gcm.GcmListener"/>
         android:theme="@style/AppTheme" />
         <activity
-                android:name=".controller.EditLocationActivity"
-                android:label="@string/title_activity_edit_location"
-                android:theme="@style/AppTheme"/>
+            android:name=".controller.EditLocationActivity"
+            android:label="@string/title_activity_edit_location"
+            android:theme="@style/AppTheme"/>
         <activity
-                android:name=".controller.AddPartnerActivity"
-                android:label="@string/title_activity_add_partner"></activity>
+            android:name=".controller.AddPartnerActivity"
+            android:label="@string/title_activity_add_partner"/>
 
         <receiver
-                android:name=".network.gcm.GcmReceiver"
-                android:permission="com.google.android.c2dm.permission.SEND">
+            android:name=".network.gcm.GcmReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
+
                 <category android:name="group50.coupletones"/>
             </intent-filter>
         </receiver>
 
-        <service android:name=".network.gcm.GcmMessageHandler"></service>
+        <service android:name=".network.gcm.GcmMessageHandler"/>
+
+        <activity
+            android:name=".controller.PartnerRequestActivity"
+            android:label="@string/title_activity_partner_request">
+        </activity>
     </application>
+
 </manifest>

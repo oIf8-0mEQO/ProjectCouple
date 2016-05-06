@@ -1,6 +1,7 @@
 package group50.coupletones.controller.tab;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,10 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import group50.coupletones.FaveLocationsData;
-import group50.coupletones.ListAdapter;
+import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
+
+import javax.inject.Inject;
 
 /**
  * A simple {@link Fragment} subclass for the Favorite Locations tab.
@@ -21,6 +23,9 @@ import group50.coupletones.controller.MainActivity;
 public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFragment.Listener>
   implements View.OnClickListener {
 
+  @Inject
+  public CoupleTones app;
+
   private RecyclerView favesList;
   private ListAdapter adapter;
   private CardView cv;
@@ -28,7 +33,6 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
   public FavoriteLocationsFragment() {
     super(Listener.class);
   }
-
 
   /**
    * Use this factory method to create a new instance of FavoriteLocationsFragment.
@@ -47,12 +51,18 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
   }
 
   @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    CoupleTones.component().inject(this);
+  }
+
+  @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_favorite_locations, container, false);
     favesList = (RecyclerView) v.findViewById(R.id.favorite_locations_list);
     favesList.setLayoutManager(new LinearLayoutManager(getActivity()));
-    adapter = new ListAdapter(FaveLocationsData.getFaveLocations(), getActivity());
+    adapter = new ListAdapter(app.getLocalUser().getFavoriteLocations(), getActivity());
     favesList.setAdapter(adapter);
     v.findViewById(R.id.btn_add).setOnClickListener(this);
     return v;

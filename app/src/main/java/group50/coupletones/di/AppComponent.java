@@ -7,6 +7,7 @@ import group50.coupletones.auth.User;
 import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.controller.MainActivity;
+import group50.coupletones.controller.tab.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.AuthenticatorModule;
@@ -44,6 +45,8 @@ public interface AppComponent {
   NetworkManager network();
 
   ProximityManager proximity();
+
+  void inject(FavoriteLocationsFragment fragment);
 
   void inject(LocationService activity);
 

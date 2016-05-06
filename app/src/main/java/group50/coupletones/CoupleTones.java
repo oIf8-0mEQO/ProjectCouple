@@ -10,8 +10,8 @@ import group50.coupletones.auth.User;
 import group50.coupletones.di.AppComponent;
 import group50.coupletones.di.DaggerAppComponent;
 import group50.coupletones.di.module.ApplicationModule;
-import group50.coupletones.map.LocationNotificationObserver;
 import group50.coupletones.map.ProximityManager;
+import group50.coupletones.map.ProximityNetworkHandler;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.network.receiver.ErrorReceiver;
@@ -91,6 +91,6 @@ public class CoupleTones extends Application {
 
     // Register location observer
     ProximityManager handler = component().proximity();
-    handler.register(new LocationNotificationObserver(network));
+    handler.register(new ProximityNetworkHandler(network));
   }
 }

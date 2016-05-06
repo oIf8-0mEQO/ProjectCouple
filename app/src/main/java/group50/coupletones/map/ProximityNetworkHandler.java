@@ -1,24 +1,23 @@
 package group50.coupletones.map;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import javax.inject.Inject;
-
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.network.message.OutgoingMessage;
+
+import javax.inject.Inject;
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author Sharmaine Manalo
  * @since 5/5/16
  */
-public class LocationNotificationObserver implements NotificationObserver {
+public class ProximityNetworkHandler implements ProximityObserver {
   private NetworkManager network;
 
   @Inject
-  public LocationNotificationObserver(NetworkManager network) {
+  public ProximityNetworkHandler(NetworkManager network) {
     this.network = network;
   }
 

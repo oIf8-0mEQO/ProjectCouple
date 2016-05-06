@@ -1,5 +1,6 @@
 package group50.coupletones.map;
 
+import android.location.Address;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
@@ -7,8 +8,18 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public interface Location {
 
-  public LatLng getPosition();
+  /**
+   * @return a LatLng object representing the gps coordinates of the location.
+   */
+  LatLng getPosition();
 
-  public String getName();
+  /**
+   * @return the name of the favorite location given by the user.
+   */
+  String getName();
 
+  /**
+   * @return the official address of the location if the address exists, otherwise return null.
+   */
+  Address getAddress();
 }

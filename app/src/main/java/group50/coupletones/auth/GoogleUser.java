@@ -6,6 +6,10 @@
 package group50.coupletones.auth;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import group50.coupletones.map.FavoriteLocation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a User logged in via Google sign in.
@@ -14,6 +18,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 public class GoogleUser implements LocalUser {
 
   private final GoogleSignInAccount account;
+  private List<FavoriteLocation> favoriteLocations;
   private User partner;
 
   /**
@@ -23,6 +28,7 @@ public class GoogleUser implements LocalUser {
    */
   public GoogleUser(GoogleSignInAccount account) {
     this.account = account;
+    favoriteLocations = new ArrayList<>();
   }
 
   /**
@@ -47,6 +53,11 @@ public class GoogleUser implements LocalUser {
   @Override
   public String getEmail() {
     return account.getEmail();
+  }
+
+  @Override
+  public List<FavoriteLocation> getFavoriteLocations() {
+    return favoriteLocations;
   }
 
   /**

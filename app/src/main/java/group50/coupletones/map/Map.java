@@ -1,44 +1,58 @@
 package group50.coupletones.map;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.Service;
-import android.content.ContextWrapper;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.content.Context;
-
-import com.google.android.gms.fitness.data.Application;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.text.InputType;
+import android.util.Log;
+import android.widget.EditText;
+import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-
+import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.map.FavoriteLocation;
+
+import javax.inject.Inject;
 
 public class Map extends SupportMapFragment implements OnMapReadyCallback {
 
+  @Inject
+  public CoupleTones app;
+
+  @Inject
+  public ProximityManager proximityManager;
+
   private GoogleMap mMap;
-  private List<FavoriteLocation> favLocations = new LinkedList<FavoriteLocation>();
-  //private Geocoder geocoder;
-  private ProximityHandler proximityHandler = new NearbyLocationHandler();
+
+  /**
+   * Creates a OnMapClickListener that opens a dialog box asking the user for a name of a favorite location. When the user accepts the name
+   * a new favorite location is created at the clicked spot with the submitted name.
+   */
+  private GoogleMap.OnMapClickListener clickListener = new GoogleMap.OnMapClickListener() {
+    @Override
+    public void onMapClick(LatLng latLng) {
+      AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+      builder.setTitle(R.string.location_name_box);
+      final EditText input = new EditText(getContext());
+      input.setInputType(InputType.TYPE_CLASS_TEXT);
+      builder.setView(input);
+      builder.setPositiveButton(R.string.location_name_accept, new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+          String name = input.getText().toString();
+          FavoriteLocation clickedLocation = new FavoriteLocation(name, latLng);
+          app.getLocalUser().getFavoriteLocations().add(clickedLocation);
+          CameraUpdate update = CameraUpdateFactory.newLatLng(clickedLocation.getPosition());
+          mMap.moveCamera(update);
+          populateMap();
+        }
+      });
+      builder.show();
+    }
+  };
 
   /**
    * Use this factory method to create a new instance of Map.
@@ -51,20 +65,11 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     return fragment;
   }
 
-  GoogleMap.OnMapClickListener clickListener = new GoogleMap.OnMapClickListener() {
-    @Override
-    public void onMapClick(LatLng latLng) {
-      String name = mockMethod2();//TODO: properly implement this method call
-      favLocations.add(new FavoriteLocation(name, latLng));
-      populateMap();
-    }
-  };
-
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    CoupleTones.component().inject(this);
     getMapAsync(this);
-    //geocoder = new Geocoder(getActivity().getApplicationContext());
   }
 
 
@@ -75,8 +80,6 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
   public void onMapReady(GoogleMap googleMap) {
     mMap = googleMap;
     mMap.getUiSettings().setZoomControlsEnabled(true);
-    LocationManager locationManager = (LocationManager) this.getContext().getSystemService(Context.LOCATION_SERVICE);
-    String locationProvider = LocationManager.GPS_PROVIDER;
     if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
       ActivityCompat.requestPermissions(this.getActivity(),
         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -87,13 +90,11 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
       Log.d("test2", "outs");
       mMap.setMyLocationEnabled(true);
     }
-    locationManager.requestLocationUpdates(locationProvider, 0, 0, new MovementListener(proximityHandler, favLocations));
     this.populateMap();
     mMap.setOnMapClickListener(clickListener);
-  }
-
-  public void registerNotificationObserver(NotificationObserver observer) {
-    proximityHandler.register(observer);
+    mMap.setMyLocationEnabled(true);
+    CameraUpdate initial = CameraUpdateFactory.newLatLngZoom(new LatLng(32.880234, -117.236106), 15);
+    mMap.moveCamera(initial);
   }
 
   /**
@@ -103,7 +104,7 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     mMap.clear();
     MarkerOptions markerSettings = new MarkerOptions();
     markerSettings.draggable(false);
-    for (FavoriteLocation i : favLocations) {
+    for (FavoriteLocation i : app.getLocalUser().getFavoriteLocations()) {
       markerSettings.position(i.getPosition());
       markerSettings.title(i.getName());
       mMap.addMarker(markerSettings);
@@ -125,15 +126,5 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     }
   }*/
 
-  public void addLocation(FavoriteLocation location) {
-    favLocations.add(location);
-    CameraUpdate update = CameraUpdateFactory.newLatLng(location.getPosition());
-    mMap.moveCamera(update);
-  }
-
-
-  private String mockMethod2() {
-    return "test name";
-  }
 
 }

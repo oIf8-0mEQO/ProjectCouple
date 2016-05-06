@@ -1,50 +1,83 @@
 package group50.coupletones.map;
 
+import android.location.Address;
+import android.location.Geocoder;
 import com.google.android.gms.maps.model.LatLng;
+import group50.coupletones.CoupleTones;
 
-import group50.coupletones.map.Location;
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Created by Joseph on 6/25/2016.
  */
 public class FavoriteLocation implements Location {
 
+  @Inject
+  public Geocoder geocoder;
   private String name;
   private LatLng position;
   private long time;
 
+  /**
+   * Default constructor with meaningless initial values.
+   */
   public FavoriteLocation() {
-    setName("");
-    setPosition(new LatLng(0, 0));
-    time = 0;
+    this("", new LatLng(0, 0), 0);
   }
 
+  /**
+   * Creates a favorite location that is off cooldown
+   * @param name user given name of the location
+   * @param position gps coordinates of the location
+   */
   public FavoriteLocation(String name, LatLng position) {
-    setName(name);
-    setPosition(position);
-    time = 0;
+    this(name, position, 0);
   }
 
+  /**
+   * @param name user given name of the location
+   * @param position gps coordinates of the location
+   * @param time sets the cooldown as if the location was last triggered at the given time
+   */
   public FavoriteLocation(String name, LatLng position, long time) {
+    //DI
+    CoupleTones.component().inject(this);
+
     setName(name);
     setPosition(position);
     this.time = time;
+  }
+
+  @Override
+  public LatLng getPosition() {
+    return position;
   }
 
   public void setPosition(LatLng position) {
     this.position = position;
   }
 
-  public LatLng getPosition() {
-    return position;
+  @Override
+  public String getName() {
+    return name;
   }
 
   public void setName(String name) {
     this.name = name;
   }
 
-  public String getName() {
-    return name;
+  @Override
+  public Address getAddress() {
+    try {
+      List<Address> fromLocations = geocoder.getFromLocation(position.latitude, position.longitude, 1);
+
+      if (fromLocations.size() > 0)
+        return fromLocations.get(0);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 
   public void setCooldown() {

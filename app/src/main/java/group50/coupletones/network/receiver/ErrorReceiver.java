@@ -5,21 +5,19 @@ import android.os.Handler;
 import android.widget.Toast;
 import group50.coupletones.network.message.Message;
 import group50.coupletones.network.message.MessageReceiver;
-import group50.coupletones.network.message.MessageType;
-import group50.coupletones.util.Identifiable;
 
 /**
- * Handles receiving partner request.
+ * Handles general error request.
  *
  * @author Henry Mao
  * @since 5/4/16
  */
-public class PartnerRejectReceiver implements MessageReceiver, Identifiable {
+public class ErrorReceiver implements MessageReceiver {
 
   private final Context context;
   private Handler handler = new Handler();
 
-  public PartnerRejectReceiver(Context context) {
+  public ErrorReceiver(Context context) {
     this.context = context;
   }
 
@@ -30,10 +28,5 @@ public class PartnerRejectReceiver implements MessageReceiver, Identifiable {
     //TODO: Use values/strings
     //TODO: Check if app is on?
     handler.post(() -> Toast.makeText(context, error, Toast.LENGTH_LONG).show());
-  }
-
-  @Override
-  public String getId() {
-    return MessageType.RECEIVE_PARTNER_REJECT.value;
   }
 }

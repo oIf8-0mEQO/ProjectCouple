@@ -25,9 +25,9 @@ class PartnerRoute extends Route {
 	}
 
 	receive(messageId, from, data) {
-		var gcmUser = App.getUserByDevice(from);
-		if (gcmUser) {
-			var logMsg = "User " + gcmUser.email + " attempting to partner with " + data.partner;
+		var sender = App.getUserByDevice(from);
+		if (sender) {
+			var logMsg = "User " + sender.email + " attempting to partner with " + data.partner;
 			var partner = App.getUserByEmail(data.partner);
 
 			//TODO: Check to reject self-partner
@@ -36,15 +36,15 @@ class PartnerRoute extends Route {
 				// Send request to partner
 				GCM.send(partner.deviceId, {
 					type: "partner-request",
-					name: gcmUser.name,
-					partner: gcmUser.email
+					name: sender.name,
+					partner: sender.email
 				}, {});
 			} else {
 				console.log(logMsg + " (reject)");
-				//TODO: Reject the request
-				GCM.send(gcmUser.deviceId, {
+				// Reject the request
+				GCM.send(sender.deviceId, {
 					type: "partner-reject",
-					partner: gcmUser.email,
+					partner: sender.email,
 					error: "Unable to find user."
 				}, {});
 				console.error("Invalid partner: " + data.partner);

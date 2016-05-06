@@ -62,8 +62,8 @@ public class AddPartnerActivity extends AppCompatActivity
             new OutgoingMessage(MessageType.SEND_PARTNER_REQUEST.value)
               .setString("partner", ((EditText) findViewById(R.id.email_address)).getText().toString())
         );
-        Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
+        // TODO: Handle when used from login
+        finish();
         break;
       // Switches to AddPartnerActivity.
       case R.id.skip_button:

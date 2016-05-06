@@ -11,10 +11,14 @@ import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.User;
 import group50.coupletones.di.DaggerMockAppComponent;
+import group50.coupletones.map.FavoriteLocation;
 import group50.coupletones.util.function.Function;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -64,6 +68,11 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         @Override
         public String getEmail() {
           return "mock@mock.com";
+        }
+
+        @Override
+        public List<FavoriteLocation> getFavoriteLocations() {
+          return Collections.emptyList();
         }
       });
 

@@ -10,10 +10,12 @@ import group50.coupletones.R;
 import group50.coupletones.auth.User;
 import group50.coupletones.controller.tab.PartnersLocationsFragment;
 import group50.coupletones.di.DaggerMockAppComponent;
+import group50.coupletones.map.FavoriteLocation;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -63,6 +65,11 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         @Override
         public String getEmail() {
           return "mock@mock.com";
+        }
+
+        @Override
+        public List<FavoriteLocation> getFavoriteLocations() {
+          return Collections.emptyList();
         }
       });
 

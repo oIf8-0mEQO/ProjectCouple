@@ -9,8 +9,11 @@ package group50.coupletones.network.message;
 public enum MessageType {
 
   SEND_PARTNER_REQUEST("partner"),
+  SEND_LOCATION_NOTIFICATION("map"),
   RECEIVE_PARTNER_REQUEST("partner-request"),
-  RECEIVE_PARTNER_REJECT("partner-reject");
+  RECEIVE_PARTNER_REJECT("partner-reject"),
+  RECEIVE_MAP_NOTIFY("map-notify"),
+  RECEIVE_MAP_REJECT("map-reject");
 
   public final String value;
 

@@ -1,0 +1,3 @@
+<resources>
+    <integer name="miles_to_meters">1609</integer>
+</resources>

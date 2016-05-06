@@ -8,8 +8,9 @@
  * Represents a single user
  */
 class User {
-	constructor(deviceId, email) {
+	constructor(deviceId, name, email) {
 		this.deviceId = deviceId;
+		this.name = name;
 		this.email = email;
 	}
 }

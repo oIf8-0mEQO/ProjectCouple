@@ -36,6 +36,7 @@ class PartnerRoute extends Route {
 				// Send request to partner
 				GCM.send(partner.deviceId, {
 					type: "partner-request",
+					name: gcmUser.name,
 					partner: gcmUser.email
 				}, {});
 			} else {

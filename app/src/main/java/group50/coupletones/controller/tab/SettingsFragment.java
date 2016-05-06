@@ -109,6 +109,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
       partnerAccount.setText(app.getLocalUser().getPartner().getEmail());
       partnerName.setVisibility(View.VISIBLE);
       partnerAccount.setVisibility(View.VISIBLE);
+      null_partner.setVisibility(View.INVISIBLE);
 
     }
 

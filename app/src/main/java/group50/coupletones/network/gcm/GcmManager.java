@@ -79,13 +79,6 @@ public class GcmManager implements NetworkManager, Taggable {
 
           regid = gcm.register(PROJECT_NUMBER);
           Log.i("GCM", "Registered: " + regid);
-
-          // Notify server of registration
-          send(
-            (OutgoingMessage) new OutgoingMessage("registration")
-              .setString("email", app.getLocalUser().getEmail())
-          );
-
         } catch (IOException ex) {
           ex.printStackTrace();
           return false;
@@ -99,7 +92,7 @@ public class GcmManager implements NetworkManager, Taggable {
   @Override
   public void register(String type, MessageReceiver receiver) {
     if (receivers.containsKey(type)) {
-      throw new RuntimeException();
+      throw new RuntimeException("Attempt to register a GCM with duplicate type: " + type);
     } else {
       receivers.put(type, receiver);
     }
@@ -110,13 +103,17 @@ public class GcmManager implements NetworkManager, Taggable {
     if (receivers.containsKey(type)) {
       receivers.remove(type);
     } else {
-      throw new RuntimeException();
+      throw new RuntimeException("Attempt to unregister a GCM with invalid type: " + type);
     }
   }
 
   void handleReceive(Bundle extras) {
     IncomingMessage msg = new IncomingMessage(extras.getString("type"), extras);
     MessageReceiver messageReceiver = receivers.get(msg.getType());
-    messageReceiver.onReceive(msg);
+
+    if (messageReceiver != null)
+      messageReceiver.onReceive(msg);
+    else
+      throw new RuntimeException("Attempt to handle GCM of invalid type: " + extras.getString("type"));
   }
 }

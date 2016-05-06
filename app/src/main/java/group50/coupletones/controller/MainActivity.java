@@ -28,18 +28,16 @@ public class MainActivity extends AppCompatActivity implements
   OnMenuTabClickListener,
   Taggable {
 
+  @Inject
+  public NetworkManager network;
   /**
    * The bottom tab bar handler
    */
   private BottomBar mBottomBar;
-
   /**
    * A map of IDs to the respective fragments
    */
   private HashMap<Integer, Fragment> tabs;
-
-  @Inject
-  public NetworkManager network;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +45,6 @@ public class MainActivity extends AppCompatActivity implements
 
     // Dependency Injection
     CoupleTones.component().inject(this);
-
-    network.register(this);
 
     setContentView(R.layout.activity_main);
 

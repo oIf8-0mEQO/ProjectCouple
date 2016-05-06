@@ -4,6 +4,7 @@ import dagger.Component;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.User;
+import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.SettingsFragment;
@@ -37,8 +38,10 @@ public interface AppComponent {
 
   NetworkManager network();
 
+  void inject(AddPartnerActivity activity);
+
   void inject(MainActivity activity);
-  
+
   void inject(LoginActivity activity);
 
   void inject(SettingsFragment fragment);

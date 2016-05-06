@@ -11,6 +11,7 @@ import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.network.message.Message;
 import group50.coupletones.network.message.MessageReceiver;
+import group50.coupletones.network.message.MessageType;
 import group50.coupletones.util.Identifiable;
 
 /**
@@ -61,6 +62,6 @@ public class PartnerRequestReceiver implements MessageReceiver, Identifiable {
 
   @Override
   public String getId() {
-    return "partner-request";
+    return MessageType.RECEIVE_PARTNER_REQUEST.value;
   }
 }

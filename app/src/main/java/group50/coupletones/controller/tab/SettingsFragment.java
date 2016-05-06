@@ -15,6 +15,7 @@ import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.User;
 import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
+import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 
@@ -134,13 +135,9 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
 
       // Allows user to disconnect from partner.
       case R.id.disconnect_button:
-        /** TODO: Once server is done, break connection between partners
-         *
-         *  -Set partnerPtr = nullptr
-         *  -Clear partner's location history (3am function call?)
-         *  -Clear partner's CardView so both TextFields are empty
-         *  -???
-         */
+        app.getLocalUser().setPartner(null);
+        app.getLocalUser().save(new Storage(getActivity()
+          .getSharedPreferences("user", getActivity().MODE_PRIVATE)));
         break;
 
       // signOut() is called to sign out the user.

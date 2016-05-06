@@ -78,8 +78,11 @@ public class GoogleUser implements LocalUser {
       s.setString("partnerName", getPartner().getName());
       s.setString("partnerEmail", getPartner().getEmail());
       s.setBoolean("hasPartner", true);
-    } else
+    } else {
+      s.setString("partnerName", getPartner().getName());
+      s.setString("partnerEmail", getPartner().getEmail());
       s.setBoolean("hasPartner", false);
+    }
 
     // TODO: Implement Save FaveLocations
   }

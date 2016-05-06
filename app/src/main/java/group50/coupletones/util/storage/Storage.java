@@ -21,6 +21,7 @@ public class Storage {
     this(preferences, "");
   }
 
+
   public boolean contains(String name) {
     return preference.contains(name + suffix);
   }
@@ -39,6 +40,7 @@ public class Storage {
   public String getString(String name) {
     return preference.getString(name + suffix, null);
   }
+
 
   public boolean getBoolean(String name) {
     return preference.getBoolean(name + suffix, false);
@@ -62,7 +64,6 @@ public class Storage {
         e.printStackTrace();
       }
     }
-
     return list;
   }
 
@@ -104,5 +105,8 @@ public class Storage {
       i++;
     }
     setInt(name, i);
+  }
+  public void delete() {
+
   }
 }

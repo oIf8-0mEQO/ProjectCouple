@@ -76,6 +76,10 @@ public class GoogleUser implements LocalUser {
   @Override
   public void save(Storage s){
   // TODO: Implementation
+
+    if(getPartner()) {
+      s.setString
+    }
     SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
     SharedPreferences.Editor editor = sharedPreferences.edit();
     editor.putString("Partner's Name: ", );
@@ -87,7 +91,7 @@ public class GoogleUser implements LocalUser {
    * Load User data from phone
    */
   @Override
-  public void load(Storage S){
+  public void load(Storage s){
     // TODO: Implementation
     SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
 

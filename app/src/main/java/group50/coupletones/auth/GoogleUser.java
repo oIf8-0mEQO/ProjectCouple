@@ -73,16 +73,15 @@ public class GoogleUser implements LocalUser {
    */
   @Override
   public void save(Storage s) {
-
     if (getPartner() != null) {
       s.setString("partnerName", getPartner().getName());
       s.setString("partnerEmail", getPartner().getEmail());
-      s.setBoolean("hasPartner", true);
     } else {
       s.setString("partnerName", getPartner().getName());
       s.setString("partnerEmail", getPartner().getEmail());
-      s.setBoolean("hasPartner", false);
     }
+
+    s.setBoolean("hasPartner", getPartner() != null);
 
     // TODO: Implement Save FaveLocations
   }
@@ -92,15 +91,14 @@ public class GoogleUser implements LocalUser {
    */
   @Override
   public void load(Storage s) {
-
-    if (s.contains("hasPartner"))
-      if (s.getBoolean("hasPartner")) {
-        String name = s.getString("name");
-        String email = s.getString("email");
-        Partner partner = new Partner(name, email);
-        setPartner(partner);
-      } else
-        setPartner(null);
+    if (s.contains("hasPartner") && s.getBoolean("hasPartner")) {
+      String name = s.getString("partnerName");
+      String email = s.getString("partnerEmail");
+      Partner partner = new Partner(name, email);
+      setPartner(partner);
+    } else {
+      setPartner(null);
+    }
 
     // TODO: Implement Load FaveLocations
 

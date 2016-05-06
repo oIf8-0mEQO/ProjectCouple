@@ -42,6 +42,7 @@ class MapRoute extends Route {
 					name: data.name,
 					lat: data.lat,
 					long: data.long,
+					time: data.time,
 					partner: sender.email
 				}, {});
 			} else {

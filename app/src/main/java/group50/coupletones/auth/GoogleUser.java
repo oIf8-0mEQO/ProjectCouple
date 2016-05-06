@@ -5,7 +5,7 @@
 
 package group50.coupletones.auth;
 
-import android.content.SharedPreferences;
+import group50.coupletones.util.storage.Storage;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
@@ -63,6 +63,7 @@ public class GoogleUser implements LocalUser {
 
   /**
    * Sets partner
+   *
    * @param partner
    */
   @Override
@@ -74,14 +75,13 @@ public class GoogleUser implements LocalUser {
    * Save User data onto phone
    */
   @Override
-  public void save(Storage s){
+  public void save(Storage s) {
 
-    if(getPartner()!= null) {
+    if (getPartner() != null) {
       s.setString("Partner's Name: ", getPartner().getName());
       s.setString("Partner's Email: ", getPartner().getEmail());
       s.setBoolean("hasPartner", true);
-    }
-    else
+    } else
       s.setBoolean("hasPartner", false);
 
     // TODO: Implement Save FaveLocations
@@ -91,15 +91,14 @@ public class GoogleUser implements LocalUser {
    * Load User data from phone
    */
   @Override
-  public void load(Storage s){
+  public void load(Storage s) {
 
-    if(getBoolean("hasPartner")) {
+    if (getBoolean("hasPartner")) {
       name = s.getString(partnerName);
       email = s.getString(partnerEmail);
       Partner partner = new Partner(name, email);
       setPartner(partner);
-    }
-    else
+    } else
       setPartner(null);
 
     // TODO: Implement Load FaveLocations

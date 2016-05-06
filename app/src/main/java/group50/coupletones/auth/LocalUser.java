@@ -1,5 +1,8 @@
 package group50.coupletones.auth;
 
+import group50.coupletones.util.storage.Storable;
+import group50.coupletones.util.storage.Storage;
+
 /**
  * Created by brandon on 5/5/2016.
  */

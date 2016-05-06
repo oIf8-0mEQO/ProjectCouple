@@ -9,19 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import group50.coupletones.controller.AddPartnerActivity;
-
-import javax.inject.Inject;
-
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
-import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.User;
+import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
-import group50.coupletones.controller.MainActivity;
+
+import javax.inject.Inject;
 
 /**
  * A simple {@link Fragment} subclass for the Settings tab.
@@ -29,10 +24,6 @@ import group50.coupletones.controller.MainActivity;
  * Use the {@link SettingsFragment#build} factory class to create an instance of this fragment.
  */
 public class SettingsFragment extends TabFragment<SettingsFragment.Listener> implements View.OnClickListener {
-
-  public SettingsFragment() {
-    super(Listener.class);
-  }
 
   /**
    * The instance of the GoogleUser and Object for authentication.
@@ -42,6 +33,10 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
   //public GoogleAuthenticator auth;
   @Inject
   public CoupleTones app;
+
+  public SettingsFragment() {
+    super(Listener.class);
+  }
 
   /**
    * Use this factory method to create a new instance of SettingsFragment.
@@ -98,10 +93,14 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     TextView partnersProfileText = (TextView) v.findViewById(R.id.partners_profile_text);
     TextView partnerNameText = (TextView) v.findViewById(R.id.partner_name_header);
     TextView partnerName = (TextView) v.findViewById(R.id.partner_name);
-    // partnerName.setText(app.getLocalUser().getPartnerName());
     TextView partnerAccountText = (TextView) v.findViewById(R.id.partner_account_header);
     TextView partnerAccount = (TextView) v.findViewById(R.id.partner_email);
-    // partnerAccount.setText(app.getLocalUser().getPartnerEmail());
+
+    if (app.getLocalUser().getPartner() != null) {
+      partnerName.setText(app.getLocalUser().getPartner().getName());
+      partnerAccount.setText(app.getLocalUser().getPartner().getEmail());
+    }
+    //TODO: Handle when it's null
     partnersProfileText.setTypeface(pierSans);
     partnerNameText.setTypeface(pierSans);
     partnerName.setTypeface(pierSans);

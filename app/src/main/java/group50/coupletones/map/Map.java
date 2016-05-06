@@ -1,64 +1,32 @@
 package group50.coupletones.map;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Service;
-import android.content.ContextWrapper;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.content.pm.PackageManager;
 import android.content.Context;
-
-import com.google.android.gms.fitness.data.Application;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
+import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.inject.Inject;
-
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.GoogleUser;
-import group50.coupletones.map.FavoriteLocation;
+
+import javax.inject.Inject;
 
 public class Map extends SupportMapFragment implements OnMapReadyCallback {
 
   @Inject
   public CoupleTones app;
 
+  @Inject
+  public ProximityManager proximityManager;
+
   private GoogleMap mMap;
-  //private Geocoder geocoder;
-  private ProximityHandler proximityHandler = new NearbyLocationHandler();
 
-  /**
-   * Use this factory method to create a new instance of Map.
-   */
-  public static Map build() {
-    Map fragment = new Map();
-    Bundle args = new Bundle();
-    // TODO: Set arguments
-    fragment.setArguments(args);
-    return fragment;
-  }
-
-  GoogleMap.OnMapClickListener clickListener = new GoogleMap.OnMapClickListener() {
+  private GoogleMap.OnMapClickListener clickListener = new GoogleMap.OnMapClickListener() {
     @Override
     public void onMapClick(LatLng latLng) {
       AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -71,6 +39,17 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
       populateMap();
     }
   };
+
+  /**
+   * Use this factory method to create a new instance of Map.
+   */
+  public static Map build() {
+    Map fragment = new Map();
+    Bundle args = new Bundle();
+    // TODO: Set arguments
+    fragment.setArguments(args);
+    return fragment;
+  }
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -100,13 +79,13 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
       Log.d("test2", "outs");
       mMap.setMyLocationEnabled(true);
     }
-    locationManager.requestLocationUpdates(locationProvider, 0, 0, new MovementListener(proximityHandler, app.getLocalUser().getFavoriteLocations()));
+    locationManager.requestLocationUpdates(locationProvider, 0, 0, new MovementListener(proximityManager, app.getLocalUser().getFavoriteLocations()));
     this.populateMap();
     mMap.setOnMapClickListener(clickListener);
   }
 
-  public void registerNotificationObserver(NotificationObserver observer) {
-    proximityHandler.register(observer);
+  public void registerNotificationObserver(ProximityObserver observer) {
+    proximityManager.register(observer);
   }
 
   /**

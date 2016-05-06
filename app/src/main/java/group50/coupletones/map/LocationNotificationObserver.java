@@ -1,17 +1,16 @@
 package group50.coupletones.map;
 
-import javax.inject.Inject;
-
 import group50.coupletones.network.NetworkManager;
-import group50.coupletones.network.message.Message;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.network.message.OutgoingMessage;
+
+import javax.inject.Inject;
 
 /**
  * @author Sharmaine Manalo
  * @since 5/5/16
  */
-public class LocationNotificationObserver implements NotificationObserver {
+public class LocationNotificationObserver implements ProximityObserver {
   private NetworkManager network;
 
   @Inject

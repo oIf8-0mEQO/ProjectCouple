@@ -1,26 +1,16 @@
 package group50.coupletones;
 
-import android.location.Address;
 import android.location.Location;
-import android.location.Geocoder;
-
 import com.google.android.gms.maps.model.LatLng;
-
-import org.junit.*;
-
-import static org.mockito.Mockito.*;
+import group50.coupletones.map.*;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import group50.coupletones.map.FavoriteLocation;
-import group50.coupletones.map.Map;
-import group50.coupletones.map.MovementListener;
-import group50.coupletones.map.NearbyLocationHandler;
-import group50.coupletones.map.NotificationObserver;
-import group50.coupletones.map.ProximityHandler;
-import group50.coupletones.map.VisitedLocation;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by Joseph on 5/28/2016.
@@ -41,7 +31,7 @@ public class MapTest {
     public void testLocationListener()
     {
 
-        ProximityHandler mock = mock(ProximityHandler.class);
+        ProximityManager mock = mock(ProximityManager.class);
         MovementListener listener = new MovementListener(mock, locations);
 
         List<android.location.Location> list = new LinkedList<>();
@@ -70,7 +60,7 @@ public class MapTest {
     @Test
     public void testNotificationTimer()
     {
-        NotificationObserver observer = new NotificationObserver() {
+        ProximityObserver observer = new ProximityObserver() {
             int count = 0;
             @Override
             public void onEnterLocation(VisitedLocation location) {
@@ -78,8 +68,8 @@ public class MapTest {
                 count++;
             }
         };
-        NotificationObserver mock = mock(NotificationObserver.class);
-        ProximityHandler handler = new NearbyLocationHandler();
+        ProximityObserver mock = mock(ProximityObserver.class);
+        ProximityManager handler = new MapProximityManager();
         handler.register(observer);
         FavoriteLocation shouldNotifyOnce = new FavoriteLocation();
         handler.onNearby(shouldNotifyOnce);

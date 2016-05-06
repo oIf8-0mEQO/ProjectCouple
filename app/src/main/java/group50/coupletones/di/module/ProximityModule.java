@@ -2,8 +2,8 @@ package group50.coupletones.di.module;
 
 import dagger.Module;
 import dagger.Provides;
-import group50.coupletones.map.NearbyLocationHandler;
-import group50.coupletones.map.ProximityHandler;
+import group50.coupletones.map.MapProximityManager;
+import group50.coupletones.map.ProximityManager;
 
 import javax.inject.Singleton;
 
@@ -21,7 +21,7 @@ public class ProximityModule {
    */
   @Singleton
   @Provides
-  ProximityHandler provide(NearbyLocationHandler manager) {
+  ProximityManager provide(MapProximityManager manager) {
     return manager;
   }
 }

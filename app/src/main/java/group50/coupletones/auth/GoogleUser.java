@@ -75,16 +75,16 @@ public class GoogleUser implements LocalUser {
    */
   @Override
   public void save(Storage s){
-  // TODO: Implementation
 
-    if(getPartner()) {
-      s.setString
+    if(getPartner()!= null) {
+      s.setString("Partner's Name: ", getPartner().getName());
+      s.setString("Partner's Email: ", getPartner().getEmail());
+      s.setBoolean("hasPartner", true);
     }
-    SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
-    SharedPreferences.Editor editor = sharedPreferences.edit();
-    editor.putString("Partner's Name: ", );
-    editor.putString("Partner's Email: ", );
-    editor.apply();
+    else
+      s.setBoolean("hasPartner", false);
+
+    // TODO: Implement Save FaveLocations
   }
 
   /**
@@ -92,8 +92,17 @@ public class GoogleUser implements LocalUser {
    */
   @Override
   public void load(Storage s){
-    // TODO: Implementation
-    SharedPreferences sharedPreferences = getSharedPreferences("user_info", MODE_PRIVATE);
+
+    if(getBoolean("hasPartner")) {
+      name = s.getString(partnerName);
+      email = s.getString(partnerEmail);
+      Partner partner = new Partner(name, email);
+      setPartner(partner);
+    }
+    else
+      setPartner(null);
+
+    // TODO: Implement Load FaveLocations
 
   }
 

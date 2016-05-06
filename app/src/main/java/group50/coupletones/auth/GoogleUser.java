@@ -78,7 +78,7 @@ public class GoogleUser implements LocalUser {
   public void save(Storage s) {
 
     if (getPartner() != null) {
-      s.setString("Partner's Name: ", getPartner().getName());
+      s.write("Partner's Name: ", getPartner().getName());
       s.setString("Partner's Email: ", getPartner().getEmail());
       s.setBoolean("hasPartner", true);
     } else

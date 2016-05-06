@@ -2,20 +2,19 @@ package group50.coupletones.util.storage;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-​
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
  * Created by Calvin on 4/24/2016.
  */
+
 public class Storage {
-  ​
   private SharedPreferences settings;
   SharedPreferences.Editor editor;
   String suffix;
   int collectionLength;
-  ​
 
   public Storage(Activity activity) {
     settings = activity.getPreferences(0);
@@ -47,7 +46,6 @@ public class Storage {
 
   public Collection<Storable> read(String name, Class<?> type) {
     Collection<Storable> list = new ArrayList<Storable>();
-    ​
     try {
       Storable object = (Storable) type.newInstance();
       for (int i = 0; i < collectionLength; i++) {
@@ -58,35 +56,30 @@ public class Storage {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    ​
     return list;
   }
 
 
   public void write(String name, int value) {
     editor.putInt(name + suffix, value);
-    ​
     editor.commit();
   }
 
 
   public void write(String name, float value) {
     editor.putFloat(name + suffix, value);
-    ​
     editor.commit();
   }
 
 
   public void write(String name, String value) {
     editor.putString(name + suffix, value);
-    ​
     editor.commit();
   }
 
 
   public void write(String name, Collection<Storable> list) {
     collectionLength = 0;
-    ​
     for (Storable obj : list) {
       obj.save(this);
       suffix = suffix + "0";

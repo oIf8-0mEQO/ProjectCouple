@@ -112,7 +112,9 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
 
     // Logout/Disconnect Buttons at Bottom
     TextView logoutButton = (TextView) v.findViewById(R.id.logout_button);
+    TextView disconnectButton = (TextView) v.findViewById(R.id.disconnect_button);
     logoutButton.setTypeface(pierSans);
+    disconnectButton.setTypeface(pierSans);
     v.findViewById(R.id.logout_button).setOnClickListener(this);
     v.findViewById(R.id.disconnect_button).setOnClickListener(this);
 

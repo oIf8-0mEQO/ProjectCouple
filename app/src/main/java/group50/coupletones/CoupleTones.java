@@ -6,7 +6,7 @@
 package group50.coupletones;
 
 import android.app.Application;
-import group50.coupletones.auth.User;
+import group50.coupletones.auth.LocalUser;
 import group50.coupletones.di.AppComponent;
 import group50.coupletones.di.DaggerAppComponent;
 import group50.coupletones.di.module.ApplicationModule;
@@ -28,7 +28,7 @@ public class CoupleTones extends Application {
   /**
    * The local user of the app
    */
-  private User localUser;
+  private LocalUser localUser;
 
   /**
    * @return The main dependency injection component
@@ -49,7 +49,7 @@ public class CoupleTones extends Application {
   /**
    * @return The local user. If the user is not logged in, null is returned.
    */
-  public User getLocalUser() {
+  public LocalUser getLocalUser() {
     return localUser;
   }
 
@@ -59,7 +59,7 @@ public class CoupleTones extends Application {
    *
    * @param localUser The local user object
    */
-  public void setLocalUser(User localUser) {
+  public void setLocalUser(LocalUser localUser) {
     this.localUser = localUser;
   }
 

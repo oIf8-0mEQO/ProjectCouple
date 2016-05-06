@@ -106,7 +106,12 @@ public class Storage {
     }
     setInt(name, i);
   }
-  public void delete() {
+
+  public void delete(String name) {
+    preference
+      .edit()
+      .remove(name)
+      .apply();
 
   }
 }

@@ -77,8 +77,8 @@ public class GoogleUser implements LocalUser {
       s.setString("partnerName", getPartner().getName());
       s.setString("partnerEmail", getPartner().getEmail());
     } else {
-      s.setString("partnerName", getPartner().getName());
-      s.setString("partnerEmail", getPartner().getEmail());
+      s.delete("partnerName");
+      s.delete("partnerEmail");
     }
 
     s.setBoolean("hasPartner", getPartner() != null);

@@ -11,7 +11,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
  * Represents a User logged in via Google sign in.
  * Wraps the GoogleSignInAccount object.
  */
-public class GoogleUser implements User {
+public class GoogleUser implements LocalUser {
 
   private final GoogleSignInAccount account;
 
@@ -47,4 +47,14 @@ public class GoogleUser implements User {
   public String getEmail() {
     return account.getEmail();
   }
+
+  /**
+   * @return The partner of the user
+   */
+  @Override
+  public User getPartner() {
+    Partner partner = new Partner("testerName", "testerEmail");
+    return partner;
+  }
+
 }

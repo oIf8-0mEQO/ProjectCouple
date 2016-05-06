@@ -3,11 +3,13 @@ package group50.coupletones.controller;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.tab.SettingsFragment;
@@ -60,11 +62,12 @@ public class AddPartnerActivity extends AppCompatActivity
             new OutgoingMessage(MessageType.SEND_PARTNER_REQUEST.value)
               .setString("partner", ((EditText) findViewById(R.id.email_address)).getText().toString())
         );
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
         break;
       // Switches to AddPartnerActivity.
       case R.id.skip_button:
-        Intent i = new Intent(AddPartnerActivity.this, SettingsFragment.class);
-
+        finish();
         Log.d(getTag(), "Switched to SettingsFragment Successfully");
         break;
     }

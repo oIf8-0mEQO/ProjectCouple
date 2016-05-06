@@ -66,4 +66,21 @@ public class GoogleUser implements LocalUser {
     this.partner = partner;
   }
 
+  /**
+   * Save User data onto phone
+   */
+  @Override
+  public void save(){
+    // TODO: Implementation
+  }
+
+  /**
+   * Load User data from phone
+   */
+  @Override
+  public void load(){
+    // TODO: Implementation
+  }
+
+
 }

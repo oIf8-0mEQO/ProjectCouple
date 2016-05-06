@@ -11,9 +11,19 @@ public interface LocalUser extends User {
   User getPartner();
 
   /**
-   * @return The partner of the user
+   * @param partner
    */
   void setPartner(Partner partner);
+
+  /**
+   * Save User data onto phone
+   */
+  void save();
+
+  /**
+   * Load User data from phone
+   */
+  void load();
 
 
 }

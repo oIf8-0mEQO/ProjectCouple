@@ -12,14 +12,14 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by sharmaine on 4/29/16.
+ * Created by joannecho on 5/5/16.
  */
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
+public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.ListViewHolder> {
 
-  private List<FaveLocation> data;
+  private List<PartnerLocation> data;
   private LayoutInflater inflater;
 
-  public ListAdapter(List<FaveLocation> data, Context context) {
+  public ListAdapterPartner(List<PartnerLocation> data, Context context) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
   }
@@ -32,7 +32,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
 
   @Override
   public void onBindViewHolder(ListViewHolder holder, int position) {
-    FaveLocation location = data.get(position);
+    PartnerLocation location = data.get(position);
     holder.name.setText(location.getName());
     holder.address.setText(location.getAddress());
     holder.icon.setImageResource(location.getIconId());
@@ -60,4 +60,3 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     }
   }
 }
-

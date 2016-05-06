@@ -95,8 +95,8 @@ public class GoogleUser implements LocalUser {
 
     if (s.contain("hasPartner"))
       if (s.getBoolean("hasPartner")) {
-        getPartner().getName() = s.getString(partnerName);
-        getPartner().getEmail() = s.getString(partnerEmail);
+        String name = s.getString("name");
+        String email = s.getString("email");
         Partner partner = new Partner(name, email);
         setPartner(partner);
       } else
@@ -105,6 +105,4 @@ public class GoogleUser implements LocalUser {
     // TODO: Implement Load FaveLocations
 
   }
-
-
 }

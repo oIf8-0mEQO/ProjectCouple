@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
@@ -82,12 +85,15 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     yourName.setText(app.getLocalUser().getName());
     TextView yourAccountText = (TextView) v.findViewById(R.id.your_account_header);
     TextView yourAccount = (TextView) v.findViewById(R.id.your_email);
+    TextView null_partner = (TextView) v.findViewById(R.id.null_partner);
+
     yourAccount.setText(app.getLocalUser().getEmail());
     yourProfileText.setTypeface(pierSans);
     yourNameText.setTypeface(pierSans);
     yourName.setTypeface(pierSans);
     yourAccountText.setTypeface(pierSans);
     yourAccount.setTypeface(pierSans);
+    null_partner.setTypeface(pierSans);
 
     // Partner's Profile CardView
     // TODO: Change partner's name/email to getCollection keys from backend
@@ -97,16 +103,34 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     TextView partnerAccountText = (TextView) v.findViewById(R.id.partner_account_header);
     TextView partnerAccount = (TextView) v.findViewById(R.id.partner_email);
 
+    ImageButton add_partner_button = (ImageButton) v.findViewById(R.id.add_partner_button);
+
+    // Control visibility and customizability of Partner Name and Partner Email
     if (app.getLocalUser().getPartner() != null) {
       partnerName.setText(app.getLocalUser().getPartner().getName());
       partnerAccount.setText(app.getLocalUser().getPartner().getEmail());
+      partnerName.setVisibility(View.VISIBLE);
+      partnerAccount.setVisibility(View.VISIBLE);
+
     }
+
+    else{
+      add_partner_button.setVisibility(View.VISIBLE);
+      partnerNameText.setVisibility(View.INVISIBLE);
+      partnerName.setVisibility(View.INVISIBLE);
+      partnerAccountText.setVisibility(View.INVISIBLE);
+      partnerAccount.setVisibility(View.INVISIBLE);
+      null_partner.setVisibility(View.VISIBLE);
+
+    }
+
     //TODO: Handle when it's null
     partnersProfileText.setTypeface(pierSans);
     partnerNameText.setTypeface(pierSans);
     partnerName.setTypeface(pierSans);
     partnerAccountText.setTypeface(pierSans);
     partnerAccount.setTypeface(pierSans);
+
     // Add Partner ImageButton
     v.findViewById(R.id.add_partner_button).setOnClickListener(this);
 

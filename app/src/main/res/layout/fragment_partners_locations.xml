@@ -1,32 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
-<!-- Toolbar Settings for Main Friends Page -->
-<android.support.v7.widget.Toolbar
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	android:id="@+id/toolbar"
-	android:layout_width="match_parent"
-	android:layout_height="65dp"
-	android:background="?attr/colorPrimary"
-	app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-	app:layout_scrollFlags="scroll|enterAlways"
-	app:layout_collapseMode="pin">
-    <FrameLayout
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
+    <!-- Toolbar Settings for Main Friends Page -->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="?attr/colorPrimary"
+        app:layout_collapseMode="pin"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-		<!-- Centered CoupleTones Title -->
-		<ImageView
-			android:src="@drawable/coupletones_title"
-			android:layout_marginLeft="?attr/actionBarSize"
-			android:layout_marginRight="?attr/actionBarSize"
-			android:layout_width="wrap_content"
-			android:layout_height="fill_parent"
-			android:layout_marginTop="6dp"
-			android:layout_marginBottom="4dp"
-			android:layout_marginEnd="7dp"
-			android:layout_gravity="center" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-	</FrameLayout>
-</android.support.v7.widget.Toolbar>
+            <!-- Centered CoupleTones Title -->
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginLeft="?attr/actionBarSize"
+                android:layout_marginRight="?attr/actionBarSize"
+                android:layout_marginTop="6dp"
+                android:src="@drawable/coupletones_title"/>
+
+        </FrameLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <!-- Scroll View for the Page -->
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Recycler View for the Page -->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/partners_location_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="6dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
+
+
 

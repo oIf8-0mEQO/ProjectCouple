@@ -14,19 +14,14 @@ import android.widget.TextView;
 
 import group50.coupletones.FaveLocationsData;
 import group50.coupletones.ListAdapter;
-
 import group50.coupletones.R;
-import group50.coupletones.controller.MainActivity;
-import group50.coupletones.map.Map;
 
 /**
  * A simple {@link Fragment} subclass for the Favorite Locations tab.
  * Activities that contain this fragment must implement the {@link Listener} interface to handle interaction events.
  * Use the {@link FavoriteLocationsFragment#build} factory class to create an instance of this fragment.
  */
-public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFragment.Listener>
-  implements View.OnClickListener {
-
+public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFragment.Listener> {
   private RecyclerView favesList;
   private ListAdapter adapter;
   private CardView cv;
@@ -68,20 +63,7 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
     favesList.setLayoutManager(new LinearLayoutManager(getActivity()));
     adapter = new ListAdapter(FaveLocationsData.getFaveLocations(), getActivity());
     favesList.setAdapter(adapter);
-
-    v.findViewById(R.id.btn_add).setOnClickListener(this);
-
     return v;
-  }
-
-  @Override
-  public void onClick(View v) {
-    switch (v.getId()) {
-      case R.id.btn_add:
-        MainActivity act = (MainActivity) getActivity();
-        act.setFragment(act.getTabs().get(R.id.map));
-
-    }
   }
 
   /**

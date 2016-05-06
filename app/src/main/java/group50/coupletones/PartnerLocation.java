@@ -3,9 +3,13 @@ package group50.coupletones;
 import android.widget.ImageView;
 
 /**
- * A class that creates a FaveLocations object that contains a favorite location name and address.
+ * Created by joannecho on 5/5/16.
  */
-public class FaveLocation {
+
+/**
+ * A class that creates a PartnerLocation object that contains a favorite location name and address.
+ */
+public class PartnerLocation {
   private String name, address;
   private int iconId;
 
@@ -33,3 +37,4 @@ public class FaveLocation {
     this.iconId = iconId;
   }
 }
+

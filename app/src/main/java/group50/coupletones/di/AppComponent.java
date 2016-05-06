@@ -12,6 +12,7 @@ import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.AuthenticatorModule;
 import group50.coupletones.di.module.NetworkModule;
 import group50.coupletones.di.module.ProximityModule;
+import group50.coupletones.map.LocationService;
 import group50.coupletones.map.Map;
 import group50.coupletones.map.ProximityManager;
 import group50.coupletones.network.NetworkManager;
@@ -43,6 +44,8 @@ public interface AppComponent {
   NetworkManager network();
 
   ProximityManager proximity();
+
+  void inject(LocationService activity);
 
   void inject(AddPartnerActivity activity);
 

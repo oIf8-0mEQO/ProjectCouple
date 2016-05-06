@@ -1,6 +1,5 @@
 package group50.coupletones.util.storage;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 
 import java.util.ArrayList;
@@ -11,13 +10,13 @@ import java.util.Collection;
  */
 
 public class Storage {
-  private SharedPreferences settings;
   SharedPreferences.Editor editor;
   String suffix;
   int collectionLength;
+  private SharedPreferences settings;
 
-  public Storage(Activity activity) {
-    settings = activity.getPreferences(0);
+  public Storage(SharedPreferences preferences) {
+    settings = preferences;
     editor = settings.edit();
     suffix = "";
     collectionLength = 0;

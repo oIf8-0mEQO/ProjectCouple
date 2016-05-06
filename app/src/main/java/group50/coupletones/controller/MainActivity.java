@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
-
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Partner;
@@ -17,9 +15,9 @@ import group50.coupletones.controller.tab.PartnersLocationsFragment;
 import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.util.Taggable;
+import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
-
 import java.util.HashMap;
 
 /**
@@ -79,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements
         // The user tapped on the notification.
         // This means the user wants to add a new partner
         app.getLocalUser().setPartner(new Partner(extras.getString("name"), extras.getString("email")));
+        app.getLocalUser().save(new Storage(getSharedPreferences("user", MODE_PRIVATE)));
       }
     }
   }
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements
   @Override
   public void onMenuTabSelected(
     @IdRes
-    int menuItemId) {
+      int menuItemId) {
 
     // When a tab is selected, handle switching fragments
     if (tabs.containsKey(menuItemId)) {
@@ -98,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements
   @Override
   public void onMenuTabReSelected(
     @IdRes
-    int menuItemId) {
+      int menuItemId) {
 
     // When a tab is selected, handle switching fragments
     if (tabs.containsKey(menuItemId)) {

@@ -32,6 +32,7 @@ public class ProximityNetworkHandler implements ProximityObserver {
             .setDouble("lat", location.getPosition().latitude)
             .setDouble("long", location.getPosition().longitude)
             .setString("time", time)
+            .setString("partner", "hello@sharmaine.me")
     );
   }
 }

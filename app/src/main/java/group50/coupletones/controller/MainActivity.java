@@ -1,5 +1,6 @@
 package group50.coupletones.controller;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,7 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
+import group50.coupletones.auth.Partner;
 import group50.coupletones.controller.tab.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.PartnersLocationsFragment;
 import group50.coupletones.controller.tab.SettingsFragment;
@@ -28,7 +30,11 @@ public class MainActivity extends AppCompatActivity implements
   Taggable {
 
   @Inject
+  public CoupleTones app;
+
+  @Inject
   public NetworkManager network;
+
   /**
    * The bottom tab bar handler
    */
@@ -61,6 +67,17 @@ public class MainActivity extends AppCompatActivity implements
 
     // Hide bottom bar shadow
     mBottomBar.hideShadow();
+
+    // Process partner add requests
+    Intent intent = getIntent();
+    Bundle extras = intent.getExtras();
+    if (extras != null) {
+      if (extras.containsKey("name") && extras.containsKey("email")) {
+        // The user tapped on the notification.
+        // This means the user wants to add a new partner
+        app.getLocalUser().setPartner(new Partner(extras.getString("name"), extras.getString("email")));
+      }
+    }
   }
 
   @Override
@@ -97,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements
 
   /**
    * Sets the content of the MainActivity with the given fragment
+   *
    * @param fragment The fragment to set for the main content
    */
   private void setFragment(Fragment fragment) {

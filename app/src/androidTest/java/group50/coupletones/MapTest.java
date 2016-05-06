@@ -53,8 +53,8 @@ public class MapTest {
             listener.onLocationChanged(list.get(i));
         }
 
-        verify(mock, times(4)).onNearby(locations.get(0));
-        verify(mock, times(0)).onNearby(locations.get(1));
+        verify(mock, times(4)).onEnterLocation(locations.get(0));
+        verify(mock, times(0)).onEnterLocation(locations.get(1));
     }
 
     @Test
@@ -72,8 +72,8 @@ public class MapTest {
         ProximityManager handler = new MapProximityManager();
         handler.register(observer);
         FavoriteLocation shouldNotifyOnce = new FavoriteLocation();
-        handler.onNearby(shouldNotifyOnce);
-        handler.onNearby(shouldNotifyOnce);
+        handler.onEnterLocation(shouldNotifyOnce);
+        handler.onEnterLocation(shouldNotifyOnce);
     }
 
 }

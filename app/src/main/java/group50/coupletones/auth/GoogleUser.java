@@ -14,6 +14,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 public class GoogleUser implements LocalUser {
 
   private final GoogleSignInAccount account;
+  private User partner;
 
   /**
    * Creates a GoogleUser
@@ -53,8 +54,33 @@ public class GoogleUser implements LocalUser {
    */
   @Override
   public User getPartner() {
-    Partner partner = new Partner("testerName", "testerEmail");
     return partner;
   }
+
+  /**
+   * Sets partner
+   * @param partner
+   */
+  @Override
+  public void setPartner(Partner partner) {
+    this.partner = partner;
+  }
+
+  /**
+   * Save User data onto phone
+   */
+  @Override
+  public void save(){
+    // TODO: Implementation
+  }
+
+  /**
+   * Load User data from phone
+   */
+  @Override
+  public void load(){
+    // TODO: Implementation
+  }
+
 
 }

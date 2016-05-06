@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:background="#fff"
+                tools:context="group50.coupletones.controller.PartnerRequestActivity">
+
+    <!-- CoupleTones text -->
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="47dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:id="@+id/logotext"
+        android:src="@drawable/loginpg"
+        android:layout_below="@+id/logo"
+        android:layout_centerHorizontal="true" />
+
+    <!-- CoupleTones logo -->
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:id="@+id/logo"
+        android:src="@drawable/logo"
+        android:layout_marginTop="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp" />
+
+    <!-- Partner Name-->
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="45dp"
+        android:text="@string/partner_name"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/requested_partner"
+        android:gravity="center"
+        android:layout_below="@+id/logo"
+        android:textSize="30sp"
+        android:textColor="@color/subtitleColor"
+        android:layout_marginTop="90dp"/>
+
+    <!-- Request Sentence -->
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="45dp"
+        android:text="@string/partner_request"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/request_text"
+        android:gravity="center"
+        android:layout_below="@+id/requested_partner"
+        android:textSize="18dp"
+        android:textColor="@color/subtitleColor"
+        android:layout_marginTop="10dp"/>
+
+    <!-- Accept Button -->
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/accept"
+        android:textColor="@color/white"
+        android:id="@+id/accept_button"
+        android:textAllCaps="false"
+        android:minWidth="100dp"
+        android:minHeight="40dp"
+        android:background="@color/colorPrimary"
+        android:layout_below="@+id/request_text"
+        android:layout_marginStart="62dp"
+        android:layout_marginTop="30dp"
+        android:layout_alignParentStart="true"/>
+
+    <!-- Reject Button -->
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reject"
+        android:id="@+id/reject_button"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:minWidth="100dp"
+        android:minHeight="40dp"
+        android:background="@color/disconnectColor"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/request_text"
+        android:layout_toEndOf="@+id/accept_button"/>
+
+
+</RelativeLayout>

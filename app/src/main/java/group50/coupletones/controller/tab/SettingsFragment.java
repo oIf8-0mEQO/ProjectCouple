@@ -93,10 +93,14 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     TextView partnersProfileText = (TextView) v.findViewById(R.id.partners_profile_text);
     TextView partnerNameText = (TextView) v.findViewById(R.id.partner_name_header);
     TextView partnerName = (TextView) v.findViewById(R.id.partner_name);
-    // partnerName.setText(app.getLocalUser().getPartnerName());
     TextView partnerAccountText = (TextView) v.findViewById(R.id.partner_account_header);
     TextView partnerAccount = (TextView) v.findViewById(R.id.partner_email);
-    // partnerAccount.setText(app.getLocalUser().getPartnerEmail());
+
+    if (app.getLocalUser().getPartner() != null) {
+      partnerName.setText(app.getLocalUser().getPartner().getName());
+      partnerAccount.setText(app.getLocalUser().getPartner().getEmail());
+    }
+    //TODO: Handle when it's null
     partnersProfileText.setTypeface(pierSans);
     partnerNameText.setTypeface(pierSans);
     partnerName.setTypeface(pierSans);

@@ -31,19 +31,25 @@ public class PartnerRequestReceiver implements MessageReceiver, Identifiable {
   @Override
   public void onReceive(Message message) {
     // The partner making the request
+    String partnerName = message.getString("name");
     String partnerEmail = message.getString("partner");
-    //TODO: Use values/strings
-    String title = "Partner Request";
-    String msg = partnerEmail + " wants to partner with you!";
 
+    // Bundle the data into the intent when opening MainActivity
     Intent intent = new Intent(context, MainActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    intent.putExtra("name", partnerName);
+    intent.putExtra("email", partnerEmail);
     PendingIntent pendingIntent = PendingIntent.getActivity(
       context,
       0 /* Request code */,
       intent,
       PendingIntent.FLAG_ONE_SHOT
     );
+
+    // Generate phone notification
+    //TODO: Use values/strings
+    String title = "Partner Request";
+    String msg = partnerEmail + " wants to partner with you!";
 
     Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
     NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)

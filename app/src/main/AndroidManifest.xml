@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="group50.coupletones">
+<manifest package="group50.coupletones"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
             android:name="CoupleTones"
@@ -9,6 +9,19 @@
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+
+        <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+        <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+        <uses-permission android:name="android.permission.INTERNET"/>
+        <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+        <activity
+                android:name=".controller.PartnerRequestActivity"
+                android:label="@string/title_activity_partner_request">
+        </activity>
+
         <activity android:name=".controller.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -21,35 +34,32 @@
                 android:theme="@style/AppTheme">
         </activity>
 
-        <service android:name=".network.gcm.GcmListener"></service>
-        android:theme="@style/AppTheme" />
+
         <activity
                 android:name=".controller.EditLocationActivity"
                 android:label="@string/title_activity_edit_location"
                 android:theme="@style/AppTheme"/>
         <activity
                 android:name=".controller.AddPartnerActivity"
-                android:label="@string/title_activity_add_partner"></activity>
+                android:label="@string/title_activity_add_partner"/>
 
         <receiver
-                android:name=".network.gcm.GcmReceiver"
-                android:permission="com.google.android.c2dm.permission.SEND">
+            android:name=".network.gcm.GcmReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
                 <category android:name="group50.coupletones"/>
             </intent-filter>
         </receiver>
 
-        <service android:name=".network.gcm.GcmMessageHandler"></service>
-		<meta-data
+        <service android:name=".network.gcm.GcmMessageHandler"/>
+        <service android:name=".network.gcm.GcmListener"/>
+
+        <meta-data
 			android:name="com.google.android.geo.API_KEY"
 			android:value="AIzaSyA3oZznWLtXHfTY6XSKP2Krbd9rR2nxwi4"/>
 	</application>
-	
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+
+
 </manifest>

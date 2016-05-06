@@ -96,6 +96,8 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     this.populateMap();
     mMap.setOnMapClickListener(clickListener);
     mMap.setMyLocationEnabled(true);
+    CameraUpdate initial = CameraUpdateFactory.newLatLngZoom(new LatLng(32.880234, -117.236106), 15);
+    mMap.moveCamera(initial);
   }
 
   public void registerNotificationObserver(ProximityObserver observer) {

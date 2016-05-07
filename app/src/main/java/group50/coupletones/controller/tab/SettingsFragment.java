@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
@@ -89,7 +90,6 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
       getString(R.string.pier_sans));
 
     // User's Profile CardView
-    // TODO: REMEMBER to change Strings
     yourProfileText = (TextView) v.findViewById(R.id.my_profile_header);
     yourNameText = (TextView) v.findViewById(R.id.your_name_header);
     yourName = (TextView) v.findViewById(R.id.your_name);
@@ -119,9 +119,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     // Control visibility and customizability of Partner Name and Partner Email
     if (app.getLocalUser().getPartner() != null) {
       updateUI(true);
-    }
-
-    else {
+    } else {
       updateUI(false);
     }
 
@@ -147,14 +145,13 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
   }
 
   public void updateUI(boolean b) {
-    if(b) {
+    if (b) {
       partnerName.setText(app.getLocalUser().getPartner().getName());
       partnerAccount.setText(app.getLocalUser().getPartner().getEmail());
       partnerName.setVisibility(View.VISIBLE);
       partnerAccount.setVisibility(View.VISIBLE);
       null_partner.setVisibility(View.INVISIBLE);
-    }
-    else {
+    } else {
       add_partner_button.setVisibility(View.VISIBLE);
       partnerNameText.setVisibility(View.INVISIBLE);
       partnerName.setVisibility(View.INVISIBLE);
@@ -162,9 +159,6 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
       partnerAccount.setVisibility(View.INVISIBLE);
       null_partner.setVisibility(View.VISIBLE);
     }
-
-
-
   }
 
   /**
@@ -191,7 +185,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
 
       // signOut() is called to sign out the user.
       case R.id.logout_button:
-        auth.signOut(status -> updateUI());
+        auth.signOut(status -> goToLogin());
         break;
     }
   }
@@ -199,7 +193,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
   /**
    * After a successful signOut(), user will be taken to Login page.
    */
-  private void updateUI() {
+  private void goToLogin() {
     Intent i = new Intent(getContext(), LoginActivity.class);
     startActivity(i);
     Log.d(getTag(), "Signed Out Successfully");

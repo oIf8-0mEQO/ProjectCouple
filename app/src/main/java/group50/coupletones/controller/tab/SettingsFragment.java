@@ -36,6 +36,19 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
   @Inject
   public CoupleTones app;
 
+  TextView yourProfileText;
+  TextView yourNameText;
+  TextView yourName;
+  TextView yourAccountText;
+  TextView yourAccount;
+  TextView null_partner;
+  TextView partnersProfileText;
+  TextView partnerNameText;
+  TextView partnerName;
+  TextView partnerAccountText;
+  TextView partnerAccount;
+  ImageButton add_partner_button;
+
   public SettingsFragment() {
     super(Listener.class);
   }
@@ -77,13 +90,13 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
 
     // User's Profile CardView
     // TODO: REMEMBER to change Strings
-    TextView yourProfileText = (TextView) v.findViewById(R.id.my_profile_header);
-    TextView yourNameText = (TextView) v.findViewById(R.id.your_name_header);
-    TextView yourName = (TextView) v.findViewById(R.id.your_name);
+    yourProfileText = (TextView) v.findViewById(R.id.my_profile_header);
+    yourNameText = (TextView) v.findViewById(R.id.your_name_header);
+    yourName = (TextView) v.findViewById(R.id.your_name);
     yourName.setText(app.getLocalUser().getName());
-    TextView yourAccountText = (TextView) v.findViewById(R.id.your_account_header);
-    TextView yourAccount = (TextView) v.findViewById(R.id.your_email);
-    TextView null_partner = (TextView) v.findViewById(R.id.null_partner);
+    yourAccountText = (TextView) v.findViewById(R.id.your_account_header);
+    yourAccount = (TextView) v.findViewById(R.id.your_email);
+    null_partner = (TextView) v.findViewById(R.id.null_partner);
 
     yourAccount.setText(app.getLocalUser().getEmail());
     yourProfileText.setTypeface(pierSans);
@@ -95,31 +108,21 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
 
     // Partner's Profile CardView
     // TODO: Change partner's name/email to getCollection keys from backend
-    TextView partnersProfileText = (TextView) v.findViewById(R.id.partners_profile_text);
-    TextView partnerNameText = (TextView) v.findViewById(R.id.partner_name_header);
-    TextView partnerName = (TextView) v.findViewById(R.id.partner_name);
-    TextView partnerAccountText = (TextView) v.findViewById(R.id.partner_account_header);
-    TextView partnerAccount = (TextView) v.findViewById(R.id.partner_email);
+    partnersProfileText = (TextView) v.findViewById(R.id.partners_profile_text);
+    partnerNameText = (TextView) v.findViewById(R.id.partner_name_header);
+    partnerName = (TextView) v.findViewById(R.id.partner_name);
+    partnerAccountText = (TextView) v.findViewById(R.id.partner_account_header);
+    partnerAccount = (TextView) v.findViewById(R.id.partner_email);
 
-    ImageButton add_partner_button = (ImageButton) v.findViewById(R.id.add_partner_button);
+    add_partner_button = (ImageButton) v.findViewById(R.id.add_partner_button);
 
     // Control visibility and customizability of Partner Name and Partner Email
     if (app.getLocalUser().getPartner() != null) {
-      partnerName.setText(app.getLocalUser().getPartner().getName());
-      partnerAccount.setText(app.getLocalUser().getPartner().getEmail());
-      partnerName.setVisibility(View.VISIBLE);
-      partnerAccount.setVisibility(View.VISIBLE);
-
+      updateUI(true);
     }
 
-    else{
-      add_partner_button.setVisibility(View.VISIBLE);
-      partnerNameText.setVisibility(View.INVISIBLE);
-      partnerName.setVisibility(View.INVISIBLE);
-      partnerAccountText.setVisibility(View.INVISIBLE);
-      partnerAccount.setVisibility(View.INVISIBLE);
-      null_partner.setVisibility(View.VISIBLE);
-
+    else {
+      updateUI(false);
     }
 
     //TODO: Handle when it's null
@@ -143,6 +146,26 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     return v;
   }
 
+  public void updateUI(boolean b) {
+    if(b) {
+      partnerName.setText(app.getLocalUser().getPartner().getName());
+      partnerAccount.setText(app.getLocalUser().getPartner().getEmail());
+      partnerName.setVisibility(View.VISIBLE);
+      partnerAccount.setVisibility(View.VISIBLE);
+    }
+    else {
+      add_partner_button.setVisibility(View.VISIBLE);
+      partnerNameText.setVisibility(View.INVISIBLE);
+      partnerName.setVisibility(View.INVISIBLE);
+      partnerAccountText.setVisibility(View.INVISIBLE);
+      partnerAccount.setVisibility(View.INVISIBLE);
+      null_partner.setVisibility(View.VISIBLE);
+    }
+
+
+
+  }
+
   /**
    * Actions taken when a Button is clicked.
    */
@@ -162,6 +185,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
         app.getLocalUser().setPartner(null);
         app.getLocalUser().save(new Storage(getActivity()
           .getSharedPreferences("user", getActivity().MODE_PRIVATE)));
+        updateUI(false);
         break;
 
       // signOut() is called to sign out the user.

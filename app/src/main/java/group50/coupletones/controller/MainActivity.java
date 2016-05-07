@@ -15,6 +15,7 @@ import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
+import group50.coupletones.controller.tab.favoritelocations.map.LocationService;
 import group50.coupletones.controller.tab.favoritelocations.map.Map;
 import group50.coupletones.controller.tab.partnerslocations.PartnersLocationsFragment;
 import group50.coupletones.network.NetworkManager;
@@ -56,6 +57,9 @@ public class MainActivity extends AppCompatActivity implements
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    // Start Location Services
+    Intent i = new Intent(MainActivity.this, LocationService.class);
+    startService(i);
 
     // Dependency Injection
     CoupleTones.component().inject(this);

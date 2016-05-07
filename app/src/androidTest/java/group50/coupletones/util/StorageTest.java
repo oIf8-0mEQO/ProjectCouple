@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -74,10 +75,15 @@ public class StorageTest {
     return cache.get(inv.getArguments()[0]);
   }
 
-
+  @Test
   public void testContain() {
     storage.setInt("mac", 0);
     assertTrue(storage.contains("mac"));
+
+    assertFalse(storage.contains("ABC"));
+
+    storage.setString("mac", "DEF");
+    assertThat(storage.contains("mac")).isEqualTo(true);
   }
 
 
@@ -86,6 +92,13 @@ public class StorageTest {
     storage.setInt("mac", 85);
     assertThat(storage.getInt("mac")).isEqualTo(85);
     System.out.print(storage.getInt("mac"));
+
+    assertThat(storage.getInt("ABC")).isEqualTo(0);
+
+    storage.setInt("def", 67);
+    assertThat(storage.getInt("def")).isEqualTo(67);
+    System.out.print(storage.getInt("def"));
+
   }
 
 
@@ -94,20 +107,42 @@ public class StorageTest {
     storage.setFloat("mac", 85f);
     assertThat(storage.getFloat("mac")).isEqualTo(85f);
     System.out.print(storage.getFloat("mac"));
+
+    storage.setFloat("def", 33f);
+    assertThat(storage.getFloat("def")).isEqualTo(33f);
+    System.out.print(storage.getFloat("def"));
+
+    assertThat(storage.getFloat("ABC")).isEqualTo(0f);
   }
 
   @Test
   public void testTypeString() {
-    storage.setFloat("mac", 85f);
-    assertThat(storage.getFloat("mac")).isEqualTo(85f);
-    System.out.print(storage.getFloat("mac"));
+    storage.setString("mac", "mac2");
+    assertThat(storage.getString("mac")).isEqualTo("mac2");
+    System.out.print(storage.getString("mac"));
+
+    storage.setString("def", "");
+    assertThat(storage.getString("def")).isEqualTo("");
+    System.out.print(storage.getString("def"));
+
+    storage.setString("app", "   ");
+    assertThat(storage.getString("app")).isEqualTo("   ");
+    System.out.print(storage.getString("app"));
+
+    assertThat(storage.getString("ABC")).isEqualTo(null);
   }
 
   @Test
   public void testTypeBoolean() {
-    storage.setFloat("mac", 85f);
-    assertThat(storage.getFloat("mac")).isEqualTo(85f);
-    System.out.print(storage.getFloat("mac"));
+    storage.setBoolean("mac", true);
+    assertThat(storage.getBoolean("mac")).isEqualTo(true);
+    System.out.print(storage.getBoolean("mac"));
+
+    storage.setBoolean("mac1", false);
+    assertThat(storage.getBoolean("mac1")).isEqualTo(false);
+    System.out.print(storage.getBoolean("mac1"));
+
+    assertThat(storage.getBoolean("ABC")).isEqualTo(false);
   }
 
   @Test

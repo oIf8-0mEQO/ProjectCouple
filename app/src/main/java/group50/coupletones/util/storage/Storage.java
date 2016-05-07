@@ -9,6 +9,12 @@ import java.util.List;
  * Created by Calvin on 4/24/2016.
  */
 public class Storage {
+
+  /**
+   * Name of the user preference file
+   */
+  public static final String PREF_FILE_USER = "user";
+
   private final SharedPreferences preference;
   private final String suffix;
 
@@ -51,12 +57,12 @@ public class Storage {
     List<T> list = new LinkedList<>();
 
     if (contains(name)) {
-      int collectionLength = getInt(name);
+      int collectionLength = getInt(name + suffix);
 
       try {
         T object = type.newInstance();
         for (int i = 0; i < collectionLength; i++) {
-          Storage arrStorage = new Storage(preference, i + "");
+          Storage arrStorage = new Storage(preference, suffix + i);
           object.load(arrStorage);
           list.add(object);
         }
@@ -100,16 +106,16 @@ public class Storage {
   public void setCollection(String name, List<? extends Storable> collection) {
     int i = 0;
     for (Storable obj : collection) {
-      obj.save(new Storage(preference, i + ""));
+      obj.save(new Storage(preference, suffix + i));
       i++;
     }
-    setInt(name, i);
+    setInt(name + suffix, i);
   }
 
   public void delete(String name) {
     preference
       .edit()
-      .remove(name)
+      .remove(name + suffix)
       .apply();
 
   }

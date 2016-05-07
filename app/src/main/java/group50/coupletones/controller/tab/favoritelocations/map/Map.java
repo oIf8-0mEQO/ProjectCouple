@@ -2,7 +2,7 @@ package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +14,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
+import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 
@@ -39,17 +40,19 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
       final EditText input = new EditText(getContext());
       input.setInputType(InputType.TYPE_CLASS_TEXT);
       builder.setView(input);
-      builder.setPositiveButton(R.string.location_name_accept, new DialogInterface.OnClickListener() {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
+      builder.setPositiveButton(R.string.location_name_accept, (dialog, which) -> {
+        // Save the favorite location
           String name = input.getText().toString();
           FavoriteLocation clickedLocation = new FavoriteLocation(name, latLng);
           app.getLocalUser().getFavoriteLocations().add(clickedLocation);
+        app.getLocalUser().save(new Storage(getActivity().getSharedPreferences(Storage.PREF_FILE_USER, Context.MODE_PRIVATE)));
+
+        // Move the camera
           CameraUpdate update = CameraUpdateFactory.newLatLng(clickedLocation.getPosition());
           mMap.moveCamera(update);
           populateMap();
         }
-      });
+      );
       builder.show();
     }
   };

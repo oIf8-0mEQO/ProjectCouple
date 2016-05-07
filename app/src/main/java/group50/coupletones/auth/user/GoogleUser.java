@@ -5,6 +5,7 @@
 
 package group50.coupletones.auth.user;
 
+import android.util.Log;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import group50.coupletones.controller.tab.favoritelocations.map.FavoriteLocation;
 import group50.coupletones.util.storage.Storage;
@@ -83,35 +84,36 @@ public class GoogleUser implements LocalUser {
    * Save User data onto phone
    */
   @Override
-  public void save(Storage s) {
+  public void save(Storage storage) {
     if (getPartner() != null) {
-      s.setString("partnerName", getPartner().getName());
-      s.setString("partnerEmail", getPartner().getEmail());
+      storage.setString("partnerName", getPartner().getName());
+      storage.setString("partnerEmail", getPartner().getEmail());
     } else {
-      s.delete("partnerName");
-      s.delete("partnerEmail");
+      storage.delete("partnerName");
+      storage.delete("partnerEmail");
     }
 
-    s.setBoolean("hasPartner", getPartner() != null);
+    storage.setBoolean("hasPartner", getPartner() != null);
 
-    // TODO: Implement Save FaveLocations
+    storage.setCollection("favoriteLocations", favoriteLocations);
   }
 
   /**
    * Load User data from phone
    */
   @Override
-  public void load(Storage s) {
-    if (s.contains("hasPartner") && s.getBoolean("hasPartner")) {
-      String name = s.getString("partnerName");
-      String email = s.getString("partnerEmail");
+  public void load(Storage storage) {
+    if (storage.contains("hasPartner") && storage.getBoolean("hasPartner")) {
+      String name = storage.getString("partnerName");
+      String email = storage.getString("partnerEmail");
       Partner partner = new Partner(name, email);
       setPartner(partner);
     } else {
       setPartner(null);
     }
 
-    // TODO: Implement Load FaveLocations
+    favoriteLocations = storage.getCollection("favoriteLocations", FavoriteLocation.class);
 
+    Log.d("GoogleUser", "size " + favoriteLocations.size());
   }
 }

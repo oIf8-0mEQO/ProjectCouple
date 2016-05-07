@@ -40,9 +40,6 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
    */
   public static FavoriteLocationsFragment build() {
     FavoriteLocationsFragment fragment = new FavoriteLocationsFragment();
-    Bundle args = new Bundle();
-    // TODO: Set arguments
-    fragment.setArguments(args);
     return fragment;
   }
 
@@ -58,8 +55,7 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
   }
 
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                           Bundle savedInstanceState) {
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_favorite_locations, container, false);
     favesList = (RecyclerView) v.findViewById(R.id.favorite_locations_list);
     favesList.setLayoutManager(new LinearLayoutManager(getActivity()));

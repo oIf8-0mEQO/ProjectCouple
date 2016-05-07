@@ -76,7 +76,7 @@ public class PartnerResponseActivity extends Activity {
 
     if (accept) {
       app.getLocalUser().setPartner(new Partner(name, email));
-      app.getLocalUser().save(new Storage(getSharedPreferences("user", MODE_PRIVATE)));
+      app.getLocalUser().save(new Storage(getSharedPreferences(Storage.PREF_FILE_USER, MODE_PRIVATE)));
     }
 
     finish();

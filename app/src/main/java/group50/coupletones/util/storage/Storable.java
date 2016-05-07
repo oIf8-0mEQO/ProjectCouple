@@ -5,18 +5,17 @@ package group50.coupletones.util.storage;
  */
 public interface Storable {
 
-
   /**
    * Save User data onto phone
    *
    * @param storage
    */
-  public void save(Storage storage);
+  void save(Storage storage);
 
   /**
    * Load User data from phone
    *
    * @param storage
    */
-  public void load(Storage storage);
+  void load(Storage storage);
 }

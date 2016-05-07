@@ -36,7 +36,7 @@
 
     <!-- Partner Name-->
     <TextView
-        android:layout_width="250dp"
+        android:layout_width="wrap_content"
         android:layout_height="45dp"
         android:text="@string/partner_name"
         android:scaleType="fitXY"
@@ -47,7 +47,7 @@
         android:layout_below="@+id/logo"
         android:textSize="30sp"
         android:textColor="@color/subtitleColor"
-        android:layout_marginTop="90dp"/>
+        android:layout_marginTop="80dp"/>
 
     <!-- Request Sentence -->
     <TextView
@@ -62,7 +62,7 @@
         android:layout_below="@+id/requested_partner"
         android:textSize="18dp"
         android:textColor="@color/subtitleColor"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="20dp"/>
 
     <!-- Accept Button -->
     <Button

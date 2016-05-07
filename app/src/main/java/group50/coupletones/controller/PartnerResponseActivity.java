@@ -54,29 +54,30 @@ public class PartnerResponseActivity extends Activity {
       // This means the user wants to add a new partner
       String name = extras.getString("name");
       String email = extras.getString("email");
-      app.getLocalUser().setPartner(new Partner(name, email));
-      app.getLocalUser().save(new Storage(getSharedPreferences("user", MODE_PRIVATE)));
-
       partnerName.setText(name);
       requestText.setText(email + " wants to partner with you.");
 
-      acceptButton.setOnClickListener(click -> sendResponse(email, true));
-      rejectButton.setOnClickListener(click -> sendResponse(email, false));
-
+      acceptButton.setOnClickListener(click -> sendResponse(name, email, true));
+      rejectButton.setOnClickListener(click -> sendResponse(name, email, false));
     } else {
       // Invalid data. Close the activity.
       finish();
     }
   }
 
-  private void sendResponse(String email, boolean accept) {
+  private void sendResponse(String name, String email, boolean accept) {
     // Send a partner request to the server
     network.send(
       (OutgoingMessage)
         new OutgoingMessage(MessageType.SEND_PARTNER_RESPONSE.value)
           .setString("partner", email)
-          .setString("accept", accept ? "1" : "0")
+          .setBoolean("requestAccept", accept)
     );
+
+    if (accept) {
+      app.getLocalUser().setPartner(new Partner(name, email));
+      app.getLocalUser().save(new Storage(getSharedPreferences("user", MODE_PRIVATE)));
+    }
 
     finish();
   }

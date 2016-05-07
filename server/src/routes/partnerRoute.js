@@ -30,7 +30,7 @@ class PartnerRoute extends Route {
 			var logMsg = "User " + sender.email + " attempting to partner with " + data.partner;
 			var partner = App.getUserByEmail(data.partner);
 
-			if (partner && partner.email !== sender.email) {
+			if (partner /*&& partner.email !== sender.email*/) {
 				console.log(logMsg + " (accept)");
 				// Send request to partner
 				GCM.send(partner.deviceId, {

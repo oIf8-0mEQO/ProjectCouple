@@ -15,27 +15,28 @@ var GCM = require("../gcm");
  * Expects:
  * {
  *    partner: "<email of partner>"
+ *    accept: "<true or false>"
  * }
  *
  * Will respond the client if the partnering succeeds, or fails.
  */
 class PartnerRoute extends Route {
 	constructor() {
-		super("partner");
+		super("partner-response");
 	}
 
 	receive(messageId, from, data) {
 		var sender = App.getUserByDevice(from);
 		if (sender) {
-			var logMsg = "User " + sender.email + " attempting to partner with " + data.partner;
+			var logMsg = "User " + sender.email + " responding to " + data.partner + " request.";
 			var partner = App.getUserByEmail(data.partner);
 
 			if (partner && partner.email !== sender.email) {
-				console.log(logMsg + " (accept)");
+				console.log(logMsg + " (" + data.accept + ")");
 				// Send request to partner
 				GCM.send(partner.deviceId, {
-					type: "partner-request",
-					name: sender.name,
+					type: "partner-response",
+					accept: data.accept,
 					partner: sender.email
 				}, {});
 			} else {

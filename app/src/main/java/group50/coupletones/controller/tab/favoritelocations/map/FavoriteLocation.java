@@ -91,7 +91,7 @@ public class FavoriteLocation implements Location, Storable {
    * @return true if the location is on cooldown, otherwise false.
    */
   public boolean isOnCooldown() {
-    return (System.currentTimeMillis() - time > 600000);
+    return (System.currentTimeMillis() - time < 600000);
   }
 
   /**

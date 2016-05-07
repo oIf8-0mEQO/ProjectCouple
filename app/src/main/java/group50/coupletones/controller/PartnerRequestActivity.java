@@ -75,7 +75,9 @@ public class PartnerRequestActivity extends Activity {
       (OutgoingMessage)
         new OutgoingMessage(MessageType.SEND_PARTNER_RESPONSE.value)
           .setString("partner", email)
-          .setBoolean("accept", accept)
+          .setString("accept", accept ? "1" : "0")
     );
+
+    finish();
   }
 }

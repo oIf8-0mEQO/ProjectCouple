@@ -1,6 +1,8 @@
 package group50.coupletones.network.receiver;
 
 import android.content.Context;
+import android.content.Intent;
+import group50.coupletones.controller.MainActivity;
 import group50.coupletones.network.message.Message;
 import group50.coupletones.network.message.MessageReceiver;
 import group50.coupletones.network.message.MessageType;
@@ -28,6 +30,7 @@ public class PartnerResponseReceiver implements MessageReceiver, Identifiable {
     String msg = message.getString("name") + " " + (accepted ? "accepted" : "rejected") + " your request!";
 
     new Notification(context)
+      .setIntent(new Intent(context, MainActivity.class))
       .setTitle(title)
       .setMsg(msg)
       .show();

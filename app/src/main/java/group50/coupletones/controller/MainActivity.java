@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
+
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
@@ -21,6 +23,7 @@ import group50.coupletones.network.NetworkManager;
 import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;
+
 import java.util.HashMap;
 
 /**
@@ -42,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements
   @Inject
   public Authenticator<User, String> auth;
 
-
   /**
    * The bottom tab bar handler
    */
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
     // Start Location Services
     Intent i = new Intent(MainActivity.this, LocationService.class);
     startService(i);
@@ -96,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements
   @Override
   public void onMenuTabSelected(
     @IdRes
-      int menuItemId) {
+    int menuItemId) {
 
     // When a tab is selected, handle switching fragments
     if (tabs.containsKey(menuItemId)) {
@@ -108,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements
   @Override
   public void onMenuTabReSelected(
     @IdRes
-      int menuItemId) {
+    int menuItemId) {
 
     // When a tab is selected, handle switching fragments
     if (tabs.containsKey(menuItemId)) {

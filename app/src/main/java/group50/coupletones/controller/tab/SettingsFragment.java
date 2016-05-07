@@ -161,6 +161,16 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     }
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+    if (app.getLocalUser().getPartner() != null) {
+      updateUI(true);
+    } else {
+      updateUI(false);
+    }
+  }
+
   /**
    * Actions taken when a Button is clicked.
    */

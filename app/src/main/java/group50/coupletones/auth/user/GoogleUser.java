@@ -6,7 +6,9 @@
 package group50.coupletones.auth.user;
 
 import android.util.Log;
+
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import group50.coupletones.controller.tab.favoritelocations.map.FavoriteLocation;
 import group50.coupletones.util.storage.Storage;
 

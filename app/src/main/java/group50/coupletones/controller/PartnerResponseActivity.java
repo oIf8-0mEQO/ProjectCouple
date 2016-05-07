@@ -16,7 +16,7 @@ import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 
-public class PartnerRequestActivity extends Activity {
+public class PartnerResponseActivity extends Activity {
 
   @Inject
   public CoupleTones app;

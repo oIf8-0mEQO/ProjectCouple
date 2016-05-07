@@ -18,7 +18,7 @@
             android:theme="@style/AppTheme">
 
         <activity
-                android:name=".controller.PartnerRequestActivity"
+                android:name=".controller.PartnerResponseActivity"
                 android:label="@string/title_activity_partner_request">
         </activity>
 

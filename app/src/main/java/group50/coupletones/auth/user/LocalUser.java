@@ -22,7 +22,7 @@ public interface LocalUser extends User, Storable {
   void setPartner(Partner partner);
 
   /**
-   * @Return The a list of the users favoite locations.
+   * @return The a list of the users favoite locations.
    */
   List<FavoriteLocation> getFavoriteLocations();
 

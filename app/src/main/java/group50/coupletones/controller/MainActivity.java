@@ -1,6 +1,5 @@
 package group50.coupletones.controller;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -11,7 +10,6 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.GoogleAuthenticator;
-import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
@@ -20,7 +18,6 @@ import group50.coupletones.controller.tab.favoritelocations.map.Map;
 import group50.coupletones.controller.tab.partnerslocations.PartnersLocationsFragment;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.util.Taggable;
-import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -81,18 +78,6 @@ public class MainActivity extends AppCompatActivity implements
 
     // Hide bottom bar shadow
     mBottomBar.hideShadow();
-
-    // Process partner add requests
-    Intent intent = getIntent();
-    Bundle extras = intent.getExtras();
-    if (extras != null) {
-      if (extras.containsKey("name") && extras.containsKey("email")) {
-        // The user tapped on the notification.
-        // This means the user wants to add a new partner
-        app.getLocalUser().setPartner(new Partner(extras.getString("name"), extras.getString("email")));
-        app.getLocalUser().save(new Storage(getSharedPreferences("user", MODE_PRIVATE)));
-      }
-    }
   }
 
   @Override

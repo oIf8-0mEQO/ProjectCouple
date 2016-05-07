@@ -18,13 +18,13 @@ import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;
 
-public class GcmMessageHandler extends IntentService implements Taggable {
+public class GcmIntentService extends IntentService implements Taggable {
 
   @Inject
   public NetworkManager network;
 
-  public GcmMessageHandler() {
-    super("GcmMessageHandler");
+  public GcmIntentService() {
+    super("GcmIntentService");
   }
 
   @Override

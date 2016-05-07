@@ -14,7 +14,7 @@ import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFra
 import group50.coupletones.controller.tab.favoritelocations.map.*;
 import group50.coupletones.di.module.*;
 import group50.coupletones.network.NetworkManager;
-import group50.coupletones.network.gcm.GcmMessageHandler;
+import group50.coupletones.network.gcm.GcmIntentService;
 
 import javax.inject.Singleton;
 
@@ -66,5 +66,5 @@ public interface AppComponent {
 
   void inject(SettingsFragment fragment);
 
-  void inject(GcmMessageHandler receiver);
+  void inject(GcmIntentService receiver);
 }

@@ -57,7 +57,7 @@
         </receiver>
 
         <service android:name=".controller.tab.favoritelocations.map.LocationService"/>
-        <service android:name=".network.gcm.GcmMessageHandler"/>
+        <service android:name=".network.gcm.GcmIntentService"/>
 
         <meta-data
                 android:name="com.google.android.geo.API_KEY"

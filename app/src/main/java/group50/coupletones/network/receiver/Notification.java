@@ -10,6 +10,8 @@ import android.support.v4.app.NotificationCompat;
 import group50.coupletones.R;
 
 /**
+ * A simple class that builds a notification
+ *
  * @author Henry
  * @since 5/6/16
  */
@@ -22,17 +24,14 @@ public class Notification {
   private Intent intent;
 
   /**
-   * Title of notification
+   * The notification builder
    */
-  private String title;
+  private NotificationCompat.Builder builder;
 
-  /**
-   * The message of the notification
-   */
-  private String msg;
 
   public Notification(Context context) {
     this.context = context;
+    builder = new NotificationCompat.Builder(context);
   }
 
   public Notification setIntent(Intent intent) {
@@ -41,12 +40,12 @@ public class Notification {
   }
 
   public Notification setTitle(String title) {
-    this.title = title;
+    builder.setContentText(title);
     return this;
   }
 
   public Notification setMsg(String msg) {
-    this.msg = msg;
+    builder.setContentText(msg);
     return this;
   }
 
@@ -60,10 +59,8 @@ public class Notification {
 
     // Generate phone notification
     Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-    NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+    builder
       .setSmallIcon(R.drawable.faves_icon)
-      .setContentTitle(title)
-      .setContentText(msg)
       .setAutoCancel(true)
       .setSound(defaultSoundUri)
       .setContentIntent(pendingIntent);
@@ -71,7 +68,7 @@ public class Notification {
     NotificationManager notificationManager =
       (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-    notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+    notificationManager.notify(0 /* ID of notification */, builder.build());
     return this;
   }
 }

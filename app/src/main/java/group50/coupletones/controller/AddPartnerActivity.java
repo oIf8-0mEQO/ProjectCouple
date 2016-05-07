@@ -26,6 +26,9 @@ public class AddPartnerActivity extends AppCompatActivity
   @Inject
   public NetworkManager network;
 
+  @Inject
+  public CoupleTones app;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

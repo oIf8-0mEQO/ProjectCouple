@@ -25,6 +25,10 @@ public interface Message {
     return getData().getDouble(key);
   }
 
+  default boolean getBoolean(String key) {
+    return getData().getBoolean(key);
+  }
+
   default int getInt(String key) {
     return getData().getInt(key);
   }
@@ -35,17 +39,22 @@ public interface Message {
   }
 
   default Message setFloat(String key, float value) {
-    getData().getFloat(key, value);
+    getData().putFloat(key, value);
     return this;
   }
 
   default Message setDouble(String key, double value) {
-    getData().getDouble(key, value);
+    getData().putDouble(key, value);
     return this;
   }
 
   default Message setInt(String key, int value) {
-    getData().getInt(key, value);
+    getData().putInt(key, value);
+    return this;
+  }
+
+  default Message setBoolean(String key, boolean value) {
+    getData().putBoolean(key, value);
     return this;
   }
 }

@@ -33,7 +33,7 @@ public class PartnerResponseReceiver implements MessageReceiver, Identifiable {
   public void onReceive(Message message) {
     // Phone notification
     String title = "Partner Request";
-    boolean accepted = message.getBoolean("requestAccept");
+    boolean accepted = message.getString("requestAccept").equals("1");
     String name = message.getString("name");
     String email = message.getString("partner");
     String msg = name + " " + (accepted ? "accepted" : "rejected") + " your request!";

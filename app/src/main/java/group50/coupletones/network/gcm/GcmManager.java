@@ -8,9 +8,7 @@ package group50.coupletones.network.gcm;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import group50.coupletones.CoupleTones;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.IncomingMessage;
 import group50.coupletones.network.message.MessageReceiver;
@@ -23,39 +21,43 @@ import java.util.HashMap;
 
 public class GcmManager implements NetworkManager, Taggable {
   /**
+   * Project number registered with Google API
+   */
+  private static final String PROJECT_NUMBER = "794558589013";
+
+  /**
+   * The GCM endpoint to communicate with Google
+   */
+  private static final String GCM_ENDPOINT = PROJECT_NUMBER + "@gcm.googleapis.com";
+
+  /**
    * A map of all message receivers
    */
   private final HashMap<String, MessageReceiver> receivers = new HashMap<>();
-  /**
-   * The app instance.
-   */
-  private final CoupleTones app;
-  /**
-   * Project number registered with Google API
-   */
-  private String PROJECT_NUMBER = "794558589013";
+
   /**
    * GCM instance
    */
   private GoogleCloudMessaging gcm;
+
   /**
-   * The device registraton ID
+   * The device registration ID
    */
   private String regid;
 
   @Inject
-  public GcmManager(CoupleTones app) {
-    this.app = app;
+  public GcmManager() {
+
   }
 
+  //TODO: Potential concurrency issue
   @Override
   public AsyncTask<Void, Void, Boolean> send(OutgoingMessage message) {
     return new AsyncTask<Void, Void, Boolean>() {
-
       @Override
       protected Boolean doInBackground(Void... params) {
         try {
-          gcm.send(PROJECT_NUMBER + "@gcm.googleapis.com", message.getId(), message.getData());
+          gcm.send(GCM_ENDPOINT, message.getId(), message.getData());
         } catch (IOException ex) {
           ex.printStackTrace();
           return false;
@@ -63,13 +65,12 @@ public class GcmManager implements NetworkManager, Taggable {
         return true;
       }
     }.execute(null, null, null);
-
   }
 
+  //TODO: Potential concurrency issue
   @Override
   public AsyncTask<Void, Void, Boolean> register(Context context) {
     return new AsyncTask<Void, Void, Boolean>() {
-
       @Override
       protected Boolean doInBackground(Void... params) {
         try {
@@ -78,7 +79,6 @@ public class GcmManager implements NetworkManager, Taggable {
           }
 
           regid = gcm.register(PROJECT_NUMBER);
-          Log.i("GCM", "Registered: " + regid);
         } catch (IOException ex) {
           ex.printStackTrace();
           return false;

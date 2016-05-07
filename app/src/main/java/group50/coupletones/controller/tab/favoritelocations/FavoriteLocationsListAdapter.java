@@ -39,7 +39,8 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
     holder.name.setText(location.getName());
     holder.address.setText(location.getName());
     Address address = location.getAddress();
-    holder.address.setText(address != null ? address.getFeatureName() : "");
+    holder.address.setText(address != null ? address.getLocality()
+      + ", " + address.getAdminArea() : "" );
     holder.icon.setImageResource(R.drawable.target_icon);
     //TODO: Implement custom icons?
     //holder.icon.setImageResource(location.getIconId());

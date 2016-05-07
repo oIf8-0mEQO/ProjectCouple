@@ -94,7 +94,7 @@ public class GoogleUser implements LocalUser {
 
     s.setBoolean("hasPartner", getPartner() != null);
 
-    // TODO: Implement Save FaveLocations
+    s.setCollection("favoriteLocations", favoriteLocations);
   }
 
   /**
@@ -111,7 +111,6 @@ public class GoogleUser implements LocalUser {
       setPartner(null);
     }
 
-    // TODO: Implement Load FaveLocations
-
+    favoriteLocations = s.getCollection("favoriteLocations", FavoriteLocation.class);
   }
 }

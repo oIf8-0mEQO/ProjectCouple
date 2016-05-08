@@ -20,6 +20,7 @@ import group50.coupletones.di.module.ProximityModule;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.network.receiver.ErrorReceiver;
+import group50.coupletones.network.receiver.LocationNotificationReceiver;
 import group50.coupletones.network.receiver.PartnerRequestReceiver;
 import group50.coupletones.network.receiver.PartnerResponseReceiver;
 
@@ -114,6 +115,7 @@ public class CoupleTones extends Application {
     network.register(this);
     network.register(new PartnerRequestReceiver(this));
     network.register(new PartnerResponseReceiver(this, this));
+    network.register(new LocationNotificationReceiver(this));
     network.register(MessageType.RECEIVE_PARTNER_ERROR.value, new ErrorReceiver(this));
     network.register(MessageType.RECEIVE_MAP_REJECT.value, new ErrorReceiver(this));
 

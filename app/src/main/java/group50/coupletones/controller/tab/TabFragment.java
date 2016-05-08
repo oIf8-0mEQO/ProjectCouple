@@ -34,6 +34,9 @@ public abstract class TabFragment<L> extends Fragment {
     return inflater.inflate(getResourceId(), container, false);
   }
 
+  /**
+   * onAttach attaches listener if valid
+   */
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
@@ -47,6 +50,10 @@ public abstract class TabFragment<L> extends Fragment {
     }
   }
 
+  /**
+   * onDetach detaches if the
+   * listener is null
+   */
   @Override
   public void onDetach() {
     super.onDetach();

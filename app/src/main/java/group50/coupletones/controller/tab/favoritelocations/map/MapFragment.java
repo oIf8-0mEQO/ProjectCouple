@@ -57,11 +57,19 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     proximityManager.register(location -> moveMap(location.getPosition()));
   }
 
+  /**
+   * onConnected
+   * @param bundle - Bundle
+   */
   @Override
   public void onConnected(Bundle bundle) {
     Log.d(TAG, "Connected to Google API");
   }
 
+  /**
+   * onConnectionSuspended
+   * @param i - int
+   */
   @Override
   public void onConnectionSuspended(int i) {
     Log.d(TAG, "Connection suspended");
@@ -70,7 +78,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
   /**
    * Manipulates the map once available.
    *
-   * @param googleMap
+   * @param googleMap - Google Map
    */
   @Override
   public void onMapReady(GoogleMap googleMap) {
@@ -106,6 +114,11 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
       // Request a single update to move the map to appropriate location
       locationManager.requestSingleUpdate(GPS_PROVIDER, new LocationListener() {
+
+            /**
+             * onLocationChanged
+             * @param location - changed location
+             */
           @Override
           public void onLocationChanged(Location location) {
             Log.d(getTag(), "Got single update");
@@ -135,18 +148,15 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
   /**
    * Moves the map to a given location
-   *
-   * @param loc The location to move to
+   * @param loc - The location to move to
    */
-
   public void moveMap(android.location.Location loc) {
     moveMap(new LatLng(loc.getLatitude(), loc.getLongitude()));
   }
 
   /**
    * Moves the map to a given latlong position
-   *
-   * @param position The position to move to
+   * @param position - The position to move to
    */
   public void moveMap(LatLng position) {
     Log.d(TAG, "Moving map to: " + position);

@@ -73,8 +73,9 @@ public class MainActivity extends AppCompatActivity implements
   }
 
   /**
-   * When Menu Tab is Selected
-   * @param menuItemId
+   * When Menu Tab is Selected,
+   * handles switching fragments
+   * @param menuItemId - ID of selected menu item
    */
   @Override
   public void onMenuTabSelected(
@@ -88,8 +89,9 @@ public class MainActivity extends AppCompatActivity implements
   }
 
   /**
-   * When Menu Tab is Re-Selected
-   * @param menuItemId
+   * When Menu Tab is Re-Selected,
+   * handles switching fragments
+   * @param menuItemId - ID of selected menu item
    */
   @Override
   public void onMenuTabReSelected(
@@ -104,7 +106,6 @@ public class MainActivity extends AppCompatActivity implements
 
   /**
    * onSaveInstanceState
-   * @param outState
    */
   @Override
   protected void onSaveInstanceState(Bundle outState) {
@@ -117,8 +118,7 @@ public class MainActivity extends AppCompatActivity implements
 
   /**
    * Sets the content of the MainActivity with the given fragment
-   *
-   * @param fragment The fragment to set for the main content
+   * @param fragment - The fragment to set for the main content
    */
   public void setFragment(Fragment fragment) {
     getSupportFragmentManager()

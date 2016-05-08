@@ -35,17 +35,32 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
     super(Listener.class);
   }
 
+  /**
+   * Gets Resrouce ID
+   * @return - favorite location fragment
+   */
   @Override
   protected int getResourceId() {
     return R.layout.fragment_favorite_locations;
   }
 
+  /**
+   * onCreate
+   * @param savedInstanceState - Bundle
+   */
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     CoupleTones.global().inject(this);
   }
 
+  /**
+   * onCreateView
+   * @param inflater - LayoutInflater
+   * @param container - ViewGroup
+   * @param savedInstanceState - Bundle
+   * @return - View v
+   */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_favorite_locations, container, false);
@@ -57,6 +72,10 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
     return v;
   }
 
+  /**
+   * onClick
+   * @param v - the app View
+   */
   @Override
   public void onClick(View v) {
     switch (v.getId()) {

@@ -31,7 +31,7 @@ public class PartnerResponseReceiver implements MessageReceiver, Identifiable {
   }
 
   /**
-   * onReceive
+   * onReceive of Partner Response
    * @param message The incoming message object that contains data from the server
    */
   @Override
@@ -58,8 +58,8 @@ public class PartnerResponseReceiver implements MessageReceiver, Identifiable {
   }
 
   /**
-   * Gets the ID
-   * @return String - ID
+   * Gets the ID of Partner Response
+   * @return String - ID of partner response
    */
   @Override
   public String getId() {

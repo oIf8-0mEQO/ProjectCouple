@@ -22,8 +22,9 @@ public class ErrorReceiver implements MessageReceiver {
   }
 
   /**
-   * onReceive
-   * @param message The incoming message object that contains data from the server
+   * onReceive for error reception
+   * @param message - The incoming message object that
+   *                contains data from the server
    */
   @Override
   public void onReceive(Message message) {

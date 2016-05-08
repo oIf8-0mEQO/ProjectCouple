@@ -34,6 +34,12 @@ public class ProximityService extends Service implements Taggable {
     CoupleTones.global().inject(this);
   }
 
+  /**
+   * onStartCommand
+   * @param intent - Intent
+   * @param flags - flags
+   * @param startId - starting ID
+   */
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
     Log.d(getTag(), "Start Service");
@@ -49,11 +55,20 @@ public class ProximityService extends Service implements Taggable {
     return super.onStartCommand(intent, flags, startId);
   }
 
+  /**
+   * IBinder
+   * @param intent - Intent
+   * @return - null
+   */
   @Override
   public IBinder onBind(Intent intent) {
     return null;
   }
 
+  /**
+   * onDestroy handles ending service
+   * for invalid location permissions.
+   */
   @Override
   public void onDestroy() {
     super.onDestroy();

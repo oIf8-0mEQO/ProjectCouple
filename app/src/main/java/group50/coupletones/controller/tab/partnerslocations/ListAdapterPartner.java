@@ -27,8 +27,7 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
 
   /**
    * Partner list adapter
-   * @param data Partner location data
-   * @param context
+   * @param data - Partner location data
    */
   public ListAdapterPartner(List<PartnerLocation> data, Context context) {
     this.inflater = LayoutInflater.from(context);
@@ -37,9 +36,8 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
 
   /**
    * List view holder for partner locations
-   * @param parent
-   * @param viewType
-   * @return
+   * @param parent - ViewGroup
+   * @return - ListViewholder
    */
   @Override
   public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,8 +47,8 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
 
   /**
    * View holder for partner locations
-   * @param holder
-   * @param position
+   * @param holder - ListViewHolder
+   * @param position - Partner location's position
    */
   @Override
   public void onBindViewHolder(ListViewHolder holder, int position) {
@@ -62,6 +60,10 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
 
   }
 
+  /**
+   * Gets Item Count
+   * @return - number of items
+   */
   @Override
   public int getItemCount() {
     return data.size();
@@ -77,6 +79,10 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
     private View container;
     private CardView cv;
 
+    /**
+     * ListViewHolder Constructor
+     * @param itemView - View
+     */
     public ListViewHolder(View itemView) {
       super(itemView);
       cv = (CardView) itemView.findViewById(R.id.cv);

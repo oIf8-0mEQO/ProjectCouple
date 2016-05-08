@@ -31,52 +31,52 @@ public class Storage {
 
   /**
    * Storage
-   * @param preferences
+   * @param preferences - SharedPreferences
    */
   public Storage(SharedPreferences preferences) {
     this(preferences, "");
   }
 
   /**
-   * Checks if it contains name data
-   * @param name
-   * @return
+   * Checks if it contains name data to store
+   * @param name - name data
+   * @return - boolean of name
    */
   public boolean contains(String name) {
     return preference.contains(name + suffix);
   }
 
   /**
-   * Gets the int for name data
-   * @param name
-   * @return
+   * Gets the int for name data to store
+   * @param name - name data
+   * @return - int of name
    */
   public int getInt(String name) {
     return preference.getInt(name + suffix, 0);
   }
 
   /**
-   * Gets the float for name data
-   * @param name
-   * @return
+   * Gets the float for name data to store
+   * @param name - name data
+   * @return = int of name
    */
   public float getFloat(String name) {
     return preference.getFloat(name + suffix, 0);
   }
 
   /**
-   * Gets the string for name data
-   * @param name
-   * @return
+   * Gets the string for name data to store
+   * @param name - name data
+   * @return - String of name
    */
   public String getString(String name) {
     return preference.getString(name + suffix, null);
   }
 
   /**
-   * Gets the boolean for name data
-   * @param name
-   * @return
+   * Gets the boolean for name data to store
+   * @param name - name data
+   * @return - Boolean of name
    */
   public boolean getBoolean(String name) {
     return preference.getBoolean(name + suffix, false);
@@ -84,9 +84,8 @@ public class Storage {
 
   /**
    * getCollection
-   * @param name
-   * @param <T>
-   * @return list
+   * @param name - name data to store
+   * @return - list of data
    */
   public <T extends Storable> List<T> getCollection(String name, Supplier<T> ctor) {
     if (suffix.isEmpty() && name.contains("_"))
@@ -109,8 +108,8 @@ public class Storage {
 
   /**
    * Sets the int
-   * @param name
-   * @param value
+   * @param name - name data to store
+   * @param value - int for name data
    */
   public void setInt(String name, int value) {
     preference
@@ -121,8 +120,8 @@ public class Storage {
 
   /**
    * Sets the float
-   * @param name
-   * @param value
+   * @param name - name data to store
+   * @param value - float for name data
    */
   public void setFloat(String name, float value) {
     preference
@@ -133,8 +132,8 @@ public class Storage {
 
   /**
    * Sets the string
-   * @param name
-   * @param value
+   * @param name - name data to store
+   * @param value - String for name data
    */
   public void setString(String name, String value) {
     preference
@@ -144,8 +143,8 @@ public class Storage {
 
   /**
    * Sets the boolean
-   * @param name
-   * @param value
+   * @param name - name data to store
+   * @param value - boolean for name data
    */
   public void setBoolean(String name, boolean value) {
     preference
@@ -156,8 +155,8 @@ public class Storage {
 
   /**
    * Sets the collection
-   * @param name
-   * @param collection
+   * @param name - name data to store
+   * @param collection - collection of name data
    */
   public void setCollection(String name, List<? extends Storable> collection) {
     if (suffix.isEmpty() && name.contains("_"))
@@ -172,7 +171,7 @@ public class Storage {
 
   /**
    * Deletes the name
-   * @param name
+   * @param name - name data to be deleted
    */
   public void delete(String name) {
     preference

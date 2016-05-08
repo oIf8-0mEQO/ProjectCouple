@@ -31,7 +31,7 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
 
   /**
    * Location click handler
-   * @param map
+   * @param map - map fragment
    */
   public LocationClickHandler(MapFragment map) {
     this.map = map;
@@ -39,7 +39,8 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
   }
 
   /**
-   * @param latLng
+   * onMapClick
+   * @param latLng - latitude-longitude of position
    */
   @Override
   public void onMapClick(LatLng latLng) {
@@ -52,15 +53,18 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
     builder.show();
   }
 
+  /**
+   * EventonAccept class
+   */
   private class EventOnAccept implements DialogInterface.OnClickListener
   {
     private EditText input;
     private LatLng position;
 
     /**
-     *
-     * @param text Input text
-     * @param position Latitude-Longitude position
+     * EventOnAccept
+     * @param text - input text
+     * @param position - Latitude-Longitude position
      */
     public EventOnAccept(EditText text, LatLng position)
     {
@@ -69,8 +73,8 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
     }
 
     /**
-     * @param dialog
-     * @param which
+     * onClick
+     * @param dialog - dialog interface
      */
     @Override
     public void onClick(DialogInterface dialog, int which)

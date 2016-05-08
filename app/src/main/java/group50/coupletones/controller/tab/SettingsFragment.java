@@ -52,11 +52,19 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     super(Listener.class);
   }
 
+  /**
+   * getResourceID
+   * @return - Settings fragment
+   */
   @Override
   protected int getResourceId() {
     return R.layout.fragment_settings;
   }
 
+  /**
+   * onCreate
+   * @param savedInstanceState - Bundle
+   */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -134,7 +142,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
   /**
    * Updates the UI based on whether
    * user is connected to a partner.
-   * @param hasPartner
+   * @param hasPartner - if user is connected with partner
    */
   public void updateUI(boolean hasPartner) {
     if (hasPartner) {
@@ -156,18 +164,28 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     }
   }
 
+  /**
+   * onStart starts and connects
+   */
   @Override
   public void onStart() {
     super.onStart();
     auth.connect();
   }
 
+  /**
+   * onStop stop and disconnects
+   */
   @Override
   public void onStop() {
     super.onStop();
     auth.disconnect();
   }
 
+  /**
+   * onResume updates UI depending
+   * on if user has a partner or not
+   */
   @Override
   public void onResume() {
     super.onResume();

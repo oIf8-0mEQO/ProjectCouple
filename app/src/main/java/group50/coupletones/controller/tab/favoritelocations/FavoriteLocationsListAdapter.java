@@ -29,8 +29,8 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
 
   /**
    * Favorite Locations List Adapter
-   * @param data Favorite location data
-   * @param context
+   * @param data - Favorite location data
+   * @param - context
    */
   public FavoriteLocationsListAdapter(List<FavoriteLocation> data, Context context) {
     this.inflater = LayoutInflater.from(context);
@@ -39,9 +39,8 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
 
   /**
    * List view holder
-   * @param parent
-   * @param viewType
-   * @return
+   * @param parent - ViewGroup
+   * @return - ListViewHolder
    */
   @Override
   public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -51,8 +50,8 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
 
   /**
    * View holder for fragment
-   * @param holder
-   * @param position
+   * @param holder - ListViewHolder
+   * @param position - Favorite location's position
    */
   @Override
   public void onBindViewHolder(ListViewHolder holder, int position) {
@@ -76,6 +75,10 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
     //holder.icon.setImageResource(location.getIconId());
   }
 
+  /**
+   * getItemCount
+   * @return - number of items
+   */
   @Override
   public int getItemCount() {
     return data.size();
@@ -91,6 +94,10 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
     private View container;
     private CardView cv;
 
+    /**
+     * ListViewHolder
+     * @param itemView - View
+     */
     public ListViewHolder(View itemView) {
       super(itemView);
       cv = (CardView) itemView.findViewById(R.id.cv);

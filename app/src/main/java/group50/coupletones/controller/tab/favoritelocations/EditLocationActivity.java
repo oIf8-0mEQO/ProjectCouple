@@ -25,7 +25,7 @@ public class EditLocationActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Custom fonts
+        // Setting custom font
         TextView location_text = (TextView) findViewById(R.id.location_name);
         TextView address_text = (TextView) findViewById(R.id.location_address);
         TextView save_changes_text = (TextView) findViewById(R.id.save_changes_button);
@@ -36,9 +36,6 @@ public class EditLocationActivity extends AppCompatActivity {
         address_text.setTypeface(pierSans);
         save_changes_text.setTypeface(pierSans);
         delete_location_text.setTypeface(pierSans);
-
-
-
     }
 
 

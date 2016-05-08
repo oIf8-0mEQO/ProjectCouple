@@ -29,12 +29,19 @@ public class PartnersLocationsFragment extends TabFragment<PartnersLocationsFrag
     super(Listener.class);
   }
 
+  /**
+   * getResourceID
+   * @return - Partner's locations fragment
+   */
   @Override
   protected int getResourceId() {
     return R.layout.fragment_partners_locations;
   }
 
-
+  /**
+   * onCreateView
+   * @return - View of app
+   */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {

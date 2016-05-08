@@ -49,16 +49,6 @@ public class AddPartnerActivityTest extends ActivityInstrumentationTestCase2<Add
         injectInstrumentation(InstrumentationRegistry.getInstrumentation());
     }
 
-    @Test
-    public void testOnCreate() {
-        activity = getActivity();
-
-        // Verify some Authenticator methods were called
-        /*verify(activity.auth).bind(activity);
-        verify(activity.auth).onSuccess(any());
-        verify(activity.auth).autoSignIn();*/
-    }
-
     /**
      * Test the login button click and if it calls sign in for the authenticator
      */
@@ -70,7 +60,14 @@ public class AddPartnerActivityTest extends ActivityInstrumentationTestCase2<Add
             Button button = (Button) activity.findViewById(R.id.connect_button);
             button.performClick();
             // Verify sign in is called
-            //verify(activity.auth).signIn();
+            verify(activity.auth).signIn();
+        });
+
+        activity.runOnUiThread(() -> {
+            Button button = (Button) activity.findViewById(R.id.skip_button);
+            button.performClick();
+            // Verify sign in is called
+            verify(activity.auth).signIn();
         });
     }
 }

@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
+
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.Partner;
@@ -16,6 +17,9 @@ import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 
+/**
+ * Activity for Partner Response on the app.
+ */
 public class PartnerResponseActivity extends Activity {
 
   @Inject
@@ -29,7 +33,7 @@ public class PartnerResponseActivity extends Activity {
     super.onCreate(savedInstanceState);
 
     // Dependency Injection
-    CoupleTones.component().inject(this);
+    CoupleTones.global().inject(this);
 
     setContentView(R.layout.activity_partner_request);
 
@@ -65,6 +69,12 @@ public class PartnerResponseActivity extends Activity {
     }
   }
 
+  /**
+   * Sends a response to the partner request.
+   * @param name Partner's name
+   * @param email Partner's email
+   * @param accept accept or reject request
+   */
   private void sendResponse(String name, String email, boolean accept) {
     // Send a partner request to the server
     network.send(

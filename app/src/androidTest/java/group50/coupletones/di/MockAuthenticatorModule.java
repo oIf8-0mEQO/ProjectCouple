@@ -1,11 +1,10 @@
 package group50.coupletones.di;
 
 import dagger.Module;
-import dagger.Provides;
 import group50.coupletones.auth.Authenticator;
+import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.user.User;
-
-import javax.inject.Singleton;
+import group50.coupletones.di.module.AuthenticatorModule;
 
 import static org.mockito.Mockito.mock;
 
@@ -13,14 +12,13 @@ import static org.mockito.Mockito.mock;
  * Mock Authenticator Module
  *
  * @author Henry Mao
- * @since 28/4/2016
+ * @since 4/28/16
  */
 @Module
-public class MockAuthenticatorModule {
+public class MockAuthenticatorModule extends AuthenticatorModule {
 
-  @Singleton
-  @Provides
-  static Authenticator<User, String> provide() {
+  @Override
+  protected Authenticator<User, String> provideAuth(GoogleAuthenticator auth) {
     return mock(Authenticator.class);
   }
 }

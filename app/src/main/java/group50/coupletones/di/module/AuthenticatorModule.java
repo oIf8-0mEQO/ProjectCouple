@@ -6,8 +6,6 @@ import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.user.User;
 
-import javax.inject.Singleton;
-
 /**
  * Dependency injection module to provide the Authenticator object
  *
@@ -16,9 +14,13 @@ import javax.inject.Singleton;
  */
 @Module
 public class AuthenticatorModule {
-  @Singleton
-  @Provides
-  static Authenticator<User, String> provide(GoogleAuthenticator auth) {
+
+  protected Authenticator<User, String> provideAuth(GoogleAuthenticator auth) {
     return auth;
+  }
+
+  @Provides
+  public final Authenticator<User, String> provide(GoogleAuthenticator auth) {
+    return provideAuth(auth);
   }
 }

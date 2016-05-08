@@ -1,14 +1,16 @@
 package group50.coupletones.controller.tab.partnerslocations;
 
 /**
- * Created by joannecho on 5/5/16.
+ * @author Joanne Cho
+ * @since 5/5/16
  */
 
 /**
- * A class that creates a PartnerLocation object that contains a favorite location name and address.
+ * A class that creates a PartnerLocation object
+ * that contains a favorite location name, address, and time visited.
  */
 public class PartnerLocation {
-  private String name, address;
+  private String name, address, timeValue;
   private int iconId;
 
   public String getName() {
@@ -34,5 +36,11 @@ public class PartnerLocation {
   public void setIconId(int iconId) {
     this.iconId = iconId;
   }
+
+  public String getTime() {
+    return timeValue;
+  }
+
+  public void setTime(String time) { this.timeValue = time; }
 }
 

@@ -37,9 +37,9 @@
 
 
         <activity
-                android:name=".controller.EditLocationActivity"
-                android:label="@string/title_activity_edit_location"
-                android:theme="@style/AppTheme">
+		        android:name=".controller.tab.favoritelocations.EditLocationActivity"
+		        android:label="@string/title_activity_edit_location"
+		        android:theme="@style/AppTheme">
         </activity>
 
         <activity
@@ -56,9 +56,8 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".controller.tab.favoritelocations.map.LocationService"/>
-        <service android:name=".network.gcm.GcmMessageHandler"/>
-        <service android:name=".network.gcm.GcmListener"/>
+        <service android:name=".controller.tab.favoritelocations.map.ProximityService"/>
+        <service android:name=".network.gcm.GcmIntentService"/>
 
         <meta-data
                 android:name="com.google.android.geo.API_KEY"

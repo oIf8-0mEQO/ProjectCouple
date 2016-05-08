@@ -1,4 +1,4 @@
-package group50.coupletones.controller;
+package group50.coupletones.controller.tab.favoritelocations;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import group50.coupletones.R;
 
+/**
+ * Edit location activity
+ */
 public class EditLocationActivity extends AppCompatActivity {
 
     @Override

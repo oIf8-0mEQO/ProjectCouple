@@ -13,30 +13,53 @@ import group50.coupletones.R;
 import java.util.List;
 
 /**
- * Created by joannecho on 5/5/16.
+ * @author Joanne Cho
+ * @since 5/5/16
+ */
+
+/**
+ * Partner Locations List Adapter Class
  */
 public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.ListViewHolder> {
 
   private List<PartnerLocation> data;
   private LayoutInflater inflater;
 
+  /**
+   * Partner list adapter
+   * @param data Partner location data
+   * @param context
+   */
   public ListAdapterPartner(List<PartnerLocation> data, Context context) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
   }
 
+  /**
+   * List view holder for partner locations
+   * @param parent
+   * @param viewType
+   * @return
+   */
   @Override
   public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View v = inflater.inflate(R.layout.list_item, parent, false);
+    View v = inflater.inflate(R.layout.partner_list_item, parent, false);
     return new ListViewHolder(v);
   }
 
+  /**
+   * View holder for partner locations
+   * @param holder
+   * @param position
+   */
   @Override
   public void onBindViewHolder(ListViewHolder holder, int position) {
     PartnerLocation location = data.get(position);
     holder.name.setText(location.getName());
     holder.address.setText(location.getAddress());
     holder.icon.setImageResource(location.getIconId());
+    holder.timeValue.setText(location.getTime());
+
   }
 
   @Override
@@ -44,9 +67,12 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
     return data.size();
   }
 
+  /**
+   * Adds Recycler View to List View Holder
+   */
   class ListViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView name, address;
+    private TextView name, address, timeValue;
     private ImageView icon;
     private View container;
     private CardView cv;
@@ -57,6 +83,7 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
       name = (TextView) itemView.findViewById(R.id.list_item_name);
       address = (TextView) itemView.findViewById(R.id.list_item_address);
       icon = (ImageView) itemView.findViewById(R.id.list_item_icon);
+      timeValue = (TextView) itemView.findViewById(R.id.list_item_time);
       container = itemView.findViewById(R.id.list_item);
     }
   }

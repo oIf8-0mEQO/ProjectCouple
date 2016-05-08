@@ -6,17 +6,21 @@
 package group50.coupletones;
 
 import android.app.Application;
+import android.content.Intent;
 import android.location.Geocoder;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityNetworkHandler;
-import group50.coupletones.di.AppComponent;
-import group50.coupletones.di.DaggerAppComponent;
+import group50.coupletones.controller.tab.favoritelocations.map.ProximityService;
+import group50.coupletones.di.DaggerGlobalComponent;
+import group50.coupletones.di.DaggerInstanceComponent;
+import group50.coupletones.di.GlobalComponent;
 import group50.coupletones.di.module.ApplicationModule;
-import group50.coupletones.di.module.GeocoderModule;
+import group50.coupletones.di.module.ProximityModule;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.network.receiver.ErrorReceiver;
+import group50.coupletones.network.receiver.LocationNotificationReceiver;
 import group50.coupletones.network.receiver.PartnerRequestReceiver;
 import group50.coupletones.network.receiver.PartnerResponseReceiver;
 
@@ -28,28 +32,42 @@ import group50.coupletones.network.receiver.PartnerResponseReceiver;
 public class CoupleTones extends Application {
 
   /**
-   * The main dependency injection component
+   * The singleton dependency injector
    */
-  private static AppComponent component;
+  private static GlobalComponent component;
+
+  /**
+   * The instance dependency injector builder
+   */
+  private static DaggerInstanceComponent.Builder instanceComponentBuilder;
+
   /**
    * The local user of the app
    */
   private LocalUser localUser;
 
   /**
-   * @return The main dependency injection component
+   * @return The main dependency injection global
    */
-  public static AppComponent component() {
+  public static GlobalComponent global() {
     return component;
   }
 
   /**
    * Should ONLY be set for unit testing
    *
-   * @param component The component to set
+   * @param component The global to set
    */
-  public static void setComponent(AppComponent component) {
+  public static void setGlobal(GlobalComponent component) {
     CoupleTones.component = component;
+  }
+
+  public static DaggerInstanceComponent.Builder instanceComponentBuilder() {
+    return instanceComponentBuilder;
+  }
+
+  public static void setInstanceComponentBuilder(DaggerInstanceComponent.Builder instanceComponentBuilder) {
+    CoupleTones.instanceComponentBuilder = instanceComponentBuilder;
   }
 
   /**
@@ -76,26 +94,36 @@ public class CoupleTones extends Application {
     return localUser != null;
   }
 
+
   @Override
   public void onCreate() {
     super.onCreate();
 
-    component = DaggerAppComponent
+    component = DaggerGlobalComponent
       .builder()
       .applicationModule(new ApplicationModule(this))
-      .geocoderModule(new GeocoderModule(new Geocoder(getApplicationContext())))
+      .proximityModule(new ProximityModule(new Geocoder(getApplicationContext())))
       .build();
 
+    setInstanceComponentBuilder(
+      DaggerInstanceComponent
+        .builder()
+    );
+
     // Register network
-    NetworkManager network = component().network();
+    NetworkManager network = global().network();
     network.register(this);
     network.register(new PartnerRequestReceiver(this));
     network.register(new PartnerResponseReceiver(this, this));
+    network.register(new LocationNotificationReceiver(this, this));
     network.register(MessageType.RECEIVE_PARTNER_ERROR.value, new ErrorReceiver(this));
     network.register(MessageType.RECEIVE_MAP_REJECT.value, new ErrorReceiver(this));
 
     // Register location observer
-    ProximityManager proximity = component().proximity();
-    proximity.register(new ProximityNetworkHandler(network));
+    ProximityManager proximity = global().proximity();
+    proximity.register(new ProximityNetworkHandler(this, network));
+
+    // Start ProximityService
+    startService(new Intent(this, ProximityService.class));
   }
 }

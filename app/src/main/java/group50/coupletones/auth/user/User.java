@@ -5,10 +5,6 @@
 
 package group50.coupletones.auth.user;
 
-import group50.coupletones.controller.tab.favoritelocations.map.FavoriteLocation;
-
-import java.util.List;
-
 /**
  * The user interface represents a single user in the app.
  */

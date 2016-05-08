@@ -35,14 +35,6 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
     super(Listener.class);
   }
 
-  /**
-   * Use this factory method to create a new instance of FavoriteLocationsFragment.
-   */
-  public static FavoriteLocationsFragment build() {
-    FavoriteLocationsFragment fragment = new FavoriteLocationsFragment();
-    return fragment;
-  }
-
   @Override
   protected int getResourceId() {
     return R.layout.fragment_favorite_locations;
@@ -51,7 +43,7 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    CoupleTones.component().inject(this);
+    CoupleTones.global().inject(this);
   }
 
   @Override

@@ -1,7 +1,13 @@
 package group50.coupletones.util.storage;
 
 /**
- * Created by Calvin on 4/25/2016.
+ * @author Ranlin Huang
+ * @since 4/25/16
+ */
+
+/**
+ * Storable interface that handles
+ * storage of the app data.
  */
 public interface Storable {
 

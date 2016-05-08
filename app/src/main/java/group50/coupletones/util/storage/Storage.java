@@ -6,7 +6,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by Calvin on 4/24/2016.
+ * @author Ranlin Huang
+ * @since 4/24/16
+ */
+
+/**
+ * Storage class
  */
 public class Storage {
 

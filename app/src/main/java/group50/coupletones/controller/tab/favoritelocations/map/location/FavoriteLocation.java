@@ -1,25 +1,29 @@
-package group50.coupletones.controller.tab.favoritelocations.map;
+package group50.coupletones.controller.tab.favoritelocations.map.location;
 
 import android.location.Address;
-import android.location.Geocoder;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.util.storage.Storable;
 import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
-import java.util.List;
 
 /**
- * Created by Joseph on 6/25/2016.
+ * @author Joseph Cox
+ * @since 6/25/2016
+ */
+
+/**
+ * Represents a Favorite Location
  */
 public class FavoriteLocation implements Location, Storable {
 
   @Inject
-  public Geocoder geocoder;
+  public AddressProvider addressProvider;
   private String name;
   private LatLng position;
   private long time;
+  private static int COOL_DOWN_TIME = 600000;
 
   /**
    * Default constructor with meaningless initial values.
@@ -45,44 +49,59 @@ public class FavoriteLocation implements Location, Storable {
    */
   public FavoriteLocation(String name, LatLng position, long time) {
     //DI
-    CoupleTones.component().inject(this);
+    CoupleTones.global().inject(this);
 
     setName(name);
     setPosition(position);
     this.time = time;
   }
 
+  /**
+   *
+   * @return Latitude-Longitude of the position
+   */
   @Override
   public LatLng getPosition() {
     return position;
   }
 
+  /**
+   *
+   * @param position Latitude-Longitude of the position
+   */
   public void setPosition(LatLng position) {
     this.position = position;
   }
 
+  /**
+   *
+   * @return Name of location
+   */
   @Override
   public String getName() {
     return name;
   }
 
+  /**
+   *
+   * @param name Name of location
+   */
   public void setName(String name) {
     this.name = name;
   }
 
+  /**
+   *
+   * @return Address of position
+   */
   @Override
   public Address getAddress() {
-    try {
-      List<Address> fromLocations = geocoder.getFromLocation(position.latitude, position.longitude, 1);
-
-      if (fromLocations.size() > 0)
-        return fromLocations.get(0);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return null;
+    return addressProvider.getAddressFromPosition(position);
   }
 
+  /**
+   * Sets cool down time for location
+   */
   public void setCooldown() {
     time = System.currentTimeMillis();
   }
@@ -91,7 +110,7 @@ public class FavoriteLocation implements Location, Storable {
    * @return true if the location is on cooldown, otherwise false.
    */
   public boolean isOnCooldown() {
-    return (System.currentTimeMillis() - time > 600000);
+    return (System.currentTimeMillis() - time < COOL_DOWN_TIME);
   }
 
   /**
@@ -101,6 +120,10 @@ public class FavoriteLocation implements Location, Storable {
     return time;
   }
 
+  /**
+   *
+   * @param storage
+   */
   @Override
   public void save(Storage storage) {
     storage.setString("name", name);
@@ -108,6 +131,10 @@ public class FavoriteLocation implements Location, Storable {
     storage.setFloat("long", (float) position.longitude);
   }
 
+  /**
+   *
+   * @param storage
+   */
   @Override
   public void load(Storage storage) {
     name = storage.getString("name");

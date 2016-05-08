@@ -4,7 +4,12 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Favorit
 import org.junit.Test;
 
 /**
- * Created by Joseph on 5/7/2016.
+ * @author Joseph Cox
+ * @since 5/7/16
+ */
+
+/**
+ * Favorite locations test
  */
 public class FavoriteLocationTest {
 

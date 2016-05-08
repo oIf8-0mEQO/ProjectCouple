@@ -20,8 +20,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * @author Joseph
- * @since 5/28/2016.
+ * @author Joseph Cox
+ * @since 5/28/16
+ */
+
+/**
+ * Proximity manager test for favorite location
  */
 public class ProximityManagerTest {
 

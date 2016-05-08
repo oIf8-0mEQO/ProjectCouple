@@ -14,7 +14,7 @@ import static org.mockito.Mockito.mock;
  * Mock Authenticator Module
  *
  * @author Henry Mao
- * @since 28/4/2016
+ * @since 4/28/16
  */
 @Module
 public class MockProximityModule extends ProximityModule {

@@ -13,6 +13,9 @@ import android.widget.TextView;
 
 import group50.coupletones.R;
 
+/**
+ * Edit location activity
+ */
 public class EditLocationActivity extends AppCompatActivity {
 
     @Override

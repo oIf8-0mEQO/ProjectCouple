@@ -2,7 +2,7 @@ package group50.coupletones.network.gcm;
 
 /**
  * @author Sharmaine Manalo
- * @since 5/4/16.
+ * @since 5/4/16
  */
 
 import android.content.Context;
@@ -19,7 +19,11 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * GCM Manager for the app
+ */
 public class GcmManager implements NetworkManager, Taggable {
+
   /**
    * Project number registered with Google API
    */

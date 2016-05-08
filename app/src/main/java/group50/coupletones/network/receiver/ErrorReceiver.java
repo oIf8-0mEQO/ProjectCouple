@@ -21,6 +21,10 @@ public class ErrorReceiver implements MessageReceiver {
     this.context = context;
   }
 
+  /**
+   *
+   * @param message The incoming message object that contains data from the server
+   */
   @Override
   public void onReceive(Message message) {
     // The partner making the request

@@ -12,6 +12,10 @@ import static org.mockito.Mockito.*;
  * @author Henry Mao
  * @since 5/7/16
  */
+
+/**
+ * GCM Manager test
+ */
 public class GcmManagerTest {
 
   private GcmManager manager;

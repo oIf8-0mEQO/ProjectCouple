@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -25,7 +24,6 @@ import javax.inject.Inject;
 
 /**
  * Handles Google Authentication
- *
  * @author Henry Mao
  */
 //TODO: Unit test
@@ -64,38 +62,20 @@ public class GoogleAuthenticator implements
   private NetworkManager network;
 
   @Inject
-  public GoogleAuthenticator(CoupleTones app, NetworkManager network) {
+  public GoogleAuthenticator(CoupleTones app, NetworkManager network, GoogleApiClient apiClient) {
     this.app = app;
     this.network = network;
+    this.apiClient = apiClient;
   }
 
   /**
    * Binds the authenticator with a given activity.
    * Required to getCollection the authenticator working
-   *
    * @param activity The activity that is attempting to initiate sign in
    */
   @Override
   public GoogleAuthenticator bind(FragmentActivity activity) {
     this.activity = activity;
-
-    /*
-     * Configure sign-in to request the user's ID, email address, and basic
-     * profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-     */
-    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-      .requestEmail()
-      .build();
-
-      /*
-       * Build a GoogleApiClient with access to the Google Sign-In API and the
-       * options specified by gso.
-      */
-    apiClient = new GoogleApiClient.Builder(this.activity)
-      .addOnConnectionFailedListener(this)
-      .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-      .build();
-
     return this;
   }
 
@@ -121,7 +101,6 @@ public class GoogleAuthenticator implements
   /**
    * Attempts to sign in the user automatically by using silent
    * sign in.
-   *
    * @return This instance
    */
   @Override
@@ -149,7 +128,6 @@ public class GoogleAuthenticator implements
   /**
    * Attempts to sign in the user.
    * Opens an Android Intent and asks Google to sign in.
-   *
    * @return This instance
    */
   @Override
@@ -177,10 +155,9 @@ public class GoogleAuthenticator implements
 
   /**
    * Method that handles the intent result callback
-   *
    * @param requestCode The request code of the intent
-   * @param resultCode  The result code of the intent
-   * @param data        The data of the intent
+   * @param resultCode The result code of the intent
+   * @param data The data of the intent
    */
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -193,7 +170,6 @@ public class GoogleAuthenticator implements
 
   /**
    * Handles the sign in request. Called after the sign in request is complete.
-   *
    * @param result The GoogleSignInResult
    */
   private void handleSignInResult(GoogleSignInResult result) {

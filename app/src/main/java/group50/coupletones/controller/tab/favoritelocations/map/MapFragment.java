@@ -24,6 +24,8 @@ import javax.inject.Inject;
 public class MapFragment extends SupportMapFragment implements OnMapReadyCallback {
 
   public static final float PROXIMITY_RADIUS_METERS = 160.934f;
+  
+  public static final String TAG = "MapFragment";
 
   @Inject
   public CoupleTones app;
@@ -94,9 +96,9 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         -1,
         pendingIntent
       );
-      Log.d(getTag(), "Registered proximity alert");
+      Log.d(TAG, "Registered proximity alert");
     } else {
-      Log.e(getTag(), "Location permission not granted");
+      Log.e(TAG, "Location permission not granted");
     }
   }
 
@@ -116,7 +118,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
    */
   @Override
   public void onMapReady(GoogleMap googleMap) {
-    Log.d(getTag(), "Map Ready");
+    Log.d(TAG, "Map Ready");
     mMap = googleMap;
     mMap.getUiSettings().setZoomControlsEnabled(true);
     if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -125,7 +127,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
         100
       );
-      Log.e(getTag(), "Location permission not granted");
+      Log.e(TAG, "Location permission not granted");
       return;
     }
 
@@ -139,7 +141,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
   @Override
   public void onResume() {
     super.onResume();
-    Log.d(getTag(), "Resume");
+    Log.d(TAG, "Resume");
     centerMap();
   }
 
@@ -154,7 +156,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
         mMap.moveCamera(initial);
       }
     } else {
-      Log.e(getTag(), "Location permission not granted");
+      Log.e(TAG, "Location permission not granted");
     }
   }
 

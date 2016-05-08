@@ -181,4 +181,20 @@ public class StorageTest {
     assertThat(retrievedList.size()).isEqualTo(mockList.size());
     assertThat(retrievedList).isEqualTo(mockList);
   }
+
+  @Test
+  public void testDelete() {
+    storage.setBoolean("mac", true);
+    assertThat(storage.getBoolean("mac")).isEqualTo(true);
+    storage.delete("mac");
+    assertThat(storage.getBoolean("mac")).isEqualTo(false);
+
+    storage.setString("mac1", "ight");
+    assertThat(storage.getBoolean("mac1")).isEqualTo("ight");
+    storage.delete("mac1");
+    assertThat(storage.getString("mac1")).isEqualTo(null);
+
+    storage.delete("mac3");
+    assertThat(storage.getInt("mac3")).isEqualTo(0);
+  }
 }

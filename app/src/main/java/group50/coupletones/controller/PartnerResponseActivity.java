@@ -28,6 +28,10 @@ public class PartnerResponseActivity extends Activity {
   @Inject
   public NetworkManager network;
 
+  /**
+   * onCreate
+   * @param savedInstanceState
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -59,7 +63,7 @@ public class PartnerResponseActivity extends Activity {
       String name = extras.getString("name");
       String email = extras.getString("email");
       partnerName.setText(name);
-      requestText.setText(email + " wants to partner with you.");
+      requestText.setText(email + " " + R.string.partner_up_text);
 
       acceptButton.setOnClickListener(click -> sendResponse(name, email, true));
       rejectButton.setOnClickListener(click -> sendResponse(name, email, false));

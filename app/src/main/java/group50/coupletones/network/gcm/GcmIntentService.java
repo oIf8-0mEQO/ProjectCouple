@@ -38,6 +38,10 @@ public class GcmIntentService extends IntentService implements Taggable {
     CoupleTones.global().inject(this);
   }
 
+  /**
+   * On Handle Intent
+   * @param intent
+   */
   @Override
   protected void onHandleIntent(Intent intent) {
     Bundle extras = intent.getExtras();

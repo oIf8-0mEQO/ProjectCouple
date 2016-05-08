@@ -22,7 +22,7 @@ public class ErrorReceiver implements MessageReceiver {
   }
 
   /**
-   *
+   * onReceive
    * @param message The incoming message object that contains data from the server
    */
   @Override

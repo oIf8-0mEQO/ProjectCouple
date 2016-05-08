@@ -59,7 +59,7 @@ public class AddPartnerActivity extends AppCompatActivity
   }
 
   /**
-   *
+   * onClick for Adding Partner Activity
    * @param v The current view
    */
   public void onClick(View v) {

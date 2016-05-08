@@ -35,15 +35,27 @@ public class OutgoingMessage implements Message {
     this.id = hashId.encode(currentId++);
   }
 
+  /**
+   * Gets the ID
+   * @return
+   */
   public String getId() {
     return id;
   }
 
+  /**
+   * Gets the String type
+   * @return
+   */
   @Override
   public String getType() {
     return getString("type");
   }
 
+  /**
+   * Gets the Data
+   * @return
+   */
   @Override
   public Bundle getData() {
     return data;

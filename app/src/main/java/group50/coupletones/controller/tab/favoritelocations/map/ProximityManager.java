@@ -1,6 +1,7 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
-import com.google.android.gms.location.LocationListener;
+
+import android.location.LocationListener;
 
 /**
  * @author Joseph Cox

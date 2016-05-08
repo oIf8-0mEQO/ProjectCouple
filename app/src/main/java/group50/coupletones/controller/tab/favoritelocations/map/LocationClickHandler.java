@@ -5,16 +5,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.text.InputType;
 import android.widget.EditText;
-
-import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-
-import javax.inject.Inject;
-
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.util.storage.Storage;
+
+import javax.inject.Inject;
 
 /**
  * @author Joseph Cox
@@ -82,9 +80,6 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
       FavoriteLocation clickedLocation = new FavoriteLocation(name, position);
       app.getLocalUser().getFavoriteLocations().add(clickedLocation);
       app.getLocalUser().save(new Storage(map.getActivity().getSharedPreferences(Storage.PREF_FILE_USER, Context.MODE_PRIVATE)));
-
-      // Register a proximity checker
-      map.registerProximity(clickedLocation);
 
       // Move the camera
       map.moveMap(clickedLocation.getPosition());

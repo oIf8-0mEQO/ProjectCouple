@@ -28,27 +28,49 @@ public class Notification {
    */
   private NotificationCompat.Builder builder;
 
-
+  /**
+   * Notification Constructor
+   * @param context
+   */
   public Notification(Context context) {
     this.context = context;
     builder = new NotificationCompat.Builder(context);
   }
 
+  /**
+   * Sets the intent
+   * @param intent
+   * @return
+   */
   public Notification setIntent(Intent intent) {
     this.intent = intent;
     return this;
   }
 
+  /**
+   * Sets the title
+   * @param title
+   * @return
+   */
   public Notification setTitle(String title) {
-    builder.setContentText(title);
+    builder.setContentTitle(title);
     return this;
   }
 
+  /**
+   * Sets the message
+   * @param msg
+   * @return
+   */
   public Notification setMsg(String msg) {
     builder.setContentText(msg);
     return this;
   }
 
+  /**
+   * Shows the notification
+   * @return
+   */
   public Notification show() {
     PendingIntent pendingIntent = PendingIntent.getActivity(
       context,

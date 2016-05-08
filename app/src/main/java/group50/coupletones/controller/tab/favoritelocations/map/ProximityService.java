@@ -1,13 +1,14 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
+import android.Manifest;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.IBinder;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.util.Taggable;
 
@@ -15,13 +16,17 @@ import javax.inject.Inject;
 
 /**
  * A background service that handles location updates.
+ *
  * @author Henry Mao
  * @since 5/6/16
  */
-public class ProximityService extends Service implements Taggable, GoogleApiClient.ConnectionCallbacks {
+public class ProximityService extends Service implements Taggable {
+
+  private static final int REQUEST_RESOLVE = 1001;
+
   @Inject
   public ProximityManager listener;
-  private GoogleApiClient apiClient;
+  private LocationManager locationManager;
 
   @Override
   public void onCreate() {
@@ -33,24 +38,15 @@ public class ProximityService extends Service implements Taggable, GoogleApiClie
   public int onStartCommand(Intent intent, int flags, int startId) {
     Log.d(getTag(), "Start Service");
 
-    apiClient = new GoogleApiClient.Builder(this)
-      .addApi(LocationServices.API)
-      .addConnectionCallbacks(this)
-      .build();
+    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-    apiClient.connect();
+    if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+      Log.d(getTag(), "Request location updates");
+      locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, listener);
+    } else {
+      Log.e(getTag(), "Invalid location permission");
+    }
     return super.onStartCommand(intent, flags, startId);
-  }
-
-  @Override
-  public void onConnected(Bundle bundle) {
-    Log.d(getTag(), "Requesting location updates");
-    LocationServices.FusedLocationApi.requestLocationUpdates(apiClient, LocationRequest.create(), listener);
-  }
-
-  @Override
-  public void onConnectionSuspended(int i) {
-    Log.d(getTag(), "Connection suspended");
   }
 
   @Override
@@ -62,7 +58,10 @@ public class ProximityService extends Service implements Taggable, GoogleApiClie
   public void onDestroy() {
     super.onDestroy();
     Log.d(getTag(), "End Service");
-    LocationServices.FusedLocationApi.removeLocationUpdates(apiClient, listener);
-    apiClient.disconnect();
+    if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+      locationManager.removeUpdates(listener);
+    } else {
+      Log.e(getTag(), "Invalid location permission");
+    }
   }
 }

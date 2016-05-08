@@ -24,7 +24,7 @@ import java.util.HashMap;
  */
 public class MainActivity extends AppCompatActivity implements
   FavoriteLocationsFragment.Listener,
-  PartnersLocationsFragment.Listener, SettingsFragment.Listener,
+  PartnersLocationsFragment.Listener,
   OnMenuTabClickListener,
   Taggable {
 

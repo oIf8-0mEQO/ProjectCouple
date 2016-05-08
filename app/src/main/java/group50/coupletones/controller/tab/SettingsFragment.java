@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,31 +24,32 @@ import javax.inject.Inject;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
- * A simple {@link Fragment} subclass for the Settings tab.
- * Activities that contains this fragment must implement the {@link Listener} interface to handle interaction events.
+ * A {@link Fragment} subclass for the Settings tab.
  */
-public class SettingsFragment extends TabFragment<SettingsFragment.Listener> implements View.OnClickListener {
+public class SettingsFragment extends TabFragment<Object> {
 
   @Inject
   public CoupleTones app;
 
-  TextView yourProfileText;
-  TextView yourNameText;
-  TextView yourName;
-  TextView yourAccountText;
-  TextView yourAccount;
-  TextView null_partner;
-  TextView partnersProfileText;
-  TextView partnerNameText;
-  TextView partnerName;
-  TextView partnerAccountText;
-  TextView partnerAccount;
-  ImageButton add_partner_button;
   private Authenticator<User, String> auth;
+
   private InstanceComponent component;
 
+  private TextView yourProfileText;
+  private TextView yourNameText;
+  private TextView yourName;
+  private TextView yourAccountText;
+  private TextView yourAccount;
+  private TextView null_partner;
+  private TextView partnersProfileText;
+  private TextView partnerNameText;
+  private TextView partnerName;
+  private TextView partnerAccountText;
+  private TextView partnerAccount;
+  private ImageButton add_partner_button;
+
   public SettingsFragment() {
-    super(Listener.class);
+    super(Object.class);
   }
 
   @Override
@@ -72,28 +72,17 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
    * A method that sets the font of each TextView on the Settings Fragment.
    */
   @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                           Bundle savedInstanceState) {
+  public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_settings, container, false);
-    Typeface pierSans = Typeface.createFromAsset(getActivity().getAssets(),
-      getString(R.string.pier_sans));
+    Typeface pierSans = Typeface.createFromAsset(getActivity().getAssets(), getString(R.string.pier_sans));
 
     // User's Profile CardView
     yourProfileText = (TextView) v.findViewById(R.id.my_profile_header);
     yourNameText = (TextView) v.findViewById(R.id.your_name_header);
     yourName = (TextView) v.findViewById(R.id.your_name);
-    yourName.setText(app.getLocalUser().getName());
     yourAccountText = (TextView) v.findViewById(R.id.your_account_header);
     yourAccount = (TextView) v.findViewById(R.id.your_email);
     null_partner = (TextView) v.findViewById(R.id.null_partner);
-
-    yourAccount.setText(app.getLocalUser().getEmail());
-    yourProfileText.setTypeface(pierSans);
-    yourNameText.setTypeface(pierSans);
-    yourName.setTypeface(pierSans);
-    yourAccountText.setTypeface(pierSans);
-    yourAccount.setTypeface(pierSans);
-    null_partner.setTypeface(pierSans);
 
     // Partner's Profile CardView
     partnersProfileText = (TextView) v.findViewById(R.id.partners_profile_text);
@@ -102,13 +91,28 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     partnerAccountText = (TextView) v.findViewById(R.id.partner_account_header);
     partnerAccount = (TextView) v.findViewById(R.id.partner_email);
 
+    add_partner_button = (ImageButton) v.findViewById(R.id.add_partner_button);
+
+    // Logout/Disconnect Buttons at Bottom
+    TextView logoutButton = (TextView) v.findViewById(R.id.logout_button);
+    TextView disconnectButton = (TextView) v.findViewById(R.id.disconnect_button);
+
+    // Set fonts
+    yourProfileText.setTypeface(pierSans);
+    yourNameText.setTypeface(pierSans);
+    yourName.setTypeface(pierSans);
+    yourAccountText.setTypeface(pierSans);
+    yourAccount.setTypeface(pierSans);
+    null_partner.setTypeface(pierSans);
     partnersProfileText.setTypeface(pierSans);
     partnerNameText.setTypeface(pierSans);
     partnerName.setTypeface(pierSans);
     partnerAccountText.setTypeface(pierSans);
     partnerAccount.setTypeface(pierSans);
 
-    add_partner_button = (ImageButton) v.findViewById(R.id.add_partner_button);
+    // Set local user data
+    yourName.setText(app.getLocalUser().getName());
+    yourAccount.setText(app.getLocalUser().getEmail());
 
     // Control visibility and customizability of Partner Name and Partner Email
     if (app.getLocalUser().getPartner() != null) {
@@ -117,16 +121,27 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
       updateUI(false);
     }
 
-    // Add Partner ImageButton
-    v.findViewById(R.id.add_partner_button).setOnClickListener(this);
 
-    // Logout/Disconnect Buttons at Bottom
-    TextView logoutButton = (TextView) v.findViewById(R.id.logout_button);
-    TextView disconnectButton = (TextView) v.findViewById(R.id.disconnect_button);
     logoutButton.setTypeface(pierSans);
     disconnectButton.setTypeface(pierSans);
-    v.findViewById(R.id.logout_button).setOnClickListener(this);
-    v.findViewById(R.id.disconnect_button).setOnClickListener(this);
+
+    // Register button click handlers. After add partner, take the user to Add Partner page.
+    v.findViewById(R.id.add_partner_button)
+      .setOnClickListener(evt -> startActivity(new Intent(getContext(), AddPartnerActivity.class)));
+
+    // Logout button handler. After logout, take the user to Login page.
+    v.findViewById(R.id.logout_button)
+      .setOnClickListener(evt -> auth.signOut(status -> startActivity(new Intent(getContext(), LoginActivity.class))));
+
+    // Disconnect with partner button handler
+    v.findViewById(R.id.disconnect_button)
+      .setOnClickListener(evt -> {
+          app.getLocalUser().setPartner(null);
+          app.getLocalUser().save(new Storage(getActivity()
+            .getSharedPreferences("user", MODE_PRIVATE)));
+          updateUI(false);
+        }
+      );
 
     return v;
   }
@@ -134,9 +149,10 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
   /**
    * Updates the UI based on whether
    * user is connected to a partner.
-   * @param hasPartner
+   *
+   * @param hasPartner Does the user have a partner?
    */
-  public void updateUI(boolean hasPartner) {
+  private void updateUI(boolean hasPartner) {
     if (hasPartner) {
       partnerName.setText(app.getLocalUser().getPartner().getName());
       partnerAccount.setText(app.getLocalUser().getPartner().getEmail());
@@ -176,58 +192,5 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     } else {
       updateUI(false);
     }
-  }
-
-  /**
-   * Actions taken when a Button is clicked.
-   */
-  @Override
-  public void onClick(View v) {
-    switch (v.getId()) {
-
-      // Switches to AddPartnerActivity.
-      case R.id.add_partner_button:
-        Intent i = new Intent(getContext(), AddPartnerActivity.class);
-        startActivity(i);
-        Log.d(getTag(), "Switched to AddPartnerActivity Successfully");
-        break;
-
-      // Allows user to disconnect from partner.
-      case R.id.disconnect_button:
-        app.getLocalUser().setPartner(null);
-        app.getLocalUser().save(new Storage(getActivity()
-          .getSharedPreferences("user", MODE_PRIVATE)));
-        updateUI(false);
-        break;
-
-      // signOut() is called to sign out the user.
-      case R.id.logout_button:
-        auth.signOut(status -> goToLogin());
-        break;
-    }
-  }
-
-  /**
-   * After a successful signOut(), user will be taken to Login page.
-   */
-  private void goToLogin() {
-    Intent i = new Intent(getContext(), LoginActivity.class);
-    startActivity(i);
-    Log.d(getTag(), "Signed Out Successfully");
-  }
-
-  /**
-   * This interface must be implemented by activities that contains this
-   * fragment to allow an interaction in this fragment to be communicated
-   * to the activity and potentially other fragments contained in that
-   * activity.
-   * <p>
-   * See the Android Training lesson <a href=
-   * "http://developer.android.com/training/basics/fragments/communicating.html"
-   * >Communicating with Other Fragments</a> for more information.
-   */
-  public interface Listener {
-
-    // TODO: Fill with interface methods
   }
 }

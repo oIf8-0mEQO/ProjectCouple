@@ -22,6 +22,10 @@ public class ProximityNetworkHandler implements ProximityObserver {
     this.network = network;
   }
 
+  /**
+   *
+   * @param location Visited Location
+   */
   @Override
   public void onEnterLocation(VisitedLocation location) {
     Format formatter = new SimpleDateFormat("MM-dd-yyyy");

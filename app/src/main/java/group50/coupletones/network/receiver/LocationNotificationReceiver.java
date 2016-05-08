@@ -8,6 +8,10 @@ import group50.coupletones.network.message.MessageReceiver;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.util.Identifiable;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 /**
  * @author Sharmaine Manalo
  * @since 5/5/16
@@ -26,20 +30,23 @@ public class LocationNotificationReceiver implements MessageReceiver, Identifiab
 
   @Override
   public void onReceive(Message message) {
-    String locationName = message.getString("name");
-    String locationTime = message.getString("time");
-    // TODO: Make strings
-    String title = "Partner visited " + locationName;
-    String msg = locationTime;
+    Notification notification = new Notification(context);
+    //TODO: Use strings.xml
+    notification.setTitle("Partner visited " + message.getString("name"));
+
+    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm", Locale.US);
+    try {
+      Date parse = formatter.parse(message.getString("time"));
+      notification.setMsg(parse.toString());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
     Intent intent = new Intent(context, MainActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-    new Notification(context)
-      .setIntent(intent)
-      .setTitle(title)
-      .setMsg(msg)
-      .show();
+    notification.setIntent(intent);
+    notification.show();
   }
 
   @Override

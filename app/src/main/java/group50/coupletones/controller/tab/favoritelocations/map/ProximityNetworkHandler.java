@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * @author Sharmaine Manalo
@@ -33,7 +34,7 @@ public class ProximityNetworkHandler implements ProximityObserver, Taggable {
   @Override
   public void onEnterLocation(VisitedLocation location) {
     if (app.getLocalUser().getPartner() != null) {
-      Format formatter = new SimpleDateFormat("MM-dd-yyyy");
+      Format formatter = new SimpleDateFormat("HH:mm", Locale.US);
       Date date = location.getTime();
       String time = formatter.format(date);
 

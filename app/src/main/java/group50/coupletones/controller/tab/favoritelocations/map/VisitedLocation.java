@@ -54,4 +54,19 @@ public class VisitedLocation implements Location {
     return time;
   }
 
+  @Override
+  public boolean equals(Object other)
+  {
+    try
+    {
+
+      if (((VisitedLocation)other).getPosition().equals(getPosition())) return true;
+      else return false;
+    }
+    catch (ClassCastException e)
+    {
+      return false;
+    }
+  }
+
 }

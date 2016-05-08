@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import group50.coupletones.R;
-import group50.coupletones.controller.tab.favoritelocations.map.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 
 import java.util.List;
 

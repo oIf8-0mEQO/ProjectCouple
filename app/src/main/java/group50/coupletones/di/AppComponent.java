@@ -1,8 +1,10 @@
 package group50.coupletones.di;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import dagger.Component;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.Authenticator;
+import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
@@ -10,7 +12,13 @@ import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.PartnerResponseActivity;
 import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
-import group50.coupletones.controller.tab.favoritelocations.map.*;
+import group50.coupletones.controller.tab.favoritelocations.map.LocationClickHandler;
+import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
+import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
+import group50.coupletones.controller.tab.favoritelocations.map.ProximityService;
+import group50.coupletones.controller.tab.favoritelocations.map.location.AddressProvider;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.AuthenticatorModule;
 import group50.coupletones.di.module.NetworkModule;
@@ -22,7 +30,6 @@ import javax.inject.Singleton;
 
 /**
  * The dependency injection component for the entire app.
- *
  * @author Henry Mao
  * @since 28/4/2016
  */
@@ -37,8 +44,6 @@ import javax.inject.Singleton;
 )
 public interface AppComponent {
 
-  Authenticator<User, String> auth();
-
   CoupleTones app();
 
   NetworkManager network();
@@ -46,6 +51,10 @@ public interface AppComponent {
   ProximityManager proximity();
 
   AddressProvider geocoder();
+
+  void inject(GoogleAuthenticator obj);
+
+  void inject(LocationClickHandler obj);
 
   void inject(PartnerResponseActivity activity);
 
@@ -55,11 +64,11 @@ public interface AppComponent {
 
   void inject(FavoriteLocationsFragment fragment);
 
-  void inject(LocationService activity);
+  void inject(ProximityService activity);
 
   void inject(AddPartnerActivity activity);
 
-  void inject(Map fragment);
+  void inject(MapFragment fragment);
 
   void inject(MainActivity activity);
 

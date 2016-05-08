@@ -2,7 +2,7 @@ package group50.coupletones.di;
 
 import dagger.Module;
 import dagger.Provides;
-import group50.coupletones.controller.tab.favoritelocations.map.AddressProvider;
+import group50.coupletones.controller.tab.favoritelocations.map.location.AddressProvider;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 import group50.coupletones.di.module.ProximityModule;
 

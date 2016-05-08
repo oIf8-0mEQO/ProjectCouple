@@ -3,13 +3,21 @@ package group50.coupletones.controller.tab.favoritelocations.map;
 import android.location.Location;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.auth.user.MockLocalUser;
+import group50.coupletones.auth.user.LocalUser;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.Mockito.*;
+import java.util.Collections;
+
+import static org.mockito.Mockito.anyObject;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Joseph
@@ -17,10 +25,10 @@ import static org.mockito.Mockito.*;
  */
 public class ProximityManagerTest {
 
-  FavoriteLocation favLocation;
-  Location loc;
-  MapProximityManagerMock proximity;
-  ProximityObserver mock;
+  private FavoriteLocation favLocation;
+  private Location loc;
+  private MapProximityManager proximity;
+  private ProximityObserver mockObserver;
 
   @Before
   public void setup() {
@@ -36,12 +44,17 @@ public class ProximityManagerTest {
     loc = new Location("");
 
     // Stub the user
-    CoupleTones.component().app().setLocalUser(new MockLocalUser());
+    LocalUser localUser = mock(LocalUser.class);
+    // Make the user always return favLocation when getFavoriteLocations is called
+    when(localUser.getFavoriteLocations()).thenReturn(Collections.singletonList(favLocation));
 
-    proximity = new MapProximityManagerMock();
-    mock = mock(ProximityObserver.class);
-    proximity.register(mock);
-    proximity.addFavoriteLocation(favLocation);
+    // Stub getLocalUser to always return the mock user above
+    when(CoupleTones.component().app().getLocalUser()).thenReturn(localUser);
+    when(CoupleTones.component().app().isLoggedIn()).thenReturn(true);
+
+    proximity = new MapProximityManager(CoupleTones.component().app());
+    mockObserver = mock(ProximityObserver.class);
+    proximity.register(mockObserver);
   }
 
   //TODO: Organize this test into edge case, normal case, error case
@@ -56,7 +69,7 @@ public class ProximityManagerTest {
     loc.setLatitude(10.0);
     loc.setLongitude(10.0);
     proximity.onLocationChanged(loc);
-    verify(mock, never()).onEnterLocation(anyObject());
+    verify(mockObserver, never()).onEnterLocation(anyObject());
   }
 
   @Test
@@ -65,7 +78,7 @@ public class ProximityManagerTest {
     loc.setLatitude(32.880351);
     loc.setLongitude(-117.236578);
     proximity.onLocationChanged(loc);
-    verify(mock).onEnterLocation(anyObject());
+    verify(mockObserver).onEnterLocation(anyObject());
   }
 
   @Test
@@ -79,7 +92,6 @@ public class ProximityManagerTest {
         count++;
       }
     };
-    MapProximityManager proximity = new MapProximityManager();
     proximity.register(observer);
     FavoriteLocation shouldNotifyOnce = new FavoriteLocation();
     proximity.onEnterLocation(shouldNotifyOnce);

@@ -10,16 +10,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.Authenticator;
-import group50.coupletones.auth.user.User;
+import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass for the Settings tab.
@@ -28,14 +28,10 @@ import javax.inject.Inject;
  */
 public class SettingsFragment extends TabFragment<SettingsFragment.Listener> implements View.OnClickListener {
 
-  /**
-   * The instance of the GoogleUser and Object for authentication.
-   */
-  @Inject
-  public Authenticator<User, String> auth;
-  //public GoogleAuthenticator auth;
   @Inject
   public CoupleTones app;
+
+  public GoogleAuthenticator auth;
 
   TextView yourProfileText;
   TextView yourNameText;
@@ -54,17 +50,6 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     super(Listener.class);
   }
 
-  /**
-   * Use this factory method to create a new instance of SettingsFragment.
-   */
-  public static SettingsFragment build() {
-    SettingsFragment fragment = new SettingsFragment();
-    Bundle args = new Bundle();
-    // TODO: Set arguments
-    fragment.setArguments(args);
-    return fragment;
-  }
-
   @Override
   protected int getResourceId() {
     return R.layout.fragment_settings;
@@ -74,9 +59,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     CoupleTones.component().inject(this);
-    if (getArguments() != null) {
-      //TODO: Read arguments
-    }
+    auth = new GoogleAuthenticator(getActivity());
   }
 
   /**
@@ -84,7 +67,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
    */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                           Bundle savedInstanceState) {
+    Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_settings, container, false);
     Typeface pierSans = Typeface.createFromAsset(getActivity().getAssets(),
       getString(R.string.pier_sans));
@@ -163,6 +146,18 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
   }
 
   @Override
+  public void onStart() {
+    super.onStart();
+    auth.connect();
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    auth.disconnect();
+  }
+
+  @Override
   public void onResume() {
     super.onResume();
     if (app.getLocalUser().getPartner() != null) {
@@ -190,7 +185,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
       case R.id.disconnect_button:
         app.getLocalUser().setPartner(null);
         app.getLocalUser().save(new Storage(getActivity()
-          .getSharedPreferences("user", getActivity().MODE_PRIVATE)));
+          .getSharedPreferences("user", MODE_PRIVATE)));
         updateUI(false);
         break;
 
@@ -209,7 +204,6 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     startActivity(i);
     Log.d(getTag(), "Signed Out Successfully");
   }
-
 
   /**
    * This interface must be implemented by activities that contains this

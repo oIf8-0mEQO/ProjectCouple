@@ -4,7 +4,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import dagger.Module;
 import dagger.Provides;
-import group50.coupletones.controller.tab.favoritelocations.map.AddressProvider;
+import group50.coupletones.controller.tab.favoritelocations.map.location.AddressProvider;
 import group50.coupletones.controller.tab.favoritelocations.map.MapProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 

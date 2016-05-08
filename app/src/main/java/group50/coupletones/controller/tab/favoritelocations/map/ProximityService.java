@@ -1,15 +1,11 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
-import android.Manifest;
-import android.app.Service;
-import android.content.Context;
+import android.app.IntentService;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.os.IBinder;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import group50.coupletones.CoupleTones;
+import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;
 
@@ -19,24 +15,13 @@ import javax.inject.Inject;
  * @author Henry Mao
  * @since 5/6/16
  */
-public class LocationService extends Service {
+public class ProximityService extends IntentService implements Taggable {
   @Inject
-  public MapProximityManager listener;
+  public ProximityManager listener;
   private LocationManager locationManager;
 
-  public static Thread performOnBackgroundThread(final Runnable runnable) {
-    final Thread t = new Thread() {
-      @Override
-      public void run() {
-        try {
-          runnable.run();
-        } finally {
-
-        }
-      }
-    };
-    t.start();
-    return t;
+  public ProximityService() {
+    super("ProximityService");
   }
 
   @Override
@@ -46,15 +31,25 @@ public class LocationService extends Service {
   }
 
   @Override
+  protected void onHandleIntent(Intent intent) {
+    Log.d(getTag(), "Handled intent!");
+  }
+
+
+/*
+  @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
+    Log.d(getTag(), "Start Service");
     // Register the proximity manager with Android LocationManager
     locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-      locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 4000, 0, listener);
-      locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 4000, 0, listener);
+      Log.d(getTag(), "Registered listener: " + listener);
+      locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 0, (MapProximityManager) listener);
+      locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, (MapProximityManager) listener);
     } else {
       //TODO: Handle when location permission is not provided.
+      Log.e(getTag(), "Location permission not granted");
     }
 
     return super.onStartCommand(intent, flags, startId);
@@ -67,13 +62,10 @@ public class LocationService extends Service {
 
   @Override
   public void onDestroy() {
-    // handler.removeCallbacks(sendUpdatesToUI);
     super.onDestroy();
-    Log.v("STOP_SERVICE", "DONE");
+    Log.d(getTag(), "End Service");
     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-      locationManager.removeUpdates(listener);
+      locationManager.removeUpdates((MapProximityManager) listener);
     }
-  }
-
-
+  }*/
 }

@@ -1,5 +1,6 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.network.message.OutgoingMessage;

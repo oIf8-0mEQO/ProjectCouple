@@ -7,16 +7,14 @@ import android.text.InputType;
 import android.widget.EditText;
 
 import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 
 import javax.inject.Inject;
 
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.util.storage.Storage;
-
-import java.util.Map;
 
 /**
  * Created by Joseph on 5/7/2016.

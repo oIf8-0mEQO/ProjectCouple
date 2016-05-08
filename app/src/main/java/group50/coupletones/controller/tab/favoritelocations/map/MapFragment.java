@@ -9,6 +9,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,6 +20,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import group50.coupletones.CoupleTones;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.Location;
 
 import javax.inject.Inject;
 
@@ -31,6 +36,9 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
   @Inject
   public ProximityManager proximityManager;
+
+  @Inject
+  public GoogleApiClient apiClient;
 
   private GoogleMap mMap;
 
@@ -120,15 +128,26 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
    * Centers the map
    */
   public void centerMap() {
-    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-      android.location.Location lastLoc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-      if (lastLoc != null) {
-        CameraUpdate initial = CameraUpdateFactory.newLatLngZoom(new LatLng(lastLoc.getLatitude(), lastLoc.getLongitude()), 15);
-        mMap.moveCamera(initial);
-      }
-    } else {
-      Log.e(TAG, "Location permission not granted");
+    moveMap(LocationServices.FusedLocationApi.getLastLocation(apiClient));
+  }
+
+  /**
+   * Moves the map to a given location
+   * @param loc The location to move to
+   */
+  public void moveMap(android.location.Location loc) {
+    if (loc != null) {
+      moveMap(new LatLng(loc.getLatitude(), loc.getLongitude()));
     }
+  }
+
+  /**
+   * Moves the map to a given latlong position
+   * @param position The position to move to
+   */
+  public void moveMap(LatLng position) {
+    CameraUpdate update = CameraUpdateFactory.newLatLngZoom(position, 15);
+    mMap.moveCamera(update);
   }
 
   /**
@@ -147,10 +166,6 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     }
   }
 
-  public void moveMap(LatLng position) {
-    CameraUpdate update = CameraUpdateFactory.newLatLng(position);
-    mMap.moveCamera(update);
-  }
 
   /*public List<Address> search(String nameLocation) {
     try {

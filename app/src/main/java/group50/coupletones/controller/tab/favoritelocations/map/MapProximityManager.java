@@ -7,6 +7,8 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 import group50.coupletones.CoupleTones;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
 import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;

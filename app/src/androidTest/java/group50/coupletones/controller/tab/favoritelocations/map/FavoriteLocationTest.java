@@ -1,5 +1,6 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import org.junit.Test;
 
 /**

@@ -4,6 +4,8 @@ import android.location.Location;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 import org.junit.Before;

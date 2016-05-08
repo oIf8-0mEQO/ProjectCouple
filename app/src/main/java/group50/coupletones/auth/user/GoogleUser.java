@@ -113,7 +113,5 @@ public class GoogleUser implements LocalUser {
     }
 
     favoriteLocations = storage.getCollection("favoriteLocations", FavoriteLocation.class);
-
-    Log.d("GoogleUser", "size " + favoriteLocations.size());
   }
 }

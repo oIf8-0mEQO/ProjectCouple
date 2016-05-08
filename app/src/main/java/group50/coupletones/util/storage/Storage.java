@@ -60,8 +60,8 @@ public class Storage {
       int collectionLength = getInt(name + suffix);
 
       try {
-        T object = type.newInstance();
         for (int i = 0; i < collectionLength; i++) {
+          T object = type.newInstance();
           Storage arrStorage = new Storage(preference, suffix + i);
           object.load(arrStorage);
           list.add(object);

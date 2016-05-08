@@ -24,11 +24,20 @@ public class LocationNotificationReceiver implements MessageReceiver, Identifiab
 
   private final CoupleTones app;
 
+  /**
+   * Location Notification Receiver
+   * @param app
+   * @param context
+   */
   public LocationNotificationReceiver(CoupleTones app, Context context) {
     this.context = context;
     this.app = app;
   }
 
+  /**
+   * onReceive
+   * @param message The incoming message object that contains data from the server
+   */
   @Override
   public void onReceive(Message message) {
     Notification notification = new Notification(context);
@@ -43,6 +52,10 @@ public class LocationNotificationReceiver implements MessageReceiver, Identifiab
     notification.show();
   }
 
+  /**
+   * Gets the ID
+   * @return
+   */
   @Override
   public String getId() {
     return MessageType.RECEIVE_MAP_NOTIFY.value;

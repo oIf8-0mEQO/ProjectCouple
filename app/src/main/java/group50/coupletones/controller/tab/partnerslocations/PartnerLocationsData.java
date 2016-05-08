@@ -10,6 +10,7 @@ import java.util.List;
  * @since 5/5/16
  */
 
+// TODO - currently placeholder data
 /**
  * Partner Location placeholder data of
  * location names, addresses, and visited times.

@@ -43,6 +43,10 @@ public class MainActivity extends AppCompatActivity implements
    */
   private HashMap<Integer, Fragment> tabs;
 
+  /**
+   * onCreate
+   * @param savedInstanceState
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -68,6 +72,10 @@ public class MainActivity extends AppCompatActivity implements
     mBottomBar.hideShadow();
   }
 
+  /**
+   * When Menu Tab is Selected
+   * @param menuItemId
+   */
   @Override
   public void onMenuTabSelected(
     @IdRes
@@ -79,6 +87,10 @@ public class MainActivity extends AppCompatActivity implements
     }
   }
 
+  /**
+   * When Menu Tab is Re-Selected
+   * @param menuItemId
+   */
   @Override
   public void onMenuTabReSelected(
     @IdRes
@@ -90,6 +102,10 @@ public class MainActivity extends AppCompatActivity implements
     }
   }
 
+  /**
+   * onSaveInstanceState
+   * @param outState
+   */
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);

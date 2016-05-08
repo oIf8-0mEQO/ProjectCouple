@@ -28,36 +28,66 @@ public class Storage {
     this.suffix = suffix;
   }
 
+  /**
+   * Storage
+   * @param preferences
+   */
   public Storage(SharedPreferences preferences) {
     this(preferences, "");
   }
 
-
+  /**
+   * Checks if it contains name data
+   * @param name
+   * @return
+   */
   public boolean contains(String name) {
     return preference.contains(name + suffix);
   }
 
-
+  /**
+   * Gets the int for name data
+   * @param name
+   * @return
+   */
   public int getInt(String name) {
     return preference.getInt(name + suffix, 0);
   }
 
-
+  /**
+   * Gets the float for name data
+   * @param name
+   * @return
+   */
   public float getFloat(String name) {
     return preference.getFloat(name + suffix, 0);
   }
 
-
+  /**
+   * Gets the string for name data
+   * @param name
+   * @return
+   */
   public String getString(String name) {
     return preference.getString(name + suffix, null);
   }
 
-
+  /**
+   * Gets the boolean for name data
+   * @param name
+   * @return
+   */
   public boolean getBoolean(String name) {
     return preference.getBoolean(name + suffix, false);
   }
 
-
+  /**
+   * getCollection
+   * @param name
+   * @param type
+   * @param <T>
+   * @return list
+   */
   public <T extends Storable> List<T> getCollection(String name, Class<T> type) {
     List<T> list = new LinkedList<>();
 
@@ -78,7 +108,11 @@ public class Storage {
     return list;
   }
 
-
+  /**
+   * Sets the int
+   * @param name
+   * @param value
+   */
   public void setInt(String name, int value) {
     preference
       .edit()
@@ -86,7 +120,11 @@ public class Storage {
       .apply();
   }
 
-
+  /**
+   * Sets the float
+   * @param name
+   * @param value
+   */
   public void setFloat(String name, float value) {
     preference
       .edit()
@@ -94,12 +132,22 @@ public class Storage {
       .apply();
   }
 
+  /**
+   * Sets the string
+   * @param name
+   * @param value
+   */
   public void setString(String name, String value) {
     preference
       .edit().putString(name + suffix, value)
       .apply();
   }
 
+  /**
+   * Sets the boolean
+   * @param name
+   * @param value
+   */
   public void setBoolean(String name, boolean value) {
     preference
       .edit()
@@ -107,7 +155,11 @@ public class Storage {
       .apply();
   }
 
-
+  /**
+   * Sets the collection
+   * @param name
+   * @param collection
+   */
   public void setCollection(String name, List<? extends Storable> collection) {
     int i = 0;
     for (Storable obj : collection) {
@@ -117,6 +169,10 @@ public class Storage {
     setInt(name + suffix, i);
   }
 
+  /**
+   * Deletes the name
+   * @param name
+   */
   public void delete(String name) {
     preference
       .edit()

@@ -26,11 +26,19 @@ public class IncomingMessage implements Message {
     this.data = data;
   }
 
+  /**
+   * Gets type
+   * @return
+   */
   @Override
   public String getType() {
     return type;
   }
 
+  /**
+   * Gets data
+   * @return
+   */
   @Override
   public Bundle getData() {
     return data;

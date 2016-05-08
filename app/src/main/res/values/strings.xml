@@ -37,5 +37,7 @@
     <string name="partner_request">has sent you a partner request.</string>
     <string name="accept">Accept</string>
     <string name="reject">Reject</string>
-    <string name="partner_visited_text">visited </string>
+    <string name="partner_visited_text">visited</string>
+    <string name="partner_up_text">wants to partner with you! </string>
+    <string name="partner_request_header">Partner Request</string>
 </resources>

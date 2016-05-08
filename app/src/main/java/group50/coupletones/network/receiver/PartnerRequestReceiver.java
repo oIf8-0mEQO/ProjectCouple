@@ -2,6 +2,8 @@ package group50.coupletones.network.receiver;
 
 import android.content.Context;
 import android.content.Intent;
+
+import group50.coupletones.R;
 import group50.coupletones.controller.PartnerResponseActivity;
 import group50.coupletones.network.message.Message;
 import group50.coupletones.network.message.MessageReceiver;
@@ -22,16 +24,18 @@ public class PartnerRequestReceiver implements MessageReceiver, Identifiable {
     this.context = context;
   }
 
+  /**
+   * onReceive
+   * @param message The incoming message object that contains data from the server
+   */
   @Override
   public void onReceive(Message message) {
     // The partner making the request
     String partnerName = message.getString("name");
     String partnerEmail = message.getString("partner");
 
-
-    //TODO: Use values/strings
-    String title = "Partner Request";
-    String msg = partnerEmail + " wants to partner with you!";
+    String title = context.getString(R.string.partner_request_header);
+    String msg = partnerEmail + " " + R.string.partner_up_text;
 
     // Bundle the data into the intent when opening MainActivity
     Intent intent = new Intent(context, PartnerResponseActivity.class);
@@ -46,6 +50,10 @@ public class PartnerRequestReceiver implements MessageReceiver, Identifiable {
       .show();
   }
 
+  /**
+   * Gets the ID
+   * @return String - ID
+   */
   @Override
   public String getId() {
     return MessageType.RECEIVE_PARTNER_REQUEST.value;

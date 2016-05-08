@@ -1,45 +1,47 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
-import android.location.Location;
-import android.location.LocationListener;
+/**
+ * Created by Joseph on 5/7/2016.
+ */
+
+import android.location.*;
 import android.os.Bundle;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
-import group50.coupletones.CoupleTones;
-import group50.coupletones.R;
 
-import javax.inject.Inject;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * The map proximity manager
- *
- * @author Joseph
- * @since 5/1/2016.
- */
-public class MapProximityManager implements ProximityManager, LocationListener {
+import javax.inject.Inject;
 
+import group50.coupletones.CoupleTones;
+import group50.coupletones.R;
+
+public class MapProximityManagerMock implements ProximityManager, LocationListener {
+
+  //Meters to Miles conversion ratio
+  private static final double conversion = (1.0) / (1609.0);
   /**
    * A list of observers that subscribe to changes in location.
    */
   private final List<ProximityObserver> observers;
+  private List<FavoriteLocation> locations;
 
   @Inject
   public CoupleTones app;
 
   @Inject
-  public MapProximityManager() {
+  public MapProximityManagerMock() {
     observers = new LinkedList<>();
+    locations = new LinkedList<>();
   }
 
-  //Meters to Miles conversion ratio
-  private static final double conversion = (1.0) / (1609.0);
   /**
    * Finds the distance in miles between two locations given by the gps.
    */
-  private static double distanceInMiles(LatLng location1, LatLng location2) {
+  public static double distanceInMiles(LatLng location1, LatLng location2) {
     return (conversion * SphericalUtil.computeDistanceBetween(location1, location2));
   }
 
@@ -68,11 +70,12 @@ public class MapProximityManager implements ProximityManager, LocationListener {
    * @param location The location
    */
   @Override
-  public void onLocationChanged(Location location) {
+  public void onLocationChanged(android.location.Location location) {
     // Make sure the user is logged in
-    if (app.isLoggedIn()) {
-      for (FavoriteLocation loc : app.getLocalUser().getFavoriteLocations()) {
+    if (true) {
+      for (FavoriteLocation loc : locations) {
         // Check distance
+        double distance = distanceInMiles(loc.getPosition(), new LatLng(location.getLatitude(), location.getLongitude()));
         if (distanceInMiles(loc.getPosition(), new LatLng(location.getLatitude(), location.getLongitude())) < 0.1) {
           onEnterLocation(loc);
         }
@@ -90,5 +93,10 @@ public class MapProximityManager implements ProximityManager, LocationListener {
 
   @Override
   public void onStatusChanged(String provider, int status, Bundle extra) {
+  }
+
+  public void addFavoriteLocation(FavoriteLocation location)
+  {
+    locations.add(location);
   }
 }

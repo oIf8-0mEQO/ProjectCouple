@@ -38,7 +38,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
   @Inject
   public ProximityManager proximityManager;
 
-  public GoogleApiClient apiClient;
+  private GoogleApiClient apiClient;
 
   private GoogleMap mMap;
 

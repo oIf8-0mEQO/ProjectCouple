@@ -2,6 +2,10 @@ package group50.coupletones.network.receiver;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
+
+import group50.coupletones.CoupleTones;
+import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.network.message.Message;
 import group50.coupletones.network.message.MessageReceiver;
@@ -24,23 +28,23 @@ public class LocationNotificationReceiver implements MessageReceiver, Identifiab
 
   private final Context context;
 
-  public LocationNotificationReceiver(Context context) {
+  private final CoupleTones app;
+
+  public LocationNotificationReceiver(CoupleTones app, Context context) {
     this.context = context;
+    this.app = app;
   }
 
   @Override
   public void onReceive(Message message) {
     Notification notification = new Notification(context);
     //TODO: Use strings.xml
-    notification.setTitle("Partner visited " + message.getString("name"));
+    notification.setTitle(context.getString(R.string.app_name));
+    Log.d("test", message.getString("name"));
 
-    SimpleDateFormat formatter = new SimpleDateFormat("HH:mm", Locale.US);
-    try {
-      Date parse = formatter.parse(message.getString("time"));
-      notification.setMsg(parse.toString());
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+
+    notification.setMsg(app.getLocalUser().getPartner().getName() + " " +
+        context.getString(R.string.partner_visited_text) + " " + message.getString("name"));
 
     Intent intent = new Intent(context, MainActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

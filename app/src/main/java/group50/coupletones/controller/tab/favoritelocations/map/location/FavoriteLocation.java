@@ -23,6 +23,7 @@ public class FavoriteLocation implements Location, Storable {
   private String name;
   private LatLng position;
   private long time;
+  private static int COOL_DOWN_TIME = 600000;
 
   /**
    * Default constructor with meaningless initial values.
@@ -109,7 +110,7 @@ public class FavoriteLocation implements Location, Storable {
    * @return true if the location is on cooldown, otherwise false.
    */
   public boolean isOnCooldown() {
-    return (System.currentTimeMillis() - time < 600000);
+    return (System.currentTimeMillis() - time < COOL_DOWN_TIME);
   }
 
   /**

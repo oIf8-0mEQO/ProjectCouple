@@ -115,7 +115,7 @@ public class CoupleTones extends Application {
     network.register(this);
     network.register(new PartnerRequestReceiver(this));
     network.register(new PartnerResponseReceiver(this, this));
-    network.register(new LocationNotificationReceiver(this));
+    network.register(new LocationNotificationReceiver(this, this));
     network.register(MessageType.RECEIVE_PARTNER_ERROR.value, new ErrorReceiver(this));
     network.register(MessageType.RECEIVE_MAP_REJECT.value, new ErrorReceiver(this));
 

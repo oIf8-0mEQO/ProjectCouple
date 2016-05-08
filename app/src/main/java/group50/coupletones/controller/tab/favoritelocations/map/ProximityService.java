@@ -1,13 +1,8 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
-import android.Manifest;
-import android.app.Service;
-import android.content.Context;
+import android.app.IntentService;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.LocationManager;
-import android.os.IBinder;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.util.Taggable;
@@ -20,10 +15,14 @@ import javax.inject.Inject;
  * @author Henry Mao
  * @since 5/6/16
  */
-public class LocationService extends Service implements Taggable {
+public class ProximityService extends IntentService implements Taggable {
   @Inject
   public ProximityManager listener;
   private LocationManager locationManager;
+
+  public ProximityService() {
+    super("ProximityService");
+  }
 
   @Override
   public void onCreate() {
@@ -31,6 +30,13 @@ public class LocationService extends Service implements Taggable {
     CoupleTones.component().inject(this);
   }
 
+  @Override
+  protected void onHandleIntent(Intent intent) {
+    Log.d(getTag(), "Handled intent!");
+  }
+
+
+/*
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
     Log.d(getTag(), "Start Service");
@@ -61,5 +67,5 @@ public class LocationService extends Service implements Taggable {
     if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
       locationManager.removeUpdates((MapProximityManager) listener);
     }
-  }
+  }*/
 }

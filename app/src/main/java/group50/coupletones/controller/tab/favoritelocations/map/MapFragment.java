@@ -2,7 +2,9 @@ package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -21,6 +23,8 @@ import javax.inject.Inject;
 
 public class MapFragment extends SupportMapFragment implements OnMapReadyCallback {
 
+  public static final float PROXIMITY_RADIUS_METERS = 160.934f;
+
   @Inject
   public CoupleTones app;
 
@@ -28,6 +32,8 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
   public ProximityManager proximityManager;
 
   private GoogleMap mMap;
+
+  private LocationManager locationManager;
 
   /**
    * Creates a OnMapClickListener that opens a dialog box asking the user for a name of a favorite location. When the user accepts the name
@@ -48,6 +54,8 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
           app.getLocalUser().getFavoriteLocations().add(clickedLocation);
         app.getLocalUser().save(new Storage(getActivity().getSharedPreferences(Storage.PREF_FILE_USER, Context.MODE_PRIVATE)));
 
+        registerProximity(clickedLocation);
+
         // Move the camera
           CameraUpdate update = CameraUpdateFactory.newLatLng(clickedLocation.getPosition());
           mMap.moveCamera(update);
@@ -62,15 +70,44 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
    * Use this factory method to create a new instance of MapFragment.
    */
   public static MapFragment build() {
-    MapFragment fragment = new MapFragment();
-    return fragment;
+    return new MapFragment();
   }
+
+  public void registerProximity(Location location) {
+    Intent intent = new Intent(getContext(), ProximityService.class);
+    intent.putExtra("lat", location.getPosition().latitude);
+    intent.putExtra("long", location.getPosition().longitude);
+
+    PendingIntent pendingIntent = PendingIntent.getActivity(
+      getContext(),
+      0 /* Request code */,
+      intent,
+      PendingIntent.FLAG_ONE_SHOT
+    );
+
+    // Add a proximity alert
+    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+      locationManager.addProximityAlert(
+        location.getPosition().latitude,
+        location.getPosition().longitude,
+        PROXIMITY_RADIUS_METERS,
+        -1,
+        pendingIntent
+      );
+      Log.d(getTag(), "Registered proximity alert");
+    } else {
+      Log.e(getTag(), "Location permission not granted");
+    }
+  }
+
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     CoupleTones.component().inject(this);
     getMapAsync(this);
+
+    locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
   }
 
 
@@ -79,9 +116,10 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
    */
   @Override
   public void onMapReady(GoogleMap googleMap) {
+    Log.d(getTag(), "Map Ready");
     mMap = googleMap;
     mMap.getUiSettings().setZoomControlsEnabled(true);
-    if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+    if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
       ActivityCompat.requestPermissions(
         this.getActivity(),
         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
@@ -95,10 +133,29 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     mMap.setOnMapClickListener(clickListener);
     mMap.setMyLocationEnabled(true);
 
-    LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-    android.location.Location lastLoc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-    CameraUpdate initial = CameraUpdateFactory.newLatLngZoom(new LatLng(lastLoc.getLatitude(), lastLoc.getLongitude()), 15);
-    mMap.moveCamera(initial);
+
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    Log.d(getTag(), "Resume");
+    centerMap();
+  }
+
+  /**
+   * Centers the map
+   */
+  public void centerMap() {
+    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+      android.location.Location lastLoc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+      if (lastLoc != null) {
+        CameraUpdate initial = CameraUpdateFactory.newLatLngZoom(new LatLng(lastLoc.getLatitude(), lastLoc.getLongitude()), 15);
+        mMap.moveCamera(initial);
+      }
+    } else {
+      Log.e(getTag(), "Location permission not granted");
+    }
   }
 
   /**
@@ -112,6 +169,8 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
       markerSettings.position(i.getPosition());
       markerSettings.title(i.getName());
       mMap.addMarker(markerSettings);
+      //TODO: Remove. This should be done in app initialization
+      registerProximity(i);
     }
   }
 

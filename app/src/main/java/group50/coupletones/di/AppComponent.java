@@ -55,7 +55,7 @@ public interface AppComponent {
 
   void inject(FavoriteLocationsFragment fragment);
 
-  void inject(LocationService activity);
+  void inject(ProximityService activity);
 
   void inject(AddPartnerActivity activity);
 

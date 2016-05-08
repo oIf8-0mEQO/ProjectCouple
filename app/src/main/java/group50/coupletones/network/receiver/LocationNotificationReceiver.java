@@ -5,6 +5,7 @@ import android.content.Intent;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.network.message.Message;
 import group50.coupletones.network.message.MessageReceiver;
+import group50.coupletones.network.message.MessageType;
 import group50.coupletones.util.Identifiable;
 
 /**
@@ -39,6 +40,6 @@ public class LocationNotificationReceiver implements MessageReceiver, Identifiab
 
   @Override
   public String getId() {
-    return "location-notification";
+    return MessageType.RECEIVE_MAP_NOTIFY;
   }
 }

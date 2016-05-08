@@ -63,6 +63,9 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
       app.getLocalUser().getFavoriteLocations().add(clickedLocation);
       app.getLocalUser().save(new Storage(map.getActivity().getSharedPreferences(Storage.PREF_FILE_USER, Context.MODE_PRIVATE)));
 
+      // Register a proximity checker
+      map.registerProximity(clickedLocation);
+
       // Move the camera
       map.moveMap(clickedLocation.getPosition());
       map.populateMap();

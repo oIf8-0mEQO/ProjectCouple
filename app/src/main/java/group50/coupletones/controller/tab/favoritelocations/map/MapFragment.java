@@ -1,7 +1,6 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -9,22 +8,22 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.text.InputType;
 import android.util.Log;
-import android.widget.EditText;
-import com.google.android.gms.maps.*;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.R;
-import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 
 public class MapFragment extends SupportMapFragment implements OnMapReadyCallback {
 
   public static final float PROXIMITY_RADIUS_METERS = 160.934f;
-  
+
   public static final String TAG = "MapFragment";
 
   @Inject
@@ -41,32 +40,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
    * Creates a OnMapClickListener that opens a dialog box asking the user for a name of a favorite location. When the user accepts the name
    * a new favorite location is created at the clicked spot with the submitted name.
    */
-  private GoogleMap.OnMapClickListener clickListener = new GoogleMap.OnMapClickListener() {
-    @Override
-    public void onMapClick(LatLng latLng) {
-      AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-      builder.setTitle(R.string.location_name_box);
-      final EditText input = new EditText(getContext());
-      input.setInputType(InputType.TYPE_CLASS_TEXT);
-      builder.setView(input);
-      builder.setPositiveButton(R.string.location_name_accept, (dialog, which) -> {
-        // Save the favorite location
-          String name = input.getText().toString();
-          FavoriteLocation clickedLocation = new FavoriteLocation(name, latLng);
-          app.getLocalUser().getFavoriteLocations().add(clickedLocation);
-        app.getLocalUser().save(new Storage(getActivity().getSharedPreferences(Storage.PREF_FILE_USER, Context.MODE_PRIVATE)));
-
-        registerProximity(clickedLocation);
-
-        // Move the camera
-          CameraUpdate update = CameraUpdateFactory.newLatLng(clickedLocation.getPosition());
-          mMap.moveCamera(update);
-          populateMap();
-        }
-      );
-      builder.show();
-    }
-  };
+  private GoogleMap.OnMapClickListener clickListener = new LocationClickHandler(this);
 
   /**
    * Use this factory method to create a new instance of MapFragment.
@@ -102,7 +76,6 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     }
   }
 
-
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -111,7 +84,6 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
     locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
   }
-
 
   /**
    * Manipulates the map once available.
@@ -124,7 +96,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
       ActivityCompat.requestPermissions(
         this.getActivity(),
-        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+        new String[] { Manifest.permission.ACCESS_FINE_LOCATION },
         100
       );
       Log.e(TAG, "Location permission not granted");
@@ -134,7 +106,6 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     this.populateMap();
     mMap.setOnMapClickListener(clickListener);
     mMap.setMyLocationEnabled(true);
-
 
   }
 
@@ -176,8 +147,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     }
   }
 
-  public void moveMap(LatLng position)
-  {
+  public void moveMap(LatLng position) {
     CameraUpdate update = CameraUpdateFactory.newLatLng(position);
     mMap.moveCamera(update);
   }
@@ -196,6 +166,5 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
       //TODO: write exception handling code
     }
   }*/
-
 
 }

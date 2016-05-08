@@ -16,7 +16,6 @@ import java.util.List;
 
 /**
  * The map proximity manager
- *
  * @author Joseph
  * @since 5/1/2016.
  */
@@ -28,12 +27,13 @@ public class MapProximityManager implements ProximityManager, LocationListener, 
    * A list of observers that subscribe to changes in location.
    */
   private final List<ProximityObserver> observers;
-  @Inject
+
   public CoupleTones app;
 
   @Inject
-  public MapProximityManager() {
+  public MapProximityManager(CoupleTones app) {
     observers = new LinkedList<>();
+    this.app = app;
   }
 
   /**
@@ -50,7 +50,6 @@ public class MapProximityManager implements ProximityManager, LocationListener, 
   /**
    * Called when a user enters a favorite location.
    * Notifies all observers.
-   *
    * @param favoriteLocation The favorite location entered
    */
   public void onEnterLocation(FavoriteLocation favoriteLocation) {
@@ -64,7 +63,6 @@ public class MapProximityManager implements ProximityManager, LocationListener, 
 
   /**
    * Handles the location change event
-   *
    * @param location The location
    */
   @Override

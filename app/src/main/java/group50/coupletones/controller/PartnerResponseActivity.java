@@ -30,7 +30,7 @@ public class PartnerResponseActivity extends Activity {
     super.onCreate(savedInstanceState);
 
     // Dependency Injection
-    CoupleTones.component().inject(this);
+    CoupleTones.global().inject(this);
 
     setContentView(R.layout.activity_partner_request);
 

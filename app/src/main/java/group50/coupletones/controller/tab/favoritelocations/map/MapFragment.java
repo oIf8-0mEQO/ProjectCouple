@@ -9,7 +9,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -53,7 +52,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    CoupleTones.component().inject(this);
+    CoupleTones.global().inject(this);
     getMapAsync(this);
 
     locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);

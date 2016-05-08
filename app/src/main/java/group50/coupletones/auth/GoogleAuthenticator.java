@@ -1,6 +1,7 @@
 package group50.coupletones.auth;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import com.google.android.gms.auth.api.Auth;
@@ -39,13 +40,13 @@ public class GoogleAuthenticator implements
   /**
    * Private instance to the CoupleTones app instance
    */
-  @Inject
+  //@Inject
   public CoupleTones app;
 
   /**
    * The network manager
    */
-  @Inject
+  // @Inject
   public NetworkManager network;
 
   /**
@@ -63,15 +64,16 @@ public class GoogleAuthenticator implements
    */
   private GoogleApiClient apiClient;
 
-  public GoogleAuthenticator(Activity activity) {
-    CoupleTones.component().inject(this);
+  @Inject
+  public GoogleAuthenticator(Context context) {
+    CoupleTones.global().inject(this);
 
     // Create Google API Client
     GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
       .requestEmail()
       .build();
 
-    this.apiClient = new GoogleApiClient.Builder(activity)
+    this.apiClient = new GoogleApiClient.Builder(context)
       .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
       .addOnConnectionFailedListener(this)
       .build();

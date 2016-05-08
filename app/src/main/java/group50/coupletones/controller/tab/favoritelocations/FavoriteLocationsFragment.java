@@ -43,7 +43,7 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    CoupleTones.component().inject(this);
+    CoupleTones.global().inject(this);
   }
 
   @Override

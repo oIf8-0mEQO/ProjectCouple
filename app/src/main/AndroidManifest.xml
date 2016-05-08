@@ -37,9 +37,9 @@
 
 
         <activity
-                android:name=".controller.EditLocationActivity"
-                android:label="@string/title_activity_edit_location"
-                android:theme="@style/AppTheme">
+		        android:name=".controller.tab.favoritelocations.EditLocationActivity"
+		        android:label="@string/title_activity_edit_location"
+		        android:theme="@style/AppTheme">
         </activity>
 
         <activity

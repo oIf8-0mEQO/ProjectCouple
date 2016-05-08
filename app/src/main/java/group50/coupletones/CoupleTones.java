@@ -12,8 +12,8 @@ import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityNetworkHandler;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityService;
-import group50.coupletones.di.AppComponent;
-import group50.coupletones.di.DaggerAppComponent;
+import group50.coupletones.di.DaggerGlobalComponent;
+import group50.coupletones.di.GlobalComponent;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.ProximityModule;
 import group50.coupletones.network.NetworkManager;
@@ -30,27 +30,26 @@ import group50.coupletones.network.receiver.PartnerResponseReceiver;
 public class CoupleTones extends Application {
 
   /**
-   * The main dependency injection component
+   * The main dependency injection global
    */
-  private static AppComponent component;
+  private static GlobalComponent component;
   /**
    * The local user of the app
    */
   private LocalUser localUser;
 
   /**
-   * @return The main dependency injection component
+   * @return The main dependency injection global
    */
-  public static AppComponent component() {
+  public static GlobalComponent global() {
     return component;
   }
 
   /**
    * Should ONLY be set for unit testing
-   *
-   * @param component The component to set
+   * @param component The global to set
    */
-  public static void setComponent(AppComponent component) {
+  public static void setGlobal(GlobalComponent component) {
     CoupleTones.component = component;
   }
 
@@ -64,7 +63,6 @@ public class CoupleTones extends Application {
   /**
    * Sets the local user of the app. This method should only be
    * during login/logout events.
-   *
    * @param localUser The local user object
    */
   public void setLocalUser(LocalUser localUser) {
@@ -82,14 +80,14 @@ public class CoupleTones extends Application {
   public void onCreate() {
     super.onCreate();
 
-    component = DaggerAppComponent
+    component = DaggerGlobalComponent
       .builder()
       .applicationModule(new ApplicationModule(this))
       .proximityModule(new ProximityModule(new Geocoder(getApplicationContext())))
       .build();
 
     // Register network
-    NetworkManager network = component().network();
+    NetworkManager network = global().network();
     network.register(this);
     network.register(new PartnerRequestReceiver(this));
     network.register(new PartnerResponseReceiver(this, this));
@@ -97,7 +95,7 @@ public class CoupleTones extends Application {
     network.register(MessageType.RECEIVE_MAP_REJECT.value, new ErrorReceiver(this));
 
     // Register location observer
-    ProximityManager proximity = component().proximity();
+    ProximityManager proximity = global().proximity();
     proximity.register(new ProximityNetworkHandler(network));
 
     // Start ProximityService

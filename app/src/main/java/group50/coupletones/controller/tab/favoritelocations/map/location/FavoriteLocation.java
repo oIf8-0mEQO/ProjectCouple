@@ -43,7 +43,7 @@ public class FavoriteLocation implements Location, Storable {
    */
   public FavoriteLocation(String name, LatLng position, long time) {
     //DI
-    CoupleTones.component().inject(this);
+    CoupleTones.global().inject(this);
 
     setName(name);
     setPosition(position);

@@ -26,7 +26,7 @@ public class ProximityService extends Service implements Taggable, GoogleApiClie
   @Override
   public void onCreate() {
     super.onCreate();
-    CoupleTones.component().inject(this);
+    CoupleTones.global().inject(this);
   }
 
   @Override

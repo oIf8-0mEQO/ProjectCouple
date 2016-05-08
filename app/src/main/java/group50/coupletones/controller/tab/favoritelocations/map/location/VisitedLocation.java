@@ -20,7 +20,7 @@ public class VisitedLocation implements Location {
 
   public VisitedLocation(FavoriteLocation location, Date time) {
     //DI
-    CoupleTones.component().inject(this);
+    CoupleTones.global().inject(this);
 
     this.name = location.getName();
     this.position = location.getPosition();

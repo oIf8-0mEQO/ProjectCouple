@@ -4,14 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.Authenticator;
-import group50.coupletones.auth.GoogleAuthenticator;
-import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
@@ -53,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements
     setContentView(R.layout.activity_main);
 
     // Dependency Injection
-    CoupleTones.component().inject(this);
+    CoupleTones.global().inject(this);
 
     // Initialize tabs
     tabs = new HashMap<>();

@@ -32,7 +32,7 @@ public class GcmIntentService extends IntentService implements Taggable {
     super.onCreate();
 
     // Dependency Injection
-    CoupleTones.component().inject(this);
+    CoupleTones.global().inject(this);
   }
 
   @Override

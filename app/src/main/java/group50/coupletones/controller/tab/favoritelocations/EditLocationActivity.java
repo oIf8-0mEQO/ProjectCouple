@@ -1,4 +1,4 @@
-package group50.coupletones.controller;
+package group50.coupletones.controller.tab.favoritelocations;
 
 import android.graphics.Typeface;
 import android.os.Bundle;

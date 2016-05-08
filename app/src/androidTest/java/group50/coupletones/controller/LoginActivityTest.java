@@ -9,6 +9,7 @@ import android.widget.Button;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
+import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.user.MockLocalUser;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.di.DaggerMockAppComponent;
@@ -45,14 +46,14 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
   public void setUp() throws Exception {
     super.setUp();
 
-    CoupleTones.setComponent(
+    CoupleTones.setGlobal(
       DaggerMockAppComponent
         .builder()
         .mockProximityModule(new MockProximityModule())
         .build());
 
     // Stub getLocalUser method
-    when(CoupleTones.component().app().getLocalUser())
+    when(CoupleTones.global().app().getLocalUser())
       .thenReturn(new MockLocalUser());
 
     injectInstrumentation(InstrumentationRegistry.getInstrumentation());
@@ -90,7 +91,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
    */
   @Test
   public void testAutoSignIn() throws Exception {
-    Authenticator<User, String> auth = CoupleTones.component().auth();
+    Authenticator<User, String> auth = new GoogleAuthenticator(activity);
 
     final Wrapper<Function<User, User>> successWrapper = new Wrapper<>();
 
@@ -133,7 +134,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
   @Test
   public void testOnUserLoginSuccess() {
     // Bind stub methods
-    Authenticator<User, String> auth = CoupleTones.component().auth();
+    Authenticator<User, String> auth = CoupleTones.global().auth();
     final Wrapper<Function<User, User>> successWrapper = new Wrapper<>();
 
     // When the activity binds a success function, call it immediately.
@@ -162,7 +163,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
    */
   @Test
   public void testOnUserLoginFailure() {
-    Authenticator<User, String> auth = CoupleTones.component().auth();
+    Authenticator<User, String> auth = CoupleTones.global().auth();
     final Wrapper<Function<User, User>> successWrapper = new Wrapper<>();
 
     // When the activity binds a success function, call it immediately.

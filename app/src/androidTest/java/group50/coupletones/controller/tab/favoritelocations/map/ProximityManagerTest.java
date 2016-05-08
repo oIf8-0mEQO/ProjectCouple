@@ -33,7 +33,7 @@ public class ProximityManagerTest {
   @Before
   public void setup() {
     // Setup DI
-    CoupleTones.setComponent(
+    CoupleTones.setGlobal(
       DaggerMockAppComponent
         .builder()
         .mockProximityModule(new MockProximityModule())
@@ -49,10 +49,10 @@ public class ProximityManagerTest {
     when(localUser.getFavoriteLocations()).thenReturn(Collections.singletonList(favLocation));
 
     // Stub getLocalUser to always return the mock user above
-    when(CoupleTones.component().app().getLocalUser()).thenReturn(localUser);
-    when(CoupleTones.component().app().isLoggedIn()).thenReturn(true);
+    when(CoupleTones.global().app().getLocalUser()).thenReturn(localUser);
+    when(CoupleTones.global().app().isLoggedIn()).thenReturn(true);
 
-    proximity = new MapProximityManager(CoupleTones.component().app());
+    proximity = new MapProximityManager(CoupleTones.global().app());
     mockObserver = mock(ProximityObserver.class);
     proximity.register(mockObserver);
   }

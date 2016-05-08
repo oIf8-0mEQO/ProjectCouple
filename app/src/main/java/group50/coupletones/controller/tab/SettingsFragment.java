@@ -58,7 +58,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    CoupleTones.component().inject(this);
+    CoupleTones.global().inject(this);
     auth = new GoogleAuthenticator(getActivity());
   }
 

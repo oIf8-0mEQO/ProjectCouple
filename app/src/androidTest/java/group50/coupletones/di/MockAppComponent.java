@@ -5,7 +5,7 @@ import dagger.Component;
 import javax.inject.Singleton;
 
 /**
- * The dependency injection component for the entire app using mocks.
+ * The dependency injection global for the entire app using mocks.
  *
  * @author Henry Mao
  * @since 28/4/2016
@@ -19,5 +19,5 @@ import javax.inject.Singleton;
     MockProximityModule.class
   }
 )
-public interface MockAppComponent extends AppComponent {
+public interface MockAppComponent extends GlobalComponent {
 }

@@ -11,7 +11,7 @@ import javax.inject.Singleton;
  * The dependency injection module that provides the network manager singleton.
  *
  * @author Henry Mao
- * @since 28/4/2016
+ * @since 4/28/16
  */
 @Module
 public class NetworkModule {

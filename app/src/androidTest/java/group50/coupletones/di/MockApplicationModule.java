@@ -13,7 +13,7 @@ import static org.mockito.Mockito.mock;
  * The mock dependency injection module that provides the main application singleton.
  *
  * @author Henry Mao
- * @since 28/4/2016
+ * @since 4/28/16
  */
 @Module
 public class MockApplicationModule {

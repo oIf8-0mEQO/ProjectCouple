@@ -6,7 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by joannecho on 5/5/16.
+ * @author Joanne Cho
+ * @since 5/5/16
+ */
+
+/**
+ * Partner Location placeholder data of
+ * location names, addresses, and visited times.
  */
 public class PartnerLocationsData {
   private static final String[] locationNames = {"Tamarack Apartments", "Disneyland", "Pepper Canyon", "Kogi BBQ", "Balboa Park", "UCSD", "Zion Market", "Kung Fu Tea", "TPumps"};
@@ -14,6 +20,10 @@ public class PartnerLocationsData {
   private static final int[] icons = {R.drawable.target_icon, R.drawable.target_icon, R.drawable.target_icon, R.drawable.target_icon, R.drawable.target_icon, R.drawable.target_icon, R.drawable.target_icon, R.drawable.target_icon, R.drawable.target_icon};
   private static final String[] locationTimes = {"10:00 PM", "9:30 PM", "8:45 PM", "6:15 PM", "4:07 PM", "3:15 PM", "2:57PM", "11:15 AM", "9:30 AM"};
 
+  /**
+   *
+   * @return List of partner information
+   */
   public static List<PartnerLocation> getPartnerLocations() {
     List<PartnerLocation> data = new ArrayList<>();
 

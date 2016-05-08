@@ -131,6 +131,11 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     return v;
   }
 
+  /**
+   * Updates the UI based on whether
+   * user is connected to a partner.
+   * @param hasPartner
+   */
   public void updateUI(boolean hasPartner) {
     if (hasPartner) {
       partnerName.setText(app.getLocalUser().getPartner().getName());

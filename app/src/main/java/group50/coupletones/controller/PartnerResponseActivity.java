@@ -17,6 +17,9 @@ import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 
+/**
+ * Activity for Partner Response on the app.
+ */
 public class PartnerResponseActivity extends Activity {
 
   @Inject
@@ -66,6 +69,12 @@ public class PartnerResponseActivity extends Activity {
     }
   }
 
+  /**
+   * Sends a response to the partner request.
+   * @param name Partner's name
+   * @param email Partner's email
+   * @param accept accept or reject request
+   */
   private void sendResponse(String name, String email, boolean accept) {
     // Send a partner request to the server
     network.send(

@@ -15,24 +15,45 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Favorit
 import java.util.List;
 
 /**
- * Created by sharmaine on 4/29/16.
+ * @author Sharmaine Manalo
+ * @since 4/29/16
+ */
+
+/**
+ * Favorite locations list adapter class
  */
 public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteLocationsListAdapter.ListViewHolder> {
 
   private List<FavoriteLocation> data;
   private LayoutInflater inflater;
 
+  /**
+   * Favorite Locations List Adapter
+   * @param data Favorite location data
+   * @param context
+   */
   public FavoriteLocationsListAdapter(List<FavoriteLocation> data, Context context) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
   }
 
+  /**
+   * List view holder
+   * @param parent
+   * @param viewType
+   * @return
+   */
   @Override
   public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     View v = inflater.inflate(R.layout.list_item, parent, false);
     return new ListViewHolder(v);
   }
 
+  /**
+   * View holder for fragment
+   * @param holder
+   * @param position
+   */
   @Override
   public void onBindViewHolder(ListViewHolder holder, int position) {
     FavoriteLocation location = data.get(position);
@@ -60,6 +81,9 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
     return data.size();
   }
 
+  /**
+   * Adds Recycler View to List View Holder
+   */
   class ListViewHolder extends RecyclerView.ViewHolder {
 
     private TextView name, address;

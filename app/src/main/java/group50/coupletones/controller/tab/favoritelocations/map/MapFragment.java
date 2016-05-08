@@ -9,6 +9,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
+import com.google.android.gms.analytics.Logger;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -25,7 +26,7 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Locatio
 
 import javax.inject.Inject;
 
-public class MapFragment extends SupportMapFragment implements OnMapReadyCallback {
+public class MapFragment extends SupportMapFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks {
 
   public static final float PROXIMITY_RADIUS_METERS = 160.934f;
 
@@ -37,7 +38,6 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
   @Inject
   public ProximityManager proximityManager;
 
-  @Inject
   public GoogleApiClient apiClient;
 
   private GoogleMap mMap;
@@ -55,6 +55,23 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
    */
   public static MapFragment build() {
     return new MapFragment();
+  }
+
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    CoupleTones.component().inject(this);
+    getMapAsync(this);
+
+    locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+    apiClient = new GoogleApiClient.Builder(getActivity())
+      .addApi(LocationServices.API)
+      .addConnectionCallbacks(this)
+      .build();
+
+    // Register an observer that updates the map as the user moves
+    proximityManager.register(location -> moveMap(location.getPosition()));
   }
 
   public void registerProximity(Location location) {
@@ -85,12 +102,26 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
   }
 
   @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    CoupleTones.component().inject(this);
-    getMapAsync(this);
+  public void onStart() {
+    super.onStart();
+    apiClient.connect();
+  }
 
-    locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+  @Override
+  public void onStop() {
+    super.onStop();
+    apiClient.disconnect();
+  }
+
+  @Override
+  public void onConnected(Bundle bundle) {
+    Log.d(TAG, "Connected to Google API");
+    LocationServices.FusedLocationApi.requestLocationUpdates(apiClient, LocationRequest.create(), proximityManager);
+  }
+
+  @Override
+  public void onConnectionSuspended(int i) {
+    Log.d(TAG, "Connection suspended");
   }
 
   /**
@@ -114,13 +145,11 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     this.populateMap();
     mMap.setOnMapClickListener(clickListener);
     mMap.setMyLocationEnabled(true);
-
   }
 
   @Override
   public void onResume() {
     super.onResume();
-    Log.d(TAG, "Resume");
     centerMap();
   }
 
@@ -146,6 +175,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
    * @param position The position to move to
    */
   public void moveMap(LatLng position) {
+    Log.d(TAG, "Moving map to: " + position);
     CameraUpdate update = CameraUpdateFactory.newLatLngZoom(position, 15);
     mMap.moveCamera(update);
   }

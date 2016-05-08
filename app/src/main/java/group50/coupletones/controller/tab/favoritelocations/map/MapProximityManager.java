@@ -21,7 +21,7 @@ import java.util.List;
  * @author Joseph
  * @since 5/1/2016.
  */
-public class MapProximityManager implements ProximityManager, LocationListener, Taggable {
+public class MapProximityManager implements ProximityManager, Taggable {
 
   //Meters to Miles conversion ratio
   private static final double conversion = (1.0) / (1609.0);
@@ -79,20 +79,5 @@ public class MapProximityManager implements ProximityManager, LocationListener, 
         }
       }
     }
-  }
-
-  @Override
-  public void onProviderDisabled(String provider) {
-    Log.d(getTag(), provider + " Disabled");
-  }
-
-  @Override
-  public void onProviderEnabled(String provider) {
-    Log.d(getTag(), provider + " Enabled");
-  }
-
-  @Override
-  public void onStatusChanged(String provider, int status, Bundle extra) {
-    Log.d(getTag(), provider + " changed: " + status);
   }
 }

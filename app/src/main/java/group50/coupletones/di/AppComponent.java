@@ -11,7 +11,10 @@ import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.PartnerResponseActivity;
 import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
-import group50.coupletones.controller.tab.favoritelocations.map.*;
+import group50.coupletones.controller.tab.favoritelocations.map.LocationClickHandler;
+import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
+import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
+import group50.coupletones.controller.tab.favoritelocations.map.ProximityService;
 import group50.coupletones.controller.tab.favoritelocations.map.location.AddressProvider;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
@@ -26,7 +29,6 @@ import javax.inject.Singleton;
 
 /**
  * The dependency injection component for the entire app.
- *
  * @author Henry Mao
  * @since 28/4/2016
  */
@@ -52,6 +54,8 @@ public interface AppComponent {
   AddressProvider geocoder();
 
   GoogleApiClient apiClient();
+
+  void inject(LocationClickHandler obj);
 
   void inject(PartnerResponseActivity activity);
 

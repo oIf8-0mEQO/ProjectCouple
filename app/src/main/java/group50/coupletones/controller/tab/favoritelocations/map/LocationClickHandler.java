@@ -28,6 +28,7 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
 
   public LocationClickHandler(MapFragment map) {
     this.map = map;
+    CoupleTones.component().inject(this);
   }
 
   @Override

@@ -107,12 +107,17 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     null_partner.setTypeface(pierSans);
 
     // Partner's Profile CardView
-    // TODO: Change partner's name/email to getCollection keys from backend
     partnersProfileText = (TextView) v.findViewById(R.id.partners_profile_text);
     partnerNameText = (TextView) v.findViewById(R.id.partner_name_header);
     partnerName = (TextView) v.findViewById(R.id.partner_name);
     partnerAccountText = (TextView) v.findViewById(R.id.partner_account_header);
     partnerAccount = (TextView) v.findViewById(R.id.partner_email);
+
+    partnersProfileText.setTypeface(pierSans);
+    partnerNameText.setTypeface(pierSans);
+    partnerName.setTypeface(pierSans);
+    partnerAccountText.setTypeface(pierSans);
+    partnerAccount.setTypeface(pierSans);
 
     add_partner_button = (ImageButton) v.findViewById(R.id.add_partner_button);
 
@@ -122,13 +127,6 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     } else {
       updateUI(false);
     }
-
-    //TODO: Handle when it's null
-    partnersProfileText.setTypeface(pierSans);
-    partnerNameText.setTypeface(pierSans);
-    partnerName.setTypeface(pierSans);
-    partnerAccountText.setTypeface(pierSans);
-    partnerAccount.setTypeface(pierSans);
 
     // Add Partner ImageButton
     v.findViewById(R.id.add_partner_button).setOnClickListener(this);
@@ -144,12 +142,14 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     return v;
   }
 
-  public void updateUI(boolean b) {
-    if (b) {
+  public void updateUI(boolean hasPartner) {
+    if (hasPartner) {
       partnerName.setText(app.getLocalUser().getPartner().getName());
       partnerAccount.setText(app.getLocalUser().getPartner().getEmail());
       partnerName.setVisibility(View.VISIBLE);
+      partnerNameText.setVisibility(View.VISIBLE);
       partnerAccount.setVisibility(View.VISIBLE);
+      partnerAccountText.setVisibility(View.VISIBLE);
       null_partner.setVisibility(View.INVISIBLE);
       add_partner_button.setVisibility(View.INVISIBLE);
     } else {

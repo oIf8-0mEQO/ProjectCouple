@@ -98,6 +98,7 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     mMap.setMyLocationEnabled(true);
     CameraUpdate initial = CameraUpdateFactory.newLatLngZoom(new LatLng(32.880234, -117.236106), 15);
     mMap.moveCamera(initial);
+
   }
 
   /**

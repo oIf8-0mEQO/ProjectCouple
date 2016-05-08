@@ -44,6 +44,6 @@ public class LocationNotificationReceiver implements MessageReceiver, Identifiab
 
   @Override
   public String getId() {
-    return MessageType.RECEIVE_MAP_NOTIFY;
+    return MessageType.RECEIVE_MAP_NOTIFY.value;
   }
 }

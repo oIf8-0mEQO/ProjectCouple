@@ -17,6 +17,7 @@ import java.util.List;
 
 /**
  * The map proximity manager
+ *
  * @author Joseph
  * @since 5/1/2016
  */
@@ -51,24 +52,27 @@ public class MapProximityManager implements ProximityManager, Taggable {
   /**
    * Called when a user enters a favorite location.
    * Notifies all observers.
+   *
    * @param favoriteLocation The favorite location entered
    */
   public void onEnterLocation(FavoriteLocation favoriteLocation) {
-    if (!favoriteLocation.isOnCooldown()) {
+    Log.d(getTag(), "Entering location: " + favoriteLocation.getName() + " cooldown=" + favoriteLocation.isOnCooldown());
+    //if (!favoriteLocation.isOnCooldown()) {
       for (ProximityObserver i : observers) {
         i.onEnterLocation(new VisitedLocation(favoriteLocation, new Date()));
       }
       favoriteLocation.setCooldown();
-    }
+    // }
   }
 
   /**
    * Handles the location change event
+   *
    * @param location The location
    */
   @Override
   public void onLocationChanged(Location location) {
-    Log.d(getTag(), "Location changed! " + location);
+    Log.d(getTag(), "Location changed: " + location);
     // Make sure the user is logged in
     if (app.isLoggedIn()) {
       for (FavoriteLocation loc : app.getLocalUser().getFavoriteLocations()) {

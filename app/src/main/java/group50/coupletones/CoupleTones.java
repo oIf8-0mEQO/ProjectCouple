@@ -119,7 +119,7 @@ public class CoupleTones extends Application {
 
     // Register location observer
     ProximityManager proximity = global().proximity();
-    proximity.register(new ProximityNetworkHandler(network));
+    proximity.register(new ProximityNetworkHandler(this, network));
 
     // Start ProximityService
     startService(new Intent(this, ProximityService.class));

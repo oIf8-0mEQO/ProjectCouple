@@ -117,7 +117,7 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
 
   /*public List<Address> search(String nameLocation) {
     try {
-     List<Address> locations = geocoder.getFromLocationName(nameLocation, 10);
+     List<Address> locations = addressProvider.getFromLocationName(nameLocation, 10);
       if (locations.size() == 0) {
         return locations;
       }

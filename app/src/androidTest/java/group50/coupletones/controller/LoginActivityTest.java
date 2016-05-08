@@ -12,7 +12,7 @@ import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.user.MockLocalUser;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.di.DaggerMockAppComponent;
-import group50.coupletones.di.module.GeocoderModule;
+import group50.coupletones.di.MockProximityModule;
 import group50.coupletones.util.function.Function;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +48,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     CoupleTones.setComponent(
       DaggerMockAppComponent
         .builder()
-        .geocoderModule(new GeocoderModule(null))
+        .mockProximityModule(new MockProximityModule())
         .build());
 
     // Stub getLocalUser method

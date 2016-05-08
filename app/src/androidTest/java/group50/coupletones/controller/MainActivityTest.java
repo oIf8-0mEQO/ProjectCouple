@@ -10,7 +10,7 @@ import group50.coupletones.R;
 import group50.coupletones.auth.user.MockLocalUser;
 import group50.coupletones.controller.tab.partnerslocations.PartnersLocationsFragment;
 import group50.coupletones.di.DaggerMockAppComponent;
-import group50.coupletones.di.module.GeocoderModule;
+import group50.coupletones.di.MockProximityModule;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +45,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     CoupleTones.setComponent(
       DaggerMockAppComponent
         .builder()
-        .geocoderModule(new GeocoderModule(null))
+        .mockProximityModule(new MockProximityModule())
         .build());
 
     //TODO: DRY

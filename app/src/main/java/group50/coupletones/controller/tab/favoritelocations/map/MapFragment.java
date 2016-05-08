@@ -25,6 +25,9 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Locatio
 
 import javax.inject.Inject;
 
+/**
+ * Map Fragment Class
+ */
 public class MapFragment extends SupportMapFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks {
 
   public static final float PROXIMITY_RADIUS_METERS = 160.934f;
@@ -66,6 +69,10 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     proximityManager.register(location -> moveMap(location.getPosition()));
   }
 
+  /**
+   * Registers Proximity of Location
+   * @param location
+   */
   public void registerProximity(Location location) {
     Intent intent = new Intent(getContext(), ProximityService.class);
     intent.putExtra("lat", location.getPosition().latitude);
@@ -118,6 +125,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
   /**
    * Manipulates the map once available.
+   * @param googleMap
    */
   @Override
   public void onMapReady(GoogleMap googleMap) {

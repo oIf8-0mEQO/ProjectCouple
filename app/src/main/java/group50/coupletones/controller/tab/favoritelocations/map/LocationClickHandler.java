@@ -17,7 +17,12 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Favorit
 import group50.coupletones.util.storage.Storage;
 
 /**
- * Created by Joseph on 5/7/2016.
+ * @author Joseph Cox
+ * @since 5/7/2016
+ */
+
+/**
+ * Location click handler for Google Map
  */
 public class LocationClickHandler implements GoogleMap.OnMapClickListener {
 
@@ -26,11 +31,18 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
 
   private MapFragment map;
 
+  /**
+   * Location click handler
+   * @param map
+   */
   public LocationClickHandler(MapFragment map) {
     this.map = map;
     CoupleTones.global().inject(this);
   }
 
+  /**
+   * @param latLng
+   */
   @Override
   public void onMapClick(LatLng latLng) {
     AlertDialog.Builder builder = new AlertDialog.Builder(map.getContext());
@@ -47,12 +59,21 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
     private EditText input;
     private LatLng position;
 
+    /**
+     *
+     * @param text Input text
+     * @param position Latitude-Longitude position
+     */
     public EventOnAccept(EditText text, LatLng position)
     {
       this.input = text;
       this.position = position;
     }
 
+    /**
+     * @param dialog
+     * @param which
+     */
     @Override
     public void onClick(DialogInterface dialog, int which)
     {

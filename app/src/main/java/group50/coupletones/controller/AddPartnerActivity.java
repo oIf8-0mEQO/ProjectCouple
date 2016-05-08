@@ -17,6 +17,9 @@ import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;
 
+/**
+ * Activity for Adding a Partner
+ */
 public class AddPartnerActivity extends AppCompatActivity
   implements View.OnClickListener, Taggable {
 
@@ -26,6 +29,10 @@ public class AddPartnerActivity extends AppCompatActivity
   @Inject
   public CoupleTones app;
 
+  /**
+   *
+   * @param savedInstanceState
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -51,6 +58,10 @@ public class AddPartnerActivity extends AppCompatActivity
     findViewById(R.id.skip_button).setOnClickListener(this);
   }
 
+  /**
+   *
+   * @param v The current view
+   */
   public void onClick(View v) {
     switch (v.getId()) {
 

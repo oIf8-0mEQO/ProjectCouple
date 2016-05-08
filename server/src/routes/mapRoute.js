@@ -36,6 +36,7 @@ class MapRoute extends Route {
 			var partner = App.getUserByEmail(data.partner);
 
 			if (partner) {
+				console.log(data);
 				// Send request to partner
 				GCM.send(partner.deviceId, {
 					type: "map-notify",

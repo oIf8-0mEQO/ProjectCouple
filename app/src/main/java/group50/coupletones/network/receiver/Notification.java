@@ -40,7 +40,7 @@ public class Notification {
   }
 
   public Notification setTitle(String title) {
-    builder.setContentText(title);
+    builder.setContentTitle(title);
     return this;
   }
 

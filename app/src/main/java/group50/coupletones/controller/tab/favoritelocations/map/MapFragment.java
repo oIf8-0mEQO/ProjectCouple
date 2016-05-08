@@ -7,7 +7,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -97,13 +96,19 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
    * Centers the map. Must be called after map is ready.
    */
   public void centerMap() {
-    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-      moveMap(locationManager.getLastKnownLocation(GPS_PROVIDER));
+    if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+      Location lastKnownLocation = locationManager.getLastKnownLocation(GPS_PROVIDER);
+
+      if (lastKnownLocation != null)
+        moveMap(lastKnownLocation);
+      else
+        Log.d(getTag(), "Last known location is null");
 
       // Request a single update to move the map to appropriate location
       locationManager.requestSingleUpdate(GPS_PROVIDER, new LocationListener() {
           @Override
           public void onLocationChanged(Location location) {
+            Log.d(getTag(), "Got single update");
             moveMap(location);
           }
 
@@ -122,7 +127,9 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
           }
         },
-        Looper.getMainLooper());
+        null);
+    } else {
+      Log.e(getTag(), "Invalid location permission");
     }
   }
 
@@ -133,9 +140,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
    */
 
   public void moveMap(android.location.Location loc) {
-    if (loc != null) {
-      moveMap(new LatLng(loc.getLatitude(), loc.getLongitude()));
-    }
+    moveMap(new LatLng(loc.getLatitude(), loc.getLongitude()));
   }
 
   /**

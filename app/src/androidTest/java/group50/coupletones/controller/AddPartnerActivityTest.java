@@ -60,7 +60,7 @@ public class AddPartnerActivityTest extends ActivityInstrumentationTestCase2<Add
             Button button = (Button) activity.findViewById(R.id.connect_button);
             button.performClick();
             // Verify sign in is called
-            verify(activity.auth).signIn();
+            verify(network).signIn();
         });
 
         activity.runOnUiThread(() -> {

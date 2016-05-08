@@ -15,7 +15,7 @@ import java.util.List;
  * The dependency injection module that provides the location manager singleton.
  *
  * @author Henry Mao
- * @since 28/4/2016
+ * @since 4/28/16
  */
 @Module
 public class ProximityModule {

@@ -2,7 +2,7 @@ package group50.coupletones.network;
 
 /**
  * @author Sharmaine Manalo
- * @since 02-05-2016.
+ * @since 2/5/16
  */
 
 import android.content.Context;
@@ -11,7 +11,11 @@ import group50.coupletones.network.message.MessageReceiver;
 import group50.coupletones.network.message.OutgoingMessage;
 import group50.coupletones.util.Identifiable;
 
+/**
+ * Network manager interface
+ */
 public interface NetworkManager {
+
   /**
    * The send function sends an outgoing message to the server.
    *

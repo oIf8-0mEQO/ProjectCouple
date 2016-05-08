@@ -4,7 +4,13 @@ import android.os.Bundle;
 import org.hashids.Hashids;
 
 /**
- * Created by sharmaine on 5/4/16.
+ * @author Sharmaine Manalo
+ * @since 5/4/16
+ */
+
+/**
+ * Outgoing message class for the app
+ * that handles all outgoing messages.
  */
 public class OutgoingMessage implements Message {
 

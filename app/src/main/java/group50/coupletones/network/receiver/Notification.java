@@ -12,7 +12,7 @@ import group50.coupletones.R;
 /**
  * A simple class that builds a notification
  *
- * @author Henry
+ * @author Henry Mao
  * @since 5/6/16
  */
 public class Notification {

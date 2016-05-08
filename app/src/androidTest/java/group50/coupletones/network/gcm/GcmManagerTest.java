@@ -1,9 +1,12 @@
 package group50.coupletones.network.gcm;
 
 import android.os.Bundle;
+import android.support.test.runner.AndroidJUnit4;
+
 import group50.coupletones.network.message.MessageReceiver;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -16,6 +19,7 @@ import static org.mockito.Mockito.*;
 /**
  * GCM Manager test
  */
+@RunWith(AndroidJUnit4.class)
 public class GcmManagerTest {
 
   private GcmManager manager;

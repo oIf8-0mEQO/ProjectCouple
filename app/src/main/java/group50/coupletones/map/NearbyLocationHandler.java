@@ -1,5 +1,6 @@
 package group50.coupletones.map;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class NearbyLocationHandler implements ProximityHandler {
         {
             for(NotificationObserver i : observers)
             {
-                i.onNotification(new VisitedLocation(nearbyLocation, System.currentTimeMillis()));
+                i.onEnterLocation(new VisitedLocation(nearbyLocation, new Date()));
             }
             nearbyLocation.setCooldown();
         }

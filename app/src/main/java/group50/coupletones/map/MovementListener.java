@@ -43,7 +43,7 @@ public class MovementListener implements LocationListener {
     public void onLocationChanged(Location location) {
         for (FavoriteLocation i : locations)
         {
-            if (distanceInMiles(i.getPosition(), new LatLng(location.getLatitude(), location.getLongitude())) < 0.1)
+            if (this.distanceInMiles(i.getPosition(), new LatLng(location.getLatitude(), location.getLongitude())) < 0.1)
             {
                 handler.onNearby(i);
             }
@@ -62,7 +62,7 @@ public class MovementListener implements LocationListener {
     /**Finds the distance in miles between two locations given by the gps.*/
     private double distanceInMiles(LatLng location1, LatLng location2)
     {
-        return 0.621371 * SphericalUtil.computeDistanceBetween(location1, location2);
+        return 0.000621371 * SphericalUtil.computeDistanceBetween(location1, location2);
     }
 
 }

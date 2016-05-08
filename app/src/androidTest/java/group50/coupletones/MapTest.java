@@ -33,8 +33,8 @@ public class MapTest {
     public void setUp()
     {
         locations = new ArrayList<>();
-        locations.add(0, new FavoriteLocation("loc2", new LatLng(60, 60)));
-        locations.add(1, new FavoriteLocation("loc3", new LatLng(-20, -20)));
+        locations.add(0, new FavoriteLocation("loc1", new LatLng(60, 60)));
+        locations.add(1, new FavoriteLocation("loc2", new LatLng(-20, -20)));
     }
 
     @Test
@@ -45,7 +45,7 @@ public class MapTest {
         MovementListener listener = new MovementListener(mock, locations);
 
         List<android.location.Location> list = new LinkedList<>();
-        for (int i = 0; i < 18; i++)
+        for (int i = 0; i < 8; i++)
         {
             list.add(new Location(""));
         }
@@ -58,7 +58,7 @@ public class MapTest {
         list.get(6).setLatitude(60.0015);  list.get(6).setLongitude(-60.0015);
         list.get(7).setLatitude(-60.0015); list.get(7).setLongitude(-60.0015);
 
-        for (int i = 0; i < 18; i++)
+        for (int i = 0; i < 8; i++)
         {
             listener.onLocationChanged(list.get(i));
         }
@@ -73,7 +73,7 @@ public class MapTest {
         NotificationObserver observer = new NotificationObserver() {
             int count = 0;
             @Override
-            public void onNotification(VisitedLocation location) {
+            public void onEnterLocation(VisitedLocation location) {
                 assert (count==0);
                 count++;
             }

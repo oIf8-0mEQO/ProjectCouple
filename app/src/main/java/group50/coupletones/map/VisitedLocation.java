@@ -2,6 +2,8 @@ package group50.coupletones.map;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.Date;
+
 /**
  * Created by Joseph on 5/3/2016.
  */
@@ -9,9 +11,9 @@ public class VisitedLocation implements Location {
 
     private String name;
     private LatLng position;
-    private long time;
+    private Date time;
 
-    public VisitedLocation(FavoriteLocation location, long time)
+    public VisitedLocation(FavoriteLocation location, Date time)
     {
         this.name = location.getName();
         this.position = location.getPosition();
@@ -28,7 +30,7 @@ public class VisitedLocation implements Location {
         return name;
     }
 
-    public long getTime()
+    public Date getTime()
     {
         return time;
     }

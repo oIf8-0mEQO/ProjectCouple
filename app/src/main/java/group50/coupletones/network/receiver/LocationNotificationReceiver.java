@@ -2,8 +2,6 @@ package group50.coupletones.network.receiver;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
@@ -11,10 +9,6 @@ import group50.coupletones.network.message.Message;
 import group50.coupletones.network.message.MessageReceiver;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.util.Identifiable;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * @author Sharmaine Manalo
@@ -38,11 +32,7 @@ public class LocationNotificationReceiver implements MessageReceiver, Identifiab
   @Override
   public void onReceive(Message message) {
     Notification notification = new Notification(context);
-    //TODO: Use strings.xml
     notification.setTitle(context.getString(R.string.app_name));
-    Log.d("test", message.getString("name"));
-
-
     notification.setMsg(app.getLocalUser().getPartner().getName() + " " +
         context.getString(R.string.partner_visited_text) + " " + message.getString("name"));
 

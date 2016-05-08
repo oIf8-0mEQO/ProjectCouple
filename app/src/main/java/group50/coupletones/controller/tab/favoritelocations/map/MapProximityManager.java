@@ -56,13 +56,13 @@ public class MapProximityManager implements ProximityManager, Taggable {
    * @param favoriteLocation The favorite location entered
    */
   public void onEnterLocation(FavoriteLocation favoriteLocation) {
-    Log.d(getTag(), "Entering location: " + favoriteLocation.getName() + " cooldown=" + favoriteLocation.isOnCooldown());
-    //if (!favoriteLocation.isOnCooldown()) {
+    Log.d(getTag(), "Entering location: " + favoriteLocation.getName() + " cooldown = " + favoriteLocation.isOnCooldown());
+    if (!favoriteLocation.isOnCooldown()) {
       for (ProximityObserver i : observers) {
         i.onEnterLocation(new VisitedLocation(favoriteLocation, new Date()));
       }
       favoriteLocation.setCooldown();
-    // }
+    }
   }
 
   /**

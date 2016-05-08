@@ -38,18 +38,22 @@ public class PartnerResponseReceiver implements MessageReceiver, Identifiable {
     String email = message.getString("partner");
     String msg = name + " " + (accepted ? "accepted" : "rejected") + " your request!";
 
-    // Send notification
-    new Notification(context)
-      .setIntent(new Intent(context, MainActivity.class))
-      .setTitle(title)
-      .setMsg(msg)
-      .show();
+    sendNotification(context, title, msg);
 
     //Handle accept
     if (accepted) {
       app.getLocalUser().setPartner(new Partner(name, email));
       app.getLocalUser().save(new Storage(context.getSharedPreferences("user", MODE_PRIVATE)));
     }
+  }
+
+  protected void sendNotification(Context context, String title, String msg) {
+    // Send notification
+    new Notification(context)
+        .setIntent(new Intent(context, MainActivity.class))
+        .setTitle(title)
+        .setMsg(msg)
+        .show();
   }
 
   @Override

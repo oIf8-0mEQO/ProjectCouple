@@ -24,6 +24,7 @@ import javax.inject.Inject;
 
 /**
  * Handles Google Authentication
+ *
  * @author Henry Mao
  */
 //TODO: Unit test
@@ -40,13 +41,11 @@ public class GoogleAuthenticator implements
   /**
    * Private instance to the CoupleTones app instance
    */
-  //@Inject
   public CoupleTones app;
 
   /**
    * The network manager
    */
-  // @Inject
   public NetworkManager network;
 
   /**
@@ -66,7 +65,8 @@ public class GoogleAuthenticator implements
 
   @Inject
   public GoogleAuthenticator(Context context) {
-    CoupleTones.global().inject(this);
+    app = CoupleTones.global().app();
+    network = CoupleTones.global().network();
 
     // Create Google API Client
     GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -90,6 +90,7 @@ public class GoogleAuthenticator implements
   /**
    * Attempts to sign in the user automatically by using silent
    * sign in.
+   *
    * @return This instance
    */
   @Override
@@ -117,6 +118,7 @@ public class GoogleAuthenticator implements
   /**
    * Attempts to sign in the user.
    * Opens an Android Intent and asks Google to sign in.
+   *
    * @return This instance
    */
   @Override
@@ -144,9 +146,10 @@ public class GoogleAuthenticator implements
 
   /**
    * Method that handles the intent result callback
+   *
    * @param requestCode The request code of the intent
-   * @param resultCode The result code of the intent
-   * @param data The data of the intent
+   * @param resultCode  The result code of the intent
+   * @param data        The data of the intent
    */
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -159,6 +162,7 @@ public class GoogleAuthenticator implements
 
   /**
    * Handles the sign in request. Called after the sign in request is complete.
+   *
    * @param result The GoogleSignInResult
    */
   private void handleSignInResult(GoogleSignInResult result) {

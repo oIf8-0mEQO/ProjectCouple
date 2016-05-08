@@ -20,6 +20,8 @@ import group50.coupletones.di.InstanceComponent;
 import group50.coupletones.di.module.ContextModule;
 import group50.coupletones.util.storage.Storage;
 
+import javax.inject.Inject;
+
 import static android.content.Context.MODE_PRIVATE;
 
 /**
@@ -28,7 +30,9 @@ import static android.content.Context.MODE_PRIVATE;
  */
 public class SettingsFragment extends TabFragment<SettingsFragment.Listener> implements View.OnClickListener {
 
+  @Inject
   public CoupleTones app;
+
   TextView yourProfileText;
   TextView yourNameText;
   TextView yourName;

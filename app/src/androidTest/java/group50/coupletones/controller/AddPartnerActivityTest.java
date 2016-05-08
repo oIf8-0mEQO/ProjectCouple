@@ -14,8 +14,11 @@ import group50.coupletones.R;
 import group50.coupletones.auth.user.MockLocalUser;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
+import group50.coupletones.network.NetworkManager;
+import group50.coupletones.network.message.OutgoingMessage;
 
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -27,9 +30,15 @@ public class AddPartnerActivityTest extends ActivityInstrumentationTestCase2<Add
 
     private AddPartnerActivity activity;
 
+    public NetworkManager network;
+
+    public CoupleTones app;
+
     public AddPartnerActivityTest() {
         super(AddPartnerActivity.class);
     }
+
+    private OutgoingMessage mockMessage;
 
     @Before
     @Override
@@ -57,17 +66,19 @@ public class AddPartnerActivityTest extends ActivityInstrumentationTestCase2<Add
         activity = getActivity();
 
         activity.runOnUiThread(() -> {
+            mockMessage = mock(OutgoingMessage.class);
             Button button = (Button) activity.findViewById(R.id.connect_button);
             button.performClick();
             // Verify sign in is called
-            verify(network).signIn();
+            verify(network).send(mockMessage);
         });
 
-        activity.runOnUiThread(() -> {
+        /*activity.runOnUiThread(() -> {
+            mockMessage = mock(OutgoingMessage.class);
             Button button = (Button) activity.findViewById(R.id.skip_button);
             button.performClick();
             // Verify sign in is called
-            verify(activity.auth).signIn();
-        });
+            verify(network).send();
+        });*/
     }
 }

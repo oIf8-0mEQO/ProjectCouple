@@ -1,7 +1,6 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
@@ -18,6 +17,7 @@ import java.util.List;
 
 /**
  * The map proximity manager
+ *
  * @author Joseph
  * @since 5/1/2016
  */
@@ -52,9 +52,11 @@ public class MapProximityManager implements ProximityManager, Taggable {
   /**
    * Called when a user enters a favorite location.
    * Notifies all observers.
+   *
    * @param favoriteLocation The favorite location entered
    */
   public void onEnterLocation(FavoriteLocation favoriteLocation) {
+    Log.d(getTag(), "Entering location: " + favoriteLocation.getName() + " cooldown = " + favoriteLocation.isOnCooldown());
     if (!favoriteLocation.isOnCooldown()) {
       for (ProximityObserver i : observers) {
         i.onEnterLocation(new VisitedLocation(favoriteLocation, new Date()));
@@ -65,11 +67,12 @@ public class MapProximityManager implements ProximityManager, Taggable {
 
   /**
    * Handles the location change event
+   *
    * @param location The location
    */
   @Override
   public void onLocationChanged(Location location) {
-    Log.d(getTag(), "Location changed! " + location);
+    Log.d(getTag(), "Location changed: " + location);
     // Make sure the user is logged in
     if (app.isLoggedIn()) {
       for (FavoriteLocation loc : app.getLocalUser().getFavoriteLocations()) {
@@ -79,5 +82,20 @@ public class MapProximityManager implements ProximityManager, Taggable {
         }
       }
     }
+  }
+
+  @Override
+  public void onStatusChanged(String provider, int status, Bundle extras) {
+
+  }
+
+  @Override
+  public void onProviderEnabled(String provider) {
+
+  }
+
+  @Override
+  public void onProviderDisabled(String provider) {
+
   }
 }

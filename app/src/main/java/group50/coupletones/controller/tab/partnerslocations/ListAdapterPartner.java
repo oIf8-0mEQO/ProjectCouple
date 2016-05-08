@@ -27,7 +27,7 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
 
   @Override
   public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View v = inflater.inflate(R.layout.list_item, parent, false);
+    View v = inflater.inflate(R.layout.partner_list_item, parent, false);
     return new ListViewHolder(v);
   }
 

@@ -32,7 +32,7 @@ public interface Authenticator<S, F> extends SuccessCallback<Authenticator, S>, 
    * credentials.
    * @return This instance
    */
-  GoogleAuthenticator signOut(Consumer<Status> consumer);
+  Authenticator signOut(Consumer<Status> consumer);
 
   /**
    * Method that handles the intent result callback.

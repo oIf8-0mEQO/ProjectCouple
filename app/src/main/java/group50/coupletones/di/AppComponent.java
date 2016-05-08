@@ -4,6 +4,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import dagger.Component;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.Authenticator;
+import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
@@ -43,8 +44,6 @@ import javax.inject.Singleton;
 )
 public interface AppComponent {
 
-  Authenticator<User, String> auth();
-
   CoupleTones app();
 
   NetworkManager network();
@@ -53,7 +52,7 @@ public interface AppComponent {
 
   AddressProvider geocoder();
 
-  GoogleApiClient apiClient();
+  void inject(GoogleAuthenticator obj);
 
   void inject(LocationClickHandler obj);
 

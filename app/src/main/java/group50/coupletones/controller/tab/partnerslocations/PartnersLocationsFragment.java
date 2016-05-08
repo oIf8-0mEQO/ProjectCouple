@@ -25,14 +25,6 @@ public class PartnersLocationsFragment extends TabFragment<PartnersLocationsFrag
     super(Listener.class);
   }
 
-  /**
-   * Use this factory method to create a new instance of FavoriteLocationsFragment.
-   */
-  public static PartnersLocationsFragment build() {
-    PartnersLocationsFragment fragment = new PartnersLocationsFragment();
-    return fragment;
-  }
-
   @Override
   protected int getResourceId() {
     return R.layout.fragment_partners_locations;

@@ -38,12 +38,6 @@ public class MainActivity extends AppCompatActivity implements
   @Inject
   public NetworkManager network;
 
-  @Inject
-  public Authenticator<User, String> auth;
-
-  @Inject
-  public GoogleApiClient apiClient;
-
   /**
    * The bottom tab bar handler
    */
@@ -56,18 +50,17 @@ public class MainActivity extends AppCompatActivity implements
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
 
     // Dependency Injection
     CoupleTones.component().inject(this);
 
-    setContentView(R.layout.activity_main);
-
     // Initialize tabs
     tabs = new HashMap<>();
-    tabs.put(R.id.partnerLocations, PartnersLocationsFragment.build());
-    tabs.put(R.id.favoriteLocations, FavoriteLocationsFragment.build());
-    tabs.put(R.id.settings, SettingsFragment.build());
-    tabs.put(R.id.map, MapFragment.build());
+    tabs.put(R.id.partnerLocations, new PartnersLocationsFragment());
+    tabs.put(R.id.favoriteLocations, new FavoriteLocationsFragment());
+    tabs.put(R.id.settings, new SettingsFragment());
+    tabs.put(R.id.map, new MapFragment());
 
     mBottomBar = BottomBar.attach(this, savedInstanceState);
     mBottomBar.setItemsFromMenu(R.menu.bottombar_menu, this);
@@ -80,18 +73,6 @@ public class MainActivity extends AppCompatActivity implements
   }
 
   @Override
-  protected void onStart() {
-    super.onStart();
-    apiClient.connect();
-  }
-
-  @Override
-  protected void onStop() {
-    super.onStop();
-    apiClient.disconnect();
-  }
-
-  @Override
   public void onMenuTabSelected(
     @IdRes
       int menuItemId) {
@@ -100,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements
     if (tabs.containsKey(menuItemId)) {
       setFragment(tabs.get(menuItemId));
     }
-
   }
 
   @Override

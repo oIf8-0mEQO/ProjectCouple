@@ -50,13 +50,6 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
    */
   private GoogleMap.OnMapClickListener clickListener = new LocationClickHandler(this);
 
-  /**
-   * Use this factory method to create a new instance of MapFragment.
-   */
-  public static MapFragment build() {
-    return new MapFragment();
-  }
-
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);

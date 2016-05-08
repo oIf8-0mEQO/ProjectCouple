@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -34,32 +35,54 @@ public class GoogleAuthenticator implements
    * The request code for sign in intent
    */
   private static final int RC_SIGN_IN = 9001;
+
   /**
    * Private instance to the CoupleTones app instance
    */
-  private final CoupleTones app;
+  @Inject
+  public CoupleTones app;
+
+  /**
+   * The network manager
+   */
+  @Inject
+  public NetworkManager network;
+
   /**
    * The callback function upon success
    */
   private Function<User, User> successCallback = x -> null;
+
   /**
    * The callback function upon failure
    */
   private Function<String, String> failCallback = x -> null;
+
   /**
    * The Google API client instance
    */
   private GoogleApiClient apiClient;
-  /**
-   * THe network manager
-   */
-  private NetworkManager network;
 
-  @Inject
-  public GoogleAuthenticator(CoupleTones app, NetworkManager network, GoogleApiClient apiClient) {
-    this.app = app;
-    this.network = network;
-    this.apiClient = apiClient;
+  public GoogleAuthenticator(Activity activity) {
+    CoupleTones.component().inject(this);
+
+    // Create Google API Client
+    GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+      .requestEmail()
+      .build();
+
+    this.apiClient = new GoogleApiClient.Builder(activity)
+      .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+      .addOnConnectionFailedListener(this)
+      .build();
+  }
+
+  public void connect() {
+    apiClient.connect();
+  }
+
+  public void disconnect() {
+    apiClient.disconnect();
   }
 
   /**

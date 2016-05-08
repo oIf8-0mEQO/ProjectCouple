@@ -10,13 +10,11 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.android.gms.common.api.GoogleApiClient;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.Authenticator;
+import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.storage.Storage;
@@ -26,49 +24,45 @@ import javax.inject.Inject;
 /**
  * The LoginActivity controls the login page of the app.
  */
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, Taggable {
-
-  /**
-   * The object used for authentication
-   */
-  @Inject
-  public Authenticator<User, String> auth;
+public class LoginActivity extends AppCompatActivity implements Taggable {
 
   @Inject
   public CoupleTones app;
 
-  @Inject
-  public GoogleApiClient apiClient;
+  /**
+   * The object used for handling authentication
+   */
+  public GoogleAuthenticator auth;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_login);
 
     // Dependency Injection
     CoupleTones.component().inject(this);
 
-    setContentView(R.layout.activity_login);
-
     // Create Google Authenticator for automatic sign in.
+    auth = new GoogleAuthenticator(this);
     auth.onSuccess(this::onUserLogin);
     auth.autoSignIn();
 
     TextView coupleTones_text = (TextView) findViewById(R.id.sign_in_button);
     Typeface pierSans = Typeface.createFromAsset(getAssets(), getString(R.string.pier_sans));
     coupleTones_text.setTypeface(pierSans);
-    findViewById(R.id.sign_in_button).setOnClickListener(this);
+    findViewById(R.id.sign_in_button).setOnClickListener(evt -> auth.signIn(this));
   }
 
   @Override
   protected void onStart() {
     super.onStart();
-    apiClient.connect();
+    auth.connect();
   }
 
   @Override
   protected void onStop() {
     super.onStop();
-    apiClient.disconnect();
+    auth.disconnect();
   }
 
   /**
@@ -91,16 +85,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
       Toast.makeText(this, "Please Login", Toast.LENGTH_SHORT).show();
     }
     return user;
-  }
-
-  @Override
-  public void onClick(View v) {
-    switch (v.getId()) {
-      // When the sign in button is clicked
-      case R.id.sign_in_button:
-        auth.signIn(this);
-        break;
-    }
   }
 
   @Override

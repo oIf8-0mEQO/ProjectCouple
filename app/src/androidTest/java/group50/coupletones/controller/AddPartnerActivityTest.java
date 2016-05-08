@@ -67,18 +67,13 @@ public class AddPartnerActivityTest extends ActivityInstrumentationTestCase2<Add
 
         activity.runOnUiThread(() -> {
             mockMessage = mock(OutgoingMessage.class);
+            when(mockMessage.getString("partner")).thenReturn("rah005@ucsd.edu");
+            network = CoupleTones.component().network();
+
             Button button = (Button) activity.findViewById(R.id.connect_button);
             button.performClick();
             // Verify sign in is called
-            verify(network).send(mockMessage);
+            verify(network).send(any());
         });
-
-        /*activity.runOnUiThread(() -> {
-            mockMessage = mock(OutgoingMessage.class);
-            Button button = (Button) activity.findViewById(R.id.skip_button);
-            button.performClick();
-            // Verify sign in is called
-            verify(network).send();
-        });*/
     }
 }

@@ -1,5 +1,6 @@
 package group50.coupletones.di;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import dagger.Module;
 import dagger.Provides;
 import group50.coupletones.CoupleTones;
@@ -24,5 +25,11 @@ public class MockApplicationModule {
   @Singleton
   CoupleTones provide() {
     return mock(CoupleTones.class);
+  }
+
+  @Provides
+  @Singleton
+  GoogleApiClient provideApiClient() {
+    return mock(GoogleApiClient.class);
   }
 }

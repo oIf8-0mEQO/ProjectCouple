@@ -163,7 +163,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
   /**
    * Draws all of the favorited locations as markers on the map.
    */
-  private void populateMap() {
+  public void populateMap() {
     mMap.clear();
     MarkerOptions markerSettings = new MarkerOptions();
     markerSettings.draggable(false);
@@ -174,6 +174,12 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
       //TODO: Remove. This should be done in app initialization
       registerProximity(i);
     }
+  }
+
+  public void moveMap(LatLng position)
+  {
+    CameraUpdate update = CameraUpdateFactory.newLatLng(position);
+    mMap.moveCamera(update);
   }
 
   /*public List<Address> search(String nameLocation) {

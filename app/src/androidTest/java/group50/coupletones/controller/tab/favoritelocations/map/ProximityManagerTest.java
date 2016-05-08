@@ -1,15 +1,22 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.location.Location;
+import android.support.test.espresso.core.deps.guava.collect.Lists;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.auth.user.MockLocalUser;
+import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.mockito.Mockito.*;
+import java.util.Collections;
+
+import static org.mockito.Mockito.anyObject;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Joseph
@@ -19,7 +26,7 @@ public class ProximityManagerTest {
 
   FavoriteLocation favLocation;
   Location loc;
-  MapProximityManagerMock proximity;
+  MapProximityManager proximity;
   ProximityObserver mock;
 
   @Before
@@ -36,12 +43,14 @@ public class ProximityManagerTest {
     loc = new Location("");
 
     // Stub the user
-    CoupleTones.component().app().setLocalUser(new MockLocalUser());
+    LocalUser localUser = mock(LocalUser.class);
+    // Make the user always return favLocation when getFavoriteLocations is called
+    when(localUser.getFavoriteLocations()).thenReturn(Collections.singletonList(favLocation));
+    CoupleTones.component().app().setLocalUser(localUser);
 
-    proximity = new MapProximityManagerMock();
-    mock = mock(ProximityObserver.class);
-    proximity.register(mock);
-    proximity.addFavoriteLocation(favLocation);
+    proximity = new MapProximityManager();
+    this.mock = mock(ProximityObserver.class);
+    proximity.register(this.mock);
   }
 
   //TODO: Organize this test into edge case, normal case, error case

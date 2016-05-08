@@ -1,5 +1,6 @@
 package group50.coupletones.di;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import dagger.Component;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.Authenticator;
@@ -46,6 +47,8 @@ public interface AppComponent {
   ProximityManager proximity();
 
   AddressProvider geocoder();
+
+  GoogleApiClient apiClient();
 
   void inject(PartnerResponseActivity activity);
 

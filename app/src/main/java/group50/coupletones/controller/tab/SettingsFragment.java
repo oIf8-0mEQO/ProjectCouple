@@ -12,9 +12,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.GoogleAuthenticator;
+import group50.coupletones.auth.Authenticator;
+import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
+import group50.coupletones.di.InstanceComponent;
+import group50.coupletones.di.module.ContextModule;
 import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
@@ -24,14 +27,11 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * A simple {@link Fragment} subclass for the Settings tab.
  * Activities that contains this fragment must implement the {@link Listener} interface to handle interaction events.
- * Use the {@link SettingsFragment#build} factory class to create an instance of this fragment.
  */
 public class SettingsFragment extends TabFragment<SettingsFragment.Listener> implements View.OnClickListener {
 
   @Inject
   public CoupleTones app;
-
-  public GoogleAuthenticator auth;
 
   TextView yourProfileText;
   TextView yourNameText;
@@ -45,6 +45,8 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
   TextView partnerAccountText;
   TextView partnerAccount;
   ImageButton add_partner_button;
+  private Authenticator<User, String> auth;
+  private InstanceComponent component;
 
   public SettingsFragment() {
     super(Listener.class);
@@ -58,8 +60,12 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    CoupleTones.component().inject(this);
-    auth = new GoogleAuthenticator(getActivity());
+    CoupleTones.global().inject(this);
+    component = CoupleTones
+      .instanceComponentBuilder()
+      .contextModule(new ContextModule(getContext()))
+      .build();
+    auth = component.auth();
   }
 
   /**
@@ -67,7 +73,7 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
    */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
-    Bundle savedInstanceState) {
+                           Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_settings, container, false);
     Typeface pierSans = Typeface.createFromAsset(getActivity().getAssets(),
       getString(R.string.pier_sans));
@@ -125,6 +131,11 @@ public class SettingsFragment extends TabFragment<SettingsFragment.Listener> imp
     return v;
   }
 
+  /**
+   * Updates the UI based on whether
+   * user is connected to a partner.
+   * @param hasPartner
+   */
   public void updateUI(boolean hasPartner) {
     if (hasPartner) {
       partnerName.setText(app.getLocalUser().getPartner().getName());

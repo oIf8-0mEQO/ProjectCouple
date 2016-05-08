@@ -3,7 +3,13 @@ package group50.coupletones.network.message;
 import android.os.Bundle;
 
 /**
- * Created by sharmaine on 5/4/16.
+ * @author Sharmaine Manalo
+ * @since 5/4/16
+ */
+
+/**
+ * Message interface represents the
+ * message sent to partner on the app.
  */
 public interface Message {
   String getType();

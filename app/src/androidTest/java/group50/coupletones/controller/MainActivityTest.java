@@ -42,7 +42,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
   public void setUp() throws Exception {
     super.setUp();
 
-    CoupleTones.setComponent(
+    CoupleTones.setGlobal(
       DaggerMockAppComponent
         .builder()
         .mockProximityModule(new MockProximityModule())
@@ -50,7 +50,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     //TODO: DRY
     // Stub getLocalUser method
-    when(CoupleTones.component().app().getLocalUser())
+    when(CoupleTones.global().app().getLocalUser())
       .thenReturn(new MockLocalUser());
 
     // Injecting the Instrumentation instance is required

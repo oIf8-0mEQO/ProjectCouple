@@ -84,6 +84,7 @@ public class GoogleUser implements LocalUser {
 
   /**
    * Save User data onto phone
+   * @param storage
    */
   @Override
   public void save(Storage storage) {
@@ -102,6 +103,7 @@ public class GoogleUser implements LocalUser {
 
   /**
    * Load User data from phone
+   * @param storage
    */
   @Override
   public void load(Storage storage) {

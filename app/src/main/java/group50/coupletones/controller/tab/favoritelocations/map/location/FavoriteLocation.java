@@ -9,7 +9,12 @@ import group50.coupletones.util.storage.Storage;
 import javax.inject.Inject;
 
 /**
- * Created by Joseph on 6/25/2016.
+ * @author Joseph Cox
+ * @since 6/25/2016
+ */
+
+/**
+ * Represents a Favorite Location
  */
 public class FavoriteLocation implements Location, Storable {
 
@@ -43,36 +48,59 @@ public class FavoriteLocation implements Location, Storable {
    */
   public FavoriteLocation(String name, LatLng position, long time) {
     //DI
-    CoupleTones.component().inject(this);
+    CoupleTones.global().inject(this);
 
     setName(name);
     setPosition(position);
     this.time = time;
   }
 
+  /**
+   *
+   * @return Latitude-Longitude of the position
+   */
   @Override
   public LatLng getPosition() {
     return position;
   }
 
+  /**
+   *
+   * @param position Latitude-Longitude of the position
+   */
   public void setPosition(LatLng position) {
     this.position = position;
   }
 
+  /**
+   *
+   * @return Name of location
+   */
   @Override
   public String getName() {
     return name;
   }
 
+  /**
+   *
+   * @param name Name of location
+   */
   public void setName(String name) {
     this.name = name;
   }
 
+  /**
+   *
+   * @return Address of position
+   */
   @Override
   public Address getAddress() {
     return addressProvider.getAddressFromPosition(position);
   }
 
+  /**
+   * Sets cool down time for location
+   */
   public void setCooldown() {
     time = System.currentTimeMillis();
   }
@@ -91,6 +119,10 @@ public class FavoriteLocation implements Location, Storable {
     return time;
   }
 
+  /**
+   *
+   * @param storage
+   */
   @Override
   public void save(Storage storage) {
     storage.setString("name", name);
@@ -98,6 +130,10 @@ public class FavoriteLocation implements Location, Storable {
     storage.setFloat("long", (float) position.longitude);
   }
 
+  /**
+   *
+   * @param storage
+   */
   @Override
   public void load(Storage storage) {
     name = storage.getString("name");

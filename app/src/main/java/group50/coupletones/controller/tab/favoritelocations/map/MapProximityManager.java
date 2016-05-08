@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * The map proximity manager
  * @author Joseph
- * @since 5/1/2016.
+ * @since 5/1/2016
  */
 public class MapProximityManager implements ProximityManager, Taggable {
 

@@ -35,6 +35,16 @@ public interface Authenticator<S, F> extends SuccessCallback<Authenticator, S>, 
   Authenticator signOut(Consumer<Status> consumer);
 
   /**
+   * Connects the authenticator
+   */
+  void connect();
+
+  /**
+   * Disconnect the authenticator
+   */
+  void disconnect();
+
+  /**
    * Method that handles the intent result callback.
    * <p>
    * This method must be called to by the activity to properly handle

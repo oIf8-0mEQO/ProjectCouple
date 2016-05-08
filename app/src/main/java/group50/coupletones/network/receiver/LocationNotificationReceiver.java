@@ -11,6 +11,10 @@ import group50.coupletones.util.Identifiable;
  * @author Sharmaine Manalo
  * @since 5/5/16
  */
+
+/**
+ * Location notification receiver class
+ */
 public class LocationNotificationReceiver implements MessageReceiver, Identifiable {
 
   private final Context context;

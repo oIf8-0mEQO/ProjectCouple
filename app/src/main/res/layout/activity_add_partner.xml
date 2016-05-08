@@ -54,7 +54,7 @@
         android:layout_width="280dp"
         android:layout_height="50dp"
         android:inputType="textEmailAddress"
-        android:text="@string/email_address"
+        android:hint="@string/email_address"
         android:textSize="17sp"
         android:ems="10"
         android:textColor="@color/subtitleColor"

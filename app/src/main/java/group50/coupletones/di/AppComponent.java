@@ -8,6 +8,7 @@ import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.controller.MainActivity;
+import group50.coupletones.controller.PartnerResponseActivity;
 import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.favoritelocations.map.*;
@@ -44,6 +45,8 @@ public interface AppComponent {
   ProximityManager proximity();
 
   Geocoder geocoder();
+
+  void inject(PartnerResponseActivity activity);
 
   void inject(VisitedLocation fragment);
 

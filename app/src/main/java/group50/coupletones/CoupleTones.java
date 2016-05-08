@@ -18,6 +18,7 @@ import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.network.receiver.ErrorReceiver;
 import group50.coupletones.network.receiver.PartnerRequestReceiver;
+import group50.coupletones.network.receiver.PartnerResponseReceiver;
 
 /**
  * A singleton object that holds global data.
@@ -89,7 +90,8 @@ public class CoupleTones extends Application {
     NetworkManager network = component().network();
     network.register(this);
     network.register(new PartnerRequestReceiver(this));
-    network.register(MessageType.RECEIVE_PARTNER_REJECT.value, new ErrorReceiver(this));
+    network.register(new PartnerResponseReceiver(this, this));
+    network.register(MessageType.RECEIVE_PARTNER_ERROR.value, new ErrorReceiver(this));
     network.register(MessageType.RECEIVE_MAP_REJECT.value, new ErrorReceiver(this));
 
     // Register location observer

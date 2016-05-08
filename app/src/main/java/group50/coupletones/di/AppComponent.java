@@ -59,7 +59,7 @@ public interface AppComponent {
 
   void inject(AddPartnerActivity activity);
 
-  void inject(Map fragment);
+  void inject(MapFragment fragment);
 
   void inject(MainActivity activity);
 

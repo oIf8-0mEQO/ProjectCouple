@@ -3,10 +3,11 @@ package group50.coupletones.controller.tab.favoritelocations.map;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.R;
+import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -19,13 +20,14 @@ import java.util.List;
  * @author Joseph
  * @since 5/1/2016.
  */
-public class MapProximityManager implements ProximityManager, LocationListener {
+public class MapProximityManager implements ProximityManager, LocationListener, Taggable {
 
+  //Meters to Miles conversion ratio
+  private static final double conversion = (1.0) / (1609.0);
   /**
    * A list of observers that subscribe to changes in location.
    */
   private final List<ProximityObserver> observers;
-
   @Inject
   public CoupleTones app;
 
@@ -34,8 +36,6 @@ public class MapProximityManager implements ProximityManager, LocationListener {
     observers = new LinkedList<>();
   }
 
-  //Meters to Miles conversion ratio
-  private static final double conversion = (1.0) / (1609.0);
   /**
    * Finds the distance in miles between two locations given by the gps.
    */
@@ -69,6 +69,7 @@ public class MapProximityManager implements ProximityManager, LocationListener {
    */
   @Override
   public void onLocationChanged(Location location) {
+    Log.d(getTag(), "Location changed! " + location);
     // Make sure the user is logged in
     if (app.isLoggedIn()) {
       for (FavoriteLocation loc : app.getLocalUser().getFavoriteLocations()) {
@@ -82,13 +83,16 @@ public class MapProximityManager implements ProximityManager, LocationListener {
 
   @Override
   public void onProviderDisabled(String provider) {
+    Log.d(getTag(), provider + " Disabled");
   }
 
   @Override
   public void onProviderEnabled(String provider) {
+    Log.d(getTag(), provider + " Enabled");
   }
 
   @Override
   public void onStatusChanged(String provider, int status, Bundle extra) {
+    Log.d(getTag(), provider + " changed: " + status);
   }
 }

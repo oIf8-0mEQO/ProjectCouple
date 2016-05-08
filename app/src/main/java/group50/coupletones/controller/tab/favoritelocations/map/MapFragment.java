@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.text.InputType;
@@ -18,7 +19,7 @@ import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 
-public class Map extends SupportMapFragment implements OnMapReadyCallback {
+public class MapFragment extends SupportMapFragment implements OnMapReadyCallback {
 
   @Inject
   public CoupleTones app;
@@ -58,13 +59,10 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
   };
 
   /**
-   * Use this factory method to create a new instance of Map.
+   * Use this factory method to create a new instance of MapFragment.
    */
-  public static Map build() {
-    Map fragment = new Map();
-    Bundle args = new Bundle();
-    // TODO: Set arguments
-    fragment.setArguments(args);
+  public static MapFragment build() {
+    MapFragment fragment = new MapFragment();
     return fragment;
   }
 
@@ -84,21 +82,23 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     mMap = googleMap;
     mMap.getUiSettings().setZoomControlsEnabled(true);
     if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-      ActivityCompat.requestPermissions(this.getActivity(),
+      ActivityCompat.requestPermissions(
+        this.getActivity(),
         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-        100);
-      Log.d("test1", "ins");
+        100
+      );
+      Log.e(getTag(), "Location permission not granted");
       return;
-    } else if (mMap != null) {
-      Log.d("test2", "outs");
-      mMap.setMyLocationEnabled(true);
     }
+
     this.populateMap();
     mMap.setOnMapClickListener(clickListener);
     mMap.setMyLocationEnabled(true);
-    CameraUpdate initial = CameraUpdateFactory.newLatLngZoom(new LatLng(32.880234, -117.236106), 15);
-    mMap.moveCamera(initial);
 
+    LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+    android.location.Location lastLoc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+    CameraUpdate initial = CameraUpdateFactory.newLatLngZoom(new LatLng(lastLoc.getLatitude(), lastLoc.getLongitude()), 15);
+    mMap.moveCamera(initial);
   }
 
   /**

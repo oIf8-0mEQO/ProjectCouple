@@ -1,6 +1,5 @@
 package group50.coupletones.controller;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -14,8 +13,7 @@ import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
-import group50.coupletones.controller.tab.favoritelocations.map.LocationService;
-import group50.coupletones.controller.tab.favoritelocations.map.Map;
+import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
 import group50.coupletones.controller.tab.partnerslocations.PartnersLocationsFragment;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.util.Taggable;
@@ -55,10 +53,6 @@ public class MainActivity extends AppCompatActivity implements
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // Start Location Services
-    Intent i = new Intent(MainActivity.this, LocationService.class);
-    startService(i);
-
     // Dependency Injection
     CoupleTones.component().inject(this);
 
@@ -69,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements
     tabs.put(R.id.partnerLocations, PartnersLocationsFragment.build());
     tabs.put(R.id.favoriteLocations, FavoriteLocationsFragment.build());
     tabs.put(R.id.settings, SettingsFragment.build());
-    tabs.put(R.id.map, Map.build());
+    tabs.put(R.id.map, MapFragment.build());
 
     mBottomBar = BottomBar.attach(this, savedInstanceState);
     mBottomBar.setItemsFromMenu(R.menu.bottombar_menu, this);

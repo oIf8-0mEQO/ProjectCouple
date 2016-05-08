@@ -6,8 +6,10 @@
 package group50.coupletones;
 
 import android.app.Application;
+import android.content.Intent;
 import android.location.Geocoder;
 import group50.coupletones.auth.user.LocalUser;
+import group50.coupletones.controller.tab.favoritelocations.map.LocationService;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityNetworkHandler;
 import group50.coupletones.di.AppComponent;
@@ -97,5 +99,8 @@ public class CoupleTones extends Application {
     // Register location observer
     ProximityManager proximity = component().proximity();
     proximity.register(new ProximityNetworkHandler(network));
+
+    // Start Location Services
+    startService(new Intent(this, LocationService.class));
   }
 }

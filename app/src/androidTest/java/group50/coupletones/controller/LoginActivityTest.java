@@ -66,7 +66,6 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     activity = getActivity();
 
     // Verify some Authenticator methods were called
-    verify(activity.auth).bind(activity);
     verify(activity.auth).onSuccess(any());
     verify(activity.auth).autoSignIn();
   }
@@ -82,7 +81,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
       Button button = (Button) activity.findViewById(R.id.sign_in_button);
       button.performClick();
       // Verify sign in is called
-      verify(activity.auth).signIn();
+      verify(activity.auth).signIn(activity);
     });
   }
 

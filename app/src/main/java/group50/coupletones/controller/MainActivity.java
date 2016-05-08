@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import group50.coupletones.CoupleTones;
@@ -39,6 +40,9 @@ public class MainActivity extends AppCompatActivity implements
 
   @Inject
   public Authenticator<User, String> auth;
+
+  @Inject
+  public GoogleApiClient apiClient;
 
   /**
    * The bottom tab bar handler
@@ -78,15 +82,13 @@ public class MainActivity extends AppCompatActivity implements
   @Override
   protected void onStart() {
     super.onStart();
-    if (auth instanceof GoogleAuthenticator)
-      ((GoogleAuthenticator) auth).connect();
+    apiClient.connect();
   }
 
   @Override
   protected void onStop() {
     super.onStop();
-    if (auth instanceof GoogleAuthenticator)
-      ((GoogleAuthenticator) auth).disconnect();
+    apiClient.disconnect();
   }
 
   @Override

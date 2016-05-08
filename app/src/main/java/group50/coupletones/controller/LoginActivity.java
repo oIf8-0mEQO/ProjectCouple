@@ -5,20 +5,21 @@
 
 package group50.coupletones.controller;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.gms.common.api.GoogleApiClient;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
-import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.util.Taggable;
+import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 
@@ -33,6 +34,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
   @Inject
   public Authenticator<User, String> auth;
 
+  @Inject
+  public CoupleTones app;
+
+  @Inject
+  public GoogleApiClient apiClient;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -43,7 +50,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     setContentView(R.layout.activity_login);
 
     // Create Google Authenticator for automatic sign in.
-    auth.bind(this);
     auth.onSuccess(this::onUserLogin);
     auth.autoSignIn();
 
@@ -53,36 +59,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     findViewById(R.id.sign_in_button).setOnClickListener(this);
   }
 
-
   @Override
   protected void onStart() {
     super.onStart();
-    if (auth instanceof GoogleAuthenticator)
-      ((GoogleAuthenticator) auth).connect();
+    apiClient.connect();
   }
 
   @Override
   protected void onStop() {
     super.onStop();
-    if (auth instanceof GoogleAuthenticator)
-      ((GoogleAuthenticator) auth).disconnect();
+    apiClient.disconnect();
   }
 
   /**
    * Handles the user login event by switching to MainActivity upon
    * successful login.
-   *
    * @param user The user that logged in
    * @return The user
    */
   private User onUserLogin(User user) {
     //TODO: Better design to signify how the sign in failed. User should never be null?
     if (user != null) {
+      // Save the user
+      app.getLocalUser().load(new Storage(getSharedPreferences("user", Context.MODE_PRIVATE)));
+
+      // Star the main activity
       Intent intent = new Intent(this, MainActivity.class);
       startActivity(intent);
-      Log.d(getTag(), "Logged in successfully");
     } else {
-      //TODO: Remove? For debug. Use string constant
+      //TODO: Use string constant
       Toast.makeText(this, "Please Login", Toast.LENGTH_SHORT).show();
     }
     return user;
@@ -93,7 +98,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     switch (v.getId()) {
       // When the sign in button is clicked
       case R.id.sign_in_button:
-        auth.signIn();
+        auth.signIn(this);
         break;
     }
   }

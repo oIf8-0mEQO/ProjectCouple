@@ -13,7 +13,6 @@ import javax.inject.Singleton;
 @Singleton
 @Component(
   modules = {
-    MockAuthenticatorModule.class,
     MockApplicationModule.class,
     MockNetworkModule.class,
     MockProximityModule.class

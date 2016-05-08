@@ -9,17 +9,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.GoogleAuthenticator;
+import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.user.User;
-import group50.coupletones.di.DaggerInstanceComponent;
 import group50.coupletones.di.InstanceComponent;
-import group50.coupletones.di.module.AuthenticatorModule;
 import group50.coupletones.di.module.ContextModule;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.storage.Storage;
@@ -34,14 +31,12 @@ public class LoginActivity extends AppCompatActivity implements Taggable {
   @Inject
   public CoupleTones app;
 
-  @NonNull
-  private InstanceComponent component;
+  protected InstanceComponent component;
 
   /**
    * The object used for handling authentication
    */
-  @NonNull
-  private GoogleAuthenticator auth;
+  protected Authenticator<User, String> auth;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +46,13 @@ public class LoginActivity extends AppCompatActivity implements Taggable {
     // Dependency Injection
     CoupleTones.global().inject(this);
 
-    component = prepareComponent().build();
+    component = CoupleTones
+      .instanceComponentBuilder()
+      .contextModule(new ContextModule(this))
+      .build();
 
     // Create Google Authenticator for automatic sign in.
-    auth = new GoogleAuthenticator(this);
+    auth = component.auth();
     auth.onSuccess(this::onUserLogin);
     auth.autoSignIn();
 
@@ -79,6 +77,7 @@ public class LoginActivity extends AppCompatActivity implements Taggable {
   /**
    * Handles the user login event by switching to MainActivity upon
    * successful login.
+   *
    * @param user The user that logged in
    * @return The user
    */
@@ -102,12 +101,5 @@ public class LoginActivity extends AppCompatActivity implements Taggable {
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
     auth.onActivityResult(requestCode, resultCode, data);
-  }
-
-  @NonNull
-  protected DaggerInstanceComponent.Builder prepareComponent() {
-    return DaggerInstanceComponent
-      .builder()
-      .contextModule(new ContextModule(this));
   }
 }

@@ -8,14 +8,19 @@ import group50.coupletones.auth.user.User;
 
 /**
  * Dependency injection module to provide the Authenticator object
+ *
  * @author Henry Mao
  * @since 4/28/16.
  */
 @Module
 public class AuthenticatorModule {
 
-  @Provides
-  Authenticator<User, String> provide(GoogleAuthenticator auth) {
+  protected Authenticator<User, String> provideAuth(GoogleAuthenticator auth) {
     return auth;
+  }
+
+  @Provides
+  public final Authenticator<User, String> provide(GoogleAuthenticator auth) {
+    return provideAuth(auth);
   }
 }

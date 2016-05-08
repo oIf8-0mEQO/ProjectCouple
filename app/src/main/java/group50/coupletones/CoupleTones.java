@@ -13,6 +13,7 @@ import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityNetworkHandler;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityService;
 import group50.coupletones.di.DaggerGlobalComponent;
+import group50.coupletones.di.DaggerInstanceComponent;
 import group50.coupletones.di.GlobalComponent;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.ProximityModule;
@@ -30,9 +31,15 @@ import group50.coupletones.network.receiver.PartnerResponseReceiver;
 public class CoupleTones extends Application {
 
   /**
-   * The main dependency injection global
+   * The singleton dependency injector
    */
   private static GlobalComponent component;
+
+  /**
+   * The instance dependency injector builder
+   */
+  private static DaggerInstanceComponent.Builder instanceComponentBuilder;
+
   /**
    * The local user of the app
    */
@@ -47,10 +54,19 @@ public class CoupleTones extends Application {
 
   /**
    * Should ONLY be set for unit testing
+   *
    * @param component The global to set
    */
   public static void setGlobal(GlobalComponent component) {
     CoupleTones.component = component;
+  }
+
+  public static DaggerInstanceComponent.Builder instanceComponentBuilder() {
+    return instanceComponentBuilder;
+  }
+
+  public static void setInstanceComponentBuilder(DaggerInstanceComponent.Builder instanceComponentBuilder) {
+    CoupleTones.instanceComponentBuilder = instanceComponentBuilder;
   }
 
   /**
@@ -63,6 +79,7 @@ public class CoupleTones extends Application {
   /**
    * Sets the local user of the app. This method should only be
    * during login/logout events.
+   *
    * @param localUser The local user object
    */
   public void setLocalUser(LocalUser localUser) {
@@ -76,6 +93,7 @@ public class CoupleTones extends Application {
     return localUser != null;
   }
 
+
   @Override
   public void onCreate() {
     super.onCreate();
@@ -85,6 +103,11 @@ public class CoupleTones extends Application {
       .applicationModule(new ApplicationModule(this))
       .proximityModule(new ProximityModule(new Geocoder(getApplicationContext())))
       .build();
+
+    setInstanceComponentBuilder(
+      DaggerInstanceComponent
+        .builder()
+    );
 
     // Register network
     NetworkManager network = global().network();

@@ -12,8 +12,10 @@ import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.user.MockLocalUser;
 import group50.coupletones.auth.user.User;
+import group50.coupletones.di.DaggerInstanceComponent;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
+import group50.coupletones.di.module.AuthenticatorModule;
 import group50.coupletones.util.function.Function;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,15 +29,19 @@ import static org.mockito.Mockito.*;
  * The LoginActivity test to test the LoginActivity
  *
  * @author Henry Mao
- * @since 4/27/16.
+ * @since 4/27/16
  */
 @RunWith(AndroidJUnit4.class)
 public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginActivity> {
+
   // Time out for activities
   private final int TIMEOUT = 5000;
 
   // The LoginActivity
   private LoginActivity activity;
+
+  // The mock authenticator
+  private Authenticator<User, String> authenticator;
 
   public LoginActivityTest() {
     super(LoginActivity.class);
@@ -50,7 +56,23 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
       DaggerMockAppComponent
         .builder()
         .mockProximityModule(new MockProximityModule())
-        .build());
+        .build()
+    );
+
+    // Inject mock authenticator
+    authenticator = mock(Authenticator.class);
+
+    CoupleTones.setInstanceComponentBuilder(
+      DaggerInstanceComponent
+        .builder()
+        .authenticatorModule(new AuthenticatorModule() {
+          //TODO: Extra method
+          @Override
+          protected Authenticator<User, String> provideAuth(GoogleAuthenticator auth) {
+            return authenticator;
+          }
+        })
+    );
 
     // Stub getLocalUser method
     when(CoupleTones.global().app().getLocalUser())
@@ -91,7 +113,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
    */
   @Test
   public void testAutoSignIn() throws Exception {
-    Authenticator<User, String> auth = new GoogleAuthenticator(activity);
+    Authenticator<User, String> auth = authenticator;
 
     final Wrapper<Function<User, User>> successWrapper = new Wrapper<>();
 
@@ -134,7 +156,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
   @Test
   public void testOnUserLoginSuccess() {
     // Bind stub methods
-    Authenticator<User, String> auth = CoupleTones.global().auth();
+    Authenticator<User, String> auth = authenticator;
     final Wrapper<Function<User, User>> successWrapper = new Wrapper<>();
 
     // When the activity binds a success function, call it immediately.
@@ -163,7 +185,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
    */
   @Test
   public void testOnUserLoginFailure() {
-    Authenticator<User, String> auth = CoupleTones.global().auth();
+    Authenticator<User, String> auth = authenticator;
     final Wrapper<Function<User, User>> successWrapper = new Wrapper<>();
 
     // When the activity binds a success function, call it immediately.
@@ -189,7 +211,8 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
   }
 
   /**
-   * A simple class that wraps an object. Used for tests with lambda expressions where values must be effectively final.
+   * A simple class that wraps an object.
+   * Used for tests with lambda expressions where values must be effectively final.
    *
    * @param <T>
    */

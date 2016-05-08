@@ -1,6 +1,5 @@
 package group50.coupletones.network.gcm;
 
-import android.app.Application;
 import android.test.ApplicationTestCase;
 
 import org.junit.Before;
@@ -11,10 +10,16 @@ import group50.coupletones.auth.user.MockLocalUser;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.network.message.Message;
+import group50.coupletones.network.message.MessageType;
 import group50.coupletones.network.receiver.PartnerResponseReceiver;
 
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import static org.assertj.core.api.Assertions.*;
 
 /**
  * @author Sharmaine Manalo
@@ -43,15 +48,31 @@ public class PartnerResponseReceiverTest extends ApplicationTestCase<CoupleTones
 
     partnerResponseReceiver = new PartnerResponseReceiver(getContext(), app);
     mockMessage = mock(Message.class);
-    mockName = mockMessage.getString("name");
-    mockEmail = mockMessage.getString("partner");
   }
 
   @Test
   public void successSetPartner() throws Exception {
     when(mockMessage.getString("requestAccept")).thenReturn("1");
-    app.getLocalUser().setPartner(new Partner(mockName, mockEmail));
-    assertEquals(app.getLocalUser().getPartner().getName(), mockName);
-    assertEquals(app.getLocalUser().getPartner().getEmail(), mockEmail);
+    when(mockMessage.getString("name")).thenReturn("Sharmaine");
+    when(mockMessage.getString("partner")).thenReturn("hello@sharmaine.me");
+
+    partnerResponseReceiver.onReceive(mockMessage);
+    app.getLocalUser().setPartner(new Partner("Sharmaine", "hello@sharmaine.me"));
+    assertEquals(app.getLocalUser().getPartner().getName(), "Sharmaine");
+    assertEquals(app.getLocalUser().getPartner().getEmail(), "hello@sharmaine.me");
+
+    verify(app.getLocalUser(), times(1)).save(any());
+  }
+
+  @Test
+  public void successGetId() {
+    String id = partnerResponseReceiver.getId();
+    assertThat(id).isEqualTo(MessageType.RECEIVE_PARTNER_RESPONSE.value);
+  }
+
+  @Test
+  public void failGetId() {
+    String id = partnerResponseReceiver.getId();
+    assertThat(id).isNotEqualTo(MessageType.RECEIVE_PARTNER_RESPONSE.value);
   }
 }

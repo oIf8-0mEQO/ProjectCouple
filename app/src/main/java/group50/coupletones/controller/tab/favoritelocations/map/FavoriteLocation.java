@@ -1,14 +1,12 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.location.Address;
-import android.location.Geocoder;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.util.storage.Storable;
 import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
-import java.util.List;
 
 /**
  * Created by Joseph on 6/25/2016.
@@ -16,7 +14,7 @@ import java.util.List;
 public class FavoriteLocation implements Location, Storable {
 
   @Inject
-  public Geocoder geocoder;
+  public AddressProvider addressProvider;
   private String name;
   private LatLng position;
   private long time;
@@ -72,15 +70,7 @@ public class FavoriteLocation implements Location, Storable {
 
   @Override
   public Address getAddress() {
-    try {
-      List<Address> fromLocations = geocoder.getFromLocation(position.latitude, position.longitude, 1);
-
-      if (fromLocations.size() > 0)
-        return fromLocations.get(0);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return null;
+    return addressProvider.getAddressFromPosition(position);
   }
 
   public void setCooldown() {

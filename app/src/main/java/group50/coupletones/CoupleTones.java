@@ -13,7 +13,7 @@ import group50.coupletones.controller.tab.favoritelocations.map.ProximityNetwork
 import group50.coupletones.di.AppComponent;
 import group50.coupletones.di.DaggerAppComponent;
 import group50.coupletones.di.module.ApplicationModule;
-import group50.coupletones.di.module.GeocoderModule;
+import group50.coupletones.di.module.ProximityModule;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.network.receiver.ErrorReceiver;
@@ -83,7 +83,7 @@ public class CoupleTones extends Application {
     component = DaggerAppComponent
       .builder()
       .applicationModule(new ApplicationModule(this))
-      .geocoderModule(new GeocoderModule(new Geocoder(getApplicationContext())))
+      .proximityModule(new ProximityModule(new Geocoder(getApplicationContext())))
       .build();
 
     // Register network

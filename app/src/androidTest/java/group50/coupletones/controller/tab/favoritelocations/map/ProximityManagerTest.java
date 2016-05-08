@@ -2,17 +2,12 @@ package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.location.Location;
 import com.google.android.gms.maps.model.LatLng;
-
-import group50.coupletones.BuildConfig;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.MockLocalUser;
-
+import group50.coupletones.di.DaggerMockAppComponent;
+import group50.coupletones.di.MockProximityModule;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -28,8 +23,15 @@ public class ProximityManagerTest {
   ProximityObserver mock;
 
   @Before
-  public void setup()
-  {
+  public void setup() {
+    // Setup DI
+    CoupleTones.setComponent(
+      DaggerMockAppComponent
+        .builder()
+        .mockProximityModule(new MockProximityModule())
+        .build()
+    );
+
     favLocation = new FavoriteLocation("", new LatLng(32.880315, -117.236288));
     loc = new Location("");
 
@@ -77,7 +79,7 @@ public class ProximityManagerTest {
         count++;
       }
     };
-    MapProximityManager proximity = (MapProximityManager) CoupleTones.component().proximity();
+    MapProximityManager proximity = new MapProximityManager();
     proximity.register(observer);
     FavoriteLocation shouldNotifyOnce = new FavoriteLocation();
     proximity.onEnterLocation(shouldNotifyOnce);

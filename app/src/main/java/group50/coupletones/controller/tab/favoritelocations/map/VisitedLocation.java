@@ -1,13 +1,11 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.location.Address;
-import android.location.Geocoder;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
 
 import javax.inject.Inject;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Joseph on 5/3/2016.
@@ -15,7 +13,7 @@ import java.util.List;
 public class VisitedLocation implements Location {
 
   @Inject
-  public Geocoder geocoder;
+  public AddressProvider addressProvider;
   private String name;
   private LatLng position;
   private Date time;
@@ -31,15 +29,7 @@ public class VisitedLocation implements Location {
 
   @Override
   public Address getAddress() {
-    try {
-      List<Address> fromLocations = geocoder.getFromLocation(position.latitude, position.longitude, 1);
-
-      if (fromLocations.size() > 0)
-        return fromLocations.get(0);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return null;
+    return addressProvider.getAddressFromPosition(position);
   }
 
   public LatLng getPosition() {
@@ -55,16 +45,12 @@ public class VisitedLocation implements Location {
   }
 
   @Override
-  public boolean equals(Object other)
-  {
-    try
-    {
+  public boolean equals(Object other) {
+    try {
 
-      if (((VisitedLocation)other).getPosition().equals(getPosition())) return true;
+      if (((VisitedLocation) other).getPosition().equals(getPosition())) return true;
       else return false;
-    }
-    catch (ClassCastException e)
-    {
+    } catch (ClassCastException e) {
       return false;
     }
   }

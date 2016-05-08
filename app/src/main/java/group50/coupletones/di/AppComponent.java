@@ -1,6 +1,5 @@
 package group50.coupletones.di;
 
-import android.location.Geocoder;
 import dagger.Component;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.Authenticator;
@@ -12,7 +11,10 @@ import group50.coupletones.controller.PartnerResponseActivity;
 import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.favoritelocations.map.*;
-import group50.coupletones.di.module.*;
+import group50.coupletones.di.module.ApplicationModule;
+import group50.coupletones.di.module.AuthenticatorModule;
+import group50.coupletones.di.module.NetworkModule;
+import group50.coupletones.di.module.ProximityModule;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.gcm.GcmIntentService;
 
@@ -31,7 +33,6 @@ import javax.inject.Singleton;
     AuthenticatorModule.class,
     NetworkModule.class,
     ProximityModule.class,
-    GeocoderModule.class
   }
 )
 public interface AppComponent {
@@ -44,7 +45,7 @@ public interface AppComponent {
 
   ProximityManager proximity();
 
-  Geocoder geocoder();
+  AddressProvider geocoder();
 
   void inject(PartnerResponseActivity activity);
 

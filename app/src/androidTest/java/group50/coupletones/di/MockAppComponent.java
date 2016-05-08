@@ -1,8 +1,6 @@
 package group50.coupletones.di;
 
 import dagger.Component;
-import group50.coupletones.di.module.GeocoderModule;
-import group50.coupletones.di.module.ProximityModule;
 
 import javax.inject.Singleton;
 
@@ -18,8 +16,7 @@ import javax.inject.Singleton;
     MockAuthenticatorModule.class,
     MockApplicationModule.class,
     MockNetworkModule.class,
-    ProximityModule.class,
-    GeocoderModule.class
+    MockProximityModule.class
   }
 )
 public interface MockAppComponent extends AppComponent {

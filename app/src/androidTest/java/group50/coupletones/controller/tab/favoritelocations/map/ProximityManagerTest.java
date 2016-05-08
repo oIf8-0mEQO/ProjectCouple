@@ -24,22 +24,23 @@ public class ProximityManagerTest {
 
   FavoriteLocation favLocation;
   Location loc;
-  MapProximityManagerMock proximity;
+  MapProximityManager proximity;
   ProximityObserver mock;
 
   @Before
   public void setup()
   {
-    favLocation = new FavoriteLocation("", new LatLng(32.880315, -117.236288));
+    LinkedList<FavoriteLocation> list = new LinkedList<>();
+    list.add(new FavoriteLocation("", new LatLng(32.880315, -117.236288)));
     loc = new Location("");
 
     // Stub the user
     CoupleTones.component().app().setLocalUser(new MockLocalUser());
+    when(CoupleTones.component().app().getLocalUser().getFavoriteLocations()).thenReturn(list);
 
-    proximity = new MapProximityManagerMock();
+    proximity = new MapProximityManager();
     mock = mock(ProximityObserver.class);
     proximity.register(mock);
-    proximity.addFavoriteLocation(favLocation);
   }
 
   //TODO: Organize this test into edge case, normal case, error case

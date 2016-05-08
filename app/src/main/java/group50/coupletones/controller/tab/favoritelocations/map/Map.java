@@ -104,7 +104,7 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
   /**
    * Draws all of the favorited locations as markers on the map.
    */
-  private void populateMap() {
+  public void populateMap() {
     mMap.clear();
     MarkerOptions markerSettings = new MarkerOptions();
     markerSettings.draggable(false);
@@ -113,6 +113,12 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
       markerSettings.title(i.getName());
       mMap.addMarker(markerSettings);
     }
+  }
+
+  public void moveMap(LatLng position)
+  {
+    CameraUpdate update = CameraUpdateFactory.newLatLng(position);
+    mMap.moveCamera(update);
   }
 
   /*public List<Address> search(String nameLocation) {

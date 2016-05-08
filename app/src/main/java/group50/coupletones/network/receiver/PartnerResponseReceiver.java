@@ -36,19 +36,13 @@ public class PartnerResponseReceiver implements MessageReceiver, Identifiable {
    */
   @Override
   public void onReceive(Message message) {
-    // Phone notification
     String title = context.getString(R.string.partner_request_header);
     boolean accepted = message.getString("requestAccept").equals("1");
     String name = message.getString("name");
     String email = message.getString("partner");
     String msg = name + " " + (accepted ? "accepted" : "rejected") + " your request!";
 
-    // Send notification
-    new Notification(context)
-      .setIntent(new Intent(context, MainActivity.class))
-      .setTitle(title)
-      .setMsg(msg)
-      .show();
+    sendNotification(context, title, msg);
 
     //Handle accept
     if (accepted) {
@@ -61,6 +55,15 @@ public class PartnerResponseReceiver implements MessageReceiver, Identifiable {
    * Gets the ID of Partner Response
    * @return String - ID of partner response
    */
+  protected void sendNotification(Context context, String title, String msg) {
+    // Send notification
+    new Notification(context)
+        .setIntent(new Intent(context, MainActivity.class))
+        .setTitle(title)
+        .setMsg(msg)
+        .show();
+  }
+
   @Override
   public String getId() {
     return MessageType.RECEIVE_PARTNER_RESPONSE.value;

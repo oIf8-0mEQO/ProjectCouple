@@ -1,6 +1,7 @@
 package group50.coupletones.util.storage;
 
 import android.content.SharedPreferences;
+import group50.coupletones.util.function.Supplier;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -58,21 +59,20 @@ public class Storage {
   }
 
 
-  public <T extends Storable> List<T> getCollection(String name, Class<T> type) {
+  public <T extends Storable> List<T> getCollection(String name, Supplier<T> ctor) {
+    if (suffix.isEmpty() && name.contains("_"))
+      throw new RuntimeException("Name cannot contain underscore");
+
     List<T> list = new LinkedList<>();
 
     if (contains(name)) {
       int collectionLength = getInt(name + suffix);
 
-      try {
-        for (int i = 0; i < collectionLength; i++) {
-          T object = type.newInstance();
-          Storage arrStorage = new Storage(preference, suffix + i);
-          object.load(arrStorage);
-          list.add(object);
-        }
-      } catch (Exception e) {
-        e.printStackTrace();
+      for (int i = 0; i < collectionLength; i++) {
+        T object = ctor.get();
+        Storage arrStorage = new Storage(preference, suffix + "_" + i);
+        object.load(arrStorage);
+        list.add(object);
       }
     }
     return list;
@@ -109,9 +109,11 @@ public class Storage {
 
 
   public void setCollection(String name, List<? extends Storable> collection) {
+    if (suffix.isEmpty() && name.contains("_"))
+      throw new RuntimeException("Name cannot contain underscore");
     int i = 0;
     for (Storable obj : collection) {
-      obj.save(new Storage(preference, suffix + i));
+      obj.save(new Storage(preference, "_" + suffix + i));
       i++;
     }
     setInt(name + suffix, i);

@@ -1,104 +1,73 @@
 package group50.coupletones.util;
 
-import android.content.SharedPreferences;
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.test.ActivityInstrumentationTestCase2;
+import group50.coupletones.CoupleTones;
+import group50.coupletones.controller.MainActivity;
+import group50.coupletones.di.DaggerMockAppComponent;
+import group50.coupletones.di.MockProximityModule;
 import group50.coupletones.util.storage.Storable;
 import group50.coupletones.util.storage.Storage;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.invocation.InvocationOnMock;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
- * Created by Calvin on 4/28/2016.
+ * @author Calvin
+ * @since 4/28/2016
  */
 @RunWith(AndroidJUnit4.class)
-public class StorageTest {
+public class StorageTest extends ActivityInstrumentationTestCase2<MainActivity> {
   private Storage storage;
 
-  private SharedPreferences mockPreference;
-
-  private HashMap<String, Object> cache;
+  public StorageTest() {
+    super(MainActivity.class);
+  }
 
   @Before
   public void setUp() throws Exception {
-    mockPreference = mock(SharedPreferences.class);
+    CoupleTones.setGlobal(
+      DaggerMockAppComponent
+        .builder()
+        .mockProximityModule(new MockProximityModule())
+        .build()
+    );
 
-    // Mock the functions used
-    SharedPreferences.Editor editor = mock(SharedPreferences.Editor.class);
-    when(mockPreference.edit()).thenReturn(editor);
+    injectInstrumentation(InstrumentationRegistry.getInstrumentation());
 
-    // Mock set methods
-    when(editor.putInt(any(), any())).then(this::cacheSet);
-    when(editor.putBoolean(any(), any())).then(this::cacheSet);
-    when(editor.putFloat(any(), any())).then(this::cacheSet);
-    when(editor.putString(any(), any())).then(this::cacheSet);
-
-    // Mck get methods
-    when(mockPreference.contains(any())).then(inv -> cache.containsKey(inv));
-    when(mockPreference.getInt(any(), any())).then(this::cacheGet);
-    when(mockPreference.getBoolean(any(), any())).then(this::cacheGet);
-    when(mockPreference.getFloat(any(), any())).then(this::cacheGet);
-    when(mockPreference.getString(any(), any())).then(this::cacheGet);
-
-    storage = new Storage(mockPreference);
+    storage = new Storage(getActivity().getSharedPreferences("test", Context.MODE_PRIVATE));
   }
 
-  /**
-   * Sets the cache
-   *
-   * @param inv The mock invocation
-   */
-  private Object cacheSet(InvocationOnMock inv) {
-    cache.put((String) inv.getArguments()[0], inv.getArguments()[1]);
-    return null;
-  }
-
-
-  /**
-   * Gets the cache
-   *
-   * @param inv The mock invocation
-   */
-  private Object cacheGet(InvocationOnMock inv) {
-    return cache.get(inv.getArguments()[0]);
+  @Override
+  public void tearDown() throws Exception {
+    // Clear preferences
+    getActivity().getSharedPreferences("test", Context.MODE_PRIVATE).edit().clear().apply();
+    super.tearDown();
   }
 
   @Test
   public void testContain() {
     storage.setInt("mac", 0);
-    assertTrue(storage.contains("mac"));
-
-    assertFalse(storage.contains("ABC"));
-
+    assertThat(storage.contains("mac")).isTrue();
+    assertThat(storage.contains("ABC")).isFalse();
     storage.setString("mac", "DEF");
-    assertThat(storage.contains("mac")).isEqualTo(true);
+    assertThat(storage.contains("mac")).isTrue();
   }
-
 
   @Test
   public void testTypeInt() {
     storage.setInt("mac", 85);
     assertThat(storage.getInt("mac")).isEqualTo(85);
-    System.out.print(storage.getInt("mac"));
-
     assertThat(storage.getInt("ABC")).isEqualTo(0);
-
     storage.setInt("def", 67);
     assertThat(storage.getInt("def")).isEqualTo(67);
-    System.out.print(storage.getInt("def"));
-
   }
 
 
@@ -106,12 +75,8 @@ public class StorageTest {
   public void testTypeFloat() {
     storage.setFloat("mac", 85f);
     assertThat(storage.getFloat("mac")).isEqualTo(85f);
-    System.out.print(storage.getFloat("mac"));
-
     storage.setFloat("def", 33f);
     assertThat(storage.getFloat("def")).isEqualTo(33f);
-    System.out.print(storage.getFloat("def"));
-
     assertThat(storage.getFloat("ABC")).isEqualTo(0f);
   }
 
@@ -119,15 +84,12 @@ public class StorageTest {
   public void testTypeString() {
     storage.setString("mac", "mac2");
     assertThat(storage.getString("mac")).isEqualTo("mac2");
-    System.out.print(storage.getString("mac"));
 
     storage.setString("def", "");
     assertThat(storage.getString("def")).isEqualTo("");
-    System.out.print(storage.getString("def"));
 
     storage.setString("app", "   ");
     assertThat(storage.getString("app")).isEqualTo("   ");
-    System.out.print(storage.getString("app"));
 
     assertThat(storage.getString("ABC")).isEqualTo(null);
   }
@@ -136,39 +98,15 @@ public class StorageTest {
   public void testTypeBoolean() {
     storage.setBoolean("mac", true);
     assertThat(storage.getBoolean("mac")).isEqualTo(true);
-    System.out.print(storage.getBoolean("mac"));
 
     storage.setBoolean("mac1", false);
     assertThat(storage.getBoolean("mac1")).isEqualTo(false);
-    System.out.print(storage.getBoolean("mac1"));
 
     assertThat(storage.getBoolean("ABC")).isEqualTo(false);
   }
 
   @Test
   public void testCollection() throws Exception {
-
-    class StorableObject implements Storable {
-      public String val;
-
-      public StorableObject() {
-      }
-
-      public StorableObject(String val) {
-        this.val = val;
-      }
-
-      @Override
-      public void save(Storage storage) {
-        storage.setString("test", val);
-      }
-
-      @Override
-      public void load(Storage storage) {
-        val = storage.getString("test");
-      }
-    }
-
     LinkedList<StorableObject> mockList = new LinkedList<>();
     mockList.add(new StorableObject("test1"));
     mockList.add(new StorableObject("test2"));
@@ -176,25 +114,72 @@ public class StorageTest {
 
     storage.setCollection("list", mockList);
 
-    List<StorableObject> retrievedList = storage.getCollection("list", StorableObject.class);
+    List<StorableObject> retrievedList = storage.getCollection("list", StorableObject::new);
 
     assertThat(retrievedList.size()).isEqualTo(mockList.size());
-    assertThat(retrievedList).isEqualTo(mockList);
+
+    for (StorableObject obj : mockList)
+      assertThat(retrievedList.contains(obj)).isTrue();
+  }
+
+  @Test(expected = RuntimeException.class)
+  public void testCollectionInvalidName() throws Exception {
+    LinkedList<StorableObject> mockList = new LinkedList<>();
+    mockList.add(new StorableObject("test1"));
+    mockList.add(new StorableObject("test2"));
+    mockList.add(new StorableObject("test3"));
+
+    storage.setCollection("list_", mockList);
   }
 
   @Test
   public void testDelete() {
     storage.setBoolean("mac", true);
-    assertThat(storage.getBoolean("mac")).isEqualTo(true);
+    assertThat(storage.getBoolean("mac")).isTrue();
     storage.delete("mac");
-    assertThat(storage.getBoolean("mac")).isEqualTo(false);
+    assertThat(storage.contains("mac")).isFalse();
+    assertThat(storage.getBoolean("mac")).isFalse();
 
     storage.setString("mac1", "ight");
-    assertThat(storage.getBoolean("mac1")).isEqualTo("ight");
+    assertThat(storage.getString("mac1")).isEqualTo("ight");
     storage.delete("mac1");
     assertThat(storage.getString("mac1")).isEqualTo(null);
+    assertThat(storage.contains("mac1")).isFalse();
 
     storage.delete("mac3");
     assertThat(storage.getInt("mac3")).isEqualTo(0);
+  }
+
+  class StorableObject implements Storable {
+    public String val;
+
+    public StorableObject() {
+    }
+
+    public StorableObject(String val) {
+      this.val = val;
+    }
+
+    @Override
+    public void save(Storage storage) {
+      storage.setString("test", val);
+    }
+
+    @Override
+    public void load(Storage storage) {
+      val = storage.getString("test");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (o instanceof StorableObject)
+        return val.equals(((StorableObject) o).val);
+      return false;
+    }
+
+    @Override
+    public int hashCode() {
+      return val.hashCode();
+    }
   }
 }

@@ -57,4 +57,6 @@ public interface Authenticator<S, F> extends SuccessCallback<Authenticator, S>, 
    * @param data        The data of the intent
    */
   void onActivityResult(int requestCode, int resultCode, Intent data);
+
+
 }

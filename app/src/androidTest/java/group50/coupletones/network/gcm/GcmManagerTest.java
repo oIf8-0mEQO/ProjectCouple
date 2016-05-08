@@ -53,10 +53,8 @@ public class GcmManagerTest {
   public void handleOther() throws Exception {
     MessageReceiver receiver1 = mock(MessageReceiver.class);
     manager.register("request1", receiver1);
-
-
     MessageReceiver receiver2 = mock(MessageReceiver.class);
-    manager.register("request2", receiver1);
+    manager.register("request2", receiver2);
 
     Bundle bundle = new Bundle();
     bundle.putString("type", "request1");
@@ -66,7 +64,7 @@ public class GcmManagerTest {
     verify(receiver2, times(0)).onReceive(any());
 
     Bundle bundle2 = new Bundle();
-    bundle.putString("type", "request2");
+    bundle2.putString("type", "request2");
     manager.handleReceive(bundle2);
 
     verify(receiver1, times(1)).onReceive(any());

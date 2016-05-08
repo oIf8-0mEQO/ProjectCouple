@@ -14,7 +14,7 @@ import javax.inject.Singleton;
  */
 @Module
 public class GeocoderModule {
-  private final Geocoder geocoder;
+  public Geocoder geocoder;
 
   public GeocoderModule(Geocoder geocoder) {
     this.geocoder = geocoder;

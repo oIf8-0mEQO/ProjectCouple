@@ -8,15 +8,13 @@ import android.test.ActivityInstrumentationTestCase2;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.MockLocalUser;
-import group50.coupletones.auth.user.User;
-import group50.coupletones.controller.tab.favoritelocations.map.FavoriteLocation;
 import group50.coupletones.controller.tab.partnerslocations.PartnersLocationsFragment;
 import group50.coupletones.di.DaggerMockAppComponent;
+import group50.coupletones.di.module.GeocoderModule;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -47,6 +45,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     CoupleTones.setComponent(
       DaggerMockAppComponent
         .builder()
+        .geocoderModule(new GeocoderModule(null))
         .build());
 
     //TODO: DRY
@@ -62,6 +61,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
   /**
    * Test the default tab when the app launches
+   *
    * @throws Exception
    */
   @Test
@@ -77,6 +77,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
   /**
    * Test tapping on the first tab
+   *
    * @throws Exception
    */
   @Test
@@ -113,6 +114,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
   /**
    * Test when an invalid tab tap occurs
+   *
    * @throws Exception
    */
   @Test

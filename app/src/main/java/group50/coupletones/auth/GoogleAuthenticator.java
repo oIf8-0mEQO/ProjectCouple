@@ -99,6 +99,9 @@ public class GoogleAuthenticator implements
     return this;
   }
 
+  /**
+   * Connects the API Client
+   */
   public void connect() {
     if (apiClient != null) {
       apiClient.connect();
@@ -106,17 +109,12 @@ public class GoogleAuthenticator implements
     }
   }
 
+  /**
+   * Disconnects the API Client
+   */
   public void disconnect() {
     if (apiClient != null && apiClient.isConnected()) {
       apiClient.disconnect();
-    }
-  }
-
-  public boolean isConnected() {
-    if (apiClient != null) {
-      return apiClient.isConnected();
-    } else {
-      return false;
     }
   }
 

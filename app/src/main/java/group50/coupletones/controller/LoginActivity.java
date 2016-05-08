@@ -57,13 +57,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
   @Override
   protected void onStart() {
     super.onStart();
-    ((GoogleAuthenticator) auth).connect();
+    if (auth instanceof GoogleAuthenticator)
+      ((GoogleAuthenticator) auth).connect();
   }
 
   @Override
   protected void onStop() {
     super.onStop();
-    ((GoogleAuthenticator) auth).disconnect();
+    if (auth instanceof GoogleAuthenticator)
+      ((GoogleAuthenticator) auth).disconnect();
   }
 
   /**

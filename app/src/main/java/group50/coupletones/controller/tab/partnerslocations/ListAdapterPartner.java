@@ -27,7 +27,7 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
 
   @Override
   public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    View v = inflater.inflate(R.layout.list_item, parent, false);
+    View v = inflater.inflate(R.layout.partner_list_item, parent, false);
     return new ListViewHolder(v);
   }
 
@@ -37,6 +37,8 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
     holder.name.setText(location.getName());
     holder.address.setText(location.getAddress());
     holder.icon.setImageResource(location.getIconId());
+    holder.timeValue.setText(location.getTime());
+
   }
 
   @Override
@@ -46,7 +48,7 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
 
   class ListViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView name, address;
+    private TextView name, address, timeValue;
     private ImageView icon;
     private View container;
     private CardView cv;
@@ -57,6 +59,7 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
       name = (TextView) itemView.findViewById(R.id.list_item_name);
       address = (TextView) itemView.findViewById(R.id.list_item_address);
       icon = (ImageView) itemView.findViewById(R.id.list_item_icon);
+      timeValue = (TextView) itemView.findViewById(R.id.list_item_time);
       container = itemView.findViewById(R.id.list_item);
     }
   }

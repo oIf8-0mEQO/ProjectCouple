@@ -1,103 +1,94 @@
 package group50.coupletones.controller;
 
-import static org.assertj.core.api.Assertions.*;
-import android.support.test.InstrumentationRegistry;
+import android.content.Intent;
+import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.ActivityInstrumentationTestCase2;
-import android.widget.Button;
-
+import group50.coupletones.CoupleTones;
+import group50.coupletones.R;
+import group50.coupletones.auth.user.LocalUser;
+import group50.coupletones.auth.user.MockLocalUser;
+import group50.coupletones.di.DaggerMockAppComponent;
+import group50.coupletones.di.MockProximityModule;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import group50.coupletones.CoupleTones;
-import group50.coupletones.R;
-import group50.coupletones.auth.user.MockLocalUser;
-import group50.coupletones.auth.user.Partner;
-import group50.coupletones.di.DaggerMockAppComponent;
-import group50.coupletones.di.MockProximityModule;
-import group50.coupletones.network.NetworkManager;
-import group50.coupletones.network.message.OutgoingMessage;
-import group50.coupletones.util.storage.Storage;
-
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
- * Created by Calvin on 5/8/2016.
+ * @author Calvin
+ * @since 5/8/2016
  */
 @RunWith(AndroidJUnit4.class)
-public class PartnerResponseActivityTest extends ActivityInstrumentationTestCase2<AddPartnerActivity> {
-    private PartnerResponseActivity activity;
+public class PartnerResponseActivityTest {
 
-    public NetworkManager network;
+  @Rule
+  public PartnerResponseActivityRule rule = new PartnerResponseActivityRule();
+  private CoupleTones app;
+  private LocalUser user;
 
-    public CoupleTones app;
+  @Before
+  public void setUp() throws Exception {
+    CoupleTones.setGlobal(
+      DaggerMockAppComponent
+        .builder()
+        .mockProximityModule(new MockProximityModule())
+        .build());
 
-    public PartnerResponseActivityTest() {
-            super(AddPartnerActivity.class);
-        }
+    app = CoupleTones.global().app();
+    user = new MockLocalUser();
+    when(app.getLocalUser()).thenReturn(user);
 
-    private OutgoingMessage mockMessage;
+    // Re-inject the mocked network
+    rule.getActivity().app = CoupleTones.global().app();
+    rule.getActivity().network = CoupleTones.global().network();
+  }
 
-    private Partner partner;
+  /**
+   * Test the login button click and if it calls sign in for the authenticator
+   */
+  @Test
+  public void sendAcceptResponse() {
+    // Click on the button
+    onView(withId(R.id.accept_button)).perform(click());
+    // Verify response message
+    verify(CoupleTones.global().network(), times(1)).send(any());
 
-    @Before
+    // Verify that the user partner is set
+    assertThat(user.getPartner()).isNotNull();
+    assertThat(user.getPartner().getName()).isEqualTo("partner");
+    assertThat(user.getPartner().getEmail()).isEqualTo("rah005@ucsd.edu");
+  }
+
+  public void sendRejectResponse() throws Exception {
+    // Click on the button
+    onView(withId(R.id.reject_button)).perform(click());
+    // Verify response message
+    verify(CoupleTones.global().network(), times(1)).send(any());
+
+    // Verify that the user partner not set
+    assertThat(user.getPartner()).isNull();
+  }
+
+  public static class PartnerResponseActivityRule extends ActivityTestRule<PartnerResponseActivity> {
+    public PartnerResponseActivityRule() {
+      super(PartnerResponseActivity.class);
+    }
+
     @Override
-    public void setUp() throws Exception {
-        super.setUp();
-
-        CoupleTones.setComponent(
-                DaggerMockAppComponent
-                        .builder()
-                        .mockProximityModule(new MockProximityModule())
-                        .build());
-
-            // Stub getLocalUser method
-        when(CoupleTones.component().app().getLocalUser())
-                .thenReturn(new MockLocalUser());
-
-        injectInstrumentation(InstrumentationRegistry.getInstrumentation());
+    protected Intent getActivityIntent() {
+      // Generate fake intent to simulate partner request
+      Intent activityIntent = super.getActivityIntent();
+      activityIntent.putExtra("name", "partner");
+      activityIntent.putExtra("email", "rah005@ucsd.edu");
+      return activityIntent;
     }
-
-    /**
-     * Test the login button click and if it calls sign in for the authenticator
-     */
-    @Test
-    public void testSendResponse() {
-        activity = new PartnerResponseActivity();
-
-        activity.runOnUiThread(() -> {
-            mockMessage = mock(OutgoingMessage.class);
-            when(mockMessage.getString("partner")).thenReturn("rah005@ucsd.edu");
-            //when(mockMessage.getString("partner")).thenReturn("rah005@ucsd.edu");
-            network = CoupleTones.component().network();
-
-            Button button = (Button) activity.findViewById(R.id.accept_button);
-            button.performClick();
-
-            // Verify sign in is called
-            assertThat(app.getLocalUser().getName()).isEqualTo("partner");
-            assertThat(app.getLocalUser().getEmail()).isEqualTo("rah005@ucsd.edu");
-
-        });
-
-        activity.runOnUiThread(() -> {
-            mockMessage = mock(OutgoingMessage.class);
-            when(mockMessage.getString("partner")).thenReturn("rah005@ucsd.edu");
-            network = CoupleTones.component().network();
-
-            Button button = (Button) activity.findViewById(R.id.reject_button);
-            button.performClick();
-
-            // Verify sign in is called
-            verify(network).send(any());
-
-            assertThat(app.getLocalUser().getName()).isEqualTo(null);
-            assertThat(app.getLocalUser().getEmail()).isEqualTo(null);
-        });
-    }
+  }
 }
 

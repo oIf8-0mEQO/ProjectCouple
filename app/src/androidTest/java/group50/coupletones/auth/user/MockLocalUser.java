@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class MockLocalUser implements LocalUser {
 
+  private User partner;
+
   /**
    * Functions that gets and sets Mock Information
    * Data of a Mock Local user
@@ -40,12 +42,12 @@ public class MockLocalUser implements LocalUser {
 
   @Override
   public User getPartner() {
-    return null;
+    return partner;
   }
 
   @Override
-  public void setPartner(Partner partner) {
-
+  public void setPartner(User partner) {
+    this.partner = partner;
   }
 
   @Override

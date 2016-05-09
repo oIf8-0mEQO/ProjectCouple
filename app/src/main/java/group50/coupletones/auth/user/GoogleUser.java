@@ -75,7 +75,7 @@ public class GoogleUser implements LocalUser {
    * @param partner
    */
   @Override
-  public void setPartner(Partner partner) {
+  public void setPartner(User partner) {
     this.partner = partner;
   }
 

@@ -3,18 +3,16 @@ package group50.coupletones.bdd;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -58,11 +56,11 @@ public class UserViewsFavoriteLocationList {
   }
 
   private void whenUserClicksTheFavesButton() {
-    onView(withId(R.id.favoriteLocations)).perform(click());
+    onView(withId(R.id.favorite_locations)).perform(click());
   }
 
   private void thenTheListShouldBeShown() {
-    onView(withId(R.id.favoriteLocations)).check(matches(isDisplayed()));
+    onView(withId(R.id.favorite_locations)).check(matches(isDisplayed()));
   }
 
   @Test

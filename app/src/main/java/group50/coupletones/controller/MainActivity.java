@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements
     // Initialize tabs
     tabs = new HashMap<>();
     tabs.put(R.id.partnerLocations, new PartnersLocationsFragment());
-    tabs.put(R.id.favoriteLocations, new FavoriteLocationsFragment());
+    tabs.put(R.id.favorite_locations, new FavoriteLocationsFragment());
     tabs.put(R.id.settings, new SettingsFragment());
     tabs.put(R.id.map, new MapFragment());
 

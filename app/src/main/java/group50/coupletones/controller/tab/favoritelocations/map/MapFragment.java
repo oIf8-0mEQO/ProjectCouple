@@ -150,7 +150,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
   }
 
   /**
-   * Moves the map to a given location
+   * Moves the map to a given location. Must be called after map is ready.
    *
    * @param loc - The location to move to
    */
@@ -159,14 +159,16 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
   }
 
   /**
-   * Moves the map to a given latlong position
+   * Moves the map to a given latlong position. Must be called after map is ready.
    *
    * @param position - The position to move to
    */
   public void moveMap(LatLng position) {
     Log.d(TAG, "Moving map to: " + position);
-    CameraUpdate update = CameraUpdateFactory.newLatLngZoom(position, 15);
-    mMap.moveCamera(update);
+    if (mMap != null) {
+      CameraUpdate update = CameraUpdateFactory.newLatLngZoom(position, 15);
+      mMap.moveCamera(update);
+    }
   }
 
   @Override

@@ -76,7 +76,7 @@ public class FavoriteLocationsFragment extends TabFragment<Object> {
     favesList.setAdapter(adapter);
 
     // Clicking on the add button will open the map fragment
-    v.findViewById(R.id.btn_add).setOnClickListener(evt -> {
+    v.findViewById(R.id.add_favorite_location).setOnClickListener(evt -> {
       MainActivity act = (MainActivity) getActivity();
       act.setFragment(act.getTabs().get(R.id.map));
     });

@@ -44,6 +44,7 @@ import static org.mockito.Mockito.when;
  * @author Sharmaine Manalo
  * @since 5/8/16
  */
+
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class UserDeletesFavoriteLocation {
@@ -53,7 +54,8 @@ public class UserDeletesFavoriteLocation {
   private LocalUser mockUser;
   private LatLng zoneLatLng = new LatLng(32.882, -117.233);
   private FavoriteLocation zone = new FavoriteLocation("Home", zoneLatLng);
-  private List<FavoriteLocation> data;
+  private List<FavoriteLocation> data, emptyData;
+  private Boolean empty;
 
   @Before
   public void setup() {
@@ -72,13 +74,8 @@ public class UserDeletesFavoriteLocation {
     when(app.getLocalUser()).thenReturn(mockUser);
     data = new LinkedList<>();
     data.add(zone);
-    when(mockUser.getFavoriteLocations()).thenReturn(data);
+    emptyData = new LinkedList<>();
   }
-
-  // User has a favorite location
-  // Given that I have a favorite location
-  // When I click delete on that favorite location
-  // Then that location will be removed from the my list of favorite locations (including the name)
 
   private void givenUserHasFavoriteLocation() {
     onView(withId(R.id.favorite_locations)).perform(click());
@@ -97,24 +94,30 @@ public class UserDeletesFavoriteLocation {
 
   @Test
   public void userHasAFavoriteLocation() {
+    when(mockUser.getFavoriteLocations()).thenReturn(data);
     givenUserHasFavoriteLocation();
     whenUserClicksDeleteOnFavoriteLocation();
     thenThatLocationWillBeRemovedFromList();
   }
 
-  // User does not have a favorite location
-  // Given that I do not have a favorite location
-  // Then the favorite location list will be empty, and there is no delete button to be pressed
-
   private void givenUserDoesNotHaveFavoriteLocation() {
-
+    onView(withId(R.id.favorite_locations)).perform(click());
+    emptyData = mockUser.getFavoriteLocations();
   }
 
   private void thenTheFavoriteLocationListIsEmpty() {
-
+    assertThat(emptyData.size()).isEqualTo(0);
   }
 
   private void andThereIsNoDeleteButton() {
+    onView(withId(R.id.favorite_locations)).check(matches(isDisplayed()));
+  }
 
+  @Test
+  public void userDoesNotHaveAFavoriteLocation() {
+    when(mockUser.getFavoriteLocations()).thenReturn(emptyData);
+    givenUserDoesNotHaveFavoriteLocation();
+    thenTheFavoriteLocationListIsEmpty();
+    andThereIsNoDeleteButton();
   }
 }

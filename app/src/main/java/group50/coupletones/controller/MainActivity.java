@@ -23,7 +23,6 @@ import java.util.HashMap;
  * tab page as a fragment and renders them accordingly.
  */
 public class MainActivity extends AppCompatActivity implements
-  PartnersLocationsFragment.Listener,
   OnMenuTabClickListener,
   Taggable {
 
@@ -44,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements
 
   /**
    * onCreate
+   *
    * @param savedInstanceState
    */
   @Override
@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements
   /**
    * When Menu Tab is Selected,
    * handles switching fragments
+   *
    * @param menuItemId - ID of selected menu item
    */
   @Override
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements
   /**
    * When Menu Tab is Re-Selected,
    * handles switching fragments
+   *
    * @param menuItemId - ID of selected menu item
    */
   @Override
@@ -117,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements
 
   /**
    * Sets the content of the MainActivity with the given fragment
+   *
    * @param fragment - The fragment to set for the main content
    */
   public void setFragment(Fragment fragment) {

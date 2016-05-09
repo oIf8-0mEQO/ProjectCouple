@@ -2,7 +2,6 @@ package group50.coupletones.controller.tab.partnerslocations;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,16 +16,13 @@ import group50.coupletones.controller.tab.TabFragment;
 
 /**
  * A simple {@link Fragment} subclass for the Favorite Locations tab.
- * Activities that contains this fragment must implement the {@link Listener} interface to handle interaction events.
- * Use the {@link PartnersLocationsFragment#build} factory class to create an instance of this fragment.
  */
-public class PartnersLocationsFragment extends TabFragment<PartnersLocationsFragment.Listener> {
+public class PartnersLocationsFragment extends TabFragment<Object> {
   private RecyclerView partnersList;
   private ListAdapterPartner adapter;
-  private CardView cv;
 
   public PartnersLocationsFragment() {
-    super(Listener.class);
+    super(Object.class);
   }
 
   /**
@@ -51,19 +47,5 @@ public class PartnersLocationsFragment extends TabFragment<PartnersLocationsFrag
     adapter = new ListAdapterPartner(PartnerLocationsData.getPartnerLocations(), getActivity());
     partnersList.setAdapter(adapter);
     return v;
-  }
-
-  /**
-   * This interface must be implemented by activities that contain this
-   * fragment to allow an interaction in this fragment to be communicated
-   * to the activity and potentially other fragments contained in that
-   * activity.
-   * <p>
-   * See the Android Training lesson <a href=
-   * "http://developer.android.com/training/basics/fragments/communicating.html"
-   * >Communicating with Other Fragments</a> for more information.
-   */
-  public interface Listener {
-    // TODO: Fill with interface methods
   }
 }

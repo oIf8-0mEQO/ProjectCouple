@@ -1,8 +1,8 @@
 package group50.coupletones.auth;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -19,7 +19,6 @@ import group50.coupletones.network.message.OutgoingMessage;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Function;
-import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 
@@ -38,84 +37,54 @@ public class GoogleAuthenticator implements
    * The request code for sign in intent
    */
   private static final int RC_SIGN_IN = 9001;
+
   /**
    * Private instance to the CoupleTones app instance
    */
-  private final CoupleTones app;
+  public CoupleTones app;
+
   /**
-   * The activity initiating authentication
+   * The network manager
    */
-  private FragmentActivity activity;
+  public NetworkManager network;
+
   /**
    * The callback function upon success
    */
   private Function<User, User> successCallback = x -> null;
+
   /**
    * The callback function upon failure
    */
   private Function<String, String> failCallback = x -> null;
+
   /**
    * The Google API client instance
    */
   private GoogleApiClient apiClient;
-  /**
-   * THe network manager
-   */
-  private NetworkManager network;
 
   @Inject
-  public GoogleAuthenticator(CoupleTones app, NetworkManager network) {
-    this.app = app;
-    this.network = network;
-  }
+  public GoogleAuthenticator(Context context) {
+    app = CoupleTones.global().app();
+    network = CoupleTones.global().network();
 
-  /**
-   * Binds the authenticator with a given activity.
-   * Required to getCollection the authenticator working
-   *
-   * @param activity The activity that is attempting to initiate sign in
-   */
-  @Override
-  public GoogleAuthenticator bind(FragmentActivity activity) {
-    this.activity = activity;
-
-    /*
-     * Configure sign-in to request the user's ID, email address, and basic
-     * profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-     */
+    // Create Google API Client
     GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
       .requestEmail()
       .build();
 
-      /*
-       * Build a GoogleApiClient with access to the Google Sign-In API and the
-       * options specified by gso.
-      */
-    apiClient = new GoogleApiClient.Builder(this.activity)
-      .addOnConnectionFailedListener(this)
+    this.apiClient = new GoogleApiClient.Builder(context)
       .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+      .addOnConnectionFailedListener(this)
       .build();
-
-    return this;
   }
 
-  /**
-   * Connects the API Client
-   */
   public void connect() {
-    if (apiClient != null) {
-      apiClient.connect();
-      Log.d(getTag(), "API connect called: " + apiClient.isConnected());
-    }
+    apiClient.connect();
   }
 
-  /**
-   * Disconnects the API Client
-   */
   public void disconnect() {
-    if (apiClient != null && apiClient.isConnected()) {
-      apiClient.disconnect();
-    }
+    apiClient.disconnect();
   }
 
   /**
@@ -153,7 +122,7 @@ public class GoogleAuthenticator implements
    * @return This instance
    */
   @Override
-  public GoogleAuthenticator signIn() {
+  public GoogleAuthenticator signIn(Activity activity) {
     Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(apiClient);
     activity.startActivityForResult(signInIntent, RC_SIGN_IN);
     return this;
@@ -202,7 +171,6 @@ public class GoogleAuthenticator implements
       // Signed in successfully, store authenticated user
       GoogleUser localUser = new GoogleUser(result.getSignInAccount());
       app.setLocalUser(localUser);
-      app.getLocalUser().load(new Storage(activity.getSharedPreferences("user", Context.MODE_PRIVATE)));
 
       // Notify server of registration
       network.send(

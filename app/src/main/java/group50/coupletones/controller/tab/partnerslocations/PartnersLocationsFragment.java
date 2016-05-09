@@ -12,6 +12,10 @@ import group50.coupletones.R;
 import group50.coupletones.controller.tab.TabFragment;
 
 /**
+ * @author Joanne Cho
+ */
+
+/**
  * A simple {@link Fragment} subclass for the Favorite Locations tab.
  * Activities that contains this fragment must implement the {@link Listener} interface to handle interaction events.
  * Use the {@link PartnersLocationsFragment#build} factory class to create an instance of this fragment.
@@ -26,19 +30,18 @@ public class PartnersLocationsFragment extends TabFragment<PartnersLocationsFrag
   }
 
   /**
-   * Use this factory method to create a new instance of FavoriteLocationsFragment.
+   * getResourceID
+   * @return - Partner's locations fragment
    */
-  public static PartnersLocationsFragment build() {
-    PartnersLocationsFragment fragment = new PartnersLocationsFragment();
-    return fragment;
-  }
-
   @Override
   protected int getResourceId() {
     return R.layout.fragment_partners_locations;
   }
 
-
+  /**
+   * onCreateView
+   * @return - View of app
+   */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {

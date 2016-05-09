@@ -2,7 +2,7 @@ package group50.coupletones.network.gcm;
 
 /**
  * @author Sharmaine Manalo
- * @since 5/4/16.
+ * @since 5/4/16
  */
 
 import android.content.Context;
@@ -19,7 +19,11 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
 
+/**
+ * GCM Manager for the app
+ */
 public class GcmManager implements NetworkManager, Taggable {
+
   /**
    * Project number registered with Google API
    */
@@ -51,6 +55,12 @@ public class GcmManager implements NetworkManager, Taggable {
   }
 
   //TODO: Potential concurrency issue
+
+  /**
+   * send
+   * @param message - the outgoing message
+   * @return
+   */
   @Override
   public AsyncTask<Void, Void, Boolean> send(OutgoingMessage message) {
     return new AsyncTask<Void, Void, Boolean>() {
@@ -68,6 +78,12 @@ public class GcmManager implements NetworkManager, Taggable {
   }
 
   //TODO: Potential concurrency issue
+
+  /**
+   * register
+   * @param context - the context to register the manager with
+   * @return
+   */
   @Override
   public AsyncTask<Void, Void, Boolean> register(Context context) {
     return new AsyncTask<Void, Void, Boolean>() {
@@ -89,6 +105,11 @@ public class GcmManager implements NetworkManager, Taggable {
     }.execute(null, null, null);
   }
 
+  /**
+   * register
+   * @param type     - the type of receiver to register
+   * @param receiver - the receiver to register
+   */
   @Override
   public void register(String type, MessageReceiver receiver) {
     if (receivers.containsKey(type)) {
@@ -98,6 +119,10 @@ public class GcmManager implements NetworkManager, Taggable {
     }
   }
 
+  /**
+   * Unregisters a GCM with invalid type
+   * @param type - the type of receiver to unregister
+   */
   @Override
   public void unregister(String type) {
     if (receivers.containsKey(type)) {
@@ -107,6 +132,10 @@ public class GcmManager implements NetworkManager, Taggable {
     }
   }
 
+  /**
+   * Handles receive for messages
+   * @param extras - bundle
+   */
   void handleReceive(Bundle extras) {
     IncomingMessage msg = new IncomingMessage(extras.getString("type"), extras);
     MessageReceiver messageReceiver = receivers.get(msg.getType());

@@ -1,10 +1,16 @@
-package group50.coupletones.controller.tab.favoritelocations.map;
+package group50.coupletones.controller.tab.favoritelocations.map.location;
 
 import android.location.Address;
 import com.google.android.gms.maps.model.LatLng;
 
 /**
- * Created by Joseph on 6/25/2016.
+ * @author Joseph Cox
+ * @since 6/25/2016
+ */
+
+/**
+ * The Location interface represents
+ * a location on the app.
  */
 public interface Location {
 

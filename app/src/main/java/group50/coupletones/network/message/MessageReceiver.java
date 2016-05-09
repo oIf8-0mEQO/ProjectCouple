@@ -14,7 +14,7 @@ public interface MessageReceiver {
    * Called when the message receiver receives a particular message of the type
    * the receiver registered with.
    *
-   * @param message The incoming message object that contains data from the server
+   * @param message - The incoming message object that contains data from the server
    */
   void onReceive(Message message);
 }

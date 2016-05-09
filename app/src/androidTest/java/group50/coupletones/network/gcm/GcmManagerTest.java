@@ -1,9 +1,11 @@
 package group50.coupletones.network.gcm;
 
 import android.os.Bundle;
+import android.support.test.runner.AndroidJUnit4;
 import group50.coupletones.network.message.MessageReceiver;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -12,6 +14,11 @@ import static org.mockito.Mockito.*;
  * @author Henry Mao
  * @since 5/7/16
  */
+
+/**
+ * GCM Manager test
+ */
+@RunWith(AndroidJUnit4.class)
 public class GcmManagerTest {
 
   private GcmManager manager;
@@ -47,6 +54,24 @@ public class GcmManagerTest {
     Bundle bundle = new Bundle();
     bundle.putString("type", "request2");
     manager.handleReceive(bundle);
+  }
+
+  @Test(expected = RuntimeException.class)
+  public void unregister() throws Exception {
+    MessageReceiver mockReceiver = mock(MessageReceiver.class);
+    manager.register("request", mockReceiver);
+    manager.unregister("request");
+
+    Bundle bundle = new Bundle();
+    bundle.putString("type", "request2");
+    manager.handleReceive(bundle);
+  }
+
+  @Test(expected = RuntimeException.class)
+  public void registerDuplicate() throws Exception {
+    MessageReceiver mockReceiver = mock(MessageReceiver.class);
+    manager.register("request", mockReceiver);
+    manager.register("request", mockReceiver);
   }
 
   @Test

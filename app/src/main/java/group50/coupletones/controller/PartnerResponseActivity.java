@@ -17,6 +17,9 @@ import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 
+/**
+ * Activity for Partner Response on the app.
+ */
 public class PartnerResponseActivity extends Activity {
 
   @Inject
@@ -25,12 +28,15 @@ public class PartnerResponseActivity extends Activity {
   @Inject
   public NetworkManager network;
 
+  /**
+   * onCreate
+   */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     // Dependency Injection
-    CoupleTones.component().inject(this);
+    CoupleTones.global().inject(this);
 
     setContentView(R.layout.activity_partner_request);
 
@@ -56,7 +62,7 @@ public class PartnerResponseActivity extends Activity {
       String name = extras.getString("name");
       String email = extras.getString("email");
       partnerName.setText(name);
-      requestText.setText(email + " wants to partner with you.");
+      requestText.setText(email + " " + R.string.partner_up_text);
 
       acceptButton.setOnClickListener(click -> sendResponse(name, email, true));
       rejectButton.setOnClickListener(click -> sendResponse(name, email, false));
@@ -66,6 +72,12 @@ public class PartnerResponseActivity extends Activity {
     }
   }
 
+  /**
+   * Sends a response to the partner request.
+   * @param name - Partner's name
+   * @param email - Partner's email
+   * @param accept - accept or reject request
+   */
   private void sendResponse(String name, String email, boolean accept) {
     // Send a partner request to the server
     network.send(

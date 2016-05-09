@@ -3,6 +3,7 @@ package group50.coupletones.network.receiver;
 import android.content.Context;
 import android.content.Intent;
 import group50.coupletones.CoupleTones;
+import group50.coupletones.R;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.network.message.Message;
@@ -29,27 +30,38 @@ public class PartnerResponseReceiver implements MessageReceiver, Identifiable {
     this.app = app;
   }
 
+  /**
+   * onReceive of Partner Response
+   * @param message The incoming message object that contains data from the server
+   */
   @Override
   public void onReceive(Message message) {
-    // Phone notification
-    String title = "Partner Request";
+    String title = context.getString(R.string.partner_request_header);
     boolean accepted = message.getString("requestAccept").equals("1");
     String name = message.getString("name");
     String email = message.getString("partner");
     String msg = name + " " + (accepted ? "accepted" : "rejected") + " your request!";
 
-    // Send notification
-    new Notification(context)
-      .setIntent(new Intent(context, MainActivity.class))
-      .setTitle(title)
-      .setMsg(msg)
-      .show();
+    sendNotification(context, title, msg);
 
     //Handle accept
     if (accepted) {
       app.getLocalUser().setPartner(new Partner(name, email));
       app.getLocalUser().save(new Storage(context.getSharedPreferences("user", MODE_PRIVATE)));
     }
+  }
+
+  /**
+   * Gets the ID of Partner Response
+   * @return String - ID of partner response
+   */
+  protected void sendNotification(Context context, String title, String msg) {
+    // Send notification
+    new Notification(context)
+        .setIntent(new Intent(context, MainActivity.class))
+        .setTitle(title)
+        .setMsg(msg)
+        .show();
   }
 
   @Override

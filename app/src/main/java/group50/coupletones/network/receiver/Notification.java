@@ -12,7 +12,7 @@ import group50.coupletones.R;
 /**
  * A simple class that builds a notification
  *
- * @author Henry
+ * @author Henry Mao
  * @since 5/6/16
  */
 public class Notification {
@@ -28,27 +28,48 @@ public class Notification {
    */
   private NotificationCompat.Builder builder;
 
-
+  /**
+   * Notification Constructor
+   * @param context
+   */
   public Notification(Context context) {
     this.context = context;
     builder = new NotificationCompat.Builder(context);
   }
 
+  /**
+   * Sets the intent
+   * @return - Notification user receives
+   */
   public Notification setIntent(Intent intent) {
     this.intent = intent;
     return this;
   }
 
+  /**
+   * Sets the title of notification
+   * @param title - title of notification
+   * @return - the Notification
+   */
   public Notification setTitle(String title) {
-    builder.setContentText(title);
+    builder.setContentTitle(title);
     return this;
   }
 
+  /**
+   * Sets the message of the notification
+   * @param msg - Notification message
+   * @return - the Notification
+   */
   public Notification setMsg(String msg) {
     builder.setContentText(msg);
     return this;
   }
 
+  /**
+   * Shows the notification
+   * @return - the Notification
+   */
   public Notification show() {
     PendingIntent pendingIntent = PendingIntent.getActivity(
       context,

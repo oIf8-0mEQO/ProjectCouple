@@ -1,12 +1,14 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
+import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.R;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
+import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -16,26 +18,30 @@ import java.util.List;
 /**
  * The map proximity manager
  *
- * @author Joseph
- * @since 5/1/2016.
+ * @author Joseph Cox
+ * @since 5/1/2016
  */
-public class MapProximityManager implements ProximityManager, LocationListener {
+public class MapProximityManager implements ProximityManager, Taggable {
 
+  //Meters to Miles conversion ratio
+  private static final double conversion = (1.0) / (1609.0);
   /**
    * A list of observers that subscribe to changes in location.
    */
   private final List<ProximityObserver> observers;
 
-  @Inject
   public CoupleTones app;
 
+  /**
+   * Map Proximity Manager
+   * @param app - CoupleTones app
+   */
   @Inject
-  public MapProximityManager() {
+  public MapProximityManager(CoupleTones app) {
     observers = new LinkedList<>();
+    this.app = app;
   }
 
-  //Meters to Miles conversion ratio
-  private static final double conversion = (1.0) / (1609.0);
   /**
    * Finds the distance in miles between two locations given by the gps.
    */
@@ -54,6 +60,7 @@ public class MapProximityManager implements ProximityManager, LocationListener {
    * @param favoriteLocation The favorite location entered
    */
   public void onEnterLocation(FavoriteLocation favoriteLocation) {
+    Log.d(getTag(), "Entering location: " + favoriteLocation.getName() + " cooldown = " + favoriteLocation.isOnCooldown());
     if (!favoriteLocation.isOnCooldown()) {
       for (ProximityObserver i : observers) {
         i.onEnterLocation(new VisitedLocation(favoriteLocation, new Date()));
@@ -64,11 +71,11 @@ public class MapProximityManager implements ProximityManager, LocationListener {
 
   /**
    * Handles the location change event
-   *
-   * @param location The location
+   * @param location - The changed location
    */
   @Override
   public void onLocationChanged(Location location) {
+    Log.d(getTag(), "Location changed: " + location);
     // Make sure the user is logged in
     if (app.isLoggedIn()) {
       for (FavoriteLocation loc : app.getLocalUser().getFavoriteLocations()) {
@@ -81,14 +88,17 @@ public class MapProximityManager implements ProximityManager, LocationListener {
   }
 
   @Override
-  public void onProviderDisabled(String provider) {
+  public void onStatusChanged(String provider, int status, Bundle extras) {
+
   }
 
   @Override
   public void onProviderEnabled(String provider) {
+
   }
 
   @Override
-  public void onStatusChanged(String provider, int status, Bundle extra) {
+  public void onProviderDisabled(String provider) {
+
   }
 }

@@ -3,9 +3,15 @@ package group50.coupletones.network.message;
 import android.os.Bundle;
 
 /**
- * Created by sharmaine on 5/4/16.
+ * @author Sharmaine Manalo
+ * @since 5/4/16
+ */
+
+/**
+ * Incoming message on the app.
  */
 public class IncomingMessage implements Message {
+
   /**
    * The id of the message type
    */
@@ -20,11 +26,19 @@ public class IncomingMessage implements Message {
     this.data = data;
   }
 
+  /**
+   * Gets type
+   * @return - incoming message
+   */
   @Override
   public String getType() {
     return type;
   }
 
+  /**
+   * Gets data
+   * @return - data of message
+   */
   @Override
   public Bundle getData() {
     return data;

@@ -1,6 +1,6 @@
 package group50.coupletones.auth.user;
 
-import group50.coupletones.controller.tab.favoritelocations.map.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.util.storage.Storage;
 
 import java.util.Collections;
@@ -14,6 +14,10 @@ import java.util.List;
  */
 public class MockLocalUser implements LocalUser {
 
+  /**
+   * Functions that gets and sets Mock Information
+   * Data of a Mock Local user
+   */
   @Override
   public String getId() {
     return "mockuser";

@@ -3,7 +3,7 @@ package group50.coupletones.network.gcm;
 
 /**
  * @author Henry Mao
- * @since 22-04-2016.
+ * @since 4/22/16
  */
 
 import android.app.IntentService;
@@ -18,6 +18,9 @@ import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;
 
+/**
+ * GCM Intent Service class
+ */
 public class GcmIntentService extends IntentService implements Taggable {
 
   @Inject
@@ -27,14 +30,21 @@ public class GcmIntentService extends IntentService implements Taggable {
     super("GcmIntentService");
   }
 
+  /**
+   * onCreate
+   */
   @Override
   public void onCreate() {
     super.onCreate();
 
     // Dependency Injection
-    CoupleTones.component().inject(this);
+    CoupleTones.global().inject(this);
   }
 
+  /**
+   * On Handle Intent handles messages
+   * @param intent - intent
+   */
   @Override
   protected void onHandleIntent(Intent intent) {
     Bundle extras = intent.getExtras();

@@ -9,7 +9,7 @@ package group50.coupletones.util;
 public interface Identifiable {
 
   /**
-   * @return The ID of the object
+   * @return - The ID of the object
    */
   String getId();
 }

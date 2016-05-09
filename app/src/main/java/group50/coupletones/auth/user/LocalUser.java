@@ -1,12 +1,18 @@
 package group50.coupletones.auth.user;
 
-import group50.coupletones.controller.tab.favoritelocations.map.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.util.storage.Storable;
 
 import java.util.List;
 
 /**
- * Created by brandon on 5/5/2016.
+ * @author Brandon Chi
+ * @since  5/5/2016
+ */
+
+/**
+ * The Local User interface represents
+ * a local user in the app.
  */
 public interface LocalUser extends User, Storable {
 

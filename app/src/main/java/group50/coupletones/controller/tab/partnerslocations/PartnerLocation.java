@@ -1,11 +1,14 @@
 package group50.coupletones.controller.tab.partnerslocations;
 
 /**
- * Created by joannecho on 5/5/16.
+ * @author Joanne Cho
+ * @since 5/5/16
  */
 
 /**
- * A class that creates a PartnerLocation object that contains a favorite location name and address.
+ * A class that creates a PartnerLocation object
+ * that contains a favorite location name, address, and time visited.
+ * Includes methods that get and set name, address, and time visited.
  */
 public class PartnerLocation {
   private String name, address, timeValue;

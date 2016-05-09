@@ -4,7 +4,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import dagger.Module;
 import dagger.Provides;
-import group50.coupletones.controller.tab.favoritelocations.map.AddressProvider;
+import group50.coupletones.controller.tab.favoritelocations.map.location.AddressProvider;
 import group50.coupletones.controller.tab.favoritelocations.map.MapProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 
@@ -15,7 +15,7 @@ import java.util.List;
  * The dependency injection module that provides the location manager singleton.
  *
  * @author Henry Mao
- * @since 28/4/2016
+ * @since 4/28/16
  */
 @Module
 public class ProximityModule {

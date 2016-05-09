@@ -13,24 +13,43 @@ import group50.coupletones.R;
 import java.util.List;
 
 /**
- * Created by joannecho on 5/5/16.
+ * @author Joanne Cho
+ * @since 5/5/16
+ */
+
+/**
+ * Partner Locations List Adapter Class
  */
 public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.ListViewHolder> {
 
   private List<PartnerLocation> data;
   private LayoutInflater inflater;
 
+  /**
+   * Partner list adapter
+   * @param data - Partner location data
+   */
   public ListAdapterPartner(List<PartnerLocation> data, Context context) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
   }
 
+  /**
+   * List view holder for partner locations
+   * @param parent - ViewGroup
+   * @return - ListViewholder
+   */
   @Override
   public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     View v = inflater.inflate(R.layout.partner_list_item, parent, false);
     return new ListViewHolder(v);
   }
 
+  /**
+   * View holder for partner locations
+   * @param holder - ListViewHolder
+   * @param position - Partner location's position
+   */
   @Override
   public void onBindViewHolder(ListViewHolder holder, int position) {
     PartnerLocation location = data.get(position);
@@ -41,11 +60,18 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
 
   }
 
+  /**
+   * Gets Item Count
+   * @return - number of items
+   */
   @Override
   public int getItemCount() {
     return data.size();
   }
 
+  /**
+   * Adds Recycler View to List View Holder
+   */
   class ListViewHolder extends RecyclerView.ViewHolder {
 
     private TextView name, address, timeValue;
@@ -53,6 +79,10 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
     private View container;
     private CardView cv;
 
+    /**
+     * ListViewHolder Constructor
+     * @param itemView - View
+     */
     public ListViewHolder(View itemView) {
       super(itemView);
       cv = (CardView) itemView.findViewById(R.id.cv);

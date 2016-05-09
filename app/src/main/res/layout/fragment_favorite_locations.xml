@@ -28,13 +28,13 @@
 
         <!-- Add Location Button on Upper Right-->
         <ImageButton
-            android:id="@+id/btn_add"
-            style="@style/Widget.AppCompat.ActionButton"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="15dp"
-            android:src="@drawable/add_icon"/>
+                android:id="@+id/add_favorite_location"
+                style="@style/Widget.AppCompat.ActionButton"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/add_icon"/>
 
     </android.support.v7.widget.Toolbar>
 

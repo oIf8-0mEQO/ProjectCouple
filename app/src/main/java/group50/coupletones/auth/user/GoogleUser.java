@@ -5,11 +5,8 @@
 
 package group50.coupletones.auth.user;
 
-import android.util.Log;
-
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-
-import group50.coupletones.controller.tab.favoritelocations.map.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.util.storage.Storage;
 
 import java.util.ArrayList;
@@ -84,6 +81,7 @@ public class GoogleUser implements LocalUser {
 
   /**
    * Save User data onto phone
+   * @param storage
    */
   @Override
   public void save(Storage storage) {
@@ -102,6 +100,7 @@ public class GoogleUser implements LocalUser {
 
   /**
    * Load User data from phone
+   * @param storage
    */
   @Override
   public void load(Storage storage) {
@@ -114,8 +113,6 @@ public class GoogleUser implements LocalUser {
       setPartner(null);
     }
 
-    favoriteLocations = storage.getCollection("favoriteLocations", FavoriteLocation.class);
-
-    Log.d("GoogleUser", "size " + favoriteLocations.size());
+    favoriteLocations = storage.getCollection("favoriteLocations", FavoriteLocation::new);
   }
 }

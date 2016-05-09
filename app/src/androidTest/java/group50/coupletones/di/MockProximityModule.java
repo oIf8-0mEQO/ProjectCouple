@@ -2,7 +2,7 @@ package group50.coupletones.di;
 
 import dagger.Module;
 import dagger.Provides;
-import group50.coupletones.controller.tab.favoritelocations.map.AddressProvider;
+import group50.coupletones.controller.tab.favoritelocations.map.location.AddressProvider;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 import group50.coupletones.di.module.ProximityModule;
 
@@ -14,7 +14,7 @@ import static org.mockito.Mockito.mock;
  * Mock Authenticator Module
  *
  * @author Henry Mao
- * @since 28/4/2016
+ * @since 4/28/16
  */
 @Module
 public class MockProximityModule extends ProximityModule {

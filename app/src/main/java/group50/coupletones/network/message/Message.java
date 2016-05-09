@@ -3,7 +3,13 @@ package group50.coupletones.network.message;
 import android.os.Bundle;
 
 /**
- * Created by sharmaine on 5/4/16.
+ * @author Sharmaine Manalo
+ * @since 5/4/16
+ */
+
+/**
+ * Message interface represents the
+ * message sent to partner on the app.
  */
 public interface Message {
   String getType();
@@ -11,7 +17,7 @@ public interface Message {
   Bundle getData();
 
   /**
-   * Short-hand functions to get various data from the message.
+   * Short-hand functions to getCollection various data from the message.
    */
   default String getString(String key) {
     return getData().getString(key);
@@ -19,6 +25,14 @@ public interface Message {
 
   default float getFloat(String key) {
     return getData().getFloat(key);
+  }
+
+  default double getDouble(String key) {
+    return getData().getDouble(key);
+  }
+
+  default boolean getBoolean(String key) {
+    return getData().getBoolean(key);
   }
 
   default int getInt(String key) {
@@ -31,12 +45,22 @@ public interface Message {
   }
 
   default Message setFloat(String key, float value) {
-    getData().getFloat(key, value);
+    getData().putFloat(key, value);
+    return this;
+  }
+
+  default Message setDouble(String key, double value) {
+    getData().putDouble(key, value);
     return this;
   }
 
   default Message setInt(String key, int value) {
-    getData().getInt(key, value);
+    getData().putInt(key, value);
+    return this;
+  }
+
+  default Message setBoolean(String key, boolean value) {
+    getData().putBoolean(key, value);
     return this;
   }
 }

@@ -4,7 +4,13 @@ import android.os.Bundle;
 import org.hashids.Hashids;
 
 /**
- * Created by sharmaine on 5/4/16.
+ * @author Sharmaine Manalo
+ * @since 5/4/16
+ */
+
+/**
+ * Outgoing message class for the app
+ * that handles all outgoing messages.
  */
 public class OutgoingMessage implements Message {
 
@@ -29,15 +35,27 @@ public class OutgoingMessage implements Message {
     this.id = hashId.encode(currentId++);
   }
 
+  /**
+   * Gets the ID
+   * @return - ID of message
+   */
   public String getId() {
     return id;
   }
 
+  /**
+   * Gets the String type
+   * @return String - outgoing message
+   */
   @Override
   public String getType() {
     return getString("type");
   }
 
+  /**
+   * Gets the Data
+   * @return Bundle - outgoing message data
+   */
   @Override
   public Bundle getData() {
     return data;

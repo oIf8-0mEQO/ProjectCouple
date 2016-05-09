@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
 
     <!-- Toolbar Settings for Settings Page -->
     <android.support.v7.widget.Toolbar
@@ -28,13 +28,13 @@
 
         <!-- Add Location Button on Upper Right-->
         <ImageButton
-            android:id="@+id/btn_add"
-            style="@style/Widget.AppCompat.ActionButton"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="15dp"
-            android:src="@drawable/add_icon"/>
+                android:id="@+id/add_favorite_location"
+                style="@style/Widget.AppCompat.ActionButton"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/add_icon"/>
 
     </android.support.v7.widget.Toolbar>
 
@@ -54,8 +54,7 @@
                 android:id="@+id/favorite_locations_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="0dp"/>
-
+                android:layout_marginTop="6dp"/>
         </LinearLayout>
 
     </ScrollView>

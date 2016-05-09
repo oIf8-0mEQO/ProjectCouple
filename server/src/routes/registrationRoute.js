@@ -18,10 +18,11 @@ class RegistrationRoute extends Route {
 	}
 
 	receive(messageId, from, data) {
+		var name = data.name;
 		var email = data.email;
-		if (email) {
-			console.log("User " + email + " registering with server...");
-			App.addUser(new User(from, email));
+		if (name && email) {
+			console.log("User " + name + " (" + email + ") registering with server...");
+			App.addUser(new User(from, name, email));
 		} else {
 			console.error("Invalid data sent to route: " + this.id);
 		}

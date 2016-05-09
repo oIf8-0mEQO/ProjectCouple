@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<!-- Icons: android:icon="@drawable/logo" -->
 	<item
-			android:id="@+id/partnerLocations"
+			android:id="@+id/partner_locations"
 			android:title="@string/partner_locations"
-		android:layout_width = "30dp"
-		android:layout_height= "30dp"
-		android:scaleType="center"
+			android:layout_width = "30dp"
+			android:layout_height= "30dp"
+			android:scaleType="center"
 			android:icon="@drawable/home_icon1" />
 	<item
-			android:id="@+id/favoriteLocations"
+			android:id="@+id/favorite_locations"
 			android:title="@string/favorite_locations"
-		android:layout_width = "30dp"
-		android:layout_height= "30dp"
-		android:scaleType="center"
+			android:layout_width = "30dp"
+			android:layout_height= "30dp"
+			android:scaleType="center"
 			android:icon="@drawable/faves_icon" />
 
 	<item

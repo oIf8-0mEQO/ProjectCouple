@@ -1,7 +1,8 @@
 package group50.coupletones.auth;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -9,8 +10,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.Status;
 import group50.coupletones.CoupleTones;
+import group50.coupletones.auth.user.GoogleUser;
+import group50.coupletones.auth.user.User;
+import group50.coupletones.network.NetworkManager;
+import group50.coupletones.network.message.OutgoingMessage;
 import group50.coupletones.util.Taggable;
+import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Function;
 
 import javax.inject.Inject;
@@ -30,60 +37,54 @@ public class GoogleAuthenticator implements
    * The request code for sign in intent
    */
   private static final int RC_SIGN_IN = 9001;
+
   /**
    * Private instance to the CoupleTones app instance
    */
-  private final CoupleTones app;
+  public CoupleTones app;
+
   /**
-   * The activity initiating authentication
+   * The network manager
    */
-  private FragmentActivity activity;
+  public NetworkManager network;
+
   /**
    * The callback function upon success
    */
   private Function<User, User> successCallback = x -> null;
+
   /**
    * The callback function upon failure
    */
   private Function<String, String> failCallback = x -> null;
+
   /**
    * The Google API client instance
    */
   private GoogleApiClient apiClient;
 
   @Inject
-  public GoogleAuthenticator(CoupleTones app) {
-    this.app = app;
-  }
+  public GoogleAuthenticator(Context context) {
+    app = CoupleTones.global().app();
+    network = CoupleTones.global().network();
 
-  /**
-   * Binds the authenticator with a given activity.
-   * Required to get the authenticator working
-   *
-   * @param activity The activity that is attempting to initiate sign in
-   */
-  @Override
-  public GoogleAuthenticator bind(FragmentActivity activity) {
-    this.activity = activity;
-
-    /*
-     * Configure sign-in to request the user's ID, email address, and basic
-     * profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-     */
+    // Create Google API Client
     GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
       .requestEmail()
       .build();
 
-      /*
-       * Build a GoogleApiClient with access to the Google Sign-In API and the
-       * options specified by gso.
-      */
-    apiClient = new GoogleApiClient.Builder(this.activity)
-      .enableAutoManage(this.activity, this)
+    this.apiClient = new GoogleApiClient.Builder(context)
       .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+      .addOnConnectionFailedListener(this)
       .build();
+  }
 
-    return this;
+  public void connect() {
+    apiClient.connect();
+  }
+
+  public void disconnect() {
+    apiClient.disconnect();
   }
 
   /**
@@ -106,7 +107,7 @@ public class GoogleAuthenticator implements
       // There's no immediate result ready, displays some progress indicator and waits for the
       // async callback.
       pendingResult.setResultCallback(result -> {
-        Log.d(getTag(), "Silent sign in handled: " + result.getStatus());
+          Log.d(getTag(), "Silent sign in handled: " + result.getStatus());
           handleSignInResult(result);
         }
       );
@@ -121,9 +122,25 @@ public class GoogleAuthenticator implements
    * @return This instance
    */
   @Override
-  public GoogleAuthenticator signIn() {
+  public GoogleAuthenticator signIn(Activity activity) {
     Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(apiClient);
     activity.startActivityForResult(signInIntent, RC_SIGN_IN);
+    return this;
+  }
+
+  /**
+   * Attempts to sign out the user.
+   */
+  @Override
+  public GoogleAuthenticator signOut(Consumer<Status> consumer) {
+    Log.d(getTag(), "API isConnected: " + apiClient.isConnected());
+    if (apiClient.isConnected()) {
+      app.setLocalUser(null);
+      Auth.GoogleSignInApi.signOut(apiClient)
+        .setResultCallback(consumer::accept);
+      Auth.GoogleSignInApi.revokeAccess(apiClient);
+    }
+
     return this;
   }
 
@@ -154,6 +171,14 @@ public class GoogleAuthenticator implements
       // Signed in successfully, store authenticated user
       GoogleUser localUser = new GoogleUser(result.getSignInAccount());
       app.setLocalUser(localUser);
+
+      // Notify server of registration
+      network.send(
+        (OutgoingMessage) new OutgoingMessage("registration")
+          .setString("name", localUser.getName())
+          .setString("email", localUser.getEmail())
+      );
+
       successCallback.apply(localUser);
     } else {
       // Signed out, show unauthenticated UI.

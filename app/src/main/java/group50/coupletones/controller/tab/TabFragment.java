@@ -13,12 +13,12 @@ import android.view.ViewGroup;
  *
  * @author Henry Mao
  */
-abstract class TabFragment<L> extends Fragment {
+public abstract class TabFragment<L> extends Fragment {
 
   private final Class<L> listenerClass;
   protected L listener;
 
-  TabFragment(Class<L> listenerClass) {
+  public TabFragment(Class<L> listenerClass) {
     this.listenerClass = listenerClass;
   }
 
@@ -34,6 +34,9 @@ abstract class TabFragment<L> extends Fragment {
     return inflater.inflate(getResourceId(), container, false);
   }
 
+  /**
+   * onAttach attaches listener if valid
+   */
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
@@ -47,6 +50,10 @@ abstract class TabFragment<L> extends Fragment {
     }
   }
 
+  /**
+   * onDetach detaches if the
+   * listener is null
+   */
   @Override
   public void onDetach() {
     super.onDetach();

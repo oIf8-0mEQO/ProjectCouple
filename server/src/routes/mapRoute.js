@@ -30,24 +30,29 @@ class MapRoute extends Route {
 	}
 
 	receive(messageId, from, data) {
-		var gcmUser = App.getUserByDevice(from);
-		if (gcmUser) {
-			console.log("User " + gcmUser + " attempting to notify " + data.partner);
+		var sender = App.getUserByDevice(from);
+		if (sender) {
+			console.log("User " + sender.email + " attempting to notify " + data.partner);
 			var partner = App.getUserByEmail(data.partner);
 
 			if (partner) {
+				console.log(data);
 				// Send request to partner
-				GCM.send(partner.id, {
+				GCM.send(partner.deviceId, {
 					type: "map-notify",
-					location: data.location,
-					partner: gcmUser.email
-				});
+					name: data.name,
+					lat: data.lat,
+					long: data.long,
+					time: data.time,
+					partner: sender.email
+				}, {});
 			} else {
-				//TODO: Reject the request
-				GCM.send(partner.id, {
+				// Reject the request
+				GCM.send(sender.deviceId, {
 					type: "map-reject",
-					partner: gcmUser.email
-				});
+					partner: sender.email,
+					error: "Unable to find user."
+				}, {});
 				console.error("Invalid partner: " + data.partner);
 			}
 		} else {

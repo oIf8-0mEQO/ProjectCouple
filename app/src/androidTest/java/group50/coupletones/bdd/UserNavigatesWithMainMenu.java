@@ -1,4 +1,4 @@
-package group50.coupletones.controller;
+package group50.coupletones.bdd;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
@@ -8,6 +8,9 @@ import android.test.ActivityInstrumentationTestCase2;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.MockLocalUser;
+import group50.coupletones.controller.MainActivity;
+import group50.coupletones.controller.tab.SettingsFragment;
+import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.partnerslocations.PartnersLocationsFragment;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
@@ -17,6 +20,9 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
@@ -25,33 +31,26 @@ import static org.mockito.Mockito.when;
  * @since 4/25/16.
  */
 @RunWith(AndroidJUnit4.class)
-public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActivity> {
+public class UserNavigatesWithMainMenu extends ActivityInstrumentationTestCase2<MainActivity> {
 
   private MainActivity activity;
 
   // The default tab expected
   private Class<PartnersLocationsFragment> defaultTabClass = PartnersLocationsFragment.class;
 
-  public MainActivityTest() {
+  public UserNavigatesWithMainMenu() {
     super(MainActivity.class);
   }
 
-  //TODO: Add test for changing to settings tab view
-
   @Before
-    public void setUp() throws Exception {
-      super.setUp();
+  public void setUp() throws Exception {
+    super.setUp();
 
     CoupleTones.setGlobal(
       DaggerMockAppComponent
         .builder()
         .mockProximityModule(new MockProximityModule())
         .build());
-
-    //TODO: DRY
-    // Stub getLocalUser method
-    when(CoupleTones.global().app().getLocalUser())
-      .thenReturn(new MockLocalUser());
 
     // Injecting the Instrumentation instance is required
     // for your test to run with AndroidJUnitRunner.
@@ -75,17 +74,26 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     assertThat(fragments.get(0)).isOfAnyClassIn(defaultTabClass);
   }
 
-  /**
-   * Test tapping on the first tab
-   *
-   * @throws Exception
-   */
-  @Test
-  public void testTabTap1() throws Exception {
+  private void givenThatIAmLoggedIn() {
+    // Stub getLocalUser method
+    when(CoupleTones.global().app().getLocalUser())
+      .thenReturn(new MockLocalUser());
+  }
+
+  private void whenITapOnPartnersLocation() {
+    onView(withId(R.id.partner_locations)).perform(click());
+  }
+
+  private void whenITapOnFavoriteLocation() {
+    onView(withId(R.id.favorite_locations)).perform(click());
+  }
+
+  private void whenITapOnSettings() {
+    onView(withId(R.id.settings)).perform(click());
+  }
+
+  private void thenTheAppDisplaysPartnersLocation() {
     FragmentManager supportFragmentManager = activity.getSupportFragmentManager();
-
-    activity.onMenuTabSelected(R.id.partnerLocations);
-
     List<Fragment> fragments = supportFragmentManager.getFragments();
     // There should be one fragment since the default is already set to this fragment
     assertThat(fragments).hasSize(1);
@@ -93,24 +101,65 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     assertThat(fragments.get(0)).isOfAnyClassIn(PartnersLocationsFragment.class);
   }
 
-  /**
-   * Test tapping on the second tab
-   * @throws Exception
-   */
-  /*
-  @Test
-  public void testTabTap2() throws Exception {
+  private void thenTheAppDisplaysFavoriteLocation() {
     activity.runOnUiThread(() -> {
       FragmentManager supportFragmentManager = activity.getSupportFragmentManager();
 
-      activity.onMenuTabSelected(R.id.favoriteLocations);
       List<Fragment> fragments = supportFragmentManager.getFragments();
       // There should be only one fragment active upon launch
       assertThat(fragments).hasSize(2);
       // Test to make sure the fragment is a PartnersLocationsFragment
-      assertThat(fragments.getCollection(1)).isOfAnyClassIn(FavoriteLocationsFragment.class);
+      assertThat(fragments.get(1)).isOfAnyClassIn(FavoriteLocationsFragment.class);
     });
-  }*/
+  }
+
+  private void thenTheAppDisplaysSettings() {
+    activity.runOnUiThread(() -> {
+      FragmentManager supportFragmentManager = activity.getSupportFragmentManager();
+
+      List<Fragment> fragments = supportFragmentManager.getFragments();
+      // There should be only one fragment active upon launch
+      assertThat(fragments).hasSize(2);
+      // Test to make sure the fragment is a PartnersLocationsFragment
+      assertThat(fragments.get(1)).isOfAnyClassIn(SettingsFragment.class);
+    });
+  }
+
+  /**
+   * Test tapping on the first tab
+   *
+   * @throws Exception
+   */
+  @Test
+  public void userTapsOnPartnersLocation() throws Exception {
+    givenThatIAmLoggedIn();
+    whenITapOnPartnersLocation();
+    thenTheAppDisplaysPartnersLocation();
+  }
+
+  /**
+   * Test tapping on the second tab
+   *
+   * @throws Exception
+   */
+  @Test
+  public void userTapsOnFavoriteLocationsTab() throws Exception {
+    givenThatIAmLoggedIn();
+    whenITapOnFavoriteLocation();
+    thenTheAppDisplaysFavoriteLocation();
+  }
+
+  /**
+   * Test tapping on the third tab
+   *
+   * @throws Exception
+   */
+  @Test
+  public void userTapsOnSettingsTab() throws Exception {
+    givenThatIAmLoggedIn();
+    whenITapOnSettings();
+    thenTheAppDisplaysSettings();
+  }
 
   /**
    * Test when an invalid tab tap occurs

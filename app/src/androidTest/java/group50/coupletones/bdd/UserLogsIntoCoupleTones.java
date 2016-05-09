@@ -1,4 +1,4 @@
-package group50.coupletones.controller;
+package group50.coupletones.bdd;
 
 import android.app.Activity;
 import android.app.Instrumentation;
@@ -12,6 +12,8 @@ import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.user.MockLocalUser;
 import group50.coupletones.auth.user.User;
+import group50.coupletones.controller.LoginActivity;
+import group50.coupletones.controller.MainActivity;
 import group50.coupletones.di.DaggerInstanceComponent;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
@@ -26,13 +28,13 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 /**
- * The LoginActivity test to test the LoginActivity
+ * Tests the User Logs Into CoupleTones story
  *
  * @author Henry Mao
  * @since 4/27/16
  */
 @RunWith(AndroidJUnit4.class)
-public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginActivity> {
+public class UserLogsIntoCoupleTones extends ActivityInstrumentationTestCase2<LoginActivity> {
 
   // Time out for activities
   private final int TIMEOUT = 5000;
@@ -43,7 +45,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
   // The mock authenticator
   private Authenticator<User, String> authenticator;
 
-  public LoginActivityTest() {
+  public UserLogsIntoCoupleTones() {
     super(LoginActivity.class);
   }
 
@@ -81,38 +83,61 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     injectInstrumentation(InstrumentationRegistry.getInstrumentation());
   }
 
+  private void whenISeeTheLoginPage() {
+    activity = getActivity();
+  }
+
+  private void givenThatIAmNotLoggedIn() {
+    when(CoupleTones.global().app().getLocalUser()).thenReturn(null);
+    when(CoupleTones.global().app().isLoggedIn()).thenReturn(false);
+  }
+
+  // See only the login page
+  private void thenIWillSeeTheLoginPage(Instrumentation.ActivityMonitor activityMonitor) {
+    //Watch for the timeout
+    //example values 5000 if in ms, or 5 if it's in seconds.
+    Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, TIMEOUT);
+    // next activity is opened and captured.
+    assertThat(nextActivity).isNull();
+  }
+
   /**
    * Test the LoginActivity initialization for calls to Authenticator
    */
   @Test
-  public void testOnCreate() {
-    activity = getActivity();
-
+  public void userNotLoggedIntoCoupleTones() {
+    givenThatIAmNotLoggedIn();
+    whenISeeTheLoginPage();
     // Verify some Authenticator methods were called
     verify(activity.auth).onSuccess(any());
     verify(activity.auth).autoSignIn();
   }
 
-  /**
-   * Test the login button click and if it calls sign in for the authenticator
-   */
-  @Test
-  public void testOnClick() {
-    activity = getActivity();
-
+  private void thenICanOpenMyGoogleCredentials() {
     activity.runOnUiThread(() -> {
       Button button = (Button) activity.findViewById(R.id.sign_in_button);
       button.performClick();
       // Verify sign in is called
       verify(activity.auth).signIn(activity);
     });
+/*
+    onView(withId(R.id.sign_in_button)).perform(click());
+    verify(activity.auth).signIn(activity);
+  */
   }
 
   /**
-   * Test that auto sign in works when the user is already logged in
+   * Test the login button click and if it calls sign in for the authenticator
    */
   @Test
-  public void testAutoSignIn() throws Exception {
+  public void userTriesToLogin() {
+    givenThatIAmLoggedIn();
+    whenISeeTheLoginPage();
+    thenICanOpenMyGoogleCredentials();
+  }
+
+
+  private void givenThatIAmLoggedIn() {
     Authenticator<User, String> auth = authenticator;
 
     final Wrapper<Function<User, User>> successWrapper = new Wrapper<>();
@@ -134,20 +159,31 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
         successWrapper.obj.apply(mock(User.class));
         return auth;
       });
+  }
 
-    // Silent sign in is called upon onCreate, so monitor must be setup before getActivity()
-    Instrumentation.ActivityMonitor activityMonitor = getInstrumentation()
-      .addMonitor(MainActivity.class.getName(), null, false);
-
-    activity = getActivity();
-
-    // Activity should have auto signed in
-
+  private void thenIWillNotSeeTheLoginPage(Instrumentation.ActivityMonitor activityMonitor) {
     //Watch for the timeout 5 seconds, if the expected activity was created.
     Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, TIMEOUT);
     // next activity is opened and captured.
     assertThat(nextActivity).isInstanceOf(MainActivity.class);
     nextActivity.finish();
+  }
+
+  /**
+   * Test that auto sign in works when the user is already logged in
+   */
+  @Test
+  public void userIsLoggedIntoCoupleTones() throws Exception {
+    givenThatIAmLoggedIn();
+
+    // Silent sign in is called upon onCreate, so monitor must be setup before getActivity()
+    Instrumentation.ActivityMonitor activityMonitor = getInstrumentation()
+      .addMonitor(MainActivity.class.getName(), null, false);
+
+    whenISeeTheLoginPage();
+
+    // Activity should have auto signed in
+    thenIWillNotSeeTheLoginPage(activityMonitor);
   }
 
   /**
@@ -203,11 +239,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
     assertThat(successWrapper.obj).isNotNull();
     this.activity.runOnUiThread(() -> successWrapper.obj.apply(null));
 
-    //Watch for the timeout
-    //example values 5000 if in ms, or 5 if it's in seconds.
-    Activity nextActivity = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, TIMEOUT);
-    // next activity is opened and captured.
-    assertThat(nextActivity).isNull();
+    thenIWillSeeTheLoginPage(activityMonitor);
   }
 
   /**

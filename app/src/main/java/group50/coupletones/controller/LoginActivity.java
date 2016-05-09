@@ -30,13 +30,11 @@ public class LoginActivity extends AppCompatActivity implements Taggable {
 
   @Inject
   public CoupleTones app;
-
-  protected InstanceComponent component;
-
   /**
    * The object used for handling authentication
    */
-  protected Authenticator<User, String> auth;
+  public Authenticator<User, String> auth;
+  protected InstanceComponent component;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {

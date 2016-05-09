@@ -6,12 +6,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.test.suitebuilder.annotation.LargeTest;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
@@ -48,6 +51,9 @@ public class UserDeletesFavoriteLocation {
   private CoupleTones app;
   private LocalUser mockUser;
   private FavoriteLocation fave;
+  private LatLng zoneLatLng = new LatLng(32.882, -117.233);
+  private FavoriteLocation zone = new FavoriteLocation("Home", zoneLatLng);
+  private List<FavoriteLocation> data;
 
   @Before
   public void setup() {
@@ -64,7 +70,7 @@ public class UserDeletesFavoriteLocation {
     app = CoupleTones.global().app();
     when(app.isLoggedIn()).thenReturn(true);
     when(app.getLocalUser()).thenReturn(mockUser);
-    when(mockUser.getFavoriteLocations()).thenReturn(Collections.singletonList(new FavoriteLocation("home")));
+    when(mockUser.getFavoriteLocations()).thenReturn(Collections.singletonList(zone));
   }
 
   // User has a favorite location
@@ -73,16 +79,16 @@ public class UserDeletesFavoriteLocation {
   // Then that location will be removed from the my list of favorite locations (including the name)
 
   private void givenUserHasFavoriteLocation() {
-    onView(withId(R.id.favoriteLocations)).perform(click());
+    onView(withId(R.id.favorite_locations)).perform(click());
     FavoriteLocationsFragment fragment = (FavoriteLocationsFragment) rule.getActivity()
-        .getTabs().get(R.id.favoriteLocations);
-    RecyclerView rv = fragment.getFavesList();
-    FavoriteLocationsListAdapter adapter = fragment.getAdapter();
-
+        .getTabs().get(R.id.favorite_locations);
+    data = mockUser.getFavoriteLocations();
+    assertThat(data.size()).isNotEqualTo(0);
   }
 
   private void whenUserClicksDeleteOnFavoriteLocation() {
-    onView(withId(R.id.delete_location_button)).perform(click());
+    
+    //onView(withId(R.id.delete_location_button)).perform(click());
   }
 
   private void thenThatLocationWillBeRemovedFromList() {

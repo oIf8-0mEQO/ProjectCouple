@@ -10,6 +10,9 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Collections;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.Assert.*;
 
@@ -44,6 +47,7 @@ public class UserDeletesFavoriteLocation {
   public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
   private CoupleTones app;
   private LocalUser mockUser;
+  private FavoriteLocation fave;
 
   @Before
   public void setup() {
@@ -60,6 +64,7 @@ public class UserDeletesFavoriteLocation {
     app = CoupleTones.global().app();
     when(app.isLoggedIn()).thenReturn(true);
     when(app.getLocalUser()).thenReturn(mockUser);
+    when(mockUser.getFavoriteLocations()).thenReturn(Collections.singletonList(new FavoriteLocation("home")));
   }
 
   // User has a favorite location
@@ -69,14 +74,15 @@ public class UserDeletesFavoriteLocation {
 
   private void givenUserHasFavoriteLocation() {
     onView(withId(R.id.favoriteLocations)).perform(click());
-    FavoriteLocationsFragment fragment = (FavoriteLocationsFragment) rule.getActivity().getTabs().get(R.id.favoriteLocations);
+    FavoriteLocationsFragment fragment = (FavoriteLocationsFragment) rule.getActivity()
+        .getTabs().get(R.id.favoriteLocations);
     RecyclerView rv = fragment.getFavesList();
     FavoriteLocationsListAdapter adapter = fragment.getAdapter();
-    assertThat(adapter.getItemCount()).isEqualTo(0);
+
   }
 
   private void whenUserClicksDeleteOnFavoriteLocation() {
-    //onView(withId(R.id.delete_location_button)).perform(click());
+    onView(withId(R.id.delete_location_button)).perform(click());
   }
 
   private void thenThatLocationWillBeRemovedFromList() {

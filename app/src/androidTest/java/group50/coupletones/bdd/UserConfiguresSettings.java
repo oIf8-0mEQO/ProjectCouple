@@ -67,24 +67,30 @@ public class UserConfiguresSettings {
     onView(withId(R.id.settings)).perform(click());
   }
 
+  private void thenUserSeesButtonToAddPartner() {
+    // I should see a button that allows me to add partner
+    onView(withId(R.id.add_partner_button)).perform(click());
+  }
+
+  private void thenUserSeesPartnerName() {
+    // I should see my partner's info
+    onView(withId(R.id.partner_name)).check(matches(withText(samplePartner.getName())));
+    onView(withId(R.id.partner_email)).check(matches(withText(samplePartner.getEmail())));
+    onView(withId(R.id.partner_name)).check(matches(isDisplayed()));
+    onView(withId(R.id.partner_email)).check(matches(isDisplayed()));
+  }
+
   @Test
   public void userAddsPartner() {
     givenUserNotConnectedToPartner();
     whenOpenSettingsPage();
-
-    // I should see a button that allows me to add partner
-    onView(withId(R.id.add_partner_button)).perform(click());
+    thenUserSeesButtonToAddPartner();
   }
 
   @Test
   public void userSeesPartner() {
     givenUserConnectedToPartner();
     whenOpenSettingsPage();
-
-    // I should see my partner's info
-    onView(withId(R.id.partner_name)).check(matches(withText(samplePartner.getName())));
-    onView(withId(R.id.partner_email)).check(matches(withText(samplePartner.getEmail())));
-    onView(withId(R.id.partner_name)).check(matches(isDisplayed()));
-    onView(withId(R.id.partner_email)).check(matches(isDisplayed()));
+    thenUserSeesPartnerName();
   }
 }

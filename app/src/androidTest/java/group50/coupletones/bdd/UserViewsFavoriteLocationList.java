@@ -52,7 +52,7 @@ public class UserViewsFavoriteLocationList {
     when(app.getLocalUser()).thenReturn(mockUser);
   }
   private void givenUserIsNotViewingOwnList() {
-    onView(withId(R.id.partnerLocations)).check(matches(isDisplayed()));
+    onView(withId(R.id.partner_locations)).check(matches(isDisplayed()));
   }
 
   private void whenUserClicksTheFavesButton() {

@@ -23,7 +23,6 @@ import java.util.HashMap;
  * tab page as a fragment and renders them accordingly.
  */
 public class MainActivity extends AppCompatActivity implements
-  FavoriteLocationsFragment.Listener,
   PartnersLocationsFragment.Listener,
   OnMenuTabClickListener,
   Taggable {

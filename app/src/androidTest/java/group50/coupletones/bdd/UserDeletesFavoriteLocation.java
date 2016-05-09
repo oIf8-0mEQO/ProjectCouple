@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -50,7 +51,6 @@ public class UserDeletesFavoriteLocation {
   public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
   private CoupleTones app;
   private LocalUser mockUser;
-  private FavoriteLocation fave;
   private LatLng zoneLatLng = new LatLng(32.882, -117.233);
   private FavoriteLocation zone = new FavoriteLocation("Home", zoneLatLng);
   private List<FavoriteLocation> data;
@@ -70,7 +70,9 @@ public class UserDeletesFavoriteLocation {
     app = CoupleTones.global().app();
     when(app.isLoggedIn()).thenReturn(true);
     when(app.getLocalUser()).thenReturn(mockUser);
-    when(mockUser.getFavoriteLocations()).thenReturn(Collections.singletonList(zone));
+    data = new LinkedList<>();
+    data.add(zone);
+    when(mockUser.getFavoriteLocations()).thenReturn(data);
   }
 
   // User has a favorite location
@@ -80,25 +82,24 @@ public class UserDeletesFavoriteLocation {
 
   private void givenUserHasFavoriteLocation() {
     onView(withId(R.id.favorite_locations)).perform(click());
-    FavoriteLocationsFragment fragment = (FavoriteLocationsFragment) rule.getActivity()
-        .getTabs().get(R.id.favorite_locations);
     data = mockUser.getFavoriteLocations();
     assertThat(data.size()).isNotEqualTo(0);
   }
 
   private void whenUserClicksDeleteOnFavoriteLocation() {
-    
-    //onView(withId(R.id.delete_location_button)).perform(click());
+    onView(withId(R.id.delete_location_icon)).check(matches(isDisplayed()));
+    onView(withId(R.id.delete_location_icon)).perform(click());
   }
 
   private void thenThatLocationWillBeRemovedFromList() {
-
+    assertThat(data.size()).isEqualTo(0);
   }
 
   @Test
   public void userHasAFavoriteLocation() {
     givenUserHasFavoriteLocation();
     whenUserClicksDeleteOnFavoriteLocation();
+    thenThatLocationWillBeRemovedFromList();
   }
 
   // User does not have a favorite location

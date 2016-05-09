@@ -59,6 +59,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
   /**
    * onConnected
+   *
    * @param bundle - Bundle
    */
   @Override
@@ -68,6 +69,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
   /**
    * onConnectionSuspended
+   *
    * @param i - int
    */
   @Override
@@ -115,10 +117,11 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
       // Request a single update to move the map to appropriate location
       locationManager.requestSingleUpdate(GPS_PROVIDER, new LocationListener() {
 
-            /**
-             * onLocationChanged
-             * @param location - changed location
-             */
+          /**
+           * onLocationChanged
+           *
+           * @param location - changed location
+           */
           @Override
           public void onLocationChanged(Location location) {
             Log.d(getTag(), "Got single update");
@@ -148,6 +151,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
   /**
    * Moves the map to a given location
+   *
    * @param loc - The location to move to
    */
   public void moveMap(android.location.Location loc) {
@@ -156,12 +160,20 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
   /**
    * Moves the map to a given latlong position
+   *
    * @param position - The position to move to
    */
   public void moveMap(LatLng position) {
     Log.d(TAG, "Moving map to: " + position);
     CameraUpdate update = CameraUpdateFactory.newLatLngZoom(position, 15);
     mMap.moveCamera(update);
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    if (mMap != null)
+      populateMap();
   }
 
   /**

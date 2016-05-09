@@ -18,8 +18,7 @@ import javax.inject.Inject;
 /**
  * A {@link Fragment} subclass for the Favorite Locations tab.
  */
-public class FavoriteLocationsFragment extends TabFragment<Object>
-  implements View.OnClickListener {
+public class FavoriteLocationsFragment extends TabFragment<Object> {
 
   @Inject
   public CoupleTones app;

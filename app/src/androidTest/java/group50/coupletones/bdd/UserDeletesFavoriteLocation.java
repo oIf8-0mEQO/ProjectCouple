@@ -2,6 +2,8 @@ package group50.coupletones.bdd;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import org.junit.Before;
@@ -15,6 +17,9 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.MainActivity;
+import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
+import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsListAdapter;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 
@@ -36,7 +41,7 @@ import static org.mockito.Mockito.when;
 @LargeTest
 public class UserDeletesFavoriteLocation {
   @Rule
-  public ActivityTestRule<MainActivity> notOwnListPage = new ActivityTestRule<>(MainActivity.class);
+  public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
   private CoupleTones app;
   private LocalUser mockUser;
 
@@ -64,11 +69,14 @@ public class UserDeletesFavoriteLocation {
 
   private void givenUserHasFavoriteLocation() {
     onView(withId(R.id.favoriteLocations)).perform(click());
-
+    FavoriteLocationsFragment fragment = (FavoriteLocationsFragment) rule.getActivity().getTabs().get(R.id.favoriteLocations);
+    RecyclerView rv = fragment.getFavesList();
+    FavoriteLocationsListAdapter adapter = fragment.getAdapter();
+    assertThat(adapter.getItemCount()).isEqualTo(0);
   }
 
   private void whenUserClicksDeleteOnFavoriteLocation() {
-    onView(withId(R.id.delete_location_button)).perform(click());
+    //onView(withId(R.id.delete_location_button)).perform(click());
   }
 
   private void thenThatLocationWillBeRemovedFromList() {

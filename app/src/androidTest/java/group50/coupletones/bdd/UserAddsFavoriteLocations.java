@@ -109,6 +109,13 @@ public class UserAddsFavoriteLocations {
     eventOnAccept.onClick(null, 0);
   }
 
+  private void thenLocationWillBeAddedToList(String sampleLocationName) {
+    // Then the location will be added to my favorite list
+    assertThat(app.getLocalUser().getFavoriteLocations()).hasSize(1);
+    assertThat(app.getLocalUser().getFavoriteLocations().get(0).getName())
+        .isEqualTo(sampleLocationName);
+  }
+
   @Test
   public void userAddsValidLocation() throws Exception {
     givenLocationValidOnGoogleMaps();
@@ -119,10 +126,7 @@ public class UserAddsFavoriteLocations {
     Handler handler = new Handler(rule.getActivity().getMainLooper());
     handler.post(() -> {
       whenSaveFavoriteLocation(sampleLocationName);
-
-      // Then the location will be added to my favorite list
-      assertThat(app.getLocalUser().getFavoriteLocations()).hasSize(1);
-      assertThat(app.getLocalUser().getFavoriteLocations().get(0).getName()).isEqualTo(sampleLocationName);
+      thenLocationWillBeAddedToList(sampleLocationName);
 
       //onView(withId(R.id.favorite_locations_list)).check(matches(hasDescendant(withText(sampleLocationName))));
     });

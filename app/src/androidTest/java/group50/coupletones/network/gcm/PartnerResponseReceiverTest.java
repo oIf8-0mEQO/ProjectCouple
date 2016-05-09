@@ -1,35 +1,25 @@
 package group50.coupletones.network.gcm;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.ApplicationTestCase;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
+import android.test.suitebuilder.annotation.LargeTest;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
-import group50.coupletones.auth.user.MockLocalUser;
 import group50.coupletones.auth.user.Partner;
-import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.network.message.Message;
 import group50.coupletones.network.message.MessageType;
-import group50.coupletones.network.receiver.Notification;
 import group50.coupletones.network.receiver.PartnerResponseReceiver;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Sharmaine Manalo
@@ -37,6 +27,7 @@ import static org.assertj.core.api.Assertions.*;
  */
 
 @RunWith(AndroidJUnit4.class)
+@LargeTest
 public class PartnerResponseReceiverTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
   private CoupleTones app;

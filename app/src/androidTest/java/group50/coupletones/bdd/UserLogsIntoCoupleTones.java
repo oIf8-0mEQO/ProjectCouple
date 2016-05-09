@@ -5,6 +5,7 @@ import android.app.Instrumentation;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.suitebuilder.annotation.LargeTest;
 import android.widget.Button;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
@@ -34,6 +35,7 @@ import static org.mockito.Mockito.*;
  * @since 4/27/16
  */
 @RunWith(AndroidJUnit4.class)
+@LargeTest
 public class UserLogsIntoCoupleTones extends ActivityInstrumentationTestCase2<LoginActivity> {
 
   // Time out for activities

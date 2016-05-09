@@ -3,6 +3,7 @@ package group50.coupletones.controller;
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.test.suitebuilder.annotation.LargeTest;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.LocalUser;
@@ -26,6 +27,7 @@ import static org.mockito.Mockito.*;
  * @since 5/8/2016
  */
 @RunWith(AndroidJUnit4.class)
+@LargeTest
 public class PartnerResponseActivityTest {
 
   @Rule

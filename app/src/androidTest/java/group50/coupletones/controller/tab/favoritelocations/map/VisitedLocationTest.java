@@ -1,16 +1,17 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
+import android.support.test.runner.AndroidJUnit4;
+import android.test.suitebuilder.annotation.LargeTest;
 import com.google.android.gms.maps.model.LatLng;
-
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Date;
 
-import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
-
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Joseph Cox
@@ -20,6 +21,8 @@ import static org.mockito.Mockito.*;
 /**
  * Test for Visited Locations
  */
+@RunWith(AndroidJUnit4.class)
+@LargeTest
 public class VisitedLocationTest {
 
   @Test

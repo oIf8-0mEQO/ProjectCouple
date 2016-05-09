@@ -3,6 +3,7 @@ package group50.coupletones.controller;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.suitebuilder.annotation.LargeTest;
 import android.widget.Button;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
@@ -19,9 +20,11 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 /**
- * Created by Calvin on 5/7/2016.
+ * @author Calvin
+ * @since 5/7/2016
  */
 @RunWith(AndroidJUnit4.class)
+@LargeTest
 public class AddPartnerActivityTest extends ActivityInstrumentationTestCase2<AddPartnerActivity> {
 
   public NetworkManager network;

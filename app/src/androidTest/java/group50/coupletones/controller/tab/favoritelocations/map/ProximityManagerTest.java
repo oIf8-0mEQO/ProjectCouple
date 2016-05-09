@@ -1,6 +1,8 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.location.Location;
+import android.support.test.runner.AndroidJUnit4;
+import android.test.suitebuilder.annotation.LargeTest;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
@@ -10,14 +12,11 @@ import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Collections;
 
-import static org.mockito.Mockito.anyObject;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Joseph Cox
@@ -27,6 +26,8 @@ import static org.mockito.Mockito.when;
 /**
  * Proximity manager test for favorite location
  */
+@RunWith(AndroidJUnit4.class)
+@LargeTest
 public class ProximityManagerTest {
 
   private FavoriteLocation favLocation;

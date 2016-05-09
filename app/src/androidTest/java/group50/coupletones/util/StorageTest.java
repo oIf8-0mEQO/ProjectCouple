@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.suitebuilder.annotation.LargeTest;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.di.DaggerMockAppComponent;
@@ -24,6 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @since 4/28/2016
  */
 @RunWith(AndroidJUnit4.class)
+@LargeTest
 public class StorageTest extends ActivityInstrumentationTestCase2<MainActivity> {
   private Storage storage;
 

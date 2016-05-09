@@ -5,6 +5,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.suitebuilder.annotation.LargeTest;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.MockLocalUser;
@@ -31,6 +32,7 @@ import static org.mockito.Mockito.when;
  * @since 4/25/16.
  */
 @RunWith(AndroidJUnit4.class)
+@LargeTest
 public class UserNavigatesWithMainMenu extends ActivityInstrumentationTestCase2<MainActivity> {
 
   private MainActivity activity;

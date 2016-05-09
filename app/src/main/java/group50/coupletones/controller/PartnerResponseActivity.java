@@ -6,7 +6,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
-
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.Partner;
@@ -62,7 +61,7 @@ public class PartnerResponseActivity extends Activity {
       String name = extras.getString("name");
       String email = extras.getString("email");
       partnerName.setText(name);
-      requestText.setText(email + " " + R.string.partner_up_text);
+      requestText.setText(email + " " + getString(R.string.partner_up_text));
 
       acceptButton.setOnClickListener(click -> sendResponse(name, email, true));
       rejectButton.setOnClickListener(click -> sendResponse(name, email, false));

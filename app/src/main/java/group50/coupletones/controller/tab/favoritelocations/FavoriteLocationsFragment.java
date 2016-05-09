@@ -23,7 +23,16 @@ public class FavoriteLocationsFragment extends TabFragment<Object> {
   @Inject
   public CoupleTones app;
   public FavoriteLocationsListAdapter adapter;
-  private RecyclerView favesList;
+
+  public RecyclerView getFavesList() {
+    return favesList;
+  }
+
+  public FavoriteLocationsListAdapter getAdapter() {
+    return adapter;
+  }
+
+  public RecyclerView favesList;
 
   public FavoriteLocationsFragment() {
     super(Object.class);

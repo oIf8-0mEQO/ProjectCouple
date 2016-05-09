@@ -31,6 +31,7 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
 
   /**
    * Location click handler
+   *
    * @param map - map fragment
    */
   public LocationClickHandler(MapFragment map) {
@@ -40,6 +41,7 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
 
   /**
    * onMapClick
+   *
    * @param latLng - latitude-longitude of position
    */
   @Override
@@ -66,7 +68,8 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
 
     /**
      * EventOnAccept
-     * @param text - input text
+     *
+     * @param text     - input text
      * @param position - Latitude-Longitude position
      * @param text     Input text
      * @param position Latitude-Longitude position
@@ -80,8 +83,9 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
 
     /**
      * Handles the dialog click event
+     *
      * @param dialog The dialog
-     * @param which Which button was clicked
+     * @param which  Which button was clicked
      */
     @Override
     public void onClick(DialogInterface dialog, int which) {
@@ -91,6 +95,10 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
       app.getLocalUser().getFavoriteLocations().add(clickedLocation);
       app.getLocalUser().save(new Storage(map.getActivity().getSharedPreferences(Storage.PREF_FILE_USER, Context.MODE_PRIVATE)));
 
+      moveMap(clickedLocation);
+    }
+
+    protected void moveMap(FavoriteLocation clickedLocation) {
       // Move the camera
       map.moveMap(clickedLocation.getPosition());
       map.populateMap();

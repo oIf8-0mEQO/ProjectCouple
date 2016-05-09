@@ -3,7 +3,6 @@ package group50.coupletones.bdd;
 
 import android.app.Instrumentation;
 import android.os.Build;
-import android.os.Handler;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.test.uiautomator.UiDevice;
@@ -34,7 +33,8 @@ import java.util.List;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -99,12 +99,18 @@ public class UserAddsFavoriteLocations {
     // Simulate click on map and dialog
     EditText text = new EditText(rule.getActivity());
     text.setText(locationName);
+    // Override the moveMap to prevent it from moving the map UI
     LocationClickHandler.EventOnAccept eventOnAccept = new LocationClickHandler.EventOnAccept(
       CoupleTones.global().app(),
       mapFragment,
       text,
       new LatLng(32.882, -117.233)
-    );
+    ) {
+      @Override
+      protected void moveMap(FavoriteLocation clickedLocation) {
+
+      }
+    };
 
     eventOnAccept.onClick(null, 0);
   }
@@ -112,8 +118,10 @@ public class UserAddsFavoriteLocations {
   private void thenLocationWillBeAddedToList(String sampleLocationName) {
     // Then the location will be added to my favorite list
     assertThat(app.getLocalUser().getFavoriteLocations()).hasSize(1);
-    assertThat(app.getLocalUser().getFavoriteLocations().get(0).getName())
-        .isEqualTo(sampleLocationName);
+    assertThat(app.getLocalUser().getFavoriteLocations().get(0).getName()).isEqualTo(sampleLocationName);
+    // Go back to the list
+    onView(withId(R.id.favorite_locations)).perform(click());
+    onView(withId(R.id.favorite_locations_list)).check(matches(hasDescendant(withText(sampleLocationName))));
   }
 
   @Test
@@ -123,13 +131,8 @@ public class UserAddsFavoriteLocations {
 
     String sampleLocationName = "My Home";
 
-    Handler handler = new Handler(rule.getActivity().getMainLooper());
-    handler.post(() -> {
-      whenSaveFavoriteLocation(sampleLocationName);
-      thenLocationWillBeAddedToList(sampleLocationName);
-
-      //onView(withId(R.id.favorite_locations_list)).check(matches(hasDescendant(withText(sampleLocationName))));
-    });
+    whenSaveFavoriteLocation(sampleLocationName);
+    thenLocationWillBeAddedToList(sampleLocationName);
 
     getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5);
   }

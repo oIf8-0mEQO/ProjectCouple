@@ -53,14 +53,14 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
     favesList.setLayoutManager(new LinearLayoutManager(getActivity()));
     adapter = new FavoriteLocationsListAdapter(app.getLocalUser().getFavoriteLocations(), getActivity());
     favesList.setAdapter(adapter);
-    v.findViewById(R.id.btn_add).setOnClickListener(this);
+    v.findViewById(R.id.add_favorite_location).setOnClickListener(this);
     return v;
   }
 
   @Override
   public void onClick(View v) {
     switch (v.getId()) {
-      case R.id.btn_add:
+      case R.id.add_favorite_location:
         MainActivity act = (MainActivity) getActivity();
         act.setFragment(act.getTabs().get(R.id.map));
 

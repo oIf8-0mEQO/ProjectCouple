@@ -23,7 +23,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * BDD style test for settings fragment
+ * BDD style test for user configures settings story
  *
  * @author Henry Mao
  * @since 5/8/16
@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 @LargeTest
 public class UserConfiguresSettings {
   @Rule
-  public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule<>(MainActivity.class);
+  public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
   private CoupleTones app;
   private LocalUser mockUser;
   private Partner samplePartner;

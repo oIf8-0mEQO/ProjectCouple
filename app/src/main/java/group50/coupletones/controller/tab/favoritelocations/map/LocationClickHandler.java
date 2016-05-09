@@ -31,6 +31,7 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
 
   /**
    * Location click handler
+   *
    * @param map
    */
   public LocationClickHandler(MapFragment map) {
@@ -45,36 +46,39 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
   public void onMapClick(LatLng latLng) {
     AlertDialog.Builder builder = new AlertDialog.Builder(map.getContext());
     builder.setTitle(R.string.location_name_box);
-    final EditText input = new EditText(map.getContext());
+    EditText input = new EditText(map.getContext());
+    input.setId(R.id.edit_favorite_location_name_dialog);
     input.setInputType(InputType.TYPE_CLASS_TEXT);
     builder.setView(input);
-    builder.setPositiveButton(R.string.location_name_accept, new EventOnAccept(input, latLng));
+    builder.setPositiveButton(R.string.location_name_accept, new EventOnAccept(app, map, input, latLng));
     builder.show();
   }
 
-  private class EventOnAccept implements DialogInterface.OnClickListener
-  {
+  public static class EventOnAccept implements DialogInterface.OnClickListener {
+    @Inject
+    public CoupleTones app;
     private EditText input;
     private LatLng position;
+    private MapFragment map;
 
     /**
-     *
-     * @param text Input text
+     * @param text     Input text
      * @param position Latitude-Longitude position
      */
-    public EventOnAccept(EditText text, LatLng position)
-    {
+    public EventOnAccept(CoupleTones app, MapFragment map, EditText text, LatLng position) {
+      this.app = app;
+      this.map = map;
       this.input = text;
       this.position = position;
     }
 
     /**
-     * @param dialog
-     * @param which
+     * Handles the dialog click event
+     * @param dialog The dialog
+     * @param which Which button was clicked
      */
     @Override
-    public void onClick(DialogInterface dialog, int which)
-    {
+    public void onClick(DialogInterface dialog, int which) {
       // Save the favorite location
       String name = input.getText().toString();
       FavoriteLocation clickedLocation = new FavoriteLocation(name, position);

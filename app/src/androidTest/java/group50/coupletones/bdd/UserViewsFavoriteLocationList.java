@@ -61,10 +61,14 @@ public class UserViewsFavoriteLocationList {
     onView(withId(R.id.favoriteLocations)).perform(click());
   }
 
+  private void thenTheListShouldBeShown() {
+    onView(withId(R.id.favoriteLocations)).check(matches(isDisplayed()));
+  }
+
   @Test
   public void userGoesToFavoriteList() {
     givenUserIsNotViewingOwnList();
     whenUserClicksTheFavesButton();
-    onView(withId(R.id.favoriteLocations)).check(matches(isDisplayed()));
+    thenTheListShouldBeShown();
   }
 }

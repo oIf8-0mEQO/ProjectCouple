@@ -5,6 +5,7 @@ import android.app.Instrumentation;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.ActivityInstrumentationTestCase2;
+import android.widget.Button;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
@@ -22,9 +23,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
@@ -116,8 +114,16 @@ public class UserLogsIntoCoupleTones extends ActivityInstrumentationTestCase2<Lo
   }
 
   private void thenICanOpenMyGoogleCredentials() {
+    activity.runOnUiThread(() -> {
+      Button button = (Button) activity.findViewById(R.id.sign_in_button);
+      button.performClick();
+      // Verify sign in is called
+      verify(activity.auth).signIn(activity);
+    });
+/*
     onView(withId(R.id.sign_in_button)).perform(click());
     verify(activity.auth).signIn(activity);
+  */
   }
 
   /**
@@ -129,6 +135,7 @@ public class UserLogsIntoCoupleTones extends ActivityInstrumentationTestCase2<Lo
     whenISeeTheLoginPage();
     thenICanOpenMyGoogleCredentials();
   }
+
 
   private void givenThatIAmLoggedIn() {
     Authenticator<User, String> auth = authenticator;

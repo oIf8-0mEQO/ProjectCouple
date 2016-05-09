@@ -39,8 +39,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
   //TODO: Add test for changing to settings tab view
 
   @Before
-  public void setUp() throws Exception {
-    super.setUp();
+    public void setUp() throws Exception {
+      super.setUp();
 
     CoupleTones.setGlobal(
       DaggerMockAppComponent

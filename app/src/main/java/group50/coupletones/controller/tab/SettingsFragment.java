@@ -52,11 +52,19 @@ public class SettingsFragment extends TabFragment<Object> {
     super(Object.class);
   }
 
+  /**
+   * getResourceID
+   * @return - Settings fragment
+   */
   @Override
   protected int getResourceId() {
     return R.layout.fragment_settings;
   }
 
+  /**
+   * onCreate
+   * @param savedInstanceState - Bundle
+   */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -149,6 +157,7 @@ public class SettingsFragment extends TabFragment<Object> {
   /**
    * Updates the UI based on whether
    * user is connected to a partner.
+   * @param hasPartner - if user is connected with partner
    *
    * @param hasPartner Does the user have a partner?
    */
@@ -172,18 +181,28 @@ public class SettingsFragment extends TabFragment<Object> {
     }
   }
 
+  /**
+   * onStart starts and connects
+   */
   @Override
   public void onStart() {
     super.onStart();
     auth.connect();
   }
 
+  /**
+   * onStop stop and disconnects
+   */
   @Override
   public void onStop() {
     super.onStop();
     auth.disconnect();
   }
 
+  /**
+   * onResume updates UI depending
+   * on if user has a partner or not
+   */
   @Override
   public void onResume() {
     super.onResume();

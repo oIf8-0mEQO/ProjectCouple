@@ -37,7 +37,7 @@ public class OutgoingMessage implements Message {
 
   /**
    * Gets the ID
-   * @return
+   * @return - ID of message
    */
   public String getId() {
     return id;
@@ -45,7 +45,7 @@ public class OutgoingMessage implements Message {
 
   /**
    * Gets the String type
-   * @return
+   * @return String - outgoing message
    */
   @Override
   public String getType() {
@@ -54,7 +54,7 @@ public class OutgoingMessage implements Message {
 
   /**
    * Gets the Data
-   * @return
+   * @return Bundle - outgoing message data
    */
   @Override
   public Bundle getData() {

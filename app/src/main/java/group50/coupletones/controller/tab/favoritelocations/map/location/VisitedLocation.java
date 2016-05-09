@@ -26,8 +26,8 @@ public class VisitedLocation implements Location {
 
   /**
    *
-   * @param location Visited location
-   * @param time Time the location was visited
+   * @param location - visited location
+   * @param time - time the location was visited
    */
   public VisitedLocation(FavoriteLocation location, Date time) {
     //DI
@@ -72,6 +72,11 @@ public class VisitedLocation implements Location {
     return time;
   }
 
+  /**
+   * equals
+   * @param other - other visited location
+   * @return boolean - visited position equals other
+   */
   @Override
   public boolean equals(Object other) {
     try {

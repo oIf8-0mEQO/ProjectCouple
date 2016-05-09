@@ -30,7 +30,6 @@ public class PartnerResponseActivity extends Activity {
 
   /**
    * onCreate
-   * @param savedInstanceState
    */
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +74,9 @@ public class PartnerResponseActivity extends Activity {
 
   /**
    * Sends a response to the partner request.
-   * @param name Partner's name
-   * @param email Partner's email
-   * @param accept accept or reject request
+   * @param name - Partner's name
+   * @param email - Partner's email
+   * @param accept - accept or reject request
    */
   private void sendResponse(String name, String email, boolean accept) {
     // Send a partner request to the server

@@ -122,7 +122,7 @@ public class FavoriteLocation implements Location, Storable {
 
   /**
    *
-   * @param storage
+   * @param storage - storage to save to
    */
   @Override
   public void save(Storage storage) {
@@ -133,7 +133,7 @@ public class FavoriteLocation implements Location, Storable {
 
   /**
    *
-   * @param storage
+   * @param storage - storage to save to
    */
   @Override
   public void load(Storage storage) {

@@ -9,7 +9,7 @@ import org.junit.Test;
  */
 
 /**
- * Favorite locations test
+ * Test for Favorite locations
  */
 public class FavoriteLocationTest {
 

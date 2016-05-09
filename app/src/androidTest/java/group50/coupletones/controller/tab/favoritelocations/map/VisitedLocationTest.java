@@ -13,7 +13,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.*;
 
 /**
- * Created by Joseph on 5/8/2016.
+ * @author Joseph Cox
+ * @since 5/8/2016
+ */
+
+/**
+ * Test for Visited Locations
  */
 public class VisitedLocationTest {
 

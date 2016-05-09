@@ -25,7 +25,7 @@ public class PartnerRequestReceiver implements MessageReceiver, Identifiable {
   }
 
   /**
-   * onReceive
+   * onReceive of Partner Request
    * @param message The incoming message object that contains data from the server
    */
   @Override
@@ -51,8 +51,8 @@ public class PartnerRequestReceiver implements MessageReceiver, Identifiable {
   }
 
   /**
-   * Gets the ID
-   * @return String - ID
+   * Gets the ID of partner request
+   * @return String - ID of partner request
    */
   @Override
   public String getId() {

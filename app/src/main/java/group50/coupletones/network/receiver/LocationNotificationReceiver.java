@@ -26,8 +26,7 @@ public class LocationNotificationReceiver implements MessageReceiver, Identifiab
 
   /**
    * Location Notification Receiver
-   * @param app
-   * @param context
+   * @param app - Coupletones
    */
   public LocationNotificationReceiver(CoupleTones app, Context context) {
     this.context = context;
@@ -35,8 +34,9 @@ public class LocationNotificationReceiver implements MessageReceiver, Identifiab
   }
 
   /**
-   * onReceive
-   * @param message The incoming message object that contains data from the server
+   * onReceive for location notification
+   * @param message - The incoming message object that
+   *                contains data from the server
    */
   @Override
   public void onReceive(Message message) {
@@ -53,8 +53,8 @@ public class LocationNotificationReceiver implements MessageReceiver, Identifiab
   }
 
   /**
-   * Gets the ID
-   * @return
+   * Gets the ID of notification
+   * @return - String of notification
    */
   @Override
   public String getId() {

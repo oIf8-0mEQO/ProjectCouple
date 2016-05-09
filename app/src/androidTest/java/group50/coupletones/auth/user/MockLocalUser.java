@@ -14,6 +14,10 @@ import java.util.List;
  */
 public class MockLocalUser implements LocalUser {
 
+  /**
+   * Functions that gets and sets Mock Information
+   * Data of a Mock Local user
+   */
   @Override
   public String getId() {
     return "mockuser";

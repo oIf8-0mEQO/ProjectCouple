@@ -77,9 +77,8 @@ public class LoginActivity extends AppCompatActivity implements Taggable {
   /**
    * Handles the user login event by switching to MainActivity upon
    * successful login.
-   *
-   * @param user The user that logged in
-   * @return The user
+   * @param user - The user that logged in
+   * @return - The user
    */
   private User onUserLogin(User user) {
     //TODO: Better design to signify how the sign in failed. User should never be null?

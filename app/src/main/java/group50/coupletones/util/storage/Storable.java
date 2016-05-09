@@ -13,15 +13,13 @@ public interface Storable {
 
   /**
    * Save User data onto phone
-   *
-   * @param storage
+   * @param storage - storage to save data
    */
   void save(Storage storage);
 
   /**
    * Load User data from phone
-   *
-   * @param storage
+   * @param storage - storage to load data
    */
   void load(Storage storage);
 }

@@ -30,6 +30,9 @@ public class GcmIntentService extends IntentService implements Taggable {
     super("GcmIntentService");
   }
 
+  /**
+   * onCreate
+   */
   @Override
   public void onCreate() {
     super.onCreate();
@@ -39,8 +42,8 @@ public class GcmIntentService extends IntentService implements Taggable {
   }
 
   /**
-   * On Handle Intent
-   * @param intent
+   * On Handle Intent handles messages
+   * @param intent - intent
    */
   @Override
   protected void onHandleIntent(Intent intent) {

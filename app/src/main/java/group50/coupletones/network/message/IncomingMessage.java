@@ -28,7 +28,7 @@ public class IncomingMessage implements Message {
 
   /**
    * Gets type
-   * @return
+   * @return - incoming message
    */
   @Override
   public String getType() {
@@ -37,7 +37,7 @@ public class IncomingMessage implements Message {
 
   /**
    * Gets data
-   * @return
+   * @return - data of message
    */
   @Override
   public Bundle getData() {

@@ -31,8 +31,7 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
 
   /**
    * Location click handler
-   *
-   * @param map
+   * @param map - map fragment
    */
   public LocationClickHandler(MapFragment map) {
     this.map = map;
@@ -40,7 +39,8 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
   }
 
   /**
-   * @param latLng
+   * onMapClick
+   * @param latLng - latitude-longitude of position
    */
   @Override
   public void onMapClick(LatLng latLng) {
@@ -54,6 +54,9 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
     builder.show();
   }
 
+  /**
+   * EventOnAccept class
+   */
   public static class EventOnAccept implements DialogInterface.OnClickListener {
     @Inject
     public CoupleTones app;
@@ -62,6 +65,9 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
     private MapFragment map;
 
     /**
+     * EventOnAccept
+     * @param text - input text
+     * @param position - Latitude-Longitude position
      * @param text     Input text
      * @param position Latitude-Longitude position
      */

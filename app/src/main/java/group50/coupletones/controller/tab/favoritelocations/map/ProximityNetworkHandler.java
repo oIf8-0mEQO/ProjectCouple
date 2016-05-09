@@ -22,6 +22,11 @@ public class ProximityNetworkHandler implements ProximityObserver, Taggable {
   private CoupleTones app;
   private NetworkManager network;
 
+  /**
+   * Proximity Network Handler
+   * @param app - CoupleTones app
+   * @param network - Network Manager
+   */
   @Inject
   public ProximityNetworkHandler(CoupleTones app, NetworkManager network) {
     this.app = app;
@@ -29,7 +34,8 @@ public class ProximityNetworkHandler implements ProximityObserver, Taggable {
   }
 
   /**
-   * @param location Visited Location
+   * onEnterLocation
+   * @param location - Visited Location
    */
   @Override
   public void onEnterLocation(VisitedLocation location) {

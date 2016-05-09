@@ -120,7 +120,7 @@ public class GcmManager implements NetworkManager, Taggable {
   }
 
   /**
-   * unregister
+   * Unregisters a GCM with invalid type
    * @param type - the type of receiver to unregister
    */
   @Override
@@ -133,7 +133,7 @@ public class GcmManager implements NetworkManager, Taggable {
   }
 
   /**
-   * Handles receive
+   * Handles receive for messages
    * @param extras - bundle
    */
   void handleReceive(Bundle extras) {

@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * The map proximity manager
  *
- * @author Joseph
+ * @author Joseph Cox
  * @since 5/1/2016
  */
 public class MapProximityManager implements ProximityManager, Taggable {
@@ -32,6 +32,10 @@ public class MapProximityManager implements ProximityManager, Taggable {
 
   public CoupleTones app;
 
+  /**
+   * Map Proximity Manager
+   * @param app - CoupleTones app
+   */
   @Inject
   public MapProximityManager(CoupleTones app) {
     observers = new LinkedList<>();
@@ -67,8 +71,7 @@ public class MapProximityManager implements ProximityManager, Taggable {
 
   /**
    * Handles the location change event
-   *
-   * @param location The location
+   * @param location - The changed location
    */
   @Override
   public void onLocationChanged(Location location) {

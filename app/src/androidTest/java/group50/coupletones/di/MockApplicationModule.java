@@ -26,4 +26,10 @@ public class MockApplicationModule {
   CoupleTones provide() {
     return mock(CoupleTones.class);
   }
+
+  @Provides
+  @Singleton
+  GoogleApiClient provideApiClient() {
+    return mock(GoogleApiClient.class);
+  }
 }

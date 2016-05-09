@@ -9,6 +9,7 @@ import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.PartnerResponseActivity;
 import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
+import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsListAdapter;
 import group50.coupletones.controller.tab.favoritelocations.map.LocationClickHandler;
 import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
@@ -26,6 +27,7 @@ import javax.inject.Singleton;
 
 /**
  * The dependency injection global for the entire app.
+ *
  * @author Henry Mao
  * @since 28/4/2016
  */
@@ -46,6 +48,8 @@ public interface GlobalComponent {
   ProximityManager proximity();
 
   AddressProvider geocoder();
+
+  void inject(FavoriteLocationsListAdapter obj);
 
   void inject(GoogleAuthenticator obj);
 

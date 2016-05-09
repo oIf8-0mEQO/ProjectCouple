@@ -39,8 +39,7 @@ public class Notification {
 
   /**
    * Sets the intent
-   * @param intent
-   * @return
+   * @return - Notification user receives
    */
   public Notification setIntent(Intent intent) {
     this.intent = intent;
@@ -48,9 +47,9 @@ public class Notification {
   }
 
   /**
-   * Sets the title
-   * @param title
-   * @return
+   * Sets the title of notification
+   * @param title - title of notification
+   * @return - the Notification
    */
   public Notification setTitle(String title) {
     builder.setContentTitle(title);
@@ -58,9 +57,9 @@ public class Notification {
   }
 
   /**
-   * Sets the message
-   * @param msg
-   * @return
+   * Sets the message of the notification
+   * @param msg - Notification message
+   * @return - the Notification
    */
   public Notification setMsg(String msg) {
     builder.setContentText(msg);
@@ -69,7 +68,7 @@ public class Notification {
 
   /**
    * Shows the notification
-   * @return
+   * @return - the Notification
    */
   public Notification show() {
     PendingIntent pendingIntent = PendingIntent.getActivity(

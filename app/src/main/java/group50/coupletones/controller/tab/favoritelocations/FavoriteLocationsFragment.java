@@ -3,7 +3,6 @@ package group50.coupletones.controller.tab.favoritelocations;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,67 +16,61 @@ import group50.coupletones.controller.tab.TabFragment;
 import javax.inject.Inject;
 
 /**
- * A simple {@link Fragment} subclass for the Favorite Locations tab.
- * Activities that contains this fragment must implement the {@link Listener} interface to handle interaction events.
- * Use the {@link FavoriteLocationsFragment#build} factory class to create an instance of this fragment.
+ * A {@link Fragment} subclass for the Favorite Locations tab.
  */
-public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFragment.Listener>
-  implements View.OnClickListener {
+public class FavoriteLocationsFragment extends TabFragment<Object> {
 
   @Inject
   public CoupleTones app;
-
+  public FavoriteLocationsListAdapter adapter;
   private RecyclerView favesList;
-  private FavoriteLocationsListAdapter adapter;
-  private CardView cv;
 
   public FavoriteLocationsFragment() {
-    super(Listener.class);
+    super(Object.class);
   }
 
+  /**
+   * Gets Resrouce ID
+   *
+   * @return - favorite location fragment
+   */
   @Override
   protected int getResourceId() {
     return R.layout.fragment_favorite_locations;
   }
 
+  /**
+   * onCreate
+   *
+   * @param savedInstanceState - Bundle
+   */
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     CoupleTones.global().inject(this);
   }
 
+  /**
+   * onCreateView
+   *
+   * @param inflater           - LayoutInflater
+   * @param container          - ViewGroup
+   * @param savedInstanceState - Bundle
+   * @return - View v
+   */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_favorite_locations, container, false);
     favesList = (RecyclerView) v.findViewById(R.id.favorite_locations_list);
     favesList.setLayoutManager(new LinearLayoutManager(getActivity()));
-    adapter = new FavoriteLocationsListAdapter(app.getLocalUser().getFavoriteLocations(), getActivity());
+    adapter = new FavoriteLocationsListAdapter(app.getLocalUser().getFavoriteLocations(), this, getActivity());
     favesList.setAdapter(adapter);
-    v.findViewById(R.id.add_favorite_location).setOnClickListener(this);
+
+    // Clicking on the add button will open the map fragment
+    v.findViewById(R.id.add_favorite_location).setOnClickListener(evt -> {
+      MainActivity act = (MainActivity) getActivity();
+      act.setFragment(act.getTabs().get(R.id.map));
+    });
     return v;
-  }
-
-  @Override
-  public void onClick(View v) {
-    switch (v.getId()) {
-      case R.id.add_favorite_location:
-        MainActivity act = (MainActivity) getActivity();
-        act.setFragment(act.getTabs().get(R.id.map));
-
-    }
-  }
-
-  /**
-   * This interface must be implemented by activities that contain this
-   * fragment to allow an interaction in this fragment to be communicated
-   * to the activity and potentially other fragments contained in that
-   * activity.
-   * <p>
-   * See the Android Training lesson <a href=
-   * "http://developer.android.com/training/basics/fragments/communicating.html"
-   * >Communicating with Other Fragments</a> for more information.
-   */
-  public interface Listener {
-    // TODO: Fill with interface methods
   }
 }

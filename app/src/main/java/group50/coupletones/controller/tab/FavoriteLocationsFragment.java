@@ -1,8 +1,13 @@
 package group50.coupletones.controller.tab;
 
 import android.app.ActionBar;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import group50.coupletones.R;
 
 /**
@@ -39,6 +44,14 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
     if (getArguments() != null) {
       //TODO: Read arguments
     }
+  }
+
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                           Bundle savedInstanceState) {
+    View v = inflater.inflate(R.layout.fragment_settings, container, false);
+    Typeface pierSans = Typeface.createFromAsset(getActivity().getAssets(),
+            getString(R.string.pier_sans));
+    return v;
   }
 
   /**

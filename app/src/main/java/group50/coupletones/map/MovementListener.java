@@ -29,40 +29,41 @@ import group50.coupletones.R;
 
 public class MovementListener implements LocationListener {
 
-    private ProximityHandler handler;
-    private List<FavoriteLocation> locations;
+  private ProximityHandler handler;
+  private List<FavoriteLocation> locations;
 
 
-    public MovementListener(ProximityHandler handler, List<FavoriteLocation> locations)
-    {
-        this.handler = handler;
-        this.locations = locations;
+  public MovementListener(ProximityHandler handler, List<FavoriteLocation> locations) {
+    this.handler = handler;
+    this.locations = locations;
+  }
+
+  @Override
+  public void onLocationChanged(Location location) {
+    for (FavoriteLocation i : locations) {
+      if (this.distanceInMiles(i.getPosition(), new LatLng(location.getLatitude(), location.getLongitude())) < 0.1) {
+        handler.onNearby(i);
+      }
     }
+  }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        for (FavoriteLocation i : locations)
-        {
-            if (this.distanceInMiles(i.getPosition(), new LatLng(location.getLatitude(), location.getLongitude())) < 0.1)
-            {
-                handler.onNearby(i);
-            }
-        }
-    }
+  @Override
+  public void onProviderDisabled(String provider) {
+  }
 
-    @Override
-    public void onProviderDisabled (String provider) {}
+  @Override
+  public void onProviderEnabled(String provider) {
+  }
 
-    @Override
-    public void onProviderEnabled (String provider) {}
+  @Override
+  public void onStatusChanged(String provider, int status, Bundle extra) {
+  }
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extra) {}
-
-    /**Finds the distance in miles between two locations given by the gps.*/
-    private double distanceInMiles(LatLng location1, LatLng location2)
-    {
-        return 0.000621371 * SphericalUtil.computeDistanceBetween(location1, location2);
-    }
+  /**
+   * Finds the distance in miles between two locations given by the gps.
+   */
+  private double distanceInMiles(LatLng location1, LatLng location2) {
+    return 0.000621371 * SphericalUtil.computeDistanceBetween(location1, location2);
+  }
 
 }

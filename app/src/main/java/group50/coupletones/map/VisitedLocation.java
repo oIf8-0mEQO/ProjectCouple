@@ -9,30 +9,26 @@ import java.util.Date;
  */
 public class VisitedLocation implements Location {
 
-    private String name;
-    private LatLng position;
-    private Date time;
+  private String name;
+  private LatLng position;
+  private Date time;
 
-    public VisitedLocation(FavoriteLocation location, Date time)
-    {
-        this.name = location.getName();
-        this.position = location.getPosition();
-        this.time = time;
-    }
+  public VisitedLocation(FavoriteLocation location, Date time) {
+    this.name = location.getName();
+    this.position = location.getPosition();
+    this.time = time;
+  }
 
-    public LatLng getPosition()
-    {
-        return position;
-    }
+  public LatLng getPosition() {
+    return position;
+  }
 
-    public String getName()
-    {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public Date getTime()
-    {
-        return time;
-    }
+  public Date getTime() {
+    return time;
+  }
 
 }

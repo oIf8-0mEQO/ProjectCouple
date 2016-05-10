@@ -7,8 +7,8 @@ import com.google.android.gms.maps.model.LatLng;
  */
 public interface Location {
 
-    public LatLng getPosition();
+  public LatLng getPosition();
 
-    public String getName();
+  public String getName();
 
 }

@@ -9,28 +9,23 @@ import java.util.List;
  */
 public class NearbyLocationHandler implements ProximityHandler {
 
-    List<NotificationObserver> observers;
+  List<NotificationObserver> observers;
 
-    public NearbyLocationHandler()
-    {
-        observers = new LinkedList<>();
-    }
+  public NearbyLocationHandler() {
+    observers = new LinkedList<>();
+  }
 
-    public void register(NotificationObserver observer)
-    {
-        observers.add(observer);
-    }
+  public void register(NotificationObserver observer) {
+    observers.add(observer);
+  }
 
-    public void onNearby(FavoriteLocation nearbyLocation)
-    {
-        if (!nearbyLocation.isOnCooldown())
-        {
-            for(NotificationObserver i : observers)
-            {
-                i.onEnterLocation(new VisitedLocation(nearbyLocation, new Date()));
-            }
-            nearbyLocation.setCooldown();
-        }
+  public void onNearby(FavoriteLocation nearbyLocation) {
+    if (!nearbyLocation.isOnCooldown()) {
+      for (NotificationObserver i : observers) {
+        i.onEnterLocation(new VisitedLocation(nearbyLocation, new Date()));
+      }
+      nearbyLocation.setCooldown();
     }
+  }
 
 }

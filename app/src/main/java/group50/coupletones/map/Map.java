@@ -31,101 +31,93 @@ import group50.coupletones.map.FavoriteLocation;
 
 public class Map extends MapFragment implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
-    private List<FavoriteLocation> favLocations = new LinkedList<FavoriteLocation>();
-    private Geocoder geocoder = new Geocoder(this.getContext());
-    private ProximityHandler proximityHandler = new NearbyLocationHandler();
+  private GoogleMap mMap;
+  private List<FavoriteLocation> favLocations = new LinkedList<FavoriteLocation>();
+  private Geocoder geocoder = new Geocoder(this.getContext());
+  private ProximityHandler proximityHandler = new NearbyLocationHandler();
 
-    GoogleMap.OnMapClickListener clickListener = new GoogleMap.OnMapClickListener() {
-        @Override
-        public void onMapClick(LatLng latLng) {
-            String name = mockMethod2();//TODO: properly implement this method call
-            favLocations.add(new FavoriteLocation(name, latLng));
-            populateMap();
-        }
-    };
-
+  GoogleMap.OnMapClickListener clickListener = new GoogleMap.OnMapClickListener() {
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getMapAsync(this);
+    public void onMapClick(LatLng latLng) {
+      String name = mockMethod2();//TODO: properly implement this method call
+      favLocations.add(new FavoriteLocation(name, latLng));
+      populateMap();
     }
+  };
+
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    getMapAsync(this);
+  }
 
 
-    /**
-     * Manipulates the map once available.
-     */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        LocationManager locationManager = (LocationManager) this.getContext().getSystemService(Context.LOCATION_SERVICE);
-        String locationProvider = LocationManager.GPS_PROVIDER;
-        if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this.getActivity(),
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    100);
-            Log.d("test1", "ins");
-            return;
-        }else if(mMap != null) {
-            Log.d("test2", "outs");
-            mMap.setMyLocationEnabled(true);
-        }
-        locationManager.requestLocationUpdates(locationProvider, 0, 0, new MovementListener(proximityHandler, favLocations));
-        this.populateMap();
-        mMap.setOnMapClickListener(clickListener);
+  /**
+   * Manipulates the map once available.
+   */
+  @Override
+  public void onMapReady(GoogleMap googleMap) {
+    mMap = googleMap;
+    mMap.getUiSettings().setZoomControlsEnabled(true);
+    LocationManager locationManager = (LocationManager) this.getContext().getSystemService(Context.LOCATION_SERVICE);
+    String locationProvider = LocationManager.GPS_PROVIDER;
+    if (ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+      ActivityCompat.requestPermissions(this.getActivity(),
+        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+        100);
+      Log.d("test1", "ins");
+      return;
+    } else if (mMap != null) {
+      Log.d("test2", "outs");
+      mMap.setMyLocationEnabled(true);
     }
+    locationManager.requestLocationUpdates(locationProvider, 0, 0, new MovementListener(proximityHandler, favLocations));
+    this.populateMap();
+    mMap.setOnMapClickListener(clickListener);
+  }
 
-    public void registerNotificationObserver(NotificationObserver observer)
-    {
-        proximityHandler.register(observer);
+  public void registerNotificationObserver(NotificationObserver observer) {
+    proximityHandler.register(observer);
+  }
+
+  /**
+   * Draws all of the favorited locations as markers on the map.
+   */
+  private void populateMap() {
+    mMap.clear();
+    MarkerOptions markerSettings = new MarkerOptions();
+    markerSettings.draggable(false);
+    for (FavoriteLocation i : favLocations) {
+      markerSettings.position(i.getPosition());
+      markerSettings.title(i.getName());
+      mMap.addMarker(markerSettings);
     }
+  }
 
-    /**Draws all of the favorited locations as markers on the map.*/
-    private void populateMap()
-    {
-        mMap.clear();
-        MarkerOptions markerSettings = new MarkerOptions();
-        markerSettings.draggable(false);
-        for (FavoriteLocation i : favLocations)
-        {
-            markerSettings.position(i.getPosition());
-            markerSettings.title(i.getName());
-            mMap.addMarker(markerSettings);
-        }
+  public List<Address> search(String nameLocation) {
+    try {
+      List<Address> locations = geocoder.getFromLocationName(nameLocation, 10);
+      if (locations.size() == 0) {
+        return locations;
+      }
+      CameraUpdate update = CameraUpdateFactory.newLatLng(new LatLng(locations.get(0).getLatitude(), locations.get(0).getLongitude()));
+      mMap.moveCamera(update);
+      return locations;
+    } catch (IOException e) {
+      return null;
+      //TODO: write exception handling code
     }
+  }
 
-    public List<Address> search(String nameLocation)
-    {
-        try
-        {
-            List<Address> locations = geocoder.getFromLocationName(nameLocation, 10);
-            if (locations.size() == 0)
-            {
-                return locations;
-            }
-            CameraUpdate update = CameraUpdateFactory.newLatLng(new LatLng(locations.get(0).getLatitude(), locations.get(0).getLongitude()));
-            mMap.moveCamera(update);
-            return locations;
-        }
-        catch(IOException e)
-        {
-            return null;
-            //TODO: write exception handling code
-        }
-    }
-
-    public void addLocation(FavoriteLocation location)
-    {
-        favLocations.add(location);
-        CameraUpdate update = CameraUpdateFactory.newLatLng(location.getPosition());
-        mMap.moveCamera(update);
-    }
+  public void addLocation(FavoriteLocation location) {
+    favLocations.add(location);
+    CameraUpdate update = CameraUpdateFactory.newLatLng(location.getPosition());
+    mMap.moveCamera(update);
+  }
 
 
-    private String mockMethod2()
-    {
-        return "test name";
-    }
+  private String mockMethod2() {
+    return "test name";
+  }
 
 }

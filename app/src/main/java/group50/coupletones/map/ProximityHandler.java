@@ -5,8 +5,8 @@ package group50.coupletones.map;
  */
 public interface ProximityHandler {
 
-    public void onNearby(FavoriteLocation nearbyLocation);
+  public void onNearby(FavoriteLocation nearbyLocation);
 
-    public void register(NotificationObserver observer);
+  public void register(NotificationObserver observer);
 
 }

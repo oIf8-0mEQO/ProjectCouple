@@ -10,6 +10,7 @@ import group50.coupletones.R;
 import group50.coupletones.controller.tab.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.PartnersLocationsFragment;
 import group50.coupletones.controller.tab.SettingsFragment;
+import group50.coupletones.map.Map;
 import group50.coupletones.util.Taggable;
 
 import java.util.HashMap;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements
     tabs.put(R.id.partnerLocations, PartnersLocationsFragment.build());
     tabs.put(R.id.favoriteLocations, FavoriteLocationsFragment.build());
     tabs.put(R.id.settings, SettingsFragment.build());
+    tabs.put(R.id.map, Map.build());
 
     mBottomBar = BottomBar.attach(this, savedInstanceState);
     mBottomBar.setItemsFromMenu(R.menu.bottombar_menu, this);

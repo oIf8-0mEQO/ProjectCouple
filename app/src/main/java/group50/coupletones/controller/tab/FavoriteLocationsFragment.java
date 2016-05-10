@@ -50,8 +50,18 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
                            Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_settings, container, false);
     Typeface pierSans = Typeface.createFromAsset(getActivity().getAssets(),
-            getString(R.string.pier_sans));
+      getString(R.string.pier_sans));
     return v;
+  }
+
+  @Override
+  public void onClick(View v)
+  {
+    switch (v.getId())
+    {
+      case R.id.btn_search:
+
+    }
   }
 
   /**

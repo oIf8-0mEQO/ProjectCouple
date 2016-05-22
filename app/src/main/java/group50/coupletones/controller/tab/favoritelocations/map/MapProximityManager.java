@@ -6,8 +6,8 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.UserVisitedLocation;
 import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;
@@ -59,13 +59,14 @@ public class MapProximityManager implements ProximityManager, Taggable {
    *
    * @param favoriteLocation The favorite location entered
    */
-  public void onEnterLocation(FavoriteLocation favoriteLocation) {
+  public void onEnterLocation(UserFavoriteLocation favoriteLocation) {
     Log.d(getTag(), "Entering location: " + favoriteLocation.getName() + " cooldown = " + favoriteLocation.isOnCooldown());
     if (!favoriteLocation.isOnCooldown()) {
       for (ProximityObserver i : observers) {
-        i.onEnterLocation(new VisitedLocation(favoriteLocation, new Date()));
+        i.onEnterLocation(new UserVisitedLocation(favoriteLocation, new Date()));
       }
-      favoriteLocation.setCooldown();
+      app.getLocalUser().getFavoriteLocations().remove(favoriteLocation);
+      app.getLocalUser().getFavoriteLocations().add(new UserFavoriteLocation(favoriteLocation, System.currentTimeMillis()));
     }
   }
 
@@ -78,7 +79,7 @@ public class MapProximityManager implements ProximityManager, Taggable {
     Log.d(getTag(), "Location changed: " + location);
     // Make sure the user is logged in
     if (app.isLoggedIn()) {
-      for (FavoriteLocation loc : app.getLocalUser().getFavoriteLocations()) {
+      for (UserFavoriteLocation loc : app.getLocalUser().getFavoriteLocations()) {
         // Check distance
         if (distanceInMiles(loc.getPosition(), new LatLng(location.getLatitude(), location.getLongitude())) < 0.1) {
           onEnterLocation(loc);

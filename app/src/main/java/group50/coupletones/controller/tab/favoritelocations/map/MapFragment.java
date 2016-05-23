@@ -14,7 +14,6 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 
 import javax.inject.Inject;
 
@@ -185,7 +184,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     mMap.clear();
     MarkerOptions markerSettings = new MarkerOptions();
     markerSettings.draggable(false);
-    for (FavoriteLocation i : app.getLocalUser().getFavoriteLocations()) {
+    for (group50.coupletones.controller.tab.favoritelocations.map.location.Location i : app.getLocalUser().getFavoriteLocations()) {
       markerSettings.position(i.getPosition());
       markerSettings.title(i.getName());
       mMap.addMarker(markerSettings);

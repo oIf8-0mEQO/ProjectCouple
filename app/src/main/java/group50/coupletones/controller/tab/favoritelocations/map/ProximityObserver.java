@@ -1,6 +1,6 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
-import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 
 /**
  * @author Joseph Cox
@@ -11,5 +11,5 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Visited
  * Proximity observer interface
  */
 public interface ProximityObserver {
-  void onEnterLocation(VisitedLocation location);
+  void onEnterLocation(VisitedLocationEvent location);
 }

@@ -83,6 +83,15 @@ public class Storage {
   }
 
   /**
+   * Gets the long for name data to store
+   * @param name - name data
+   * @return - long of name
+   */
+  public long getLong(String name) {
+    return preference.getLong(name + suffix, 0);
+  }
+
+  /**
    * getCollection
    * @param name - name data to store
    * @return - list of data
@@ -150,6 +159,18 @@ public class Storage {
     preference
       .edit()
       .putBoolean(name + suffix, value)
+      .apply();
+  }
+
+  /**
+   * Sets the boolean
+   * @param name - name data to store
+   * @param value - long for name data
+   */
+  public void setLong(String name, long value) {
+    preference
+      .edit()
+      .putLong(name + suffix, value)
       .apply();
   }
 

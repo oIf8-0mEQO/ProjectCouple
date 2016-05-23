@@ -15,8 +15,9 @@ import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityService;
 import group50.coupletones.controller.tab.favoritelocations.map.location.AddressProvider;
+import group50.coupletones.controller.tab.favoritelocations.map.location.ConcreteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.NetworkModule;
 import group50.coupletones.di.module.ProximityModule;
@@ -57,7 +58,7 @@ public interface GlobalComponent {
 
   void inject(PartnerResponseActivity activity);
 
-  void inject(VisitedLocation fragment);
+  void inject(VisitedLocationEvent fragment);
 
   void inject(FavoriteLocation fragment);
 
@@ -76,4 +77,6 @@ public interface GlobalComponent {
   void inject(SettingsFragment fragment);
 
   void inject(GcmIntentService receiver);
+
+  void inject(ConcreteLocation location);
 }

@@ -6,6 +6,7 @@
 package group50.coupletones.auth.user;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.util.storage.Storage;
 
@@ -113,6 +114,6 @@ public class GoogleUser implements LocalUser {
       setPartner(null);
     }
 
-    favoriteLocations = storage.getCollection("favoriteLocations", FavoriteLocation::new);
+    favoriteLocations = storage.getCollection("favoriteLocations", FavoriteLocation::new);//TODO: Fix this.
   }
 }

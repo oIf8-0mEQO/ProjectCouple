@@ -13,15 +13,16 @@ import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.MapProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityNetworkHandler;
-import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
+import group50.coupletones.util.sound.VibeTone;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class UserNotifiesPartnerOfLocation {
   private LocalUser mockUser;
   private ProximityManager proximityManager;
   private LatLng zoneLatLng = new LatLng(32.882, -117.233);
-  private UserFavoriteLocation zone = new UserFavoriteLocation("Home", zoneLatLng, 0);
+  private FavoriteLocation zone = new FavoriteLocation("Home", zoneLatLng, 0, VibeTone.getTone());
 
   @Before
   public void setup() {
@@ -64,7 +65,7 @@ public class UserNotifiesPartnerOfLocation {
     proximityManager.register(new ProximityNetworkHandler(app, CoupleTones.global().network()));
 
     //List of the user's favorite locations.
-    List<UserFavoriteLocation> list = new LinkedList<>();
+    List<FavoriteLocation> list = new LinkedList<>();
     list.add(zone);
 
     when(app.isLoggedIn()).thenReturn(true);

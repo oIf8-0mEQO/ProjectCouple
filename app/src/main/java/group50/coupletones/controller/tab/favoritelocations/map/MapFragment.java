@@ -14,7 +14,6 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
 
 import javax.inject.Inject;
 

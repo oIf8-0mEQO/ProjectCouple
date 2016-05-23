@@ -6,6 +6,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Date;
 
+import group50.coupletones.util.sound.VibeTone;
 import group50.coupletones.util.storage.Storable;
 import group50.coupletones.util.storage.Storage;
 
@@ -13,23 +14,30 @@ import group50.coupletones.util.storage.Storage;
  * @Author Joseph
  * @Since 5/21/16
  */
-public class PartnerVisitedLocation implements Location, Storable {
+public class VisitedLocationEvent implements Storable {
 
-  private ConcreteLocation location;
+  private FavoriteLocation location;
   private Date timeVisited;
-  private VibeTone tone;
 
   //Should only be used when loading.
-  public PartnerVisitedLocation()
+  public VisitedLocationEvent()
   {
-    location = new ConcreteLocation();
+    location = new FavoriteLocation();
   }
 
-  public PartnerVisitedLocation(String name, LatLng position, Date timeVisited, VibeTone tone)
+  public VisitedLocationEvent(String name, LatLng position, Date timeVisited, VibeTone tone)
   {
-    location = new ConcreteLocation(name, position);
+    location = new FavoriteLocation(name, position, 0, tone);
     this.timeVisited = timeVisited;
-    this.tone = tone;
+  }
+
+  /**
+   *Constructs a new visited location from the passed favorite location.
+   */
+  public VisitedLocationEvent(FavoriteLocation favoriteLocation, Date timeVisited)
+  {
+    this.location = favoriteLocation;
+    this.timeVisited = timeVisited;
   }
 
   public String getName()
@@ -52,9 +60,9 @@ public class PartnerVisitedLocation implements Location, Storable {
     return timeVisited;
   }
 
-  public VibeTone getTone()
+  public VibeTone getVibeTone()
   {
-    return tone;
+    return location.getTone();
   }
 
   @Override
@@ -62,21 +70,19 @@ public class PartnerVisitedLocation implements Location, Storable {
   {
     location.save(storage);
     storage.setLong("date", timeVisited.getTime());
-    //TODO: Implement save for VibeTone.
   }
 
   @Override
   public void load(Storage storage)
   {
-    timeVisited = new Date(storage.getLong("date"));
     location.load(storage);
+    timeVisited = new Date(storage.getLong("date"));
   }
 
-  public boolean equals(PartnerVisitedLocation other)
+  public boolean equals(VisitedLocationEvent other)
   {
     if (!location.equals(other.location)) return false;
     if (!timeVisited.equals(other.timeVisited)) return false;
-    if (!tone.equals(other.tone)) return false;
     return true;
   }
 

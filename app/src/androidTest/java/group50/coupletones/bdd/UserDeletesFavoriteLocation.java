@@ -2,8 +2,6 @@ package group50.coupletones.bdd;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -13,22 +11,19 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.Assert.*;
 
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.MainActivity;
-import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
-import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsListAdapter;
-import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
+import group50.coupletones.util.sound.VibeTone;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -53,8 +48,8 @@ public class UserDeletesFavoriteLocation {
   private CoupleTones app;
   private LocalUser mockUser;
   private LatLng zoneLatLng = new LatLng(32.882, -117.233);
-  private UserFavoriteLocation zone = new UserFavoriteLocation("Home", zoneLatLng, 0);
-  private List<UserFavoriteLocation> data, emptyData;
+  private FavoriteLocation zone = new FavoriteLocation("Home", zoneLatLng, 0, VibeTone.getTone());
+  private List<FavoriteLocation> data, emptyData;
   private Boolean empty;
 
   @Before

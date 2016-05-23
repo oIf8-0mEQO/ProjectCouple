@@ -6,15 +6,16 @@ import android.test.suitebuilder.annotation.LargeTest;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
-import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
-import group50.coupletones.controller.tab.favoritelocations.map.location.UserVisitedLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
+import group50.coupletones.util.sound.VibeTone;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Collections;
 import java.util.LinkedList;
 
 import static org.mockito.Mockito.*;
@@ -31,7 +32,7 @@ import static org.mockito.Mockito.*;
 @LargeTest
 public class ProximityManagerTest {
 
-  private UserFavoriteLocation favLocation;
+  private FavoriteLocation favLocation;
   private Location loc;
   private MapProximityManager proximity;
   private ProximityObserver mockObserver;
@@ -46,13 +47,13 @@ public class ProximityManagerTest {
         .build()
     );
 
-    favLocation = new UserFavoriteLocation("", new LatLng(32.880315, -117.236288), 0);
+    favLocation = new FavoriteLocation("", new LatLng(32.880315, -117.236288), 0, VibeTone.getTone());
     loc = new Location("");
 
     // Stub the user
     LocalUser localUser = mock(LocalUser.class);
     // Setup the users favorite location list.
-    LinkedList<UserFavoriteLocation> list = new LinkedList<>();
+    LinkedList<FavoriteLocation> list = new LinkedList<>();
     list.add(favLocation);
     when(localUser.getFavoriteLocations()).thenReturn(list);
 
@@ -95,13 +96,13 @@ public class ProximityManagerTest {
       int count = 0;
 
       @Override
-      public void onEnterLocation(UserVisitedLocation location) {
+      public void onEnterLocation(VisitedLocationEvent location) {
         assert (count == 0);
         count++;
       }
     };
     proximity.register(observer);
-    UserFavoriteLocation shouldNotifyOnce = new UserFavoriteLocation();
+    FavoriteLocation shouldNotifyOnce = new FavoriteLocation();
     proximity.onEnterLocation(shouldNotifyOnce);
     proximity.onEnterLocation(shouldNotifyOnce);
   }

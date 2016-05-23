@@ -1,7 +1,7 @@
 package group50.coupletones.auth.user;
 
 
-import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.util.storage.Storage;
 
 import java.util.Collections;
@@ -37,7 +37,7 @@ public class MockLocalUser implements LocalUser {
   }
 
   @Override
-  public List<UserFavoriteLocation> getFavoriteLocations() {
+  public List<FavoriteLocation> getFavoriteLocations() {
     return Collections.emptyList();
   }
 

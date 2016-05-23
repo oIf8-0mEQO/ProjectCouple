@@ -6,8 +6,8 @@ import android.test.suitebuilder.annotation.LargeTest;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
-import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.UserVisitedLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 import org.junit.Before;
@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
+import java.util.LinkedList;
 
 import static org.mockito.Mockito.*;
 
@@ -30,7 +31,7 @@ import static org.mockito.Mockito.*;
 @LargeTest
 public class ProximityManagerTest {
 
-  private FavoriteLocation favLocation;
+  private UserFavoriteLocation favLocation;
   private Location loc;
   private MapProximityManager proximity;
   private ProximityObserver mockObserver;
@@ -45,13 +46,15 @@ public class ProximityManagerTest {
         .build()
     );
 
-    favLocation = new FavoriteLocation("", new LatLng(32.880315, -117.236288));
+    favLocation = new UserFavoriteLocation("", new LatLng(32.880315, -117.236288), 0);
     loc = new Location("");
 
     // Stub the user
     LocalUser localUser = mock(LocalUser.class);
-    // Make the user always return favLocation when getFavoriteLocations is called
-    when(localUser.getFavoriteLocations()).thenReturn(Collections.singletonList(favLocation));
+    // Setup the users favorite location list.
+    LinkedList<UserFavoriteLocation> list = new LinkedList<>();
+    list.add(favLocation);
+    when(localUser.getFavoriteLocations()).thenReturn(list);
 
     // Stub getLocalUser to always return the mock user above
     when(CoupleTones.global().app().getLocalUser()).thenReturn(localUser);
@@ -92,13 +95,13 @@ public class ProximityManagerTest {
       int count = 0;
 
       @Override
-      public void onEnterLocation(VisitedLocation location) {
+      public void onEnterLocation(UserVisitedLocation location) {
         assert (count == 0);
         count++;
       }
     };
     proximity.register(observer);
-    FavoriteLocation shouldNotifyOnce = new FavoriteLocation();
+    UserFavoriteLocation shouldNotifyOnce = new UserFavoriteLocation();
     proximity.onEnterLocation(shouldNotifyOnce);
     proximity.onEnterLocation(shouldNotifyOnce);
   }

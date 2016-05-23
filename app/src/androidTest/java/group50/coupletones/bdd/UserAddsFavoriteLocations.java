@@ -19,7 +19,7 @@ import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.LocationClickHandler;
 import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
-import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 import org.junit.Before;
@@ -52,7 +52,7 @@ public class UserAddsFavoriteLocations {
   public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
   private CoupleTones app;
   private LocalUser mockUser;
-  private List<FavoriteLocation> favLocations = new LinkedList<>();
+  private List<UserFavoriteLocation> favLocations = new LinkedList<>();
   private MapFragment mapFragment;
 
   private static void allowPermissionsIfNeeded() {
@@ -107,7 +107,7 @@ public class UserAddsFavoriteLocations {
       new LatLng(32.882, -117.233)
     ) {
       @Override
-      protected void moveMap(FavoriteLocation clickedLocation) {
+      protected void moveMap(UserFavoriteLocation clickedLocation) {
 
       }
     };

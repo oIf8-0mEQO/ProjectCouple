@@ -26,7 +26,7 @@ import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsListAdapter;
-import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 
@@ -53,8 +53,8 @@ public class UserDeletesFavoriteLocation {
   private CoupleTones app;
   private LocalUser mockUser;
   private LatLng zoneLatLng = new LatLng(32.882, -117.233);
-  private FavoriteLocation zone = new FavoriteLocation("Home", zoneLatLng);
-  private List<FavoriteLocation> data, emptyData;
+  private UserFavoriteLocation zone = new UserFavoriteLocation("Home", zoneLatLng, 0);
+  private List<UserFavoriteLocation> data, emptyData;
   private Boolean empty;
 
   @Before

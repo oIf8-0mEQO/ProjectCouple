@@ -13,7 +13,7 @@ import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.MapProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityNetworkHandler;
-import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 import org.junit.Before;
@@ -22,6 +22,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -41,7 +43,7 @@ public class UserNotifiesPartnerOfLocation {
   private LocalUser mockUser;
   private ProximityManager proximityManager;
   private LatLng zoneLatLng = new LatLng(32.882, -117.233);
-  private FavoriteLocation zone = new FavoriteLocation("Home", zoneLatLng);
+  private UserFavoriteLocation zone = new UserFavoriteLocation("Home", zoneLatLng, 0);
 
   @Before
   public void setup() {
@@ -61,9 +63,13 @@ public class UserNotifiesPartnerOfLocation {
     proximityManager = new MapProximityManager(app);
     proximityManager.register(new ProximityNetworkHandler(app, CoupleTones.global().network()));
 
+    //List of the user's favorite locations.
+    List<UserFavoriteLocation> list = new LinkedList<>();
+    list.add(zone);
+
     when(app.isLoggedIn()).thenReturn(true);
     when(app.getLocalUser()).thenReturn(mockUser);
-    when(mockUser.getFavoriteLocations()).thenReturn(Collections.singletonList(zone));
+    when(mockUser.getFavoriteLocations()).thenReturn(list);
     when(mockUser.getPartner()).thenReturn(new Partner("Fake Partner", "fake@email.com"));
 
   }

@@ -3,9 +3,8 @@ package group50.coupletones.controller.tab.favoritelocations.map;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import com.google.android.gms.maps.model.LatLng;
-import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
-import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.UserVisitedLocation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -29,9 +28,9 @@ public class UserVisitedLocationTest {
   @Test
   public void testVisitedLocationCreation()
   {
-    UserFavoriteLocation favLocation = new FavoriteLocation("Name", new LatLng(10, 15), 100);
-    VisitedLocation visLocation = new VisitedLocation(favLocation, new Date());
-    VisitedLocation mock = mock(VisitedLocation.class);
+    UserFavoriteLocation favLocation = new UserFavoriteLocation("Name", new LatLng(10, 15), 100);
+    UserVisitedLocation visLocation = new UserVisitedLocation(favLocation, new Date());
+    UserVisitedLocation mock = mock(UserVisitedLocation.class);
     when(mock.getPosition()).thenReturn(new LatLng(10, 15));
     when(mock.getName()).thenReturn("Name");
     assert (visLocation.equals(mock));

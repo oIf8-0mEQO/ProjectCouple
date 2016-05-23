@@ -5,22 +5,54 @@
 
 package group50.coupletones.auth.user;
 
+import android.util.Log;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.IgnoreExtraProperties;
 import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
 import group50.coupletones.util.storage.Storage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Represents a User logged in via Google sign in.
- * Wraps the GoogleSignInAccount object.
+ * Uses data from the GoogleSignInAccount object.
+ * <p>
+ * Firebase
  */
 public class GoogleUser implements LocalUser {
 
-  private final GoogleSignInAccount account;
-  private List<UserFavoriteLocation> favoriteLocations;
+  /**
+   * ID of the user
+   */
+  private String id;
+
+  /**
+   * Name of the user
+   */
+  private String name;
+
+  /**
+   * Email of the user
+   */
+  private String email;
+
+  /**
+   * User's partner
+   */
   private User partner;
+
+  /**
+   * The user's list of favorite location.
+   */
+  private List<UserFavoriteLocation> favoriteLocations;
+
+  public GoogleUser() {
+  }
 
   /**
    * Creates a GoogleUser
@@ -28,8 +60,12 @@ public class GoogleUser implements LocalUser {
    * @param account The Google sign in account object
    */
   public GoogleUser(GoogleSignInAccount account) {
-    this.account = account;
+    id = account.getId();
+    name = account.getDisplayName();
+    email = account.getEmail();
     favoriteLocations = new ArrayList<>();
+    //TOOD: remove this save?
+    save();
   }
 
   /**
@@ -37,7 +73,7 @@ public class GoogleUser implements LocalUser {
    */
   @Override
   public String getId() {
-    return account.getId();
+    return id;
   }
 
   /**
@@ -45,7 +81,7 @@ public class GoogleUser implements LocalUser {
    */
   @Override
   public String getName() {
-    return account.getDisplayName();
+    return name;
   }
 
   /**
@@ -53,7 +89,7 @@ public class GoogleUser implements LocalUser {
    */
   @Override
   public String getEmail() {
-    return account.getEmail();
+    return email;
   }
 
   @Override
@@ -77,10 +113,30 @@ public class GoogleUser implements LocalUser {
   @Override
   public void setPartner(User partner) {
     this.partner = partner;
+    save();
+  }
+
+
+  //TODO: Refactor
+  public void save() {
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("users");
+    myRef.child(getId()).setValue(toMap());
+  }
+
+  public Map<String, Object> toMap() {
+    HashMap<String, Object> map = new HashMap<>();
+    map.put("id", id);
+    map.put("name", name);
+    map.put("email", email);
+    if (getPartner() != null)
+      map.put("partnerId", getPartner().getId());
+    return map;
   }
 
   /**
    * Save User data onto phone
+   *
    * @param storage
    */
   @Override
@@ -100,6 +156,7 @@ public class GoogleUser implements LocalUser {
 
   /**
    * Load User data from phone
+   *
    * @param storage
    */
   @Override

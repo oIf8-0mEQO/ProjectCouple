@@ -4,6 +4,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,12 +24,12 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class VisitedLocationTest {
+public class UserVisitedLocationTest {
 
   @Test
   public void testVisitedLocationCreation()
   {
-    FavoriteLocation favLocation = new FavoriteLocation("Name", new LatLng(10, 15), 100);
+    UserFavoriteLocation favLocation = new FavoriteLocation("Name", new LatLng(10, 15), 100);
     VisitedLocation visLocation = new VisitedLocation(favLocation, new Date());
     VisitedLocation mock = mock(VisitedLocation.class);
     when(mock.getPosition()).thenReturn(new LatLng(10, 15));

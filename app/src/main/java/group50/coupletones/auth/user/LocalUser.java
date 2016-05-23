@@ -1,6 +1,6 @@
 package group50.coupletones.auth.user;
 
-import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
 import group50.coupletones.util.storage.Storable;
 
 import java.util.List;
@@ -30,5 +30,5 @@ public interface LocalUser extends User, Storable {
   /**
    * @return The a list of the users favoite locations.
    */
-  List<FavoriteLocation> getFavoriteLocations();
+  List<UserFavoriteLocation> getFavoriteLocations();
 }

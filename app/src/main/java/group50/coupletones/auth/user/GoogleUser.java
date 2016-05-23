@@ -5,12 +5,12 @@
 
 package group50.coupletones.auth.user;
 
-import android.util.Log;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.IgnoreExtraProperties;
 import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
+import group50.coupletones.network.sync.Sync;
+import group50.coupletones.network.sync.Syncable;
 import group50.coupletones.util.storage.Storage;
 
 import java.util.ArrayList;
@@ -26,33 +26,32 @@ import java.util.Map;
  */
 public class GoogleUser implements LocalUser {
 
+  private final Sync sync;
   /**
    * ID of the user
    */
+  @Syncable
   private String id;
-
   /**
    * Name of the user
    */
+  @Syncable
   private String name;
-
   /**
    * Email of the user
    */
+  @Syncable
   private String email;
-
   /**
    * User's partner
    */
+  @Syncable
   private User partner;
-
   /**
    * The user's list of favorite location.
    */
+  @Syncable
   private List<UserFavoriteLocation> favoriteLocations;
-
-  public GoogleUser() {
-  }
 
   /**
    * Creates a GoogleUser
@@ -64,6 +63,9 @@ public class GoogleUser implements LocalUser {
     name = account.getDisplayName();
     email = account.getEmail();
     favoriteLocations = new ArrayList<>();
+
+    sync = new Sync(this, FirebaseDatabase.getInstance().getReference("users/" + id));
+
     //TOOD: remove this save?
     save();
   }

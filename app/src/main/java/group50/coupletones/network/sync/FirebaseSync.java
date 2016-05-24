@@ -95,16 +95,21 @@ public class FirebaseSync implements Sync {
     return this;
   }
 
-
   /**
    * Attempts to sync a specific field to the server
    *
-   * @param fieldName The name of the field
+   * @param fieldNames The name of the field
    * @return Self instance
    */
   @Override
-  public Sync update(String fieldName) {
-    return update(syncFields.get(fieldName));
+  public Sync publish(String... fieldNames) {
+    for (String fieldName : fieldNames) {
+      if (syncFields.containsKey(fieldName))
+        publish(syncFields.get(fieldName));
+      else
+        throw new IllegalArgumentException("Field name: " + fieldName + " does not have @Sycnable annotation.");
+    }
+    return this;
   }
 
   /**
@@ -113,7 +118,7 @@ public class FirebaseSync implements Sync {
    * @param field The field instance
    * @return Self instance
    */
-  protected Sync update(Field field) {
+  protected Sync publish(Field field) {
     try {
       ref.child(field.getName()).setValue(field.get(obj));
     } catch (Exception e) {

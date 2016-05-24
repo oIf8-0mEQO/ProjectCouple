@@ -113,7 +113,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
       else
         Log.d(getTag(), "Last known location is null");
 
-      // Request a single update to move the map to appropriate location
+      // Request a single publish to move the map to appropriate location
       locationManager.requestSingleUpdate(GPS_PROVIDER, new LocationListener() {
 
           /**
@@ -123,7 +123,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
            */
           @Override
           public void onLocationChanged(Location location) {
-            Log.d(getTag(), "Got single update");
+            Log.d(getTag(), "Got single publish");
             moveMap(location);
           }
 

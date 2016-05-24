@@ -1,7 +1,6 @@
 package group50.coupletones.auth.user;
 
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.util.storage.Storable;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ import java.util.List;
  * The Local User interface represents
  * a local user in the app.
  */
-public interface LocalUser extends User, Storable {
+public interface LocalUser extends User {
 
   /**
    * @return The partner of the user

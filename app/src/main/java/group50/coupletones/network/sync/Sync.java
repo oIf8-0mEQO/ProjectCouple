@@ -27,8 +27,8 @@ public interface Sync {
   /**
    * Attempts to sync a specific field to the server
    *
-   * @param fieldName The name of the field
+   * @param fieldNames The names of the field to publish
    * @return Self instance
    */
-  Sync update(String fieldName);
+  Sync publish(String... fieldNames);
 }

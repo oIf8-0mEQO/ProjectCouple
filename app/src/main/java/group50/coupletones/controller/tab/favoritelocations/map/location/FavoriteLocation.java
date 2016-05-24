@@ -4,6 +4,7 @@ import android.location.Address;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import group50.coupletones.util.sound.VibeTone;
 import group50.coupletones.util.storage.Storable;
 import group50.coupletones.util.storage.Storage;
 
@@ -11,49 +12,64 @@ import group50.coupletones.util.storage.Storage;
  * @Author Joseph
  * @Since 5/21/16
  */
-public class UserFavoriteLocation implements Location, Storable {
+public class FavoriteLocation implements Location, Storable {
 
   private ConcreteLocation location;
+  private VibeTone tone;
   private long timeLastVisited;
   private static int COOL_DOWN_TIME = 600000;
 
   //Should only be used when loading.
-  public UserFavoriteLocation()
+  public FavoriteLocation()
   {
     location = new ConcreteLocation();
   }
 
-  public UserFavoriteLocation(String name, LatLng position, long timeLastVisited)
+  public FavoriteLocation(String name, LatLng position, long timeLastVisited, VibeTone tone)
   {
     this.location = new ConcreteLocation(name, position);
     this.timeLastVisited = timeLastVisited;
+    this.tone = tone;
   }
 
   /**
    * Recreates the previous location with a different name.
    */
-  public UserFavoriteLocation(UserFavoriteLocation previous, String name)
+  public FavoriteLocation(FavoriteLocation previous, String name)
   {
     this.location = new ConcreteLocation(name, previous.location.getPosition());
     this.timeLastVisited = previous.timeLastVisited;
+    this.tone = previous.tone;
   }
 
   /**
    * Recreates the previous location with a different position.
    */
-  public UserFavoriteLocation(UserFavoriteLocation previous, LatLng position)
+  public FavoriteLocation(FavoriteLocation previous, LatLng position)
   {
     this.location = new ConcreteLocation(previous.location.getName(), position);
     this.timeLastVisited = previous.timeLastVisited;
+    this.tone = previous.tone;
   }
 
   /**
    * Recreates the previous location with a different time.
    */
-  public UserFavoriteLocation(UserFavoriteLocation previous, long timeLastVisited)
+  public FavoriteLocation(FavoriteLocation previous, long timeLastVisited)
   {
     this.location = new ConcreteLocation(previous.getName(), previous.getPosition());
     this.timeLastVisited = timeLastVisited;
+    this.tone = previous.tone;
+  }
+
+  /**
+   * Recreates the previous location with a different tone.
+   */
+  public FavoriteLocation(FavoriteLocation previous, VibeTone tone)
+  {
+    this.location = new ConcreteLocation(previous.getName(), previous.getPosition());
+    timeLastVisited = previous.timeLastVisited;
+    this.tone = tone;
   }
 
   public String getName()
@@ -74,6 +90,11 @@ public class UserFavoriteLocation implements Location, Storable {
   public long getTime()
   {
     return timeLastVisited;
+  }
+
+  public VibeTone getTone()
+  {
+    return tone;
   }
 
   /**
@@ -101,10 +122,11 @@ public class UserFavoriteLocation implements Location, Storable {
     location.load(storage);
   }
 
-  public boolean equals(UserFavoriteLocation other)
+  public boolean equals(FavoriteLocation other)
   {
     if (!location.equals(other.location)) return false;
     if (timeLastVisited != other.timeLastVisited) return false;
+    if (!tone.equals(other.tone)) return false;
     return true;
   }
 

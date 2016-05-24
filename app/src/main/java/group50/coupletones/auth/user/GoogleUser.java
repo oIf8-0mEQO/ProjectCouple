@@ -11,6 +11,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
 import group50.coupletones.network.sync.Sync;
 import group50.coupletones.network.sync.Syncable;
+
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.util.storage.Storage;
 
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ import java.util.Map;
  */
 public class GoogleUser implements LocalUser {
 
+  private final GoogleSignInAccount account;
   private final Sync sync;
   /**
    * ID of the user
@@ -51,7 +54,7 @@ public class GoogleUser implements LocalUser {
    * The user's list of favorite location.
    */
   @Syncable
-  private List<UserFavoriteLocation> favoriteLocations;
+  private List<FavoriteLocation> favoriteLocations;
 
   /**
    * Creates a GoogleUser
@@ -95,7 +98,7 @@ public class GoogleUser implements LocalUser {
   }
 
   @Override
-  public List<UserFavoriteLocation> getFavoriteLocations() {
+  public List<FavoriteLocation> getFavoriteLocations() {
     return favoriteLocations;
   }
 
@@ -172,6 +175,6 @@ public class GoogleUser implements LocalUser {
       setPartner(null);
     }
 
-    favoriteLocations = storage.getCollection("favoriteLocations", UserFavoriteLocation::new);//TODO: Fix this.
+    favoriteLocations = storage.getCollection("favoriteLocations", FavoriteLocation::new);//TODO: Fix this.
   }
 }

@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
@@ -30,7 +30,7 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
   @Inject
   public CoupleTones app;
 
-  private List<UserFavoriteLocation> data;
+  private List<FavoriteLocation> data;
   private LayoutInflater inflater;
   private FavoriteLocationsFragment fragment;
 
@@ -40,7 +40,7 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
    * @param data - Favorite location data
    * @param -    context
    */
-  public FavoriteLocationsListAdapter(List<UserFavoriteLocation> data, FavoriteLocationsFragment fragment, Context context) {
+  public FavoriteLocationsListAdapter(List<FavoriteLocation> data, FavoriteLocationsFragment fragment, Context context) {
     this.inflater = LayoutInflater.from(context);
     this.fragment = fragment;
     this.data = data;
@@ -68,7 +68,7 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
    */
   @Override
   public void onBindViewHolder(ListViewHolder holder, int position) {
-    UserFavoriteLocation location = data.get(position);
+    FavoriteLocation location = data.get(position);
     holder.name.setText(location.getName());
     holder.address.setText(location.getName());
     Address address = location.getAddress();

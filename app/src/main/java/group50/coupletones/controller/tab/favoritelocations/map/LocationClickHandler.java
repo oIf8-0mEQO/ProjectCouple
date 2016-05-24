@@ -9,7 +9,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.util.sound.VibeTone;
 import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
@@ -91,14 +92,14 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
     public void onClick(DialogInterface dialog, int which) {
       // Save the favorite location
       String name = input.getText().toString();
-      UserFavoriteLocation clickedLocation = new UserFavoriteLocation(name, position, 0);
+      FavoriteLocation clickedLocation = new FavoriteLocation(name, position, 0, VibeTone.getTone());
       app.getLocalUser().getFavoriteLocations().add(clickedLocation);
       app.getLocalUser().save(new Storage(map.getActivity().getSharedPreferences(Storage.PREF_FILE_USER, Context.MODE_PRIVATE)));
 
       moveMap(clickedLocation);
     }
 
-    protected void moveMap(UserFavoriteLocation clickedLocation) {
+    protected void moveMap(FavoriteLocation clickedLocation) {
       // Move the camera
       map.moveMap(clickedLocation.getPosition());
       map.populateMap();

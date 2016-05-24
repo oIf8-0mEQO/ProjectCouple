@@ -1,7 +1,6 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.text.InputType;
 import android.widget.EditText;
@@ -11,7 +10,6 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.util.sound.VibeTone;
-import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 
@@ -93,9 +91,7 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
       // Save the favorite location
       String name = input.getText().toString();
       FavoriteLocation clickedLocation = new FavoriteLocation(name, position, 0, VibeTone.getTone());
-      app.getLocalUser().getFavoriteLocations().add(clickedLocation);
-      app.getLocalUser().save(new Storage(map.getActivity().getSharedPreferences(Storage.PREF_FILE_USER, Context.MODE_PRIVATE)));
-
+      app.getLocalUser().addFavoriteLocation(clickedLocation);
       moveMap(clickedLocation);
     }
 

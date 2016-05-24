@@ -86,7 +86,7 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
 
     holder.itemView.findViewById(R.id.delete_location_icon)
       .setOnClickListener(evt -> {
-          app.getLocalUser().getFavoriteLocations().remove(location);
+        app.getLocalUser().addFavoriteLocation(location);
           fragment.adapter.notifyDataSetChanged();
         }
       );

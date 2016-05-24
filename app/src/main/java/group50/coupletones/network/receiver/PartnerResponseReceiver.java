@@ -10,9 +10,6 @@ import group50.coupletones.network.message.Message;
 import group50.coupletones.network.message.MessageReceiver;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.util.Identifiable;
-import group50.coupletones.util.storage.Storage;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Handles the notification when a partner accepts or reject request.
@@ -47,7 +44,6 @@ public class PartnerResponseReceiver implements MessageReceiver, Identifiable {
     //Handle accept
     if (accepted) {
       app.getLocalUser().setPartner(new Partner(name, email));
-      app.getLocalUser().save(new Storage(context.getSharedPreferences("user", MODE_PRIVATE)));
     }
   }
 

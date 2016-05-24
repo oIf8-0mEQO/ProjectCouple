@@ -17,11 +17,8 @@ import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.di.InstanceComponent;
 import group50.coupletones.di.module.ContextModule;
-import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A {@link Fragment} subclass for the Settings tab.
@@ -145,8 +142,6 @@ public class SettingsFragment extends TabFragment<Object> {
     v.findViewById(R.id.disconnect_button)
       .setOnClickListener(evt -> {
           app.getLocalUser().setPartner(null);
-          app.getLocalUser().save(new Storage(getActivity()
-            .getSharedPreferences("user", MODE_PRIVATE)));
           updateUI(false);
         }
       );

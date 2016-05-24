@@ -13,6 +13,7 @@ import group50.coupletones.network.sync.Sync;
 import group50.coupletones.network.sync.Syncable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ import java.util.List;
 public class GoogleUser implements LocalUser {
 
   /**
-   * Object responsible for syncing the object with Firebase
+   * Object responsible for syncing the object with database
    */
   private final Sync sync;
   /**
@@ -65,7 +66,11 @@ public class GoogleUser implements LocalUser {
    * @param account The Google sign in account object
    */
   public GoogleUser(GoogleSignInAccount account) {
-    sync = new FirebaseSync(this, FirebaseDatabase.getInstance().getReference("users/" + id)).subscribeAll();
+    //TODO: Use DI?
+    sync = new FirebaseSync()
+      .watch(this)
+      .setRef(FirebaseDatabase.getInstance().getReference("users/" + id))
+      .subscribeAll();
 
     id = account.getId();
     name = account.getDisplayName();
@@ -101,7 +106,29 @@ public class GoogleUser implements LocalUser {
 
   @Override
   public List<FavoriteLocation> getFavoriteLocations() {
-    return favoriteLocations;
+    return Collections.unmodifiableList(favoriteLocations);
+  }
+
+  /**
+   * Adds a favorite location
+   *
+   * @param location The location to add
+   */
+  @Override
+  public void addFavoriteLocation(FavoriteLocation location) {
+    favoriteLocations.add(location);
+    sync.publish("favoriteLocations");
+  }
+
+  /**
+   * Removes a favorite location
+   *
+   * @param location The location to remove
+   */
+  @Override
+  public void removeFavoriteLocation(FavoriteLocation location) {
+    favoriteLocations.remove(location);
+    sync.publish("favoriteLocations");
   }
 
   /**
@@ -109,6 +136,14 @@ public class GoogleUser implements LocalUser {
    */
   @Override
   public User getPartner() {
+    // Lazy update partner from Id
+    if (partnerId != null) {
+      // An update has occurred. Attempt to reconstruct the partner object.
+      //TODO: Use dependency injection?
+      partner = new Partner(new FirebaseSync().setRef(sync.getRef().child(partnerId)));
+      partnerId = null;
+    }
+
     return partner;
   }
 
@@ -120,6 +155,7 @@ public class GoogleUser implements LocalUser {
   @Override
   public void setPartner(User partner) {
     this.partner = partner;
+    partnerId = partner != null ? partner.getId() : null;
     sync.publish("partnerId");
   }
 }

@@ -21,21 +21,51 @@ public class FirebaseSync implements Sync {
   /**
    * The object to sync
    */
-  protected final Object obj;
+  protected Object obj;
 
-  protected final DatabaseReference ref;
+  protected DatabaseReference ref;
 
   protected Map<String, Field> syncFields;
 
-  public FirebaseSync(Object obj, DatabaseReference ref) {
+  /**
+   * Sets the Sync object to watch a particular object
+   *
+   * @param obj The object to watch
+   * @return Self instance
+   */
+  @Override
+  public FirebaseSync watch(Object obj) {
     this.obj = obj;
+    return this;
+  }
+
+  @Override
+  public DatabaseReference getRef() {
+    return ref;
+  }
+
+  /**
+   * Sets the Sync object to refer a particular database
+   *
+   * @param ref The database use
+   * @return Self instance
+   */
+  @Override
+  public FirebaseSync setRef(DatabaseReference ref) {
     this.ref = ref;
+    return this;
+  }
+
+  protected void verifyRefAndObjSet() {
+    if (obj == null || ref == null)
+      throw new IllegalStateException("Object or reference null. Unable to sync.");
   }
 
   /**
    * Cache all fields of the given object that requires syncing.
    */
   protected void cacheFields() {
+    verifyRefAndObjSet();
     syncFields = new HashMap<>();
 
     Field[] fields = obj.getClass().getFields();
@@ -54,6 +84,7 @@ public class FirebaseSync implements Sync {
    * upon data change.
    */
   public Sync subscribeAll() {
+    verifyRefAndObjSet();
     if (syncFields == null)
       cacheFields();
 
@@ -73,6 +104,10 @@ public class FirebaseSync implements Sync {
    */
   @Override
   public Sync subscribe(String fieldName) {
+    verifyRefAndObjSet();
+    if (syncFields == null)
+      cacheFields();
+
     Field f = syncFields.get(fieldName);
     ref
       .child(f.getName())
@@ -103,6 +138,10 @@ public class FirebaseSync implements Sync {
    */
   @Override
   public Sync publish(String... fieldNames) {
+    verifyRefAndObjSet();
+    if (syncFields == null)
+      cacheFields();
+
     for (String fieldName : fieldNames) {
       if (syncFields.containsKey(fieldName))
         publish(syncFields.get(fieldName));
@@ -119,6 +158,8 @@ public class FirebaseSync implements Sync {
    * @return Self instance
    */
   protected Sync publish(Field field) {
+    verifyRefAndObjSet();
+
     try {
       ref.child(field.getName()).setValue(field.get(obj));
     } catch (Exception e) {

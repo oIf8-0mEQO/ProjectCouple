@@ -5,21 +5,28 @@ package group50.coupletones.auth.user;
  * @since  5/5/2016
  */
 
+import group50.coupletones.network.sync.Sync;
+import group50.coupletones.network.sync.Syncable;
+
 /**
  * Represents a Partner that a User
  * connects with through the app.
  */
 public class Partner implements User {
-  private final String name;
-  private final String email;
+  /**
+   * Object responsible for syncing the object with database
+   */
+  private final Sync sync;
+  @Syncable
+  private String name;
+  @Syncable
+  private String email;
 
   /**
-   * @param name Partner's Name
-   * @param email Parnter's Email
+   * @param sync The object handling synchronizing partner data
    */
-  public Partner(String name, String email) {
-    this.name = name;
-    this.email = email;
+  public Partner(Sync sync) {
+    this.sync = sync.watch(this).subscribeAll();
   }
 
   /**

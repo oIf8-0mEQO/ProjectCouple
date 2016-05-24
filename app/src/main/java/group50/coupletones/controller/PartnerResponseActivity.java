@@ -12,7 +12,6 @@ import group50.coupletones.auth.user.Partner;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.network.message.OutgoingMessage;
-import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 
@@ -88,7 +87,6 @@ public class PartnerResponseActivity extends Activity {
 
     if (accept) {
       app.getLocalUser().setPartner(new Partner(name, email));
-      app.getLocalUser().save(new Storage(getSharedPreferences(Storage.PREF_FILE_USER, MODE_PRIVATE)));
     }
 
     finish();

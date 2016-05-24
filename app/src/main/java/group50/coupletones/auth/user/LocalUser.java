@@ -27,7 +27,21 @@ public interface LocalUser extends User {
   void setPartner(User partner);
 
   /**
-   * @return The list of the users favorite locations. Immutable.
+   * Adds a favorite location
+   * @param location The location to add
+   */
+  void addFavoriteLocation(FavoriteLocation location);
+
+  /**
+   * Removes a favorite location
+   *
+   * @param location The location to remove
+   */
+  void removeFavoriteLocation(FavoriteLocation location);
+
+  /**
+   * Provides an immutable list. Use add and remove to modify locations.
+   * @return The list of the users favorite locations.
    */
   List<FavoriteLocation> getFavoriteLocations();
 }

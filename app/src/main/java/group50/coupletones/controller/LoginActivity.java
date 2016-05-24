@@ -5,7 +5,6 @@
 
 package group50.coupletones.controller;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import group50.coupletones.auth.user.User;
 import group50.coupletones.di.InstanceComponent;
 import group50.coupletones.di.module.ContextModule;
 import group50.coupletones.util.Taggable;
-import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 
@@ -81,9 +79,6 @@ public class LoginActivity extends AppCompatActivity implements Taggable {
   private User onUserLogin(User user) {
     //TODO: Better design to signify how the sign in failed. User should never be null?
     if (user != null) {
-      // Save the user
-      app.getLocalUser().load(new Storage(getSharedPreferences("user", Context.MODE_PRIVATE)));
-
       // Star the main activity
       Intent intent = new Intent(this, MainActivity.class);
       startActivity(intent);

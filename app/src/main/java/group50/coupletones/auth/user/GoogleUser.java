@@ -8,11 +8,10 @@ package group50.coupletones.auth.user;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import group50.coupletones.controller.tab.favoritelocations.map.location.UserFavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.network.sync.FirebaseSync;
 import group50.coupletones.network.sync.Sync;
 import group50.coupletones.network.sync.Syncable;
-
-import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.util.storage.Storage;
 
 import java.util.ArrayList;
@@ -28,7 +27,9 @@ import java.util.Map;
  */
 public class GoogleUser implements LocalUser {
 
-  private final GoogleSignInAccount account;
+  /**
+   * Object responsible for syncing the object with Firebase
+   */
   private final Sync sync;
   /**
    * ID of the user
@@ -48,8 +49,13 @@ public class GoogleUser implements LocalUser {
   /**
    * User's partner
    */
-  @Syncable
   private User partner;
+
+  /**
+   * The ID of the user's partner
+   */
+  @Syncable
+  private String partnerId;
   /**
    * The user's list of favorite location.
    */
@@ -67,7 +73,7 @@ public class GoogleUser implements LocalUser {
     email = account.getEmail();
     favoriteLocations = new ArrayList<>();
 
-    sync = new Sync(this, FirebaseDatabase.getInstance().getReference("users/" + id));
+    sync = new FirebaseSync(this, FirebaseDatabase.getInstance().getReference("users/" + id)).subscribeAll();
 
     //TOOD: remove this save?
     save();
@@ -113,7 +119,7 @@ public class GoogleUser implements LocalUser {
   /**
    * Sets partner
    *
-   * @param partner
+   * @param partner The partner to set
    */
   @Override
   public void setPartner(User partner) {

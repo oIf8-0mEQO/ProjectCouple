@@ -28,7 +28,7 @@ public interface LocalUser extends User, Storable {
   void setPartner(User partner);
 
   /**
-   * @return The a list of the users favoite locations.
+   * @return The list of the users favorite locations. Immutable.
    */
   List<FavoriteLocation> getFavoriteLocations();
 }

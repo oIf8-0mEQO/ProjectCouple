@@ -13,6 +13,7 @@ import java.io.File;
 import javax.inject.Inject;
 
 import group50.coupletones.CoupleTones;
+import group50.coupletones.R;
 
 /**
  * @Author Joseph
@@ -20,9 +21,18 @@ import group50.coupletones.CoupleTones;
  */
 public class VibeTone {
 
-  private static VibeTone[] tones = {
-                                      new VibeTone();//TODO: Collect sounds/vibrations and implement this.
-  }
+  private static VibeTone[] tones = {//TODO: Collect sounds and implement this.
+    new VibeTone("", new long[] {0, 2000}),//Index 0 / default tone.
+    new VibeTone("", new long[] {0, 400, 400, 400, 400, 400}),//Index 1.
+    new VibeTone("", new long[] {0, 800, 400, 800}),//Index 2.
+    new VibeTone("", new long[] {0, 1200, 400, 400}),//Index 3.
+    new VibeTone("", new long[] {0, 400, 400, 1200}),//Index 4.
+    new VibeTone("", new long[] {0, 800, 400, 200, 400, 200}),//Index 5.
+    new VibeTone("", new long[] {0, 200, 400, 800, 400, 200}),//Index 6.
+    new VibeTone("", new long[] {0, 200, 400, 200, 400, 800}),//Index 7.
+    new VibeTone("", new long[] {0, 1000}),//Arrival.
+    new VibeTone("", new long[] {0, 400, 200, 400}),//Departure.
+  };
 
   @Inject
   public CoupleTones app;
@@ -50,6 +60,7 @@ public class VibeTone {
    */
   public static VibeTone getTone(int which)
   {
+    if (which < 0 || which >  7) return tones[0]
     return tones[which];
   }
 

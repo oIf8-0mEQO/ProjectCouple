@@ -2,8 +2,6 @@ package group50.coupletones.auth.user;
 
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 
-import java.util.List;
-
 /**
  * @author Brandon Chi
  * @since  5/5/2016
@@ -38,10 +36,4 @@ public interface LocalUser extends User {
    * @param location The location to remove
    */
   void removeFavoriteLocation(FavoriteLocation location);
-
-  /**
-   * Provides an immutable list. Use add and remove to modify locations.
-   * @return The list of the users favorite locations.
-   */
-  List<FavoriteLocation> getFavoriteLocations();
 }

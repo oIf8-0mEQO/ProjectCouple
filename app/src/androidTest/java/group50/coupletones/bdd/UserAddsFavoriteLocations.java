@@ -27,6 +27,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,8 +37,8 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.*;
 
 /**
  * BDD style test for user adds favorite locations story
@@ -84,7 +85,10 @@ public class UserAddsFavoriteLocations {
     app = CoupleTones.global().app();
     when(app.isLoggedIn()).thenReturn(true);
     when(app.getLocalUser()).thenReturn(mockUser);
-    when(mockUser.getFavoriteLocations()).thenReturn(favLocations);
+    doAnswer(ans -> favLocations.add((FavoriteLocation) ans.getArguments()[0]))
+      .when(mockUser)
+      .addFavoriteLocation(any());
+    when(mockUser.getFavoriteLocations()).then(ans -> Collections.unmodifiableList(favLocations));
     mapFragment = (MapFragment) rule.getActivity().getTabs().get(R.id.map);
   }
 

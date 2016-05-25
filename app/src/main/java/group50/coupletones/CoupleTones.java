@@ -7,6 +7,7 @@ package group50.coupletones;
 
 import android.app.Application;
 import android.location.Geocoder;
+import com.google.firebase.database.FirebaseDatabase;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityNetworkHandler;
@@ -107,6 +108,9 @@ public class CoupleTones extends Application {
       DaggerInstanceComponent
         .builder()
     );
+
+    // Enable Firebase persistence
+    FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
     // Register network
     NetworkManager network = global().network();

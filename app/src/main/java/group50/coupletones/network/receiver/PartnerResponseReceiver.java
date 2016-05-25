@@ -4,15 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.user.Partner;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.network.message.Message;
 import group50.coupletones.network.message.MessageReceiver;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.util.Identifiable;
-import group50.coupletones.util.storage.Storage;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Handles the notification when a partner accepts or reject request.
@@ -38,6 +34,7 @@ public class PartnerResponseReceiver implements MessageReceiver, Identifiable {
   public void onReceive(Message message) {
     String title = context.getString(R.string.partner_request_header);
     boolean accepted = message.getString("requestAccept").equals("1");
+    String id = message.getString("id");
     String name = message.getString("name");
     String email = message.getString("partner");
     String msg = name + " " + (accepted ? "accepted" : "rejected") + " your request!";
@@ -46,8 +43,7 @@ public class PartnerResponseReceiver implements MessageReceiver, Identifiable {
 
     //Handle accept
     if (accepted) {
-      app.getLocalUser().setPartner(new Partner(name, email));
-      app.getLocalUser().save(new Storage(context.getSharedPreferences("user", MODE_PRIVATE)));
+      app.getLocalUser().setPartner(id);
     }
   }
 

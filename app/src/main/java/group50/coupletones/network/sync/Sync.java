@@ -1,6 +1,7 @@
 package group50.coupletones.network.sync;
 
 import com.google.firebase.database.DatabaseReference;
+import group50.coupletones.util.function.Consumer;
 
 /**
  * An object that handles real time database syncing for objects.
@@ -25,6 +26,9 @@ public interface Sync {
    */
   FirebaseSync setRef(DatabaseReference ref);
 
+  /**
+   * @return Reference to the database this object is synced with
+   */
   DatabaseReference getRef();
 
   /**
@@ -35,6 +39,16 @@ public interface Sync {
    * @return The Sync object instance
    */
   Sync subscribeAll();
+
+  /**
+   * Subscribes a field to a callback function, that is called every time
+   * the field is updated from the database (changed).
+   *
+   * @param fieldName The name of the field
+   * @param onChange  The callback function
+   * @return Self instance
+   */
+  Sync subscribe(String fieldName, Consumer<Object> onChange);
 
   /**
    * Subscribes a field in the class to receive updates from the database.

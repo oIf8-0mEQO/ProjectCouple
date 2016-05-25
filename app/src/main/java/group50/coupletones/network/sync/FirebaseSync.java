@@ -4,6 +4,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import group50.coupletones.util.function.Consumer;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -66,15 +67,17 @@ public class FirebaseSync implements Sync {
    */
   protected void cacheFields() {
     verifyRefAndObjSet();
-    syncFields = new HashMap<>();
+    if (syncFields == null) {
+      syncFields = new HashMap<>();
 
-    Field[] fields = obj.getClass().getDeclaredFields();
+      Field[] fields = obj.getClass().getDeclaredFields();
 
-    for (Field field : fields) {
-      if (field.isAnnotationPresent(Syncable.class)) {
-        // Force accessibility
-        field.setAccessible(true);
-        syncFields.put(field.getName(), field);
+      for (Field field : fields) {
+        if (field.isAnnotationPresent(Syncable.class)) {
+          // Force accessibility
+          field.setAccessible(true);
+          syncFields.put(field.getName(), field);
+        }
       }
     }
   }
@@ -85,8 +88,7 @@ public class FirebaseSync implements Sync {
    */
   public Sync subscribeAll() {
     verifyRefAndObjSet();
-    if (syncFields == null)
-      cacheFields();
+    cacheFields();
 
     // Add a listener for each field
     for (String fieldName : syncFields.keySet()) {
@@ -96,29 +98,26 @@ public class FirebaseSync implements Sync {
     return this;
   }
 
+
   /**
-   * Subscribes a field in the class to receive updates from the database.
+   * Subscribes a field to a callback function, that is called every time
+   * the field is updated from the database (changed).
    *
    * @param fieldName The name of the field
+   * @param onChange  The callback function
    * @return Self instance
    */
   @Override
-  public Sync subscribe(String fieldName) {
-    verifyRefAndObjSet();
-    if (syncFields == null)
-      cacheFields();
+  public Sync subscribe(String fieldName, Consumer<Object> onChange) {
+    cacheFields();
 
-    Field f = syncFields.get(fieldName);
+    Field field = syncFields.get(fieldName);
     ref
-      .child(f.getName())
+      .child(field.getName())
       .addValueEventListener(new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
-          try {
-            f.set(obj, dataSnapshot.getValue());
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
+          onChange.accept(dataSnapshot.getValue());
         }
 
         @Override
@@ -131,6 +130,25 @@ public class FirebaseSync implements Sync {
   }
 
   /**
+   * Subscribes a field in the class to receive updates from the database.
+   *
+   * @param fieldName The name of the field
+   * @return Self instance
+   */
+  @Override
+  public Sync subscribe(String fieldName) {
+    cacheFields();
+    Field field = syncFields.get(fieldName);
+    return subscribe(fieldName, change -> {
+      try {
+        field.set(obj, change);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    });
+  }
+
+  /**
    * Attempts to sync a specific field to the server
    *
    * @param fieldNames The name of the field
@@ -138,9 +156,7 @@ public class FirebaseSync implements Sync {
    */
   @Override
   public Sync publish(String... fieldNames) {
-    verifyRefAndObjSet();
-    if (syncFields == null)
-      cacheFields();
+    cacheFields();
 
     for (String fieldName : fieldNames) {
       if (syncFields.containsKey(fieldName))
@@ -158,9 +174,7 @@ public class FirebaseSync implements Sync {
    */
   @Override
   public Sync publishAll() {
-    verifyRefAndObjSet();
-    if (syncFields == null)
-      cacheFields();
+    cacheFields();
 
     // Add a listener for each field
     for (String fieldName : syncFields.keySet()) {
@@ -177,7 +191,7 @@ public class FirebaseSync implements Sync {
    * @return Self instance
    */
   protected Sync publish(Field field) {
-    verifyRefAndObjSet();
+    cacheFields();
 
     try {
       ref.child(field.getName()).setValue(field.get(obj));

@@ -15,23 +15,23 @@ import group50.coupletones.controller.tab.TabFragment;
  */
 
 /**
- * A simple {@link Fragment} subclass for the Favorite Locations tab.
+ * A simple {@link Fragment} subclass for the Partner's Favorite Locations tab.
  */
-public class PartnersLocationsFragment extends TabFragment<Object> {
+public class PartnersFavoritesFragment extends TabFragment<Object> {
   private RecyclerView partnersList;
-  private ListAdapterPartner adapter;
+  private ListAdapterFavorites adapter;
 
-  public PartnersLocationsFragment() {
+  public PartnersFavoritesFragment() {
     super(Object.class);
   }
 
   /**
    * getResourceID
-   * @return - Partner's locations fragment
+   * @return - Partner's favorite locations fragment
    */
   @Override
   protected int getResourceId() {
-    return R.layout.fragment_partners_locations;
+    return R.layout.fragment_partners_list;
   }
 
   /**
@@ -41,12 +41,11 @@ public class PartnersLocationsFragment extends TabFragment<Object> {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    View v = inflater.inflate(R.layout.fragment_partners_locations, container, false);
-    partnersList = (RecyclerView) v.findViewById(R.id.partners_location_list);
+    View v = inflater.inflate(R.layout.fragment_partners_list, container, false);
+    partnersList = (RecyclerView) v.findViewById(R.id.partners_static_list);
     partnersList.setLayoutManager(new LinearLayoutManager(getActivity()));
-    adapter = new ListAdapterPartner(PartnerLocationsData.getPartnerLocations(), getActivity());
+    adapter = new ListAdapterFavorites(PartnerFavoritesData.getPartnerLocations(), getActivity());
     partnersList.setAdapter(adapter);
-
     return v;
   }
 }

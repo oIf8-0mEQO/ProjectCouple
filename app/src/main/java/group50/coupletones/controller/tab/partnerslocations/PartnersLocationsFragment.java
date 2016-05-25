@@ -7,7 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+
 import group50.coupletones.R;
+import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.TabFragment;
 
 /**
@@ -47,6 +51,10 @@ public class PartnersLocationsFragment extends TabFragment<Object> {
     adapter = new ListAdapterPartner(PartnerLocationsData.getPartnerLocations(), getActivity());
     partnersList.setAdapter(adapter);
 
+    ImageButton partnerFaves;
+    partnerFaves = (ImageButton) v.findViewById(R.id.partners_list_button);
+
+    partnerFaves.setOnClickListener(view -> ((MainActivity) getActivity()).setFragment(new PartnersFavoritesFragment()));
     return v;
   }
 }

@@ -116,7 +116,7 @@ public class ConcreteUser implements LocalUser {
 
   @Override
   public List<FavoriteLocation> getFavoriteLocations() {
-    return Collections.unmodifiableList(favoriteLocations);
+    return favoriteLocations != null ? Collections.unmodifiableList(favoriteLocations) : Collections.emptyList();
   }
 
   /**

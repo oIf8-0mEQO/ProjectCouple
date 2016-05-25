@@ -190,6 +190,7 @@ public class GoogleAuthenticator implements
       // Notify server of registration
       network.send(
         (OutgoingMessage) new OutgoingMessage("registration")
+          .setString("id", localUser.getId())
           .setString("name", localUser.getName())
           .setString("email", localUser.getEmail())
       );

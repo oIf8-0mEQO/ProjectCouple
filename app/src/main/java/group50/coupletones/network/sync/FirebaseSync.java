@@ -4,7 +4,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import group50.coupletones.util.function.Consumer;
+import rx.Observable;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -27,6 +27,8 @@ public class FirebaseSync implements Sync {
   protected DatabaseReference ref;
 
   protected Map<String, Field> syncFields;
+
+  protected Map<String, Observable<?>> observables;
 
   /**
    * Sets the Sync object to watch a particular object
@@ -64,11 +66,13 @@ public class FirebaseSync implements Sync {
 
   /**
    * Cache all fields of the given object that requires syncing.
+   * Automatically generates observables for every single field.
    */
-  protected void cacheFields() {
+  protected void build() {
     verifyRefAndObjSet();
     if (syncFields == null) {
       syncFields = new HashMap<>();
+      observables = new HashMap<>();
 
       Field[] fields = obj.getClass().getDeclaredFields();
 
@@ -77,9 +81,43 @@ public class FirebaseSync implements Sync {
           // Force accessibility
           field.setAccessible(true);
           syncFields.put(field.getName(), field);
+
+          // Creates an observable that listens to Firebase data change.
+          Observable<?> observable = Observable.create(act -> {
+            ref
+              .child(field.getName())
+              .addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                  act.onNext(dataSnapshot.getValue());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                  throw databaseError.toException();
+                }
+              });
+          });
+
+          observables.put(field.getName(), observable);
         }
       }
     }
+  }
+
+  /**
+   * Gets the observable associated with this field.
+   *
+   * @param fieldName The name of the field in this class.
+   * @return An observable object.
+   */
+  @Override
+  public Observable<?> get(String fieldName) {
+    build();
+    if (observables.containsKey(fieldName))
+      return observables.get(fieldName);
+    else
+      throw new IllegalArgumentException("Field name: " + fieldName + " does not have @Sycnable annotation.");
   }
 
   /**
@@ -88,7 +126,7 @@ public class FirebaseSync implements Sync {
    */
   public Sync subscribeAll() {
     verifyRefAndObjSet();
-    cacheFields();
+    build();
 
     // Add a listener for each field
     for (String fieldName : syncFields.keySet()) {
@@ -98,54 +136,24 @@ public class FirebaseSync implements Sync {
     return this;
   }
 
-
   /**
-   * Subscribes a field to a callback function, that is called every time
-   * the field is updated from the database (changed).
-   *
-   * @param fieldName The name of the field
-   * @param onChange  The callback function
-   * @return Self instance
-   */
-  @Override
-  public Sync subscribe(String fieldName, Consumer<Object> onChange) {
-    cacheFields();
-
-    Field field = syncFields.get(fieldName);
-    ref
-      .child(field.getName())
-      .addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-          onChange.accept(dataSnapshot.getValue());
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-          throw databaseError.toException();
-        }
-      });
-
-    return this;
-  }
-
-  /**
-   * Subscribes a field in the class to receive updates from the database.
+   * Subscribes a field in the class to receive updates from the database automatically.
    *
    * @param fieldName The name of the field
    * @return Self instance
    */
   @Override
   public Sync subscribe(String fieldName) {
-    cacheFields();
+    Observable<?> observable = get(fieldName);
     Field field = syncFields.get(fieldName);
-    return subscribe(fieldName, change -> {
+    observable.subscribe(change -> {
       try {
         field.set(obj, change);
       } catch (Exception e) {
         e.printStackTrace();
       }
     });
+    return this;
   }
 
   /**
@@ -156,7 +164,7 @@ public class FirebaseSync implements Sync {
    */
   @Override
   public Sync publish(String... fieldNames) {
-    cacheFields();
+    build();
 
     for (String fieldName : fieldNames) {
       if (syncFields.containsKey(fieldName))
@@ -174,7 +182,7 @@ public class FirebaseSync implements Sync {
    */
   @Override
   public Sync publishAll() {
-    cacheFields();
+    build();
 
     // Add a listener for each field
     for (String fieldName : syncFields.keySet()) {
@@ -191,7 +199,7 @@ public class FirebaseSync implements Sync {
    * @return Self instance
    */
   protected Sync publish(Field field) {
-    cacheFields();
+    build();
 
     try {
       ref.child(field.getName()).setValue(field.get(obj));

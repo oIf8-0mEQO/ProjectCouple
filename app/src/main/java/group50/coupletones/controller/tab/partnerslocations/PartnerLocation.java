@@ -11,7 +11,7 @@ package group50.coupletones.controller.tab.partnerslocations;
  * Includes methods that get and set name, address, and time visited.
  */
 public class PartnerLocation {
-  private String name, address, timeValue;
+  private String name, address, timeValue, vibeTone;
   private int iconId;
 
   public String getName() {
@@ -43,5 +43,13 @@ public class PartnerLocation {
   }
 
   public void setTime(String time) { this.timeValue = time; }
+
+  public String getVibeTone() {
+    return vibeTone;
+  }
+
+  public void setVibeTone(String tone) { this.vibeTone = tone; }
+
+
 }
 

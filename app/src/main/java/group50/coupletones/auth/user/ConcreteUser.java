@@ -29,6 +29,7 @@ public class ConcreteUser implements LocalUser {
    * Object responsible for syncing the object with database
    */
   private final Sync sync;
+
   @Syncable
   private String id;
   /**
@@ -49,7 +50,8 @@ public class ConcreteUser implements LocalUser {
    * The user's list of favorite location.
    */
   @Syncable
-  private List<FavoriteLocation> favoriteLocations;
+  private List<FavoriteLocation> favoriteLocations = new LinkedList<>();
+
   /**
    * The ID of the user's partner
    */
@@ -60,19 +62,22 @@ public class ConcreteUser implements LocalUser {
    * with this user.
    */
   @Syncable
-  private List<String> partnerRequests;
+  private List<String> partnerRequests = new LinkedList<>();
 
   /**
    * Creates a ConcreteUser
    *
    * @param sync The sync object, with a database reference for this user.
    */
+  //TODO: DI?
   public ConcreteUser(Sync sync) {
-    favoriteLocations = new LinkedList<>();
-
     this.sync = sync
       .watch(this)
       .subscribeAll();
+  }
+
+  public static DatabaseReference getDatabase() {
+    return DATABASE;
   }
 
   /**
@@ -172,5 +177,9 @@ public class ConcreteUser implements LocalUser {
   public void requestPartner(User requester) {
     partnerRequests.add(requester.getId());
     sync.publish("partnerRequests");
+  }
+
+  public Sync getSync() {
+    return sync;
   }
 }

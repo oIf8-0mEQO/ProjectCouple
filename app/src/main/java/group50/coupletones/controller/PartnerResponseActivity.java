@@ -56,13 +56,14 @@ public class PartnerResponseActivity extends Activity {
     if (extras != null && extras.containsKey("name") && extras.containsKey("email")) {
       // The user tapped on the notification.
       // This means the user wants to add a new partner
+      String id = extras.getString("id");
       String name = extras.getString("name");
       String email = extras.getString("email");
       partnerName.setText(name);
       requestText.setText(email + " " + getString(R.string.partner_up_text));
 
-      acceptButton.setOnClickListener(click -> sendResponse(name, email, true));
-      rejectButton.setOnClickListener(click -> sendResponse(name, email, false));
+      acceptButton.setOnClickListener(click -> sendResponse(id, email, true));
+      rejectButton.setOnClickListener(click -> sendResponse(id, email, false));
     } else {
       // Invalid data. Close the activity.
       finish();
@@ -71,11 +72,11 @@ public class PartnerResponseActivity extends Activity {
 
   /**
    * Sends a response to the partner request.
-   * @param name - Partner's name
+   * @param id - Partner's id
    * @param email - Partner's email
    * @param accept - accept or reject request
    */
-  private void sendResponse(String name, String email, boolean accept) {
+  private void sendResponse(String id, String email, boolean accept) {
     // Send a partner request to the server
     network.send(
       (OutgoingMessage)
@@ -85,7 +86,7 @@ public class PartnerResponseActivity extends Activity {
     );
 
     if (accept) {
-      app.getLocalUser().setPartner(email);
+      app.getLocalUser().setPartner(id);
     }
 
     finish();

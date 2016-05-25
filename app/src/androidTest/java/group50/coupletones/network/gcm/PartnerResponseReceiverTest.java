@@ -18,7 +18,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
 /**
@@ -33,6 +32,9 @@ public class PartnerResponseReceiverTest extends ActivityInstrumentationTestCase
   private CoupleTones app;
   private PartnerResponseReceiver partnerResponseReceiver;
   private Message mockMessage;
+
+  // Mocking the partner/database
+  private User getPartner;
 
   public PartnerResponseReceiverTest() {
     super(MainActivity.class);
@@ -64,16 +66,13 @@ public class PartnerResponseReceiverTest extends ActivityInstrumentationTestCase
   @Test
   public void testSetPartner() throws Exception {
     when(mockMessage.getString("requestAccept")).thenReturn("1");
+    when(mockMessage.getString("id")).thenReturn("1234567");
     when(mockMessage.getString("name")).thenReturn("Sharmaine");
-    when(mockMessage.getString("email")).thenReturn("hello@sharmaine.me");
+    when(mockMessage.getString("partner")).thenReturn("hello@sharmaine.me");
 
     partnerResponseReceiver.onReceive(mockMessage);
-    User mock = mock(User.class);
-    when(mock.getName()).thenReturn(mockMessage.getString("name"));
-    when(mock.getEmail()).thenReturn(mockMessage.getString("email"));
-    app.getLocalUser().setPartner(mock);
 
-    verify(app.getLocalUser(), times(2)).setPartner(any());
+    verify(app.getLocalUser(), times(1)).setPartner("1234567");
   }
 
   @Test

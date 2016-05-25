@@ -7,7 +7,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 import android.widget.Button;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.user.MockLocalUser;
+import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 import group50.coupletones.network.NetworkManager;
@@ -47,8 +47,7 @@ public class AddPartnerActivityTest extends ActivityInstrumentationTestCase2<Add
         .build());
 
     // Stub getLocalUser method
-    when(CoupleTones.global().app().getLocalUser())
-      .thenReturn(new MockLocalUser());
+    when(CoupleTones.global().app().getLocalUser()).thenReturn(mock(LocalUser.class));
 
     injectInstrumentation(InstrumentationRegistry.getInstrumentation());
   }

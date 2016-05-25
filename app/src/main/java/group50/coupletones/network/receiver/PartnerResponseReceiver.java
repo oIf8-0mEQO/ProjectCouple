@@ -34,6 +34,7 @@ public class PartnerResponseReceiver implements MessageReceiver, Identifiable {
   public void onReceive(Message message) {
     String title = context.getString(R.string.partner_request_header);
     boolean accepted = message.getString("requestAccept").equals("1");
+    String id = message.getString("id");
     String name = message.getString("name");
     String email = message.getString("partner");
     String msg = name + " " + (accepted ? "accepted" : "rejected") + " your request!";
@@ -42,7 +43,7 @@ public class PartnerResponseReceiver implements MessageReceiver, Identifiable {
 
     //Handle accept
     if (accepted) {
-      app.getLocalUser().setPartner(email);
+      app.getLocalUser().setPartner(id);
     }
   }
 

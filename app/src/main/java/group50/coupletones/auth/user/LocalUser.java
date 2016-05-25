@@ -22,9 +22,9 @@ public interface LocalUser extends User {
 
   /**
    * Sets the partner
-   * @param partner The partner to set
+   * @param id The partner's user id to set
    */
-  void setPartner(User partner);
+  void setPartner(String id);
 
   /**
    * Adds a favorite location

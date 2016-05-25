@@ -51,4 +51,11 @@ public interface Sync {
    * @return Self instance
    */
   Sync publish(String... fieldNames);
+
+  /**
+   * Publishes all fields to the database.
+   *
+   * @return Self instance
+   */
+  Sync publishAll();
 }

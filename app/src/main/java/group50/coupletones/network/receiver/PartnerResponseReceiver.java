@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.user.Partner;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.network.message.Message;
 import group50.coupletones.network.message.MessageReceiver;
@@ -43,7 +42,7 @@ public class PartnerResponseReceiver implements MessageReceiver, Identifiable {
 
     //Handle accept
     if (accepted) {
-      app.getLocalUser().setPartner(new Partner(name, email));
+      app.getLocalUser().setPartner(email);
     }
   }
 

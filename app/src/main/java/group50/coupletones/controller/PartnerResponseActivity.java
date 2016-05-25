@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.user.Partner;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.network.message.OutgoingMessage;
@@ -86,7 +85,7 @@ public class PartnerResponseActivity extends Activity {
     );
 
     if (accept) {
-      app.getLocalUser().setPartner(new Partner(name, email));
+      app.getLocalUser().setPartner(email);
     }
 
     finish();

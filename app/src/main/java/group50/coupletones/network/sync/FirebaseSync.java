@@ -68,7 +68,7 @@ public class FirebaseSync implements Sync {
     verifyRefAndObjSet();
     syncFields = new HashMap<>();
 
-    Field[] fields = obj.getClass().getFields();
+    Field[] fields = obj.getClass().getDeclaredFields();
 
     for (Field field : fields) {
       if (field.isAnnotationPresent(Syncable.class)) {
@@ -148,6 +148,25 @@ public class FirebaseSync implements Sync {
       else
         throw new IllegalArgumentException("Field name: " + fieldName + " does not have @Sycnable annotation.");
     }
+    return this;
+  }
+
+  /**
+   * Publishes all fields to the database.
+   *
+   * @return Self instance
+   */
+  @Override
+  public Sync publishAll() {
+    verifyRefAndObjSet();
+    if (syncFields == null)
+      cacheFields();
+
+    // Add a listener for each field
+    for (String fieldName : syncFields.keySet()) {
+      publish(fieldName);
+    }
+
     return this;
   }
 

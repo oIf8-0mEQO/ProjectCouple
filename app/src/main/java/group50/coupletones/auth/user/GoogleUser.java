@@ -28,9 +28,7 @@ public class GoogleUser implements LocalUser {
    * Object responsible for syncing the object with database
    */
   private final Sync sync;
-  /**
-   * ID of the user
-   */
+
   @Syncable
   private String id;
   /**
@@ -66,18 +64,17 @@ public class GoogleUser implements LocalUser {
    * @param account The Google sign in account object
    */
   public GoogleUser(GoogleSignInAccount account) {
-    //TODO: Use DI?
-    sync = new FirebaseSync()
-      .watch(this)
-      .setRef(FirebaseDatabase.getInstance().getReference("users/" + id))
-      .subscribeAll();
-
     id = account.getId();
     name = account.getDisplayName();
     email = account.getEmail();
     favoriteLocations = new ArrayList<>();
 
-    sync.publish("id", "name", "email", "favoriteLocations");
+    //TODO: Use DI?
+    sync = new FirebaseSync()
+      .watch(this)
+      .setRef(FirebaseDatabase.getInstance().getReference("users/" + id))
+      .subscribeAll()
+      .publishAll();
   }
 
   /**
@@ -136,7 +133,7 @@ public class GoogleUser implements LocalUser {
    */
   @Override
   public User getPartner() {
-    // Lazy update partner from Id
+    // Lazy initialize the partner from Id
     if (partnerId != null) {
       // An update has occurred. Attempt to reconstruct the partner object.
       //TODO: Use dependency injection?
@@ -150,12 +147,11 @@ public class GoogleUser implements LocalUser {
   /**
    * Sets partner
    *
-   * @param partner The partner to set
+   * @param partnerId The partner's ID to set
    */
   @Override
-  public void setPartner(User partner) {
-    this.partner = partner;
-    partnerId = partner != null ? partner.getId() : null;
+  public void setPartner(String partnerId) {
+    this.partnerId = partnerId;
     sync.publish("partnerId");
   }
 }

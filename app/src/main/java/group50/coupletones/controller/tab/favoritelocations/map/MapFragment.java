@@ -14,6 +14,7 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import group50.coupletones.CoupleTones;
+import group50.coupletones.auth.user.User;
 
 import javax.inject.Inject;
 
@@ -38,11 +39,13 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
 
   private LocationManager locationManager;
 
+  private boolean isUser = true;//True if map represents the user's data.
+
   /**
    * Creates a OnMapClickListener that opens a dialog box asking the user for a name of a favorite location. When the user accepts the name
    * a new favorite location is created at the clicked spot with the submitted name.
    */
-  private GoogleMap.OnMapClickListener clickListener = new LocationClickHandler(this);
+  private LocationClickHandler clickListener = new LocationClickHandler(this);
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -148,6 +151,16 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     }
   }
 
+
+  /**
+   * @param user true if the map represents the users data, false if the map represents partner data.
+   */
+  public void setIsUser(boolean user)
+  {
+    this.isUser = user;
+    clickListener.setIsDisabled(!user);
+  }
+
   /**
    * Moves the map to a given location. Must be called after map is ready.
    *
@@ -181,10 +194,13 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
    * Draws all of the favorited locations as markers on the map.
    */
   public void populateMap() {
+    User user;
+    if (isUser) user = app.getLocalUser();
+    else user = app.getLocalUser().getPartner();
     mMap.clear();
     MarkerOptions markerSettings = new MarkerOptions();
     markerSettings.draggable(false);
-    for (group50.coupletones.controller.tab.favoritelocations.map.location.Location i : app.getLocalUser().getFavoriteLocations()) {
+    for (group50.coupletones.controller.tab.favoritelocations.map.location.Location i : user.getFavoriteLocations()) {
       markerSettings.position(i.getPosition());
       markerSettings.title(i.getName());
       mMap.addMarker(markerSettings);

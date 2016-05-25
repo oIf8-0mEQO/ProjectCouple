@@ -27,6 +27,7 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
   public CoupleTones app;
 
   private MapFragment map;
+  private boolean isDisabled;//If true the object does nothing
 
   /**
    * Location click handler
@@ -38,6 +39,12 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
     CoupleTones.global().inject(this);
   }
 
+  public void setIsDisabled(boolean isDisabled)
+  {
+    this.isDisabled = isDisabled;
+  }
+
+
   /**
    * onMapClick
    *
@@ -45,6 +52,7 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
    */
   @Override
   public void onMapClick(LatLng latLng) {
+    if (isDisabled) return;
     AlertDialog.Builder builder = new AlertDialog.Builder(map.getContext());
     builder.setTitle(R.string.location_name_box);
     EditText input = new EditText(map.getContext());

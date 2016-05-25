@@ -5,17 +5,22 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.database.FirebaseDatabase;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.auth.user.GoogleUser;
+import group50.coupletones.auth.user.ConcreteUser;
+import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.OutgoingMessage;
+import group50.coupletones.network.sync.FirebaseSync;
+import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Function;
@@ -168,8 +173,18 @@ public class GoogleAuthenticator implements
   private void handleSignInResult(GoogleSignInResult result) {
     Log.d(getTag(), "handleSignInResult: " + result.isSuccess());
     if (result.isSuccess()) {
-      // Signed in successfully, store authenticated user
-      GoogleUser localUser = new GoogleUser(result.getSignInAccount());
+      // Signed in successfully, build the authenticated user
+      GoogleSignInAccount signInAccount = result.getSignInAccount();
+
+      // Build a sync database for the local user
+      Sync sync = new FirebaseSync()
+        .setRef(FirebaseDatabase.getInstance().getReference("users").child(signInAccount.getId()));
+
+      sync.getRef().child("id").setValue(signInAccount.getId());
+      sync.getRef().child("name").setValue(signInAccount.getDisplayName());
+      sync.getRef().child("email").setValue(signInAccount.getEmail());
+
+      LocalUser localUser = new ConcreteUser(sync);
       app.setLocalUser(localUser);
 
       // Notify server of registration

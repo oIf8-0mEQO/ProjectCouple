@@ -5,15 +5,13 @@
 
 package group50.coupletones.auth.user;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.firebase.database.FirebaseDatabase;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.network.sync.FirebaseSync;
 import group50.coupletones.network.sync.Sync;
 import group50.coupletones.network.sync.Syncable;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -22,7 +20,7 @@ import java.util.List;
  * <p>
  * Firebase
  */
-public class GoogleUser implements LocalUser {
+public class ConcreteUser implements LocalUser {
 
   /**
    * Object responsible for syncing the object with database
@@ -47,34 +45,35 @@ public class GoogleUser implements LocalUser {
   private User partner;
 
   /**
-   * The ID of the user's partner
-   */
-  @Syncable
-  private String partnerId;
-
-  /**
    * The user's list of favorite location.
    */
   @Syncable
   private List<FavoriteLocation> favoriteLocations;
 
   /**
-   * Creates a GoogleUser
-   *
-   * @param account The Google sign in account object
+   * The ID of the user's partner
    */
-  public GoogleUser(GoogleSignInAccount account) {
-    id = account.getId();
-    name = account.getDisplayName();
-    email = account.getEmail();
-    favoriteLocations = new ArrayList<>();
+  @Syncable
+  private String partnerId;
 
-    //TODO: Use DI?
-    sync = new FirebaseSync()
+  /**
+   * A list of all partner Ids who is trying to request partnership
+   * with this user.
+   */
+  @Syncable
+  private List<String> partnerRequests;
+
+  /**
+   * Creates a ConcreteUser
+   *
+   * @param sync The sync object, with a database reference for this user.
+   */
+  public ConcreteUser(Sync sync) {
+    favoriteLocations = new LinkedList<>();
+
+    this.sync = sync
       .watch(this)
-      .setRef(FirebaseDatabase.getInstance().getReference("users/" + id))
-      .subscribeAll()
-      .publishAll();
+      .subscribeAll();
   }
 
   /**

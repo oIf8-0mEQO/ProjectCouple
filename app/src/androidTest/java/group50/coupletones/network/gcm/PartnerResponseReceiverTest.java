@@ -7,7 +7,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
-import group50.coupletones.auth.user.Partner;
+import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.network.message.Message;
@@ -68,11 +68,12 @@ public class PartnerResponseReceiverTest extends ActivityInstrumentationTestCase
     when(mockMessage.getString("email")).thenReturn("hello@sharmaine.me");
 
     partnerResponseReceiver.onReceive(mockMessage);
-    app.getLocalUser().setPartner(
-        new Partner(mockMessage.getString("name"), mockMessage.getString("email")));
+    User mock = mock(User.class);
+    when(mock.getName()).thenReturn(mockMessage.getString("name"));
+    when(mock.getEmail()).thenReturn(mockMessage.getString("email"));
+    app.getLocalUser().setPartner(mock);
 
     verify(app.getLocalUser(), times(2)).setPartner(any());
-    verify(app.getLocalUser(), times(1)).save(any());
   }
 
   @Test

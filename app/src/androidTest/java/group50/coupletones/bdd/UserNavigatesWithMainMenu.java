@@ -8,7 +8,7 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.user.MockLocalUser;
+import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
@@ -25,6 +25,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
@@ -79,7 +80,7 @@ public class UserNavigatesWithMainMenu extends ActivityInstrumentationTestCase2<
   private void givenThatIAmLoggedIn() {
     // Stub getLocalUser method
     when(CoupleTones.global().app().getLocalUser())
-      .thenReturn(new MockLocalUser());
+      .thenReturn(mock(LocalUser.class));
   }
 
   private void whenITapOnPartnersLocation() {

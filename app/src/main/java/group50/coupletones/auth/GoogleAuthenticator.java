@@ -12,7 +12,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.Status;
-import com.google.firebase.database.FirebaseDatabase;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.ConcreteUser;
 import group50.coupletones.auth.user.LocalUser;
@@ -177,8 +176,7 @@ public class GoogleAuthenticator implements
       GoogleSignInAccount signInAccount = result.getSignInAccount();
 
       // Build a sync database for the local user
-      Sync sync = new FirebaseSync()
-        .setRef(FirebaseDatabase.getInstance().getReference("users").child(signInAccount.getId()));
+      Sync sync = new FirebaseSync().setRef(ConcreteUser.getDatabase(signInAccount.getId()));
 
       sync.getRef().child("id").setValue(signInAccount.getId());
       sync.getRef().child("name").setValue(signInAccount.getDisplayName());

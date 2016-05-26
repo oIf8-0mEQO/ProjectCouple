@@ -47,6 +47,13 @@ public interface LocalUser extends User {
   void requestPartner(User requester);
 
   /**
+   * Handles the partner request, either accepting or rejecting it
+   * @param partnerId The partner ID
+   * @param accept True if accept, false if reject
+   */
+  void handlePartnerRequest(String partnerId, boolean accept);
+
+  /**
    * @return A list of partner ids requesting to be partner with this user. Immutable. Never null.
    */
   List<String> getPartnerRequests();

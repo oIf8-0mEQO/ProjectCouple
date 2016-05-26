@@ -65,7 +65,6 @@ public class ConcreteUser implements LocalUser {
    *
    * @param sync The sync object, with a database reference for this user.
    */
-  //TODO: DI?
   public ConcreteUser(Sync sync) {
     this.sync = sync
       .watch(this)
@@ -131,8 +130,11 @@ public class ConcreteUser implements LocalUser {
     // Lazy initialize the partner from Id
     if (partnerId != null) {
       // An update has occurred. Attempt to reconstruct the partner object.
-      partner = new Partner(sync.child(partnerId));
-      partnerId = null;
+      if (partner == null || partner.getId() != partnerId)
+        // Partner has changed
+        partner = new Partner(sync.child(partnerId));
+    } else {
+      partner = null;
     }
 
     return partner;
@@ -156,7 +158,21 @@ public class ConcreteUser implements LocalUser {
    */
   @Override
   public void requestPartner(User requester) {
-    partnerRequests.add(requester.getId());
+    partnerRequests.add(0, requester.getId());
+    sync.publish("partnerRequests");
+  }
+
+  /**
+   * Handles the partner request, either accepting or rejecting it
+   *
+   * @param partnerId The partner ID
+   * @param accept    True if accept, false if reject
+   */
+  @Override
+  public void handlePartnerRequest(String partnerId, boolean accept) {
+    if (accept)
+      setPartner(partnerId);
+    partnerRequests.remove(partnerId);
     sync.publish("partnerRequests");
   }
 

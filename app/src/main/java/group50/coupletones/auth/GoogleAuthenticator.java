@@ -14,6 +14,7 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.Status;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.*;
+import group50.coupletones.auth.user.PartnerRequestObserver;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.OutgoingMessage;
 import group50.coupletones.util.Taggable;
@@ -178,10 +179,10 @@ public class GoogleAuthenticator implements
       GoogleSignInAccount signInAccount = result.getSignInAccount();
 
       // Build a sync database for the local user
-      LocalUser localUser = factory.createNew(signInAccount).build();
+      LocalUser localUser = factory.withAccount(signInAccount).build();
 
       // Bind partner request event
-      new PartnerRequestObserver(context, factory).bind((ConcreteUser) localUser);
+      new PartnerRequestObserver(context, factory).bind(localUser);
 
       app.setLocalUser(localUser);
 

@@ -33,7 +33,7 @@ public class PartnerRequestObserver {
    * @param localUser The user to observe
    * @return Self instance
    */
-  public PartnerRequestObserver bind(ConcreteUser localUser) {
+  public PartnerRequestObserver bind(LocalUser localUser) {
     this.localUser = localUser;
     localUser
       .getObservable("partnerRequests")
@@ -57,10 +57,10 @@ public class PartnerRequestObserver {
         String firstUserId = partnerRequests.listIterator().next();
 
         // Retrieve the partner object
-        ConcreteUser partner = (ConcreteUser) factory.withId(firstUserId).build();
+        User partner = factory.withId(firstUserId).build();
 
         // Wait until all data is received.
-        Observable<ConcreteUser> basicData = Observable.zip(
+        Observable<User> basicData = Observable.zip(
           partner.getObservable("id"),
           partner.getObservable("name"),
           partner.getObservable("email"),
@@ -69,6 +69,7 @@ public class PartnerRequestObserver {
 
         // When the basic data is synced from DB, we can then create the notification
         basicData
+          .skip(1)
           .first()
           .subscribe(syncedPartner -> {
             // Bundle the data into the intent when opening MainActivity

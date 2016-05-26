@@ -14,11 +14,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.user.ConcreteUser;
-import group50.coupletones.auth.user.LocalUser;
+import group50.coupletones.auth.user.Partner;
+import group50.coupletones.auth.user.User;
 import group50.coupletones.auth.user.UserFactory;
 import group50.coupletones.network.NetworkManager;
-import group50.coupletones.network.sync.FirebaseSync;
 import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;
@@ -65,7 +64,6 @@ public class AddPartnerActivity extends AppCompatActivity
 
   /**
    * onClick for Adding Partner Activity
-   *
    * @param v - The current view
    */
   public void onClick(View v) {
@@ -74,8 +72,12 @@ public class AddPartnerActivity extends AppCompatActivity
       // Switches to AddPartnerActivity.
       case R.id.connect_button:
         // Send a partner request
-        // TODO: Not unit testable, when ref firebase
-        DatabaseReference ref = new UserFactory().getDatabase();
+        UserFactory userFactory = CoupleTones
+          .instanceComponentBuilder()
+          .build()
+          .userFactory();
+
+        DatabaseReference ref = userFactory.getDatabase();
         String email = ((EditText) findViewById(R.id.email_address)).getText().toString();
 
         // Find the user by email
@@ -87,7 +89,10 @@ public class AddPartnerActivity extends AppCompatActivity
             public void onDataChange(DataSnapshot dataSnapshot) {
               if (dataSnapshot.getValue() != null) {
                 DatabaseReference partnerDb = dataSnapshot.getChildren().iterator().next().getRef();
-                LocalUser partner = new ConcreteUser(new FirebaseSync().setRef(partnerDb));
+                Partner partner = userFactory
+                  .withDB(partnerDb)
+                  .build();
+
                 partner.requestPartner(app.getLocalUser());
                 finish();
               } else {

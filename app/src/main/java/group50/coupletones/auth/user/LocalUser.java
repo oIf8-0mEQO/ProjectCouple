@@ -9,16 +9,9 @@ import rx.Observable;
  */
 
 /**
- * The Local User interface represents
- * a local user in the app.
+ * Represents the local user.
  */
 public interface LocalUser extends User {
-
-  /**
-   * Sets the partner
-   * @param id The partner's user id to set
-   */
-  void setPartner(String id);
 
   /**
    * Adds a favorite location
@@ -28,14 +21,12 @@ public interface LocalUser extends User {
 
   /**
    * Removes a favorite location
-   *
    * @param location The location to remove
    */
   void removeFavoriteLocation(FavoriteLocation location);
 
   /**
    * Requests to partner with this user.
-   *
    * @param requester The user sending the request
    */
   void requestPartner(User requester);
@@ -46,6 +37,17 @@ public interface LocalUser extends User {
    * @param accept True if accept, false if reject
    */
   void handlePartnerRequest(String partnerId, boolean accept);
+
+  /**
+   * @return The partner of the user
+   */
+  User getPartner();
+
+  /**
+   * Sets the partner
+   * @param id The partner's user id to set
+   */
+  void setPartner(String id);
 
   /**
    * @return An observable that notifies when the partner changes.

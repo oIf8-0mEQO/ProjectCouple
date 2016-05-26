@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import rx.Observable;
+import rx.subjects.BehaviorSubject;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -18,12 +19,13 @@ import java.util.Map;
  */
 //TODO: Unit test
 //TODO: Refactor to field publisher, generic. Returns an interface for publishing
+//TODO: Cache fields to classes
 public class FirebaseSync implements Sync {
 
   /**
    * The object to sync
    */
-  protected Object obj;
+  protected final Object obj;
 
   protected DatabaseReference ref;
 
@@ -32,15 +34,24 @@ public class FirebaseSync implements Sync {
   protected Map<String, Observable<?>> observables;
 
   /**
+   * Creates an unusable Sync.
+   */
+  public FirebaseSync() {
+    this(null);
+  }
+
+  public FirebaseSync(Object obj) {
+    this.obj = obj;
+  }
+
+  /**
    * Sets the Sync object to watch a particular object
    * @param obj The object to watch
-   * @return Self instance
+   * @return A new instance that watches the givne obje
    */
   @Override
   public FirebaseSync watch(Object obj) {
-    this.obj = obj;
-    Log.v("FirebaseSync", this + " watching " + obj);
-    return this;
+    return new FirebaseSync(obj);
   }
 
   @Override
@@ -92,24 +103,20 @@ public class FirebaseSync implements Sync {
           // Creates an observable that listens to Firebase data change.
           try {
             Object defaultObj = field.get(obj);
-            Observable<?> observable = Observable
-              .create(act -> {
-                ref
-                  .child(name)
-                  .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                      act.onNext(dataSnapshot.getValue());
-                    }
+            BehaviorSubject<Object> observable = BehaviorSubject.create(defaultObj);
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                      act.onCompleted();
-                      throw databaseError.toException();
-                    }
-                  });
-              })
-              .startWith(defaultObj);
+            ref.child(name)
+              .addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                  observable.onNext(dataSnapshot.getValue());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                  throw databaseError.toException();
+                }
+              });
 
             observables.put(name, observable);
           } catch (Exception e) {
@@ -226,11 +233,11 @@ public class FirebaseSync implements Sync {
 
   @Override
   public Sync child(String child) {
-    return new FirebaseSync().setRef(getRef().child(child));
+    return new FirebaseSync(obj).setRef(getRef().child(child));
   }
 
   @Override
   public Sync sibling(String child) {
-    return new FirebaseSync().setRef(getRef().getParent().child(child));
+    return new FirebaseSync(obj).setRef(getRef().getParent().child(child));
   }
 }

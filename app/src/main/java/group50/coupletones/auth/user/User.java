@@ -11,7 +11,7 @@ import group50.coupletones.util.ObservableProvider;
 import java.util.List;
 
 /**
- * The user interface represents a single user in the app.
+ * Represents a user
  */
 public interface User extends ObservableProvider {
   /**
@@ -28,11 +28,6 @@ public interface User extends ObservableProvider {
    * @return The email of the user
    */
   String getEmail();
-
-  /**
-   * @return The partner of the user
-   */
-  User getPartner();
 
   /**
    * Provides an immutable list. Use add and remove to modify locations. Never null.

@@ -2,11 +2,9 @@ package group50.coupletones.network.sync;
 
 import com.google.firebase.database.DatabaseReference;
 import group50.coupletones.util.ObservableProvider;
-import rx.Observable;
 
 /**
  * An object that handles real time database syncing for objects.
- *
  * @author Henry Mao
  * @since 5/24/16
  */
@@ -14,9 +12,8 @@ public interface Sync extends ObservableProvider {
 
   /**
    * Sets the Sync object to watch a particular object
-   *
    * @param obj The object to watch
-   * @return Self instance
+   * @return A new instance that watches the givne obje
    */
   Sync watch(Object obj);
 
@@ -27,7 +24,6 @@ public interface Sync extends ObservableProvider {
 
   /**
    * Sets the Sync object to refer a particular database
-   *
    * @param ref The database use
    * @return Self instance
    */
@@ -37,14 +33,12 @@ public interface Sync extends ObservableProvider {
    * Hooks listeners to every field in a class annotated with @Syncable.
    *
    * When the database for this field changes, the field itself will be automatically updated.
-   *
    * @return The Sync object instance
    */
   Sync subscribeAll();
 
   /**
    * Subscribes a field in the class to receive updates from the database automatically.
-   *
    * @param fieldName The name of the field
    * @return Self instance
    */
@@ -52,7 +46,6 @@ public interface Sync extends ObservableProvider {
 
   /**
    * Attempts to sync a specific field to the server
-   *
    * @param fieldName The name of the field to publish
    * @return Self instance
    */
@@ -60,7 +53,6 @@ public interface Sync extends ObservableProvider {
 
   /**
    * Publishes all fields to the database.
-   *
    * @return Self instance
    */
   Sync publishAll();

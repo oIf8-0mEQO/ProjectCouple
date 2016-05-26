@@ -73,4 +73,6 @@ public interface Sync {
    * @return Self instance
    */
   Sync publishAll();
+
+  Sync sibling(String child);
 }

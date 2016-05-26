@@ -15,13 +15,8 @@ import javax.inject.Inject;
  * @since 5/25/16
  */
 public class UserFactory {
-
-  private Sync sync;
-
   @Inject
   public UserFactory() {
-    sync = buildSync();
-    sync.setRef(getDatabase());
   }
 
   /**
@@ -30,9 +25,10 @@ public class UserFactory {
    * @param userId The ID of the user
    * @return Self instance
    */
-  public UserFactory withId(String userId) {
-    sync.setRef(getDatabase().child(userId));
-    return this;
+  public Buildable withId(String userId) {
+    Buildable buildable = new Buildable();
+    buildable.sync.setRef(getDatabase().child(userId));
+    return buildable;
   }
 
   /**
@@ -41,12 +37,13 @@ public class UserFactory {
    * @param account The Google account
    * @return Self instance
    */
-  public UserFactory createNew(GoogleSignInAccount account) {
-    sync.setRef(getDatabase().child(account.getId()));
-    sync.getRef().child("id").setValue(account.getId());
-    sync.getRef().child("name").setValue(account.getDisplayName());
-    sync.getRef().child("email").setValue(account.getEmail());
-    return this;
+  public Buildable createNew(GoogleSignInAccount account) {
+    Buildable buildable = new Buildable();
+    buildable.sync.setRef(getDatabase().child(account.getId()));
+    buildable.sync.getRef().child("id").setValue(account.getId());
+    buildable.sync.getRef().child("name").setValue(account.getDisplayName());
+    buildable.sync.getRef().child("email").setValue(account.getEmail());
+    return buildable;
   }
 
   protected Sync buildSync() {
@@ -57,7 +54,22 @@ public class UserFactory {
     return FirebaseDatabase.getInstance().getReference("users");
   }
 
-  public LocalUser build() {
-    return new ConcreteUser(sync);
+  public class Buildable {
+    private final Sync sync;
+    private boolean built = false;
+
+    public Buildable() {
+      sync = buildSync();
+      sync.setRef(getDatabase());
+    }
+
+    public LocalUser build() {
+      if (built)
+        throw new IllegalStateException("Cannot build a factory twice.");
+
+      built = true;
+
+      return new ConcreteUser(sync);
+    }
   }
 }

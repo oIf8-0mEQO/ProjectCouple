@@ -132,7 +132,7 @@ public class ConcreteUser implements LocalUser {
       // An update has occurred. Attempt to reconstruct the partner object.
       if (partner == null || partner.getId() != partnerId)
         // Partner has changed
-        partner = new Partner(sync.child(partnerId));
+        partner = new Partner(sync.sibling(partnerId));
     } else {
       partner = null;
     }
@@ -172,6 +172,7 @@ public class ConcreteUser implements LocalUser {
   public void handlePartnerRequest(String partnerId, boolean accept) {
     if (accept)
       setPartner(partnerId);
+
     partnerRequests.remove(partnerId);
     sync.publish("partnerRequests");
   }

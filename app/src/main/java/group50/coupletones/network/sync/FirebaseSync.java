@@ -1,5 +1,6 @@
 package group50.coupletones.network.sync;
 
+import android.util.Log;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,6 +18,7 @@ import java.util.Map;
  * @since 5/22/16
  */
 //TODO: Unit test
+//TODO: Refactor to field publisher, generic. Returns an interface for publishing
 public class FirebaseSync implements Sync {
 
   /**
@@ -39,6 +41,7 @@ public class FirebaseSync implements Sync {
   @Override
   public FirebaseSync watch(Object obj) {
     this.obj = obj;
+    Log.d("FirebaseSync", this + " watching " + obj);
     return this;
   }
 
@@ -80,12 +83,17 @@ public class FirebaseSync implements Sync {
         if (field.isAnnotationPresent(Syncable.class)) {
           // Force accessibility
           field.setAccessible(true);
-          syncFields.put(field.getName(), field);
+          String name = field.getName();
+
+          if (syncFields.containsKey(name))
+            throw new IllegalStateException("Duplicate field name.");
+
+          syncFields.put(name, field);
 
           // Creates an observable that listens to Firebase data change.
           Observable<?> observable = Observable.create(act -> {
             ref
-              .child(field.getName())
+              .child(name)
               .addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -99,7 +107,7 @@ public class FirebaseSync implements Sync {
               });
           });
 
-          observables.put(field.getName(), observable);
+          observables.put(name, observable);
         }
       }
     }
@@ -148,6 +156,7 @@ public class FirebaseSync implements Sync {
     Field field = syncFields.get(fieldName);
     observable.subscribe(change -> {
       try {
+        Log.d("FirebaseSync", "Receieved " + fieldName + " with " + change);
         field.set(obj, change);
       } catch (Exception e) {
         e.printStackTrace();
@@ -202,6 +211,7 @@ public class FirebaseSync implements Sync {
     build();
 
     try {
+      Log.d("FirebaseSync", "Publishing: " + field.getName() + " with: " + field.get(obj));
       ref.child(field.getName()).setValue(field.get(obj));
     } catch (Exception e) {
       e.printStackTrace();
@@ -213,5 +223,10 @@ public class FirebaseSync implements Sync {
   @Override
   public Sync child(String child) {
     return new FirebaseSync().setRef(getRef().child(child));
+  }
+
+  @Override
+  public Sync sibling(String child) {
+    return new FirebaseSync().setRef(getRef().getParent().child(child));
   }
 }

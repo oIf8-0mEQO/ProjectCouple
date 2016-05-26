@@ -9,8 +9,6 @@ import android.widget.TextView;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.network.NetworkManager;
-import group50.coupletones.network.message.MessageType;
-import group50.coupletones.network.message.OutgoingMessage;
 
 import javax.inject.Inject;
 
@@ -62,33 +60,17 @@ public class PartnerResponseActivity extends Activity {
       partnerName.setText(name);
       requestText.setText(email + " " + getString(R.string.partner_up_text));
 
-      acceptButton.setOnClickListener(click -> sendResponse(id, email, true));
-      rejectButton.setOnClickListener(click -> sendResponse(id, email, false));
+      acceptButton.setOnClickListener(click -> {
+        app.getLocalUser().handlePartnerRequest(id, true);
+        finish();
+      });
+      rejectButton.setOnClickListener(click -> {
+        app.getLocalUser().handlePartnerRequest(id, false);
+        finish();
+      });
     } else {
       // Invalid data. Close the activity.
       finish();
     }
-  }
-
-  /**
-   * Sends a response to the partner request.
-   * @param id - Partner's id
-   * @param email - Partner's email
-   * @param accept - accept or reject request
-   */
-  private void sendResponse(String id, String email, boolean accept) {
-    // Send a partner request to the server
-    network.send(
-      (OutgoingMessage)
-        new OutgoingMessage(MessageType.SEND_PARTNER_RESPONSE.value)
-          .setString("partner", email)
-          .setString("requestAccept", accept ? "1" : "0")
-    );
-
-    if (accept) {
-      app.getLocalUser().setPartner(id);
-    }
-
-    finish();
   }
 }

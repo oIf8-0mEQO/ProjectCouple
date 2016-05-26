@@ -13,13 +13,10 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.Status;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.auth.user.ConcreteUser;
-import group50.coupletones.auth.user.LocalUser;
-import group50.coupletones.auth.user.User;
+import group50.coupletones.auth.user.*;
+import group50.coupletones.auth.user.PartnerRequestObserver;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.OutgoingMessage;
-import group50.coupletones.network.sync.FirebaseSync;
-import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Function;
@@ -67,8 +64,14 @@ public class GoogleAuthenticator implements
    */
   private GoogleApiClient apiClient;
 
+  private Context context;
+
+  private UserFactory factory;
+
   @Inject
-  public GoogleAuthenticator(Context context) {
+  public GoogleAuthenticator(Context context, UserFactory factory) {
+    this.context = context;
+    this.factory = factory;
     app = CoupleTones.global().app();
     network = CoupleTones.global().network();
 
@@ -176,13 +179,11 @@ public class GoogleAuthenticator implements
       GoogleSignInAccount signInAccount = result.getSignInAccount();
 
       // Build a sync database for the local user
-      Sync sync = new FirebaseSync().setRef(ConcreteUser.getDatabase(signInAccount.getId()));
+      LocalUser localUser = factory.withAccount(signInAccount).build();
 
-      sync.getRef().child("id").setValue(signInAccount.getId());
-      sync.getRef().child("name").setValue(signInAccount.getDisplayName());
-      sync.getRef().child("email").setValue(signInAccount.getEmail());
+      // Bind partner request event
+      new PartnerRequestObserver(context, factory).bind(localUser);
 
-      LocalUser localUser = new ConcreteUser(sync);
       app.setLocalUser(localUser);
 
       // Notify server of registration

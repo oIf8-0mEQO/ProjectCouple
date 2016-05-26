@@ -2,7 +2,7 @@ package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.util.Log;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.network.message.OutgoingMessage;
@@ -38,10 +38,10 @@ public class ProximityNetworkHandler implements ProximityObserver, Taggable {
    * @param location - Visited Location
    */
   @Override
-  public void onEnterLocation(VisitedLocation location) {
+  public void onEnterLocation(VisitedLocationEvent location) {
     if (app.getLocalUser().getPartner() != null) {
       Format formatter = new SimpleDateFormat("HH:mm", Locale.US);
-      Date date = location.getTime();
+      Date date = location.getTimeVisited();
       String time = formatter.format(date);
 
       network.send((OutgoingMessage) new OutgoingMessage(MessageType.SEND_LOCATION_NOTIFICATION.value)

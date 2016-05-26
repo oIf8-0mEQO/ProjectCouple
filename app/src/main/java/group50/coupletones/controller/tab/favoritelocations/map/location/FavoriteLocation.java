@@ -1,143 +1,133 @@
 package group50.coupletones.controller.tab.favoritelocations.map.location;
 
 import android.location.Address;
+
 import com.google.android.gms.maps.model.LatLng;
-import group50.coupletones.CoupleTones;
+
+import group50.coupletones.util.sound.VibeTone;
 import group50.coupletones.util.storage.Storable;
 import group50.coupletones.util.storage.Storage;
 
-import javax.inject.Inject;
-
 /**
- * @author Joseph Cox
- * @since 6/25/2016
- */
-
-/**
- * Represents a Favorite Location
+ * @Author Joseph
+ * @Since 5/21/16
  */
 public class FavoriteLocation implements Location, Storable {
 
-  @Inject
-  public AddressProvider addressProvider;
-  private String name;
-  private LatLng position;
-  private long time;
+  private ConcreteLocation location;
+  private VibeTone tone;
+  private long timeLastVisited;
   private static int COOL_DOWN_TIME = 600000;
 
-  /**
-   * Default constructor with meaningless initial values.
-   */
-  public FavoriteLocation() {
-    this("", new LatLng(0, 0), 0);
+  //Should only be used when loading.
+  public FavoriteLocation()
+  {
+    location = new ConcreteLocation();
+  }
+
+  public FavoriteLocation(String name, LatLng position, long timeLastVisited, VibeTone tone)
+  {
+    this.location = new ConcreteLocation(name, position);
+    this.timeLastVisited = timeLastVisited;
+    this.tone = tone;
   }
 
   /**
-   * Creates a favorite location that is off cooldown
-   *
-   * @param name     user given name of the location
-   * @param position gps coordinates of the location
+   * Recreates the previous location with a different name.
    */
-  public FavoriteLocation(String name, LatLng position) {
-    this(name, position, 0);
+  public FavoriteLocation(FavoriteLocation previous, String name)
+  {
+    this.location = new ConcreteLocation(name, previous.location.getPosition());
+    this.timeLastVisited = previous.timeLastVisited;
+    this.tone = previous.tone;
   }
 
   /**
-   * @param name     user given name of the location
-   * @param position gps coordinates of the location
-   * @param time     sets the cooldown as if the location was last triggered at the given time
+   * Recreates the previous location with a different position.
    */
-  public FavoriteLocation(String name, LatLng position, long time) {
-    //DI
-    CoupleTones.global().inject(this);
-
-    setName(name);
-    setPosition(position);
-    this.time = time;
+  public FavoriteLocation(FavoriteLocation previous, LatLng position)
+  {
+    this.location = new ConcreteLocation(previous.location.getName(), position);
+    this.timeLastVisited = previous.timeLastVisited;
+    this.tone = previous.tone;
   }
 
   /**
-   *
-   * @return Latitude-Longitude of the position
+   * Recreates the previous location with a different time.
    */
-  @Override
-  public LatLng getPosition() {
-    return position;
+  public FavoriteLocation(FavoriteLocation previous, long timeLastVisited)
+  {
+    this.location = new ConcreteLocation(previous.getName(), previous.getPosition());
+    this.timeLastVisited = timeLastVisited;
+    this.tone = previous.tone;
   }
 
   /**
-   *
-   * @param position Latitude-Longitude of the position
+   * Recreates the previous location with a different tone.
    */
-  public void setPosition(LatLng position) {
-    this.position = position;
+  public FavoriteLocation(FavoriteLocation previous, VibeTone tone)
+  {
+    this.location = new ConcreteLocation(previous.getName(), previous.getPosition());
+    timeLastVisited = previous.timeLastVisited;
+    this.tone = tone;
   }
 
-  /**
-   *
-   * @return Name of location
-   */
-  @Override
-  public String getName() {
-    return name;
+  public String getName()
+  {
+    return location.getName();
   }
 
-  /**
-   *
-   * @param name Name of location
-   */
-  public void setName(String name) {
-    this.name = name;
+  public LatLng getPosition()
+  {
+    return location.getPosition();
   }
 
-  /**
-   *
-   * @return Address of position
-   */
-  @Override
-  public Address getAddress() {
-    return addressProvider.getAddressFromPosition(position);
+  public Address getAddress()
+  {
+    return location.getAddress();
   }
 
-  /**
-   * Sets cool down time for location
-   */
-  public void setCooldown() {
-    time = System.currentTimeMillis();
+  public long getTime()
+  {
+    return timeLastVisited;
+  }
+
+  public VibeTone getTone()
+  {
+    return tone;
   }
 
   /**
    * @return true if the location is on cooldown, otherwise false.
    */
-  public boolean isOnCooldown() {
-    return (System.currentTimeMillis() - time < COOL_DOWN_TIME);
+  public boolean isOnCooldown()
+  {
+    return (System.currentTimeMillis() - timeLastVisited < COOL_DOWN_TIME);
   }
 
   /**
-   * @return the most recent time this location was visited as a long.
-   */
-  protected long getTime() {
-    return time;
-  }
-
-  /**
-   *
    * @param storage - storage to save to
    */
   @Override
-  public void save(Storage storage) {
-    storage.setString("name", name);
-    storage.setFloat("lat", (float) position.latitude);
-    storage.setFloat("long", (float) position.longitude);
+  public void save(Storage storage)
+  {
+    location.save(storage);
+    storage.setLong("time", timeLastVisited);
   }
 
-  /**
-   *
-   * @param storage - storage to save to
-   */
   @Override
-  public void load(Storage storage) {
-    name = storage.getString("name");
-    position = new LatLng(storage.getFloat("lat"), storage.getFloat("long"));
+  public void load(Storage storage)
+  {
+    timeLastVisited = storage.getLong("time");
+    location.load(storage);
   }
+
+  public boolean equals(FavoriteLocation other)
+  {
+    if (!location.equals(other.location)) return false;
+    if (timeLastVisited != other.timeLastVisited) return false;
+    if (!tone.equals(other.tone)) return false;
+    return true;
+  }
+
 }

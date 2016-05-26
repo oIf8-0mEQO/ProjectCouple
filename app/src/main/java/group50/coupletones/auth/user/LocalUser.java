@@ -1,9 +1,6 @@
 package group50.coupletones.auth.user;
 
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.util.storage.Storable;
-
-import java.util.List;
 
 /**
  * @author Brandon Chi
@@ -14,7 +11,7 @@ import java.util.List;
  * The Local User interface represents
  * a local user in the app.
  */
-public interface LocalUser extends User, Storable {
+public interface LocalUser extends User {
 
   /**
    * @return The partner of the user
@@ -23,12 +20,27 @@ public interface LocalUser extends User, Storable {
 
   /**
    * Sets the partner
-   * @param partner The partner to set
+   * @param id The partner's user id to set
    */
-  void setPartner(User partner);
+  void setPartner(String id);
 
   /**
-   * @return The a list of the users favoite locations.
+   * Adds a favorite location
+   * @param location The location to add
    */
-  List<FavoriteLocation> getFavoriteLocations();
+  void addFavoriteLocation(FavoriteLocation location);
+
+  /**
+   * Removes a favorite location
+   *
+   * @param location The location to remove
+   */
+  void removeFavoriteLocation(FavoriteLocation location);
+
+  /**
+   * Requests to partner with this user.
+   *
+   * @param requester The user sending the request
+   */
+  void requestPartner(User requester);
 }

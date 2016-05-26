@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <!-- Toolbar Settings for Main Friends Page -->
+    <!-- Toolbar Settings for Partners List Page -->
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!-- Centered CoupleTones Title -->
+            <!-- Centered Partner's Locations Title -->
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
@@ -30,17 +30,17 @@
                 android:layout_marginLeft="?attr/actionBarSize"
                 android:layout_marginRight="?attr/actionBarSize"
                 android:layout_marginTop="6dp"
-                android:src="@drawable/coupletones_title"/>
+                android:src="@drawable/partnerslocations_title"/>
 
-            <!-- Partner's Static Locations List Button on Upper Right-->
+            <!-- Partner's Locations Map View Button on Upper Right-->
             <ImageButton
-                android:id="@+id/partners_list_button"
+                android:id="@+id/partner_mapview_button"
                 style="@style/Widget.AppCompat.ActionButton"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_gravity="right|center_vertical"
                 android:layout_marginRight="15dp"
-                android:src="@drawable/whitefaves"/>
+                android:src="@drawable/mapicon"/>
 
         </FrameLayout>
     </android.support.v7.widget.Toolbar>
@@ -57,8 +57,9 @@
             android:orientation="vertical">
 
             <!-- Recycler View for the Page -->
+
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/partners_location_list"
+                android:id="@+id/partners_static_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="6dp"/>

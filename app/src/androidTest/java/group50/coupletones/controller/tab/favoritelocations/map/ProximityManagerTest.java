@@ -7,14 +7,16 @@ import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
+import group50.coupletones.util.sound.VibeTone;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Collections;
+import java.util.LinkedList;
 
 import static org.mockito.Mockito.*;
 
@@ -45,13 +47,15 @@ public class ProximityManagerTest {
         .build()
     );
 
-    favLocation = new FavoriteLocation("", new LatLng(32.880315, -117.236288));
+    favLocation = new FavoriteLocation("", new LatLng(32.880315, -117.236288), 0, VibeTone.getTone());
     loc = new Location("");
 
     // Stub the user
     LocalUser localUser = mock(LocalUser.class);
-    // Make the user always return favLocation when getFavoriteLocations is called
-    when(localUser.getFavoriteLocations()).thenReturn(Collections.singletonList(favLocation));
+    // Setup the users favorite location list.
+    LinkedList<FavoriteLocation> list = new LinkedList<>();
+    list.add(favLocation);
+    when(localUser.getFavoriteLocations()).thenReturn(list);
 
     // Stub getLocalUser to always return the mock user above
     when(CoupleTones.global().app().getLocalUser()).thenReturn(localUser);
@@ -92,7 +96,7 @@ public class ProximityManagerTest {
       int count = 0;
 
       @Override
-      public void onEnterLocation(VisitedLocation location) {
+      public void onEnterLocation(VisitedLocationEvent location) {
         assert (count == 0);
         count++;
       }

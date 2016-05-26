@@ -40,6 +40,7 @@ class MapRoute extends Route {
 				// Send request to partner
 				GCM.send(partner.deviceId, {
 					type: "map-notify",
+					id: data.id,
 					name: data.name,
 					lat: data.lat,
 					long: data.long,

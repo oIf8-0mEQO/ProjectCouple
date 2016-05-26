@@ -14,7 +14,6 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 
 import javax.inject.Inject;
 
@@ -114,7 +113,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
       else
         Log.d(getTag(), "Last known location is null");
 
-      // Request a single update to move the map to appropriate location
+      // Request a single publish to move the map to appropriate location
       locationManager.requestSingleUpdate(GPS_PROVIDER, new LocationListener() {
 
           /**
@@ -124,7 +123,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
            */
           @Override
           public void onLocationChanged(Location location) {
-            Log.d(getTag(), "Got single update");
+            Log.d(getTag(), "Got single publish");
             moveMap(location);
           }
 
@@ -185,7 +184,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     mMap.clear();
     MarkerOptions markerSettings = new MarkerOptions();
     markerSettings.draggable(false);
-    for (FavoriteLocation i : app.getLocalUser().getFavoriteLocations()) {
+    for (group50.coupletones.controller.tab.favoritelocations.map.location.Location i : app.getLocalUser().getFavoriteLocations()) {
       markerSettings.position(i.getPosition());
       markerSettings.title(i.getName());
       mMap.addMarker(markerSettings);

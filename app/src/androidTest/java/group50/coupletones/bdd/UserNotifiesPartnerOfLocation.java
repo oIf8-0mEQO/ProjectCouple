@@ -8,7 +8,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
-import group50.coupletones.auth.user.Partner;
+import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.MapProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
@@ -16,12 +16,14 @@ import group50.coupletones.controller.tab.favoritelocations.map.ProximityNetwork
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
+import group50.coupletones.util.sound.VibeTone;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import static org.mockito.Mockito.*;
 
@@ -41,7 +43,7 @@ public class UserNotifiesPartnerOfLocation {
   private LocalUser mockUser;
   private ProximityManager proximityManager;
   private LatLng zoneLatLng = new LatLng(32.882, -117.233);
-  private FavoriteLocation zone = new FavoriteLocation("Home", zoneLatLng);
+  private FavoriteLocation zone = new FavoriteLocation("Home", zoneLatLng, 0, VibeTone.getTone());
 
   @Before
   public void setup() {
@@ -61,10 +63,17 @@ public class UserNotifiesPartnerOfLocation {
     proximityManager = new MapProximityManager(app);
     proximityManager.register(new ProximityNetworkHandler(app, CoupleTones.global().network()));
 
+    //List of the user's favorite locations.
+    List<FavoriteLocation> list = new LinkedList<>();
+    list.add(zone);
+
     when(app.isLoggedIn()).thenReturn(true);
     when(app.getLocalUser()).thenReturn(mockUser);
-    when(mockUser.getFavoriteLocations()).thenReturn(Collections.singletonList(zone));
-    when(mockUser.getPartner()).thenReturn(new Partner("Fake Partner", "fake@email.com"));
+    when(mockUser.getFavoriteLocations()).thenReturn(list);
+    User mock = mock(User.class);
+    when(mock.getName()).thenReturn("Henry");
+    when(mock.getEmail()).thenReturn("henry@email.com");
+    when(mockUser.getPartner()).thenReturn(mock);
 
   }
 

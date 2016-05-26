@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;
@@ -63,9 +63,10 @@ public class MapProximityManager implements ProximityManager, Taggable {
     Log.d(getTag(), "Entering location: " + favoriteLocation.getName() + " cooldown = " + favoriteLocation.isOnCooldown());
     if (!favoriteLocation.isOnCooldown()) {
       for (ProximityObserver i : observers) {
-        i.onEnterLocation(new VisitedLocation(favoriteLocation, new Date()));
+        i.onEnterLocation(new VisitedLocationEvent(favoriteLocation, new Date()));
       }
-      favoriteLocation.setCooldown();
+      app.getLocalUser().getFavoriteLocations().remove(favoriteLocation);
+      app.getLocalUser().getFavoriteLocations().add(new FavoriteLocation(favoriteLocation, System.currentTimeMillis()));
     }
   }
 

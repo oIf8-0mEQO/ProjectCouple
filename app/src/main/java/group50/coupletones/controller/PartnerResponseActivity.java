@@ -8,11 +8,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.user.Partner;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.network.message.OutgoingMessage;
-import group50.coupletones.util.storage.Storage;
 
 import javax.inject.Inject;
 
@@ -58,13 +56,14 @@ public class PartnerResponseActivity extends Activity {
     if (extras != null && extras.containsKey("name") && extras.containsKey("email")) {
       // The user tapped on the notification.
       // This means the user wants to add a new partner
+      String id = extras.getString("id");
       String name = extras.getString("name");
       String email = extras.getString("email");
       partnerName.setText(name);
       requestText.setText(email + " " + getString(R.string.partner_up_text));
 
-      acceptButton.setOnClickListener(click -> sendResponse(name, email, true));
-      rejectButton.setOnClickListener(click -> sendResponse(name, email, false));
+      acceptButton.setOnClickListener(click -> sendResponse(id, email, true));
+      rejectButton.setOnClickListener(click -> sendResponse(id, email, false));
     } else {
       // Invalid data. Close the activity.
       finish();
@@ -73,11 +72,11 @@ public class PartnerResponseActivity extends Activity {
 
   /**
    * Sends a response to the partner request.
-   * @param name - Partner's name
+   * @param id - Partner's id
    * @param email - Partner's email
    * @param accept - accept or reject request
    */
-  private void sendResponse(String name, String email, boolean accept) {
+  private void sendResponse(String id, String email, boolean accept) {
     // Send a partner request to the server
     network.send(
       (OutgoingMessage)
@@ -87,8 +86,7 @@ public class PartnerResponseActivity extends Activity {
     );
 
     if (accept) {
-      app.getLocalUser().setPartner(new Partner(name, email));
-      app.getLocalUser().save(new Storage(getSharedPreferences(Storage.PREF_FILE_USER, MODE_PRIVATE)));
+      app.getLocalUser().setPartner(id);
     }
 
     finish();

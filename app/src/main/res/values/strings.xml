@@ -40,6 +40,6 @@
     <string name="partner_visited_text">visited</string>
     <string name="partner_up_text">wants to partner with you!</string>
     <string name="partner_request_header">Partner Request</string>
-    <string name="vibetone_name">VibeTone Name</string>
+    <string name="partner_vibetone">Custom Vibetone</string>
 
 </resources>

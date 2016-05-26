@@ -7,6 +7,7 @@ package group50.coupletones;
 
 import android.app.Application;
 import android.location.Geocoder;
+import com.google.firebase.database.FirebaseDatabase;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityNetworkHandler;
@@ -19,8 +20,6 @@ import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.network.receiver.ErrorReceiver;
 import group50.coupletones.network.receiver.LocationNotificationReceiver;
-import group50.coupletones.network.receiver.PartnerRequestReceiver;
-import group50.coupletones.network.receiver.PartnerResponseReceiver;
 
 /**
  * A singleton object that holds global data.
@@ -108,11 +107,12 @@ public class CoupleTones extends Application {
         .builder()
     );
 
+    // Enable Firebase persistence
+    FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
     // Register network
     NetworkManager network = global().network();
     network.register(this);
-    network.register(new PartnerRequestReceiver(this));
-    network.register(new PartnerResponseReceiver(this, this));
     network.register(new LocationNotificationReceiver(this, this));
     network.register(MessageType.RECEIVE_PARTNER_ERROR.value, new ErrorReceiver(this));
     network.register(MessageType.RECEIVE_MAP_REJECT.value, new ErrorReceiver(this));

@@ -9,8 +9,6 @@ import android.widget.TextView;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.network.NetworkManager;
-import group50.coupletones.network.message.MessageType;
-import group50.coupletones.network.message.OutgoingMessage;
 
 import javax.inject.Inject;
 
@@ -77,13 +75,8 @@ public class PartnerResponseActivity extends Activity {
    * @param accept - accept or reject request
    */
   private void sendResponse(String id, String email, boolean accept) {
-    // Send a partner request to the server
-    network.send(
-      (OutgoingMessage)
-        new OutgoingMessage(MessageType.SEND_PARTNER_RESPONSE.value)
-          .setString("partner", email)
-          .setString("requestAccept", accept ? "1" : "0")
-    );
+    // Accept the partner request
+
 
     if (accept) {
       app.getLocalUser().setPartner(id);

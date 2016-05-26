@@ -5,6 +5,7 @@ import android.content.Intent;
 import group50.coupletones.R;
 import group50.coupletones.controller.PartnerResponseActivity;
 import group50.coupletones.network.receiver.Notification;
+import rx.Observable;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class PartnerRequestObserver {
     localUser
       .getSync()
       .get("partnerRequests")
+      .distinctUntilChanged()
       .subscribe(this::onRequestsChange);
 
     return this;
@@ -45,33 +47,48 @@ public class PartnerRequestObserver {
   /**
    * Called when the list of partner request changes.
    *
-   * @param change
+   * @param change The object that changes
    */
   public void onRequestsChange(Object change) {
     // Get the end of the partner list
-    List<String> partnerRequests = localUser.getPartnerRequests();
+    if (change instanceof List) {
+      List<String> partnerRequests = (List) change;
 
-    if (partnerRequests.size() > 0) {
-      String firstUserId = partnerRequests.listIterator().next();
+      if (partnerRequests.size() > 0) {
+        String firstUserId = partnerRequests.listIterator().next();
 
-      // Retrieve the partner object
-      LocalUser partner = factory.withId(firstUserId).build();
+        // Retrieve the partner object
+        ConcreteUser partner = (ConcreteUser) factory.withId(firstUserId).build();
 
-      // Bundle the data into the intent when opening MainActivity
-      Intent intent = new Intent(context, PartnerResponseActivity.class);
-      intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-      intent.putExtra("id", partner.getId());
-      intent.putExtra("name", partner.getName());
-      intent.putExtra("email", partner.getEmail());
+        // Wait until all data is received.
+        Observable<ConcreteUser> basicData = Observable.zip(
+          partner.getSync().get("id"),
+          partner.getSync().get("name"),
+          partner.getSync().get("email"),
+          (a, b, c) -> partner
+        );
 
-      String title = context.getString(R.string.partner_request_header);
-      String msg = partner.getEmail() + " " + context.getString(R.string.partner_up_text);
+        // When the basic data is synced from DB, we can then create the notification
+        basicData
+          .first()
+          .subscribe(syncedPartner -> {
+            // Bundle the data into the intent when opening MainActivity
+            Intent intent = new Intent(context, PartnerResponseActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("id", syncedPartner.getId());
+            intent.putExtra("name", syncedPartner.getName());
+            intent.putExtra("email", syncedPartner.getEmail());
 
-      new Notification(context)
-        .setIntent(intent)
-        .setTitle(title)
-        .setMsg(msg)
-        .show();
+            String title = context.getString(R.string.partner_request_header);
+            String msg = syncedPartner.getEmail() + " " + context.getString(R.string.partner_up_text);
+
+            new Notification(context)
+              .setIntent(intent)
+              .setTitle(title)
+              .setMsg(msg)
+              .show();
+          });
+      }
     }
   }
 }

@@ -209,4 +209,9 @@ public class FirebaseSync implements Sync {
 
     return this;
   }
+
+  @Override
+  public Sync child(String child) {
+    return new FirebaseSync().setRef(getRef().child(child));
+  }
 }

@@ -25,12 +25,12 @@ public class UserFactory {
   }
 
   /**
-   * Creates a user from an existing user
+   * Creates a user from an existing user.
    *
    * @param userId The ID of the user
    * @return Self instance
    */
-  public UserFactory byId(String userId) {
+  public UserFactory withId(String userId) {
     sync.setRef(getDatabase().child(userId));
     return this;
   }
@@ -53,7 +53,7 @@ public class UserFactory {
     return new FirebaseSync();
   }
 
-  protected DatabaseReference getDatabase() {
+  public DatabaseReference getDatabase() {
     return FirebaseDatabase.getInstance().getReference("users");
   }
 

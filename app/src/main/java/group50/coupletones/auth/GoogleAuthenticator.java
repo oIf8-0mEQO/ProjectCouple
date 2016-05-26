@@ -13,9 +13,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.Status;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.auth.user.LocalUser;
-import group50.coupletones.auth.user.User;
-import group50.coupletones.auth.user.UserFactory;
+import group50.coupletones.auth.user.*;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.OutgoingMessage;
 import group50.coupletones.util.Taggable;
@@ -65,13 +63,16 @@ public class GoogleAuthenticator implements
    */
   private GoogleApiClient apiClient;
 
+  private Context context;
+
   private UserFactory factory;
 
   @Inject
   public GoogleAuthenticator(Context context, UserFactory factory) {
+    this.context = context;
+    this.factory = factory;
     app = CoupleTones.global().app();
     network = CoupleTones.global().network();
-    this.factory = factory;
 
     // Create Google API Client
     GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -178,6 +179,10 @@ public class GoogleAuthenticator implements
 
       // Build a sync database for the local user
       LocalUser localUser = factory.createNew(signInAccount).build();
+
+      // Bind partner request event
+      new PartnerRequestObserver(context, factory).bind((ConcreteUser) localUser);
+
       app.setLocalUser(localUser);
 
       // Notify server of registration

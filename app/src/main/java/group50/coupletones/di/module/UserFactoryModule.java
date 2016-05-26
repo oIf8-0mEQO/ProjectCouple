@@ -14,7 +14,7 @@ import group50.coupletones.auth.user.UserFactory;
 public class UserFactoryModule {
 
   @Provides
-  protected UserFactory provideAuth(UserFactory factory) {
-    return factory;
+  protected UserFactory provide() {
+    return new UserFactory();
   }
 }

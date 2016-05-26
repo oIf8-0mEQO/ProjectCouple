@@ -16,6 +16,7 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.ConcreteUser;
 import group50.coupletones.auth.user.LocalUser;
+import group50.coupletones.auth.user.UserFactory;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.sync.FirebaseSync;
 import group50.coupletones.util.Taggable;
@@ -74,7 +75,7 @@ public class AddPartnerActivity extends AppCompatActivity
       case R.id.connect_button:
         // Send a partner request
         // TODO: Not unit testable, when ref firebase
-        DatabaseReference ref = ConcreteUser.getDatabase();
+        DatabaseReference ref = new UserFactory().getDatabase();
         String email = ((EditText) findViewById(R.id.email_address)).getText().toString();
 
         // Find the user by email

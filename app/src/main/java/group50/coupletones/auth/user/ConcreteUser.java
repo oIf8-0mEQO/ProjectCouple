@@ -6,7 +6,6 @@
 package group50.coupletones.auth.user;
 
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.network.sync.FirebaseSync;
 import group50.coupletones.network.sync.Sync;
 import group50.coupletones.network.sync.Syncable;
 
@@ -132,8 +131,7 @@ public class ConcreteUser implements LocalUser {
     // Lazy initialize the partner from Id
     if (partnerId != null) {
       // An update has occurred. Attempt to reconstruct the partner object.
-      //TODO: Use dependency injection?
-      partner = new Partner(new FirebaseSync().setRef(sync.getRef().child(partnerId)));
+      partner = new Partner(sync.child(partnerId));
       partnerId = null;
     }
 
@@ -168,5 +166,9 @@ public class ConcreteUser implements LocalUser {
   @Override
   public List<String> getPartnerRequests() {
     return partnerRequests != null ? Collections.unmodifiableList(partnerRequests) : Collections.emptyList();
+  }
+
+  public Sync getSync() {
+    return sync;
   }
 }

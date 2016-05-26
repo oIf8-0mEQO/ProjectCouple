@@ -10,13 +10,21 @@ import rx.Observable;
  * @since 5/24/16
  */
 public interface Sync {
+
+  Sync child(String child);
+
   /**
    * Sets the Sync object to watch a particular object
    *
    * @param obj The object to watch
    * @return Self instance
    */
-  FirebaseSync watch(Object obj);
+  Sync watch(Object obj);
+
+  /**
+   * @return Reference to the database this object is synced with
+   */
+  DatabaseReference getRef();
 
   /**
    * Sets the Sync object to refer a particular database
@@ -24,12 +32,7 @@ public interface Sync {
    * @param ref The database use
    * @return Self instance
    */
-  FirebaseSync setRef(DatabaseReference ref);
-
-  /**
-   * @return Reference to the database this object is synced with
-   */
-  DatabaseReference getRef();
+  Sync setRef(DatabaseReference ref);
 
   /**
    * Gets the observable associated with this field.

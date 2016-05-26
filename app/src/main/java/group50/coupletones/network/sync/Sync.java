@@ -13,7 +13,7 @@ public interface Sync extends ObservableProvider {
   /**
    * Sets the Sync object to watch a particular object
    * @param obj The object to watch
-   * @return A new instance that watches the givne obje
+   * @return A new instance that watches the given object
    */
   Sync watch(Object obj);
 

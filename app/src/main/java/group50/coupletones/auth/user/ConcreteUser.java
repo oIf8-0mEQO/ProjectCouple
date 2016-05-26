@@ -8,6 +8,7 @@ package group50.coupletones.auth.user;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.network.sync.Sync;
 import group50.coupletones.network.sync.Syncable;
+import rx.Observable;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -130,7 +131,7 @@ public class ConcreteUser implements LocalUser {
     // Lazy initialize the partner from Id
     if (partnerId != null) {
       // An update has occurred. Attempt to reconstruct the partner object.
-      if (partner == null || partner.getId() != partnerId)
+      if (partner == null || !partnerId.equals(partner.getId()))
         // Partner has changed
         partner = new Partner(sync.sibling(partnerId));
     } else {
@@ -185,7 +186,8 @@ public class ConcreteUser implements LocalUser {
     return partnerRequests != null ? Collections.unmodifiableList(partnerRequests) : Collections.emptyList();
   }
 
-  public Sync getSync() {
-    return sync;
+  @Override
+  public Observable<?> getObservable(String event) {
+    return sync.getObservable(event);
   }
 }

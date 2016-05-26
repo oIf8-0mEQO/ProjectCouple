@@ -13,7 +13,6 @@ import java.util.Map;
 
 /**
  * An object that handles Firebase real time database syncing for objects.
- *
  * @author Henry Mao
  * @since 5/22/16
  */
@@ -34,14 +33,13 @@ public class FirebaseSync implements Sync {
 
   /**
    * Sets the Sync object to watch a particular object
-   *
    * @param obj The object to watch
    * @return Self instance
    */
   @Override
   public FirebaseSync watch(Object obj) {
     this.obj = obj;
-    Log.d("FirebaseSync", this + " watching " + obj);
+    Log.v("FirebaseSync", this + " watching " + obj);
     return this;
   }
 
@@ -52,7 +50,6 @@ public class FirebaseSync implements Sync {
 
   /**
    * Sets the Sync object to refer a particular database
-   *
    * @param ref The database use
    * @return Self instance
    */
@@ -63,8 +60,9 @@ public class FirebaseSync implements Sync {
   }
 
   protected void verifyRefAndObjSet() {
-    if (obj == null || ref == null)
+    if (obj == null || ref == null) {
       throw new IllegalStateException("Object or reference null. Unable to sync.");
+    }
   }
 
   /**
@@ -85,8 +83,9 @@ public class FirebaseSync implements Sync {
           field.setAccessible(true);
           String name = field.getName();
 
-          if (syncFields.containsKey(name))
+          if (syncFields.containsKey(name)) {
             throw new IllegalStateException("Duplicate field name.");
+          }
 
           syncFields.put(name, field);
 
@@ -115,17 +114,17 @@ public class FirebaseSync implements Sync {
 
   /**
    * Gets the observable associated with this field.
-   *
    * @param fieldName The name of the field in this class.
    * @return An observable object.
    */
   @Override
-  public Observable<?> get(String fieldName) {
+  public Observable<?> getObservable(String fieldName) {
     build();
-    if (observables.containsKey(fieldName))
+    if (observables.containsKey(fieldName)) {
       return observables.get(fieldName);
-    else
+    } else {
       throw new IllegalArgumentException("Field name: " + fieldName + " does not have @Sycnable annotation.");
+    }
   }
 
   /**
@@ -146,17 +145,16 @@ public class FirebaseSync implements Sync {
 
   /**
    * Subscribes a field in the class to receive updates from the database automatically.
-   *
    * @param fieldName The name of the field
    * @return Self instance
    */
   @Override
   public Sync subscribe(String fieldName) {
-    Observable<?> observable = get(fieldName);
+    Observable<?> observable = getObservable(fieldName);
     Field field = syncFields.get(fieldName);
     observable.subscribe(change -> {
       try {
-        Log.d("FirebaseSync", "Receieved " + fieldName + " with " + change);
+        Log.v("FirebaseSync", "Receieved " + fieldName + " with " + change);
         field.set(obj, change);
       } catch (Exception e) {
         e.printStackTrace();
@@ -167,26 +165,24 @@ public class FirebaseSync implements Sync {
 
   /**
    * Attempts to sync a specific field to the server
-   *
-   * @param fieldNames The name of the field
+   * @param fieldName The name of the field
    * @return Self instance
    */
   @Override
-  public Sync publish(String... fieldNames) {
+  public Sync publish(String fieldName) {
     build();
 
-    for (String fieldName : fieldNames) {
-      if (syncFields.containsKey(fieldName))
-        publish(syncFields.get(fieldName));
-      else
-        throw new IllegalArgumentException("Field name: " + fieldName + " does not have @Sycnable annotation.");
+    if (syncFields.containsKey(fieldName)) {
+      publish(syncFields.get(fieldName));
+    } else {
+      throw new IllegalArgumentException("Field name: " + fieldName + " does not have @Sycnable annotation.");
     }
+
     return this;
   }
 
   /**
    * Publishes all fields to the database.
-   *
    * @return Self instance
    */
   @Override
@@ -203,7 +199,6 @@ public class FirebaseSync implements Sync {
 
   /**
    * Attempts to sync a specific field to the server
-   *
    * @param field The field instance
    * @return Self instance
    */
@@ -211,7 +206,7 @@ public class FirebaseSync implements Sync {
     build();
 
     try {
-      Log.d("FirebaseSync", "Publishing: " + field.getName() + " with: " + field.get(obj));
+      Log.v("FirebaseSync", "Publishing: " + field.getName() + " with: " + field.get(obj));
       ref.child(field.getName()).setValue(field.get(obj));
     } catch (Exception e) {
       e.printStackTrace();

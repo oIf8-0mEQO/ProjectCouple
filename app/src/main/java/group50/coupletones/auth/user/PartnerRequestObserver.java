@@ -36,8 +36,7 @@ public class PartnerRequestObserver {
   public PartnerRequestObserver bind(ConcreteUser localUser) {
     this.localUser = localUser;
     localUser
-      .getSync()
-      .get("partnerRequests")
+      .getObservable("partnerRequests")
       .distinctUntilChanged()
       .subscribe(this::onRequestsChange);
 
@@ -62,9 +61,9 @@ public class PartnerRequestObserver {
 
         // Wait until all data is received.
         Observable<ConcreteUser> basicData = Observable.zip(
-          partner.getSync().get("id"),
-          partner.getSync().get("name"),
-          partner.getSync().get("email"),
+          partner.getObservable("id"),
+          partner.getObservable("name"),
+          partner.getObservable("email"),
           (a, b, c) -> partner
         );
 

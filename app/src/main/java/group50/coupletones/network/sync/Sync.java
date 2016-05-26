@@ -1,6 +1,7 @@
 package group50.coupletones.network.sync;
 
 import com.google.firebase.database.DatabaseReference;
+import group50.coupletones.util.ObservableProvider;
 import rx.Observable;
 
 /**
@@ -9,9 +10,7 @@ import rx.Observable;
  * @author Henry Mao
  * @since 5/24/16
  */
-public interface Sync {
-
-  Sync child(String child);
+public interface Sync extends ObservableProvider {
 
   /**
    * Sets the Sync object to watch a particular object
@@ -35,14 +34,6 @@ public interface Sync {
   Sync setRef(DatabaseReference ref);
 
   /**
-   * Gets the observable associated with this field.
-   *
-   * @param fieldName The name of the field in this class.
-   * @return An observable object.
-   */
-  Observable<?> get(String fieldName);
-
-  /**
    * Hooks listeners to every field in a class annotated with @Syncable.
    *
    * When the database for this field changes, the field itself will be automatically updated.
@@ -62,10 +53,10 @@ public interface Sync {
   /**
    * Attempts to sync a specific field to the server
    *
-   * @param fieldNames The names of the field to publish
+   * @param fieldName The name of the field to publish
    * @return Self instance
    */
-  Sync publish(String... fieldNames);
+  Sync publish(String fieldName);
 
   /**
    * Publishes all fields to the database.
@@ -73,6 +64,8 @@ public interface Sync {
    * @return Self instance
    */
   Sync publishAll();
+
+  Sync child(String child);
 
   Sync sibling(String child);
 }

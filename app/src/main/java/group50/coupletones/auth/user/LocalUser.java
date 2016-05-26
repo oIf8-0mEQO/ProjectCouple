@@ -2,6 +2,8 @@ package group50.coupletones.auth.user;
 
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 
+import java.util.List;
+
 /**
  * @author Brandon Chi
  * @since  5/5/2016
@@ -43,4 +45,9 @@ public interface LocalUser extends User {
    * @param requester The user sending the request
    */
   void requestPartner(User requester);
+
+  /**
+   * @return A list of partner ids requesting to be partner with this user. Immutable. Never null.
+   */
+  List<String> getPartnerRequests();
 }

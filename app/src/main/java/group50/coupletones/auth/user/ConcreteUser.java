@@ -5,8 +5,6 @@
 
 package group50.coupletones.auth.user;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.network.sync.FirebaseSync;
 import group50.coupletones.network.sync.Sync;
@@ -24,7 +22,6 @@ import java.util.List;
  */
 public class ConcreteUser implements LocalUser {
 
-  private static final DatabaseReference DATABASE = FirebaseDatabase.getInstance().getReference("users");
   /**
    * Object responsible for syncing the object with database
    */
@@ -74,20 +71,6 @@ public class ConcreteUser implements LocalUser {
     this.sync = sync
       .watch(this)
       .subscribeAll();
-  }
-
-  public static DatabaseReference getDatabase() {
-    return DATABASE;
-  }
-
-  /**
-   * Gets the database used for a particular user
-   *
-   * @param userId The userId of the user. Cannot be null.
-   * @return The database for the user, or a new database if the user does not exist.
-   */
-  public static DatabaseReference getDatabase(String userId) {
-    return DATABASE.child(userId);
   }
 
   /**
@@ -179,7 +162,11 @@ public class ConcreteUser implements LocalUser {
     sync.publish("partnerRequests");
   }
 
-  public Sync getSync() {
-    return sync;
+  /**
+   * @return A list of partner ids requesting to be partner with this user
+   */
+  @Override
+  public List<String> getPartnerRequests() {
+    return partnerRequests != null ? Collections.unmodifiableList(partnerRequests) : Collections.emptyList();
   }
 }

@@ -29,7 +29,7 @@ public interface User {
   String getEmail();
 
   /**
-   * Provides an immutable list. Use add and remove to modify locations.
+   * Provides an immutable list. Use add and remove to modify locations. Never null.
    *
    * @return The list of the users favorite locations.
    */

@@ -13,13 +13,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.Status;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.auth.user.ConcreteUser;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.User;
+import group50.coupletones.auth.user.UserFactory;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.OutgoingMessage;
-import group50.coupletones.network.sync.FirebaseSync;
-import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Function;
@@ -67,10 +65,13 @@ public class GoogleAuthenticator implements
    */
   private GoogleApiClient apiClient;
 
+  private UserFactory factory;
+
   @Inject
-  public GoogleAuthenticator(Context context) {
+  public GoogleAuthenticator(Context context, UserFactory factory) {
     app = CoupleTones.global().app();
     network = CoupleTones.global().network();
+    this.factory = factory;
 
     // Create Google API Client
     GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -176,13 +177,7 @@ public class GoogleAuthenticator implements
       GoogleSignInAccount signInAccount = result.getSignInAccount();
 
       // Build a sync database for the local user
-      Sync sync = new FirebaseSync().setRef(ConcreteUser.getDatabase(signInAccount.getId()));
-
-      sync.getRef().child("id").setValue(signInAccount.getId());
-      sync.getRef().child("name").setValue(signInAccount.getDisplayName());
-      sync.getRef().child("email").setValue(signInAccount.getEmail());
-
-      LocalUser localUser = new ConcreteUser(sync);
+      LocalUser localUser = factory.createNew(signInAccount).build();
       app.setLocalUser(localUser);
 
       // Notify server of registration

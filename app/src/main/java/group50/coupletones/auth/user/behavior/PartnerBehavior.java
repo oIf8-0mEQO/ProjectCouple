@@ -1,6 +1,8 @@
 package group50.coupletones.auth.user.behavior;
 
 import android.util.Log;
+import group50.coupletones.CoupleTones;
+import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.auth.user.concrete.ConcretePartner;
 import group50.coupletones.network.sync.Sync;
@@ -35,14 +37,14 @@ public class PartnerBehavior implements ObservableProvider {
   /**
    * User's partner
    */
-  private User partner;
+  private Partner partner;
 
   public PartnerBehavior(Sync sync, PartnerRequestBehavior requestBehavior) {
     this.sync = sync.watch(this).subscribeAll();
     this.requestBehavior = requestBehavior;
 
     // Update the Partner object when partnerId changes
-    sync
+    this.sync
       .getObservable("partnerId", String.class)
       .distinctUntilChanged()
       .subscribe(this::resetPartner);
@@ -51,7 +53,7 @@ public class PartnerBehavior implements ObservableProvider {
   /**
    * @return The partner of the user
    */
-  public User getPartner() {
+  public Partner getPartner() {
     return partner;
   }
 
@@ -74,8 +76,7 @@ public class PartnerBehavior implements ObservableProvider {
       setPartner(partnerId);
     }
 
-    requestBehavior.partnerRequests.remove(partnerId);
-    sync.publish("partnerRequests");
+    requestBehavior.removeRequest(partnerId);
   }
 
   /**
@@ -86,7 +87,13 @@ public class PartnerBehavior implements ObservableProvider {
       // An update has occurred. Attempt to reconstruct the partner object.
       if (partner == null || !partnerId.equals(partner.getId())) {
         // Partner has changed
-        partner = new ConcretePartner(sync.sibling(partnerId));
+        partner = CoupleTones
+          .instanceComponentBuilder()
+          .build()
+          .userFactory()
+          .withId(partnerId)
+          .build();
+
         partnerSubject.onNext(partner);
         Log.d("ConcreteUser", this + " Notify " + partnerId);
       }

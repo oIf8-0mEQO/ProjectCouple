@@ -24,7 +24,7 @@ public class PartnerRequestBehavior implements ObservableProvider {
    * with this user.
    */
   @Syncable
-  List<String> partnerRequests = new LinkedList<>();
+  private List<String> partnerRequests = new LinkedList<>();
 
   public PartnerRequestBehavior(Sync sync) {
     this.sync = sync.watch(this).subscribeAll();
@@ -37,6 +37,12 @@ public class PartnerRequestBehavior implements ObservableProvider {
   public void requestPartner(User requester) {
     partnerRequests.add(0, requester.getId());
     sync.publish("partnerRequests");
+  }
+
+  void removeRequest(String requesterId) {
+    partnerRequests.remove(requesterId);
+    sync.publish("partnerRequests");
+
   }
 
   public <T> Observable<T> getObservable(String name) {

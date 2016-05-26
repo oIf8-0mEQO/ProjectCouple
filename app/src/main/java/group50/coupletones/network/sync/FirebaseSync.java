@@ -1,5 +1,6 @@
 package group50.coupletones.network.sync;
 
+import android.util.Log;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -19,15 +20,22 @@ public class FirebaseSync extends FieldSync {
   }
 
   @Override
+  public FieldSync watch(Object obj) {
+    return new FirebaseSync(obj).setRef(ref);
+  }
+
+  @Override
   protected void buildSubjects(Class<?> scanClass) {
     super.buildSubjects(scanClass);
     listenFirebase();
   }
 
+  //TODO: Need to dispose listeners
   private void listenFirebase() {
     for (Map.Entry<String, BehaviorSubject<?>> entry : observables.entrySet()) {
       String name = entry.getKey();
       BehaviorSubject subject = entry.getValue();
+
       ref.child(name)
         .addValueEventListener(new ValueEventListener() {
           @Override

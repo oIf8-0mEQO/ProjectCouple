@@ -115,7 +115,6 @@ public class FieldSync implements Sync {
           // Force accessibility
           field.setAccessible(true);
           String name = field.getName();
-
           fieldMap.put(name, field);
         }
       }
@@ -133,7 +132,7 @@ public class FieldSync implements Sync {
     if (observables.containsKey(name)) {
       return observables.get(name);
     } else {
-      throw new IllegalArgumentException("Field name: " + name + " does not have @Sycnable annotation.");
+      return Observable.empty();
     }
   }
 
@@ -142,7 +141,6 @@ public class FieldSync implements Sync {
    * upon data change.
    */
   public Sync subscribeAll() {
-    verifyRefAndObjSet();
     build();
 
     // Add a listener for each field
@@ -160,6 +158,7 @@ public class FieldSync implements Sync {
    */
   @Override
   public Sync subscribe(String fieldName) {
+    build();
     Observable<?> observable = getObservable(fieldName);
     Field field = syncFields.get(obj.getClass()).get(fieldName);
     observable.subscribe(change -> {
@@ -182,8 +181,9 @@ public class FieldSync implements Sync {
   public Sync publish(String fieldName) {
     build();
 
-    if (syncFields.containsKey(fieldName)) {
-      publish(syncFields.get(obj.getClass()).get(fieldName));
+    Map<String, Field> fieldMap = syncFields.get(obj.getClass());
+    if (fieldMap.containsKey(fieldName)) {
+      publish(fieldMap.get(fieldName));
     } else {
       throw new IllegalArgumentException("Field name: " + fieldName + " does not have @Sycnable annotation.");
     }

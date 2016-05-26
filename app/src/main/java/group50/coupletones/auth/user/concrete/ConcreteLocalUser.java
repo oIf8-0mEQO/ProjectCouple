@@ -87,7 +87,11 @@ public class ConcreteLocalUser implements LocalUser {
 
   @Override
   public <T> Observable<T> getObservable(String name) {
-    return Observable.merge(profileBehavior.getObservable(name), partnerBehavior.getObservable(name));
+    return Observable.merge(
+      profileBehavior.getObservable(name),
+      requestBehavior.getObservable(name),
+      partnerBehavior.getObservable(name)
+    );
   }
 
 }

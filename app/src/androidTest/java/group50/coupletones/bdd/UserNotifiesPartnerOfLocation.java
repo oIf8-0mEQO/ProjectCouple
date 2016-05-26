@@ -8,7 +8,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
-import group50.coupletones.auth.user.Partner;
+import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.MapProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
@@ -17,7 +17,6 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Favorit
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 import group50.coupletones.util.sound.VibeTone;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -71,7 +70,10 @@ public class UserNotifiesPartnerOfLocation {
     when(app.isLoggedIn()).thenReturn(true);
     when(app.getLocalUser()).thenReturn(mockUser);
     when(mockUser.getFavoriteLocations()).thenReturn(list);
-    when(mockUser.getPartner()).thenReturn(new Partner("Fake Partner", "fake@email.com"));
+    User mock = mock(User.class);
+    when(mock.getName()).thenReturn("Henry");
+    when(mock.getEmail()).thenReturn("henry@email.com");
+    when(mockUser.getPartner()).thenReturn(mock);
 
   }
 

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/list_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:orientation="horizontal"
+    android:paddingLeft="6dp">
+
+    <android.support.v7.widget.CardView android:id="@+id/cv"
+                                        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginBottom="1dp"
+                                        android:layout_marginLeft="0dp"
+                                        android:layout_marginRight="6dp"
+                                        android:paddingLeft="0dp"
+                                        card_view:cardElevation="2dp"
+                                        android:padding="0dp"
+                                        android:paddingRight="0dp"
+                                        android:clickable="true"
+                                        android:layout_marginTop="0dp"
+                                        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <!-- List Item Icon -->
+                <ImageView
+                    android:id="@+id/list_item_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:src="@drawable/target_icon"/>
+
+                <!-- List Item Location Name -->
+                <TextView
+                    android:id="@+id/list_item_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/list_item_icon"
+                    android:layout_marginLeft="65dp"
+                    android:layout_marginRight="48dp"
+                    android:paddingTop="14dp"
+                    android:singleLine="true"
+                    android:text="@string/location_name"
+                    android:textColor="@color/textColor"
+                    android:textSize="16sp"/>
+
+                <!-- List Item Address Name -->
+                <TextView
+                    android:id="@+id/list_item_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/list_item_name"
+                    android:layout_marginLeft="65dp"
+                    android:layout_marginRight="48dp"
+                    android:singleLine="true"
+                    android:text="@string/location_address"
+                    android:textColor="@color/subtitleColor"
+                    android:textSize="14sp"/>
+
+                <!-- List Item VibeTone Value -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/partner_vibetone"
+                    android:textColor="@color/subtitleColor"
+                    android:id="@+id/list_item_vibetone"
+                    android:layout_marginEnd="22dp"
+                    android:layout_alignBottom="@+id/list_item_name"
+                    android:layout_alignParentEnd="true"/>
+            </RelativeLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

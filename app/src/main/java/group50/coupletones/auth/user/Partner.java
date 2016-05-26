@@ -2,6 +2,7 @@ package group50.coupletones.auth.user;
 
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.network.sync.Sync;
+import rx.Observable;
 
 import java.util.List;
 
@@ -9,7 +10,6 @@ import java.util.List;
  * Represents a Partner that a User.
  * Delegates all methods to ConcreteUser, but prevents modification
  * to fields.
- *
  * @author Brandon Chi
  * @since 5/5/2016
  */
@@ -40,7 +40,17 @@ public class Partner implements User {
   }
 
   @Override
+  public User getPartner() {
+    return user.getPartner();
+  }
+
+  @Override
   public List<FavoriteLocation> getFavoriteLocations() {
     return user.getFavoriteLocations();
+  }
+
+  @Override
+  public <T> Observable<T> getObservable(String name) {
+    return (Observable<T>) user.getObservable(name);
   }
 }

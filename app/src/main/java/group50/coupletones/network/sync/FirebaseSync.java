@@ -90,23 +90,32 @@ public class FirebaseSync implements Sync {
           syncFields.put(name, field);
 
           // Creates an observable that listens to Firebase data change.
-          Observable<?> observable = Observable.create(act -> {
-            ref
-              .child(name)
-              .addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                  act.onNext(dataSnapshot.getValue());
-                }
+          try {
+            Object defaultObj = field.get(obj);
+            Observable<?> observable = Observable
+              .create(act -> {
+                ref
+                  .child(name)
+                  .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                      act.onNext(dataSnapshot.getValue());
+                    }
 
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                  throw databaseError.toException();
-                }
-              });
-          });
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                      act.onCompleted();
+                      throw databaseError.toException();
+                    }
+                  });
+              })
+              .startWith(defaultObj);
 
-          observables.put(name, observable);
+            observables.put(name, observable);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+
         }
       }
     }
@@ -114,16 +123,16 @@ public class FirebaseSync implements Sync {
 
   /**
    * Gets the observable associated with this field.
-   * @param fieldName The name of the field in this class.
+   * @param name The name of the field in this class.
    * @return An observable object.
    */
   @Override
-  public Observable<?> getObservable(String fieldName) {
+  public Observable<?> getObservable(String name) {
     build();
-    if (observables.containsKey(fieldName)) {
-      return observables.get(fieldName);
+    if (observables.containsKey(name)) {
+      return observables.get(name);
     } else {
-      throw new IllegalArgumentException("Field name: " + fieldName + " does not have @Sycnable annotation.");
+      throw new IllegalArgumentException("Field name: " + name + " does not have @Sycnable annotation.");
     }
   }
 

@@ -9,6 +9,7 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Favorit
 import group50.coupletones.network.sync.Sync;
 import group50.coupletones.network.sync.Syncable;
 import rx.Observable;
+import rx.subjects.BehaviorSubject;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -26,7 +27,10 @@ public class ConcreteUser implements LocalUser {
    * Object responsible for syncing the object with database
    */
   private final Sync sync;
-
+  /**
+   * A subject that can be watched. Helps notify partner change.
+   */
+  BehaviorSubject<User> partnerSubject = BehaviorSubject.create();
   @Syncable
   private String id;
   /**
@@ -48,7 +52,6 @@ public class ConcreteUser implements LocalUser {
    */
   @Syncable
   private List<FavoriteLocation> favoriteLocations = new LinkedList<>();
-
   /**
    * The ID of the user's partner
    */
@@ -63,13 +66,17 @@ public class ConcreteUser implements LocalUser {
 
   /**
    * Creates a ConcreteUser
-   *
    * @param sync The sync object, with a database reference for this user.
    */
   public ConcreteUser(Sync sync) {
     this.sync = sync
       .watch(this)
       .subscribeAll();
+
+    // Update the Partner object when partnerId changes
+    sync
+      .getObservable("partnerId", String.class)
+      .subscribe(this::resetPartner);
   }
 
   /**
@@ -103,7 +110,6 @@ public class ConcreteUser implements LocalUser {
 
   /**
    * Adds a favorite location
-   *
    * @param location The location to add
    */
   @Override
@@ -114,7 +120,6 @@ public class ConcreteUser implements LocalUser {
 
   /**
    * Removes a favorite location
-   *
    * @param location The location to remove
    */
   @Override
@@ -128,33 +133,40 @@ public class ConcreteUser implements LocalUser {
    */
   @Override
   public User getPartner() {
-    // Lazy initialize the partner from Id
-    if (partnerId != null) {
-      // An update has occurred. Attempt to reconstruct the partner object.
-      if (partner == null || !partnerId.equals(partner.getId()))
-        // Partner has changed
-        partner = new Partner(sync.sibling(partnerId));
-    } else {
-      partner = null;
-    }
-
+    resetPartner(partnerId);
     return partner;
   }
 
   /**
    * Sets partner
-   *
    * @param partnerId The partner's ID to set
    */
   @Override
   public void setPartner(String partnerId) {
     this.partnerId = partnerId;
     sync.publish("partnerId");
+    resetPartner(partnerId);
+  }
+
+  /**
+   * Lazy initialize or destroy partner from ID
+   */
+  private void resetPartner(String partnerId) {
+    if (partnerId != null) {
+      // An update has occurred. Attempt to reconstruct the partner object.
+      if (partner == null || !partnerId.equals(partner.getId())) {
+        // Partner has changed
+        partner = new Partner(sync.sibling(partnerId));
+        partnerSubject.onNext(partner);
+      }
+    } else if (partner != null) {
+      partner = null;
+      partnerSubject.onNext(partner);
+    }
   }
 
   /**
    * Requests to partner with this user.
-   *
    * @param requester The user sending the request
    */
   @Override
@@ -165,29 +177,26 @@ public class ConcreteUser implements LocalUser {
 
   /**
    * Handles the partner request, either accepting or rejecting it
-   *
    * @param partnerId The partner ID
-   * @param accept    True if accept, false if reject
+   * @param accept True if accept, false if reject
    */
   @Override
   public void handlePartnerRequest(String partnerId, boolean accept) {
-    if (accept)
+    if (accept) {
       setPartner(partnerId);
+    }
 
     partnerRequests.remove(partnerId);
     sync.publish("partnerRequests");
   }
 
-  /**
-   * @return A list of partner ids requesting to be partner with this user
-   */
   @Override
-  public List<String> getPartnerRequests() {
-    return partnerRequests != null ? Collections.unmodifiableList(partnerRequests) : Collections.emptyList();
+  public Observable<User> getPartnerObservable() {
+    return partnerSubject.startWith(partner);
   }
 
   @Override
-  public Observable<?> getObservable(String event) {
-    return sync.getObservable(event);
+  public <T> Observable<T> getObservable(String name) {
+    return (Observable<T>) sync.getObservable(name);
   }
 }

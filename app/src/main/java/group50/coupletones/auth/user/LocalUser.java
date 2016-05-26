@@ -1,25 +1,18 @@
 package group50.coupletones.auth.user;
 
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.util.ObservableProvider;
-
-import java.util.List;
+import rx.Observable;
 
 /**
  * @author Brandon Chi
- * @since  5/5/2016
+ * @since 5/5/2016
  */
 
 /**
  * The Local User interface represents
  * a local user in the app.
  */
-public interface LocalUser extends User, ObservableProvider {
-
-  /**
-   * @return The partner of the user
-   */
-  User getPartner();
+public interface LocalUser extends User {
 
   /**
    * Sets the partner
@@ -55,7 +48,7 @@ public interface LocalUser extends User, ObservableProvider {
   void handlePartnerRequest(String partnerId, boolean accept);
 
   /**
-   * @return A list of partner ids requesting to be partner with this user. Immutable. Never null.
+   * @return An observable that notifies when the partner changes.
    */
-  List<String> getPartnerRequests();
+  Observable<User> getPartnerObservable();
 }

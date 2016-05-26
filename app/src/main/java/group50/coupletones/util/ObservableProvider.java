@@ -9,8 +9,19 @@ import rx.Observable;
 public interface ObservableProvider {
 
   /**
-   * @param event The name of the observable to look for.
-   * @return The observable object.
+   * @param name The name of the observable to look for.
+   * @return An observable
    */
-  <T> Observable<T> getObservable(String event);
+  <T> Observable<T> getObservable(String name);
+
+  /**
+   * Typed version of getObservable
+   * @param name The name of the observable to look for.
+   * @param type The class of the observable
+   * @param <T> The type of the observable
+   * @return An observable
+   */
+  default <T> Observable<T> getObservable(String name, Class<T> type) {
+    return (Observable<T>) getObservable(name);
+  }
 }

@@ -45,6 +45,7 @@ public class ProfileBehavior implements ObservableProvider {
 
   /**
    * Creates a ConcreteUser
+   *
    * @param sync The sync object, with a database reference for this user.
    */
   public ProfileBehavior(Sync sync) {
@@ -78,20 +79,26 @@ public class ProfileBehavior implements ObservableProvider {
 
   /**
    * Adds a favorite location
+   *
    * @param location The location to add
    */
   public void addFavoriteLocation(FavoriteLocation location) {
+    if (favoriteLocations == null)
+      favoriteLocations = new LinkedList<>();
     favoriteLocations.add(location);
     sync.publish("favoriteLocations");
   }
 
   /**
    * Removes a favorite location
+   *
    * @param location The location to remove
    */
   public void removeFavoriteLocation(FavoriteLocation location) {
-    favoriteLocations.remove(location);
-    sync.publish("favoriteLocations");
+    if (favoriteLocations != null) {
+      favoriteLocations.remove(location);
+      sync.publish("favoriteLocations");
+    }
   }
 
   public <T> Observable<T> getObservable(String name) {

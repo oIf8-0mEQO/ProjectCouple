@@ -6,6 +6,7 @@
 package group50.coupletones.auth.user;
 
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.util.ObservableProvider;
 
 import java.util.List;
@@ -34,4 +35,11 @@ public interface User extends ObservableProvider {
    * @return The list of the users favorite locations.
    */
   List<FavoriteLocation> getFavoriteLocations();
+
+  /**
+   * @return The list of the user's visited locations.
+   */
+  List<VisitedLocationEvent> getVisitedLocations();
+
+
 }

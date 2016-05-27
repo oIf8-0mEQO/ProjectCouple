@@ -67,6 +67,7 @@ public class MapProximityManager implements ProximityManager, Taggable {
       }
       app.getLocalUser().getFavoriteLocations().remove(favoriteLocation);
       app.getLocalUser().getFavoriteLocations().add(new FavoriteLocation(favoriteLocation, System.currentTimeMillis()));
+      app.getLocalUser().getVisitedLocations().add(new VisitedLocationEvent(favoriteLocation, new Date()));
     }
   }
 

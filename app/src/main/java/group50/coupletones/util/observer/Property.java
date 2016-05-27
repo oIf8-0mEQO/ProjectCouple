@@ -20,7 +20,14 @@ public interface Property<T> {
 
   Property<T> getter(Supplier<T> getter);
 
+  default Property<T> update() {
+    set(get());
+    return this;
+  }
+
   Properties bind();
+
+  Properties bind(Object bind);
 
   /**
    * @return An observable for this property

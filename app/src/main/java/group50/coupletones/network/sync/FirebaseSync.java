@@ -1,10 +1,7 @@
 package group50.coupletones.network.sync;
 
 import android.util.Log;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.*;
 import group50.coupletones.util.observer.Properties;
 import group50.coupletones.util.observer.Property;
 
@@ -24,7 +21,7 @@ public class FirebaseSync implements Sync {
   private final List<ValueEventListener> listeners = new LinkedList<>();
 
   public FirebaseSync() {
-    this(null);
+    this(FirebaseDatabase.getInstance().getReference());
   }
 
   public FirebaseSync(DatabaseReference ref) {
@@ -89,5 +86,9 @@ public class FirebaseSync implements Sync {
   @Override
   public Sync child(String name) {
     return new FirebaseSync(ref.child(name));
+  }
+
+  public DatabaseReference getRef() {
+    return ref;
   }
 }

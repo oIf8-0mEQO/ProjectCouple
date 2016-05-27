@@ -7,6 +7,8 @@ import group50.coupletones.auth.user.behavior.PartnerBehavior;
 import group50.coupletones.auth.user.behavior.PartnerRequestBehavior;
 import group50.coupletones.auth.user.behavior.ProfileBehavior;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.network.sync.Sync;
+import group50.coupletones.util.observer.ConcreteProperties;
 import group50.coupletones.util.observer.Properties;
 import rx.Observable;
 
@@ -15,20 +17,26 @@ import java.util.List;
 /**
  * Represents a concrete implementation of LocalUser.
  * Behavior is composed via Strategy Pattern.
+ *
  * @author Henry Mao
  */
 public class ConcreteLocalUser implements LocalUser {
   // Composed behavior
+  private final Properties properties;
+
   private final ProfileBehavior profileBehavior;
 
   private final PartnerRequestBehavior requestBehavior;
 
   private final PartnerBehavior partnerBehavior;
 
-  public ConcreteLocalUser(Properties sync) {
-    profileBehavior = new ProfileBehavior(sync);
-    requestBehavior = new PartnerRequestBehavior(sync);
-    partnerBehavior = new PartnerBehavior(sync, requestBehavior);
+  public ConcreteLocalUser(Sync sync) {
+    //TODO: Use DI
+    properties = new ConcreteProperties();
+    profileBehavior = new ProfileBehavior(properties);
+    requestBehavior = new PartnerRequestBehavior(properties);
+    partnerBehavior = new PartnerBehavior(properties, requestBehavior);
+    sync.watchAll(properties);
   }
 
   @Override
@@ -87,12 +95,7 @@ public class ConcreteLocalUser implements LocalUser {
   }
 
   @Override
-  public <T> Observable<T> getObservable(String name) {
-    return Observable.merge(
-      profileBehavior.getObservable(name),
-      requestBehavior.getObservable(name),
-      partnerBehavior.getObservable(name)
-    );
+  public Properties getProperties() {
+    return properties;
   }
-
 }

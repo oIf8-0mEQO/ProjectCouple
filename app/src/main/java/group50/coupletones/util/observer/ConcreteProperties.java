@@ -18,46 +18,15 @@ import java.util.Map;
  */
 //TODO: Unit test
 public class ConcreteProperties implements Properties {
-
-  /**
-   * The object to observe.
-   * Immutable
-   */
-  protected final Object obj;
-
   /**
    * Map of bindings the object watched by this property has.
    */
   protected Map<String, Property<?>> bindings;
 
-  /**
-   * Creates an unusable Properties.
-   */
-  public ConcreteProperties() {
-    this(null);
-  }
-
-  public ConcreteProperties(Object obj) {
-    this.obj = obj;
-  }
-
-  protected void verify() {
-    if (obj == null) {
-      throw new IllegalStateException("Object being bound is null. Unable to sync.");
-    }
-  }
-
-  @Override
-  public Properties set(Object obj) {
-    return new ConcreteProperties(obj);
-  }
-
   @Override
   public <T> Property<T> property(String name, Class<T> type) {
-    verify();
     return bindings.containsKey(name) ? (Property<T>) bindings.get(name) : new ConcreteProperty<>(name);
   }
-
 
   @Override
   public Collection<Property<?>> all() {
@@ -94,13 +63,23 @@ public class ConcreteProperties implements Properties {
 
     @Override
     public Properties bind() {
+      if (setter == null || getter == null)
+        throw new IllegalStateException("Setter or getter for " + name + " is null.");
+
+      observable = BehaviorSubject.create(getter.get());
+      ConcreteProperties.this.bindings.put(name, this);
+      return ConcreteProperties.this;
+    }
+
+    @Override
+    public Properties bind(Object bind) {
       // If setter or getters are not set, create default property bindings via reflection.
       if (getter == null) {
         getter = () -> {
           try {
-            Field field = obj.getClass().getDeclaredField(name);
+            Field field = bind.getClass().getDeclaredField(name);
             field.setAccessible(true);
-            return (T) field.get(obj);
+            return (T) field.get(bind);
           } catch (Exception e) {
             throw new IllegalArgumentException("Default binding for " + name + " cannot be read.");
           }
@@ -110,18 +89,15 @@ public class ConcreteProperties implements Properties {
       if (setter == null) {
         setter = value -> {
           try {
-            Field field = obj.getClass().getDeclaredField(name);
+            Field field = bind.getClass().getDeclaredField(name);
             field.setAccessible(true);
-            field.set(obj, value);
+            field.set(bind, value);
           } catch (Exception e) {
             throw new IllegalArgumentException("Default binding for " + name + " cannot be written.");
           }
         };
       }
-
-      observable = BehaviorSubject.create(getter.get());
-      ConcreteProperties.this.bindings.put(name, this);
-      return ConcreteProperties.this;
+      return null;
     }
 
     @Override

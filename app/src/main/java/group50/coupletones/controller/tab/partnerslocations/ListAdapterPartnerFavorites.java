@@ -65,7 +65,10 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
   public void onBindViewHolder(ListViewHolder holder, int position) {
     // React to partner location edits
     subs.add(
-      partner.getObservable("favoriteLocations", List.class)
+      partner
+        .getProperties()
+        .property("favoriteLocations", List.class)
+        .observable()
         .subscribe(locations -> {
           FavoriteLocation location = (FavoriteLocation) locations.get(position);
           holder.name.setText(location.getName());

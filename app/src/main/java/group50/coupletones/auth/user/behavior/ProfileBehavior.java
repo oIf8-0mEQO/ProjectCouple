@@ -6,8 +6,6 @@
 package group50.coupletones.auth.user.behavior;
 
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.network.sync.Sync;
-import group50.coupletones.util.observer.ConcreteProperties;
 import group50.coupletones.util.observer.Properties;
 import group50.coupletones.util.observer.PropertiesProvider;
 
@@ -41,18 +39,14 @@ public class ProfileBehavior implements PropertiesProvider {
 
   /**
    * Creates a ConcreteUser
-   *
-   * @param sync The sync object, with a database reference for this user.
    */
-  public ProfileBehavior(Sync sync) {
+  public ProfileBehavior(Properties properties) {
     //TODO: Use DI
-    properties = new ConcreteProperties(this)
-      .property("id").bind()
-      .property("name").bind()
-      .property("email").bind()
-      .property("favoriteLocations").bind();
-
-    sync.watchAll(properties);
+    this.properties = properties
+      .property("id").bind(this)
+      .property("name").bind(this)
+      .property("email").bind(this)
+      .property("favoriteLocations").bind(this);
   }
 
   /**
@@ -89,7 +83,10 @@ public class ProfileBehavior implements PropertiesProvider {
     if (favoriteLocations == null)
       favoriteLocations = new LinkedList<>();
     favoriteLocations.add(location);
-    sync.publish("favoriteLocations");
+
+    properties
+      .property("favoriteLocations")
+      .set(favoriteLocations);
   }
 
   /**
@@ -100,7 +97,10 @@ public class ProfileBehavior implements PropertiesProvider {
   public void removeFavoriteLocation(FavoriteLocation location) {
     if (favoriteLocations != null) {
       favoriteLocations.remove(location);
-      sync.publish("favoriteLocations");
+
+      properties
+        .property("favoriteLocations")
+        .set(favoriteLocations);
     }
   }
 

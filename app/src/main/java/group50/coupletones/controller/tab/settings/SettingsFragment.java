@@ -61,6 +61,7 @@ public class SettingsFragment extends TabFragment<Object> {
 
   /**
    * getResourceID
+   *
    * @return - Settings fragment
    */
   @Override
@@ -70,6 +71,7 @@ public class SettingsFragment extends TabFragment<Object> {
 
   /**
    * onCreate
+   *
    * @param savedInstanceState - Bundle
    */
   @Override
@@ -147,13 +149,17 @@ public class SettingsFragment extends TabFragment<Object> {
 
     subs.add(
       localUser
-        .getObservable("name", String.class)
+        .getProperties()
+        .property("name", String.class)
+        .observable()
         .subscribe(name::setText)
     );
 
     subs.add(
       localUser
-        .getObservable("email", String.class)
+        .getProperties()
+        .property("email", String.class)
+        .observable()
         .subscribe(email::setText)
     );
 
@@ -174,11 +180,15 @@ public class SettingsFragment extends TabFragment<Object> {
 
           //Observe partner data
           Subscription nameChange = partner
-            .getObservable("name", String.class)
+            .getProperties()
+            .property("name", String.class)
+            .observable()
             .subscribe(partnerName::setText);
 
           Subscription emailChange = partner
-            .getObservable("email", String.class)
+            .getProperties()
+            .property("email", String.class)
+            .observable()
             .subscribe(partnerEmail::setText);
 
           partnerSubs.add(nameChange);

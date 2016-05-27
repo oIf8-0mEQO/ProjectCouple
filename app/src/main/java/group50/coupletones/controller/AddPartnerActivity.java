@@ -71,11 +71,12 @@ public class AddPartnerActivity extends AppCompatActivity implements Taggable {
       .subscribe(
         buildable -> {
           // Found user! Set the email
+          Toast.makeText(AddPartnerActivity.this, "Request sent.", Toast.LENGTH_SHORT).show();
           buildable.build().requestPartner(app.getLocalUser());
           finish();
         },
         // User does not exist.
-        error -> Toast.makeText(AddPartnerActivity.this, "Invalid email", Toast.LENGTH_SHORT).show()
+        error -> Toast.makeText(AddPartnerActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()
       );
   }
 }

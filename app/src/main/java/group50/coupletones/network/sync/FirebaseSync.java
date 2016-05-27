@@ -3,6 +3,7 @@ package group50.coupletones.network.sync;
 import android.util.Log;
 import com.google.firebase.database.*;
 import group50.coupletones.util.properties.Properties;
+import group50.coupletones.util.properties.PropertiesProvider;
 import group50.coupletones.util.properties.Property;
 
 import java.util.Collection;
@@ -56,7 +57,7 @@ public class FirebaseSync implements Sync {
           @Override
           public void onDataChange(DataSnapshot dataSnapshot) {
             Log.v("FirebaseSync", "Receive " + property.name() + " => " + dataSnapshot.getValue());
-            ((Property) property).preObservable().onNext(dataSnapshot.getValue());
+            ((Property) property).observable().onNext(dataSnapshot.getValue());
           }
 
           @Override
@@ -67,12 +68,30 @@ public class FirebaseSync implements Sync {
     );
 
     // When the property changes, we want to tell update Firebase about it
+
+    // Primitive datatype syncing
     property
-      .preObservable()
-      .subscribe(obj -> {
+      .observable()
+      .filter(obj -> obj instanceof String)
+      .filter(obj -> obj instanceof Integer)
+      .filter(obj -> obj instanceof Float)
+      .filter(obj -> obj instanceof Double)
+      .distinct()
+      .subscribe(value -> {
+        Log.v("FirebaseSync", "Send [primitive] " + property.name() + " with " + value);
+        ref.child(property.name()).setValue(value);
+      });
+
+    property
+      .observable()
+      .filter(obj -> obj instanceof List)
+      .distinct()
+      .subscribe(value -> {
+        Log.v("FirebaseSync", "Send [list] " + property.name() + " with " + value);
+
         // TODO: Depending on property type, subscribe differently.
-        Object value = property.get();
-        Log.v("FirebaseSync", "Send " + property.name() + " with " + value);
+        if (value instanceof PropertiesProvider) {
+        }
         ref.child(property.name()).setValue(value);
       });
 

@@ -2,7 +2,6 @@ package group50.coupletones.util.properties;
 
 import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Supplier;
-import rx.Observable;
 import rx.subjects.BehaviorSubject;
 import rx.subjects.Subject;
 
@@ -38,7 +37,6 @@ public class ConcreteProperties implements Properties {
   public class ConcreteProperty<T> implements Property<T> {
 
     private final String name;
-    private BehaviorSubject<T> preObservable;
     private BehaviorSubject<T> observable;
     private Consumer<T> setter;
     private Supplier<T> getter;
@@ -104,18 +102,20 @@ public class ConcreteProperties implements Properties {
     }
 
     private void doBind() {
-      preObservable = BehaviorSubject.create();
       observable = BehaviorSubject.create();
 
-      // Observables are notified when set is called
-      this.setter = setter.andThen(observable::onNext);
-
-      // PreObservables will call the setter
-      preObservable.subscribe(this::set);
+      // Observables will call the setter
+      observable.subscribe(this::set);
 
       if (ConcreteProperties.this.bindings.containsKey(name))
         throw new IllegalStateException("Attempt to bind " + name + " property twice");
       ConcreteProperties.this.bindings.put(name, this);
+    }
+
+    @Override
+    public Property<T> update() {
+      observable.onNext(get());
+      return this;
     }
 
     @Override
@@ -129,12 +129,7 @@ public class ConcreteProperties implements Properties {
     }
 
     @Override
-    public Subject<T, T> preObservable() {
-      return preObservable;
-    }
-
-    @Override
-    public Observable<T> observable() {
+    public Subject<T, T> observable() {
       return observable;
     }
   }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import group50.coupletones.R;
 import group50.coupletones.controller.PartnerResponseActivity;
 import group50.coupletones.network.receiver.Notification;
-import rx.Observable;
 
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class PartnerRequestObserver {
   public PartnerRequestObserver bind(LocalUser localUser) {
     localUser
       .observable("partnerRequests", List.class)
-      .distinctUntilChanged()
+      .distinct()
       .subscribe(this::onRequestsChange);
 
     return this;
@@ -54,17 +53,9 @@ public class PartnerRequestObserver {
       // Retrieve the partner object
       User partner = factory.withId(firstUserId).build();
 
-      // Wait until all data is received.
-      //TODO: Maybe add onLoaded to user?
-      Observable<User> basicData = Observable.zip(
-        partner.getProperties().property("id").observable(),
-        partner.getProperties().property("name").observable(),
-        partner.getProperties().property("email").observable(),
-        (a, b, c) -> partner
-      );
-
       // When the basic data is synced from DB, we can then create the notification
-      basicData
+      partner
+        .load()
         .first()
         .subscribe(syncedPartner -> {
           // Bundle the data into the intent when opening MainActivity

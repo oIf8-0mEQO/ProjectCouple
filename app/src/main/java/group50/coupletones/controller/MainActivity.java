@@ -13,11 +13,11 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabClickListener;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.controller.tab.SettingsFragment;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityService;
 import group50.coupletones.controller.tab.partnerslocations.PartnersLocationsFragment;
+import group50.coupletones.controller.tab.settings.SettingsFragment;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.util.Taggable;
 

@@ -19,7 +19,7 @@ import group50.coupletones.controller.tab.TabFragment;
  */
 public class PartnersFavoritesFragment extends TabFragment<Object> {
   private RecyclerView partnersList;
-  private ListAdapterFavorites adapter;
+  private ListAdapterPartnerFavorites adapter;
 
   public PartnersFavoritesFragment() {
     super(Object.class);
@@ -44,7 +44,7 @@ public class PartnersFavoritesFragment extends TabFragment<Object> {
     View v = inflater.inflate(R.layout.fragment_partners_list, container, false);
     partnersList = (RecyclerView) v.findViewById(R.id.partners_static_list);
     partnersList.setLayoutManager(new LinearLayoutManager(getActivity()));
-    adapter = new ListAdapterFavorites(PartnerFavoritesData.getPartnerLocations(), getActivity());
+    adapter = new ListAdapterPartnerFavorites(PartnerFavoritesData.getPartnerLocations(), getActivity());
     partnersList.setAdapter(adapter);
     return v;
   }

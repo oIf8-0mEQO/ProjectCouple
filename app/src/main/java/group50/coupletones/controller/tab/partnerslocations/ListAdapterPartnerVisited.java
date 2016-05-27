@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * Partner Locations List Adapter Class
  */
-public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.ListViewHolder> {
+public class ListAdapterPartnerVisited extends RecyclerView.Adapter<ListAdapterPartnerVisited.ListViewHolder> {
 
   private List<PartnerLocation> data;
   private LayoutInflater inflater;
@@ -29,7 +29,7 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
    * Partner list adapter
    * @param data - Partner location data
    */
-  public ListAdapterPartner(List<PartnerLocation> data, Context context) {
+  public ListAdapterPartnerVisited(List<PartnerLocation> data, Context context) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
   }

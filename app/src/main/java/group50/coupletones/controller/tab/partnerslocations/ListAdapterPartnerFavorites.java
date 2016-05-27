@@ -18,9 +18,9 @@ import java.util.List;
  */
 
 /**
- * Partner Locations List Adapter Class
+ * Partner's favorite locations List Adapter Class
  */
-public class ListAdapterFavorites extends RecyclerView.Adapter<ListAdapterFavorites.ListViewHolder>{
+public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapterPartnerFavorites.ListViewHolder> {
 
   private List<PartnerLocation> data;
   private LayoutInflater inflater;
@@ -29,7 +29,7 @@ public class ListAdapterFavorites extends RecyclerView.Adapter<ListAdapterFavori
    * Partner's Favorites list adapter
    * @param data - Partner location data
    */
-  public ListAdapterFavorites(List<PartnerLocation> data, Context context) {
+  public ListAdapterPartnerFavorites(List<PartnerLocation> data, Context context) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
   }

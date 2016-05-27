@@ -1,4 +1,4 @@
-package group50.coupletones.controller.tab;
+package group50.coupletones.controller.tab.settings;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -16,6 +16,7 @@ import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
+import group50.coupletones.controller.tab.TabFragment;
 import group50.coupletones.di.InstanceComponent;
 import group50.coupletones.di.module.ContextModule;
 import rx.Observable;

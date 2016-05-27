@@ -1,4 +1,4 @@
-package group50.coupletones.util.observer;
+package group50.coupletones.util.properties;
 
 /**
  * @author Henry Mao

@@ -1,7 +1,7 @@
 package group50.coupletones.auth.user.behavior;
 
 import group50.coupletones.auth.user.User;
-import group50.coupletones.util.observer.Properties;
+import group50.coupletones.util.properties.Properties;
 
 import java.util.LinkedList;
 import java.util.List;

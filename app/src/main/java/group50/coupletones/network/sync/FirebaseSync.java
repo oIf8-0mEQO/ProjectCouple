@@ -2,8 +2,8 @@ package group50.coupletones.network.sync;
 
 import android.util.Log;
 import com.google.firebase.database.*;
-import group50.coupletones.util.observer.Properties;
-import group50.coupletones.util.observer.Property;
+import group50.coupletones.util.properties.Properties;
+import group50.coupletones.util.properties.Property;
 
 import java.util.Collection;
 import java.util.LinkedList;

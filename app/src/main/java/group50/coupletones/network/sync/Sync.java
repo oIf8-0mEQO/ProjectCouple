@@ -1,7 +1,7 @@
 package group50.coupletones.network.sync;
 
-import group50.coupletones.util.observer.Properties;
-import group50.coupletones.util.observer.Property;
+import group50.coupletones.util.properties.Properties;
+import group50.coupletones.util.properties.Property;
 
 /**
  * @author Henry Mao

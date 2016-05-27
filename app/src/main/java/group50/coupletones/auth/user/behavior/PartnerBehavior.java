@@ -4,8 +4,8 @@ import android.util.Log;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
-import group50.coupletones.util.observer.Properties;
-import group50.coupletones.util.observer.PropertiesProvider;
+import group50.coupletones.util.properties.Properties;
+import group50.coupletones.util.properties.PropertiesProvider;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 

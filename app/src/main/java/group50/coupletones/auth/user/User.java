@@ -6,7 +6,7 @@
 package group50.coupletones.auth.user;
 
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.util.observer.PropertiesProvider;
+import group50.coupletones.util.properties.PropertiesProvider;
 
 import java.util.List;
 

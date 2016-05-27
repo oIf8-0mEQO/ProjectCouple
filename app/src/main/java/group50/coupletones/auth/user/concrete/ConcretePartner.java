@@ -6,8 +6,8 @@ import group50.coupletones.auth.user.behavior.PartnerRequestBehavior;
 import group50.coupletones.auth.user.behavior.ProfileBehavior;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.network.sync.Sync;
-import group50.coupletones.util.observer.ConcreteProperties;
-import group50.coupletones.util.observer.Properties;
+import group50.coupletones.util.properties.ConcreteProperties;
+import group50.coupletones.util.properties.Properties;
 
 import java.util.List;
 

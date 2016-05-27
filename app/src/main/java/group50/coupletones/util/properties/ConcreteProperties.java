@@ -1,4 +1,4 @@
-package group50.coupletones.util.observer;
+package group50.coupletones.util.properties;
 
 import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Supplier;

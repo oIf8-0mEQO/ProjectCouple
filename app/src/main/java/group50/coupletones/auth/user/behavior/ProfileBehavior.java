@@ -6,6 +6,7 @@
 package group50.coupletones.auth.user.behavior;
 
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.network.sync.Sync;
 import group50.coupletones.network.sync.Syncable;
 import group50.coupletones.util.ObservableProvider;
@@ -42,6 +43,12 @@ public class ProfileBehavior implements ObservableProvider {
    */
   @Syncable
   private List<FavoriteLocation> favoriteLocations = new LinkedList<>();
+  /**
+   * The user's list of visited locations.
+   */
+  @Syncable
+  private List<VisitedLocationEvent> visitedLocations = new LinkedList<>();
+
 
   /**
    * Creates a ConcreteUser
@@ -72,8 +79,18 @@ public class ProfileBehavior implements ObservableProvider {
     return email;
   }
 
+  /**
+   * @return The list of favorite locations of the user
+   */
   public List<FavoriteLocation> getFavoriteLocations() {
     return favoriteLocations != null ? Collections.unmodifiableList(favoriteLocations) : Collections.emptyList();
+  }
+
+  /**
+   * @return The list of visited locations of the user
+   */
+  public List<VisitedLocationEvent> getVisitedLocations() {
+    return visitedLocations != null ? Collections.unmodifiableList(visitedLocations) : Collections.emptyList();
   }
 
   /**
@@ -84,6 +101,16 @@ public class ProfileBehavior implements ObservableProvider {
     favoriteLocations.add(location);
     sync.publish("favoriteLocations");
   }
+
+  /**
+   * Adds a visited location
+   * @param visitedLocation The visited location to add.
+   */
+  public void addVisitedLocation(VisitedLocationEvent visitedLocation) {
+    visitedLocations.add(visitedLocation);
+    sync.publish("visitedLocations");
+  }
+
 
   /**
    * Removes a favorite location

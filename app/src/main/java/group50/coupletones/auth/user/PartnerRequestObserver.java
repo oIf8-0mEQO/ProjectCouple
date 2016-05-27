@@ -62,6 +62,7 @@ public class PartnerRequestObserver {
         User partner = factory.withId(firstUserId).build();
 
         // Wait until all data is received.
+        //TODO: Maybe add onLoaded to user?
         Observable<User> basicData = Observable.zip(
           partner.getProperties().property("id").observable(),
           partner.getProperties().property("name").observable(),

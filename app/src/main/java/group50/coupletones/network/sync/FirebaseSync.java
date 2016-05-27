@@ -56,7 +56,7 @@ public class FirebaseSync implements Sync {
           @Override
           public void onDataChange(DataSnapshot dataSnapshot) {
             Log.v("FirebaseSync", "Receive " + property.name() + " => " + dataSnapshot.getValue());
-            ((Property) property).observable().onNext(dataSnapshot.getValue());
+            ((Property) property).preObservable().onNext(dataSnapshot.getValue());
           }
 
           @Override
@@ -68,7 +68,7 @@ public class FirebaseSync implements Sync {
 
     // When the property changes, we want to tell update Firebase about it
     property
-      .observable()
+      .preObservable()
       .subscribe(obj -> {
         // TODO: Depending on property type, subscribe differently.
         Log.v("FirebaseSync", "Send " + property.name() + " with " + property.get());

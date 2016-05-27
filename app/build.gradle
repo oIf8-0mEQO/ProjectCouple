@@ -118,6 +118,7 @@ dependencies {
 
     // Set this dependency to build and run UI Automator tests
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+    compile 'org.assertj:assertj-core:2.4.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

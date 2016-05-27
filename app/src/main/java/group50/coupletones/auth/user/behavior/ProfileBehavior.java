@@ -7,11 +7,8 @@ package group50.coupletones.auth.user.behavior;
 
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
-import group50.coupletones.network.sync.Sync;
-import group50.coupletones.network.sync.Syncable;
-import group50.coupletones.util.ObservableProvider;
-import rx.Observable;
-
+import group50.coupletones.util.properties.Properties;
+import group50.coupletones.util.properties.PropertiesProvider;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,43 +16,42 @@ import java.util.List;
 /**
  * Holds the behavior of user's profile. Strategy pattern.
  */
-public class ProfileBehavior implements ObservableProvider {
+public class ProfileBehavior implements PropertiesProvider {
 
   /**
    * Object responsible for syncing the object with database
    */
-  private final Sync sync;
+  private final Properties properties;
 
-  @Syncable
   private String id;
   /**
    * Name of the user
    */
-  @Syncable
   private String name;
   /**
    * Email of the user
    */
-  @Syncable
   private String email;
   /**
    * The user's list of favorite location.
    */
-  @Syncable
   private List<FavoriteLocation> favoriteLocations = new LinkedList<>();
   /**
    * The user's list of visited locations.
    */
-  @Syncable
   private List<VisitedLocationEvent> visitedLocations = new LinkedList<>();
 
 
   /**
    * Creates a ConcreteUser
-   * @param sync The sync object, with a database reference for this user.
    */
-  public ProfileBehavior(Sync sync) {
-    this.sync = sync.watch(this).subscribeAll();
+  public ProfileBehavior(Properties properties) {
+    //TODO: Use DI
+    this.properties = properties
+      .property("id").bind(this)
+      .property("name").bind(this)
+      .property("email").bind(this)
+      .property("favoriteLocations").bind(this);
   }
 
   /**
@@ -95,11 +91,17 @@ public class ProfileBehavior implements ObservableProvider {
 
   /**
    * Adds a favorite location
+   *
    * @param location The location to add
    */
   public void addFavoriteLocation(FavoriteLocation location) {
+    if (favoriteLocations == null)
+      favoriteLocations = new LinkedList<>();
     favoriteLocations.add(location);
-    sync.publish("favoriteLocations");
+
+    properties
+      .property("favoriteLocations")
+      .set(favoriteLocations);
   }
 
   /**
@@ -107,21 +109,33 @@ public class ProfileBehavior implements ObservableProvider {
    * @param visitedLocation The visited location to add.
    */
   public void addVisitedLocation(VisitedLocationEvent visitedLocation) {
+    if (visitedLocations == null)
+      visitedLocations = new LinkedList<>();
     visitedLocations.add(visitedLocation);
-    sync.publish("visitedLocations");
+
+    properties
+        .property("visitedLocations")
+        .set(visitedLocations);
   }
 
 
   /**
    * Removes a favorite location
+   *
    * @param location The location to remove
    */
   public void removeFavoriteLocation(FavoriteLocation location) {
-    favoriteLocations.remove(location);
-    sync.publish("favoriteLocations");
+    if (favoriteLocations != null) {
+      favoriteLocations.remove(location);
+
+      properties
+        .property("favoriteLocations")
+        .set(favoriteLocations);
+    }
   }
 
-  public <T> Observable<T> getObservable(String name) {
-    return sync.getObservable(name);
+  @Override
+  public Properties getProperties() {
+    return properties;
   }
 }

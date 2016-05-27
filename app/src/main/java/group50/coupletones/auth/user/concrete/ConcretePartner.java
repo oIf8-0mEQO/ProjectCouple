@@ -7,7 +7,8 @@ import group50.coupletones.auth.user.behavior.ProfileBehavior;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.network.sync.Sync;
-import rx.Observable;
+import group50.coupletones.util.properties.ConcreteProperties;
+import group50.coupletones.util.properties.Properties;
 
 import java.util.List;
 
@@ -15,11 +16,13 @@ import java.util.List;
  * Represents a Partner that a User.
  * Delegates all methods to ConcreteUser, but prevents modification
  * to fields.
+ *
  * @author Brandon Chi
  * @since 5/5/2016
  */
 public class ConcretePartner implements Partner {
-
+  // Composed behavior
+  private final Properties properties;
   private final ProfileBehavior profile;
   private final PartnerRequestBehavior request;
 
@@ -27,8 +30,10 @@ public class ConcretePartner implements Partner {
    * @param sync The object handling synchronizing partner data
    */
   public ConcretePartner(Sync sync) {
-    profile = new ProfileBehavior(sync);
-    request = new PartnerRequestBehavior(sync);
+    properties = new ConcreteProperties();
+    profile = new ProfileBehavior(properties);
+    request = new PartnerRequestBehavior(properties);
+    sync.watchAll(properties);
   }
 
   @Override
@@ -60,7 +65,7 @@ public class ConcretePartner implements Partner {
   }
 
   @Override
-  public <T> Observable<T> getObservable(String name) {
-    return Observable.merge(profile.getObservable(name), request.getObservable(name));
+  public Properties getProperties() {
+    return properties;
   }
 }

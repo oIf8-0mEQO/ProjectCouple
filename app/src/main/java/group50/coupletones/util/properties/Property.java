@@ -2,6 +2,7 @@ package group50.coupletones.util.properties;
 
 import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Supplier;
+import rx.Observable;
 import rx.subjects.Subject;
 
 /**
@@ -30,7 +31,16 @@ public interface Property<T> {
   Properties bind(Object bind);
 
   /**
-   * @return An observable for this property
+   * PreObservables will call the setter.
+   *
+   * @return An observable for this property that always notifies subscribers BEFORE obsevable().
    */
-  Subject<T, T> observable();
+  Subject<T, T> preObservable();
+
+  /**
+   * Observable that will not call the setter
+   *
+   * @return An observable for this property that always notifies subscribers AFTER beforeObservable().
+   */
+  Observable<T> observable();
 }

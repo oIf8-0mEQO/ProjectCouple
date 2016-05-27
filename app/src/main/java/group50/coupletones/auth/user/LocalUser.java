@@ -41,7 +41,7 @@ public interface LocalUser extends User {
   /**
    * @return The partner of the user
    */
-  User getPartner();
+  Partner getPartner();
 
   /**
    * Sets the partner

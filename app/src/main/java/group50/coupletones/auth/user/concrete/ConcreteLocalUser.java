@@ -1,6 +1,7 @@
 package group50.coupletones.auth.user.concrete;
 
 import group50.coupletones.auth.user.LocalUser;
+import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.auth.user.behavior.PartnerBehavior;
 import group50.coupletones.auth.user.behavior.PartnerRequestBehavior;
@@ -31,7 +32,7 @@ public class ConcreteLocalUser implements LocalUser {
   }
 
   @Override
-  public User getPartner() {
+  public Partner getPartner() {
     return partnerBehavior.getPartner();
   }
 

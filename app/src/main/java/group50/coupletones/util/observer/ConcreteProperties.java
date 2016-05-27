@@ -7,6 +7,7 @@ import rx.subjects.Subject;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -21,7 +22,7 @@ public class ConcreteProperties implements Properties {
   /**
    * Map of bindings the object watched by this property has.
    */
-  protected Map<String, Property<?>> bindings;
+  protected final Map<String, Property<?>> bindings = new HashMap<>();
 
   @Override
   public <T> Property<T> property(String name, Class<T> type) {
@@ -66,8 +67,7 @@ public class ConcreteProperties implements Properties {
       if (setter == null || getter == null)
         throw new IllegalStateException("Setter or getter for " + name + " is null.");
 
-      observable = BehaviorSubject.create(getter.get());
-      ConcreteProperties.this.bindings.put(name, this);
+      doBind();
       return ConcreteProperties.this;
     }
 
@@ -97,7 +97,16 @@ public class ConcreteProperties implements Properties {
           }
         };
       }
-      return null;
+      doBind();
+      return ConcreteProperties.this;
+    }
+
+    private void doBind() {
+      observable = BehaviorSubject.create(getter.get());
+
+      if (ConcreteProperties.this.bindings.containsKey(name))
+        throw new IllegalStateException("Attempt to bind " + name + " property twice");
+      ConcreteProperties.this.bindings.put(name, this);
     }
 
     @Override

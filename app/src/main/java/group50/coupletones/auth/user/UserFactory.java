@@ -6,8 +6,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import group50.coupletones.auth.user.concrete.ConcreteLocalUser;
 import group50.coupletones.auth.user.concrete.ConcretePartner;
 import group50.coupletones.network.sync.FirebaseSync;
-import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.function.Function;
+import group50.coupletones.util.observer.Properties;
 
 import javax.inject.Inject;
 
@@ -50,7 +50,7 @@ public class UserFactory {
     return buildable;
   }
 
-  protected Sync buildSync() {
+  protected Properties buildSync() {
     return new FirebaseSync();
   }
 
@@ -59,11 +59,11 @@ public class UserFactory {
   }
 
   public class Buildable<T extends User> {
-    private final Sync sync;
-    private final Function<Sync, T> constructor;
+    private final Properties sync;
+    private final Function<Properties, T> constructor;
     private boolean built = false;
 
-    public Buildable(Function<Sync, T> constructor) {
+    public Buildable(Function<Properties, T> constructor) {
       sync = buildSync();
       sync.setRef(getDatabase());
       this.constructor = constructor;

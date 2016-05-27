@@ -1,9 +1,9 @@
 package group50.coupletones.auth.user.behavior;
 
 import group50.coupletones.auth.user.User;
-import group50.coupletones.network.sync.Sync;
-import group50.coupletones.network.sync.Syncable;
-import group50.coupletones.util.ObservableProvider;
+import group50.coupletones.util.observer.ObservableProvider;
+import group50.coupletones.util.observer.Properties;
+import group50.coupletones.util.observer.Watch;
 import rx.Observable;
 
 import java.util.LinkedList;
@@ -17,17 +17,17 @@ public class PartnerRequestBehavior implements ObservableProvider {
   /**
    * Object responsible for syncing the object with database
    */
-  private final Sync sync;
+  private final Properties sync;
 
   /**
    * A list of all partner Ids who is trying to request partnership
    * with this user.
    */
-  @Syncable
+  @Watch
   private List<String> partnerRequests = new LinkedList<>();
 
-  public PartnerRequestBehavior(Sync sync) {
-    this.sync = sync.watch(this).subscribeAll();
+  public PartnerRequestBehavior(Properties sync) {
+    this.sync = sync.set(this).subscribeAll();
   }
 
   /**

@@ -5,7 +5,7 @@ import group50.coupletones.auth.user.User;
 import group50.coupletones.auth.user.behavior.PartnerRequestBehavior;
 import group50.coupletones.auth.user.behavior.ProfileBehavior;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.network.sync.Sync;
+import group50.coupletones.util.observer.Properties;
 import rx.Observable;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class ConcretePartner implements Partner {
   /**
    * @param sync The object handling synchronizing partner data
    */
-  public ConcretePartner(Sync sync) {
+  public ConcretePartner(Properties sync) {
     profile = new ProfileBehavior(sync);
     request = new PartnerRequestBehavior(sync);
   }

@@ -4,10 +4,9 @@ import android.util.Log;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
-import group50.coupletones.auth.user.concrete.ConcretePartner;
-import group50.coupletones.network.sync.Sync;
-import group50.coupletones.network.sync.Syncable;
-import group50.coupletones.util.ObservableProvider;
+import group50.coupletones.util.observer.ObservableProvider;
+import group50.coupletones.util.observer.Properties;
+import group50.coupletones.util.observer.Watch;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 
@@ -19,7 +18,7 @@ public class PartnerBehavior implements ObservableProvider {
   /**
    * Object responsible for syncing the object with database
    */
-  private final Sync sync;
+  private final Properties sync;
 
   private final PartnerRequestBehavior requestBehavior;
 
@@ -31,7 +30,7 @@ public class PartnerBehavior implements ObservableProvider {
   /**
    * The ID of the user's partner
    */
-  @Syncable
+  @Watch
   private String partnerId;
 
   /**
@@ -39,8 +38,8 @@ public class PartnerBehavior implements ObservableProvider {
    */
   private Partner partner;
 
-  public PartnerBehavior(Sync sync, PartnerRequestBehavior requestBehavior) {
-    this.sync = sync.watch(this).subscribeAll();
+  public PartnerBehavior(Properties sync, PartnerRequestBehavior requestBehavior) {
+    this.sync = sync.set(this).subscribeAll();
     this.requestBehavior = requestBehavior;
 
     // Update the Partner object when partnerId changes

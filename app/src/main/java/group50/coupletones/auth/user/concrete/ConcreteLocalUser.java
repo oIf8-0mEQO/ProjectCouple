@@ -7,7 +7,7 @@ import group50.coupletones.auth.user.behavior.PartnerBehavior;
 import group50.coupletones.auth.user.behavior.PartnerRequestBehavior;
 import group50.coupletones.auth.user.behavior.ProfileBehavior;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.network.sync.Sync;
+import group50.coupletones.util.observer.Properties;
 import rx.Observable;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class ConcreteLocalUser implements LocalUser {
 
   private final PartnerBehavior partnerBehavior;
 
-  public ConcreteLocalUser(Sync sync) {
+  public ConcreteLocalUser(Properties sync) {
     profileBehavior = new ProfileBehavior(sync);
     requestBehavior = new PartnerRequestBehavior(sync);
     partnerBehavior = new PartnerBehavior(sync, requestBehavior);

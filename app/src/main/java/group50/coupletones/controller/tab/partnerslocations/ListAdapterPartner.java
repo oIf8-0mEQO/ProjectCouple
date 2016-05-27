@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import group50.coupletones.R;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 
 import java.util.List;
 
@@ -22,14 +23,14 @@ import java.util.List;
  */
 public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.ListViewHolder> {
 
-  private List<PartnerLocation> data;
+  private List<VisitedLocationEvent> data;
   private LayoutInflater inflater;
 
   /**
    * Partner list adapter
    * @param data - Partner location data
    */
-  public ListAdapterPartner(List<PartnerLocation> data, Context context) {
+  public ListAdapterPartner(List<VisitedLocationEvent> data, Context context) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
   }
@@ -52,12 +53,11 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
    */
   @Override
   public void onBindViewHolder(ListViewHolder holder, int position) {
-    PartnerLocation location = data.get(position);
-    holder.name.setText(location.getName());
-    holder.address.setText(location.getAddress());
-    holder.icon.setImageResource(location.getIconId());
-    holder.timeValue.setText(location.getTime());
-
+    VisitedLocationEvent visitedLocation = data.get(position);
+    holder.name.setText(visitedLocation.getName());
+    holder.address.setText(visitedLocation.getAddress().toString());
+    holder.icon.setImageResource(R.drawable.target_icon);
+    holder.timeValue.setText(visitedLocation.getTimeVisited().toString());
   }
 
   /**

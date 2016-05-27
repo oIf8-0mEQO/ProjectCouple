@@ -41,5 +41,4 @@ public interface User extends ObservableProvider {
    */
   List<VisitedLocationEvent> getVisitedLocations();
 
-
 }

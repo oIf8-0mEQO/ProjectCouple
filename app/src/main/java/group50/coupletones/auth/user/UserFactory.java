@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 /**
  * A factory object responsible for constructing User instances.
+ *
  * @author Henry Mao
  * @since 5/25/16
  */
@@ -21,33 +22,28 @@ public class UserFactory {
   public UserFactory() {
   }
 
-  public Buildable<Partner> withDB(DatabaseReference db) {
-    Buildable<Partner> buildable = new Buildable<>(ConcretePartner::new);
-    buildable.sync.setRef(db);
-    return buildable;
-  }
-
   /**
    * Creates a user from an existing user.
+   *
    * @param userId The ID of the user
    * @return Self instance
    */
   public Buildable<Partner> withId(String userId) {
-    return withDB(getDatabase().child(userId));
+    return new Buildable<>(ConcretePartner::new, buildSync().child(userId));
   }
 
   /**
    * Creates a new user from a Google account
+   *
    * @param account The Google account
    * @return Self instance
    */
   public Buildable<ConcreteLocalUser> withAccount(GoogleSignInAccount account) {
-    Buildable<ConcreteLocalUser> buildable = new Buildable<>(ConcreteLocalUser::new);
-    buildable.sync.setRef(getDatabase().child(account.getId()));
-    buildable.sync.getRef().child("id").setValue(account.getId());
-    buildable.sync.getRef().child("name").setValue(account.getDisplayName());
-    buildable.sync.getRef().child("email").setValue(account.getEmail());
-    return buildable;
+    FirebaseSync sync = (FirebaseSync) buildSync().child(account.getId());
+    sync.getRef().child("id").setValue(account.getId());
+    sync.getRef().child("name").setValue(account.getDisplayName());
+    sync.getRef().child("email").setValue(account.getEmail());
+    return new Buildable<>(ConcreteLocalUser::new, sync);
   }
 
   protected Sync buildSync() {
@@ -59,13 +55,12 @@ public class UserFactory {
   }
 
   public class Buildable<T extends User> {
-    private final Sync sync;
     private final Function<Sync, T> constructor;
     private boolean built = false;
+    private Sync sync;
 
-    public Buildable(Function<Sync, T> constructor) {
-      sync = buildSync();
-      sync.setRef(getDatabase());
+    public Buildable(Function<Sync, T> constructor, Sync sync) {
+      this.sync = sync;
       this.constructor = constructor;
     }
 

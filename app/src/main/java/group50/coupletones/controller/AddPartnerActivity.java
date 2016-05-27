@@ -15,7 +15,6 @@ import com.google.firebase.database.ValueEventListener;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.Partner;
-import group50.coupletones.auth.user.User;
 import group50.coupletones.auth.user.UserFactory;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.util.Taggable;
@@ -90,7 +89,7 @@ public class AddPartnerActivity extends AppCompatActivity
               if (dataSnapshot.getValue() != null) {
                 DatabaseReference partnerDb = dataSnapshot.getChildren().iterator().next().getRef();
                 Partner partner = userFactory
-                  .withDB(partnerDb)
+                  .withId(partnerDb.getKey())
                   .build();
 
                 partner.requestPartner(app.getLocalUser());

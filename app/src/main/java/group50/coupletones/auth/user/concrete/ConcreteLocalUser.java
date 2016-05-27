@@ -1,12 +1,15 @@
 package group50.coupletones.auth.user.concrete;
 
 import group50.coupletones.auth.user.LocalUser;
+import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.auth.user.behavior.PartnerBehavior;
 import group50.coupletones.auth.user.behavior.PartnerRequestBehavior;
 import group50.coupletones.auth.user.behavior.ProfileBehavior;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.network.sync.Sync;
+import group50.coupletones.util.properties.ConcreteProperties;
+import group50.coupletones.util.properties.Properties;
 import rx.Observable;
 
 import java.util.List;
@@ -14,10 +17,13 @@ import java.util.List;
 /**
  * Represents a concrete implementation of LocalUser.
  * Behavior is composed via Strategy Pattern.
+ *
  * @author Henry Mao
  */
 public class ConcreteLocalUser implements LocalUser {
   // Composed behavior
+  private final Properties properties;
+
   private final ProfileBehavior profileBehavior;
 
   private final PartnerRequestBehavior requestBehavior;
@@ -25,13 +31,16 @@ public class ConcreteLocalUser implements LocalUser {
   private final PartnerBehavior partnerBehavior;
 
   public ConcreteLocalUser(Sync sync) {
-    profileBehavior = new ProfileBehavior(sync);
-    requestBehavior = new PartnerRequestBehavior(sync);
-    partnerBehavior = new PartnerBehavior(sync, requestBehavior);
+    //TODO: Use DI
+    properties = new ConcreteProperties();
+    profileBehavior = new ProfileBehavior(properties);
+    requestBehavior = new PartnerRequestBehavior(properties);
+    partnerBehavior = new PartnerBehavior(properties, requestBehavior);
+    sync.watchAll(properties);
   }
 
   @Override
-  public User getPartner() {
+  public Partner getPartner() {
     return partnerBehavior.getPartner();
   }
 
@@ -86,12 +95,7 @@ public class ConcreteLocalUser implements LocalUser {
   }
 
   @Override
-  public <T> Observable<T> getObservable(String name) {
-    return Observable.merge(
-      profileBehavior.getObservable(name),
-      requestBehavior.getObservable(name),
-      partnerBehavior.getObservable(name)
-    );
+  public Properties getProperties() {
+    return properties;
   }
-
 }

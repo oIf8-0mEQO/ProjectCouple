@@ -6,14 +6,14 @@
 package group50.coupletones.auth.user;
 
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.util.ObservableProvider;
+import group50.coupletones.util.properties.PropertiesProvider;
 
 import java.util.List;
 
 /**
  * Represents a user
  */
-public interface User extends ObservableProvider {
+public interface User extends PropertiesProvider {
   /**
    * @return The id of the user
    */
@@ -31,6 +31,7 @@ public interface User extends ObservableProvider {
 
   /**
    * Provides an immutable list. Use add and remove to modify locations. Never null.
+   *
    * @return The list of the users favorite locations.
    */
   List<FavoriteLocation> getFavoriteLocations();

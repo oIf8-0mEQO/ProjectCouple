@@ -4,22 +4,21 @@ import android.util.Log;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
-import group50.coupletones.auth.user.concrete.ConcretePartner;
-import group50.coupletones.network.sync.Sync;
-import group50.coupletones.network.sync.Syncable;
-import group50.coupletones.util.ObservableProvider;
+import group50.coupletones.util.properties.Properties;
+import group50.coupletones.util.properties.PropertiesProvider;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 
 /**
  * Provides the behavior for handling the local user's partner
+ *
  * @author Henry Mao
  */
-public class PartnerBehavior implements ObservableProvider {
+public class PartnerBehavior implements PropertiesProvider {
   /**
    * Object responsible for syncing the object with database
    */
-  private final Sync sync;
+  private final Properties properties;
 
   private final PartnerRequestBehavior requestBehavior;
 
@@ -29,25 +28,18 @@ public class PartnerBehavior implements ObservableProvider {
   private BehaviorSubject<User> partnerSubject = BehaviorSubject.create();
 
   /**
-   * The ID of the user's partner
-   */
-  @Syncable
-  private String partnerId;
-
-  /**
    * User's partner
    */
   private Partner partner;
 
-  public PartnerBehavior(Sync sync, PartnerRequestBehavior requestBehavior) {
-    this.sync = sync.watch(this).subscribeAll();
-    this.requestBehavior = requestBehavior;
+  public PartnerBehavior(Properties properties, PartnerRequestBehavior requestBehavior) {
+    this.properties = properties
+      .property("partnerId", String.class)
+      .setter(this::resetPartner)                             // Sets the partner object based on ID.
+      .getter(() -> partner != null ? partner.getId() : null) // Gets the partner ID.
+      .bind();
 
-    // Update the Partner object when partnerId changes
-    this.sync
-      .getObservable("partnerId", String.class)
-      .distinctUntilChanged()
-      .subscribe(this::resetPartner);
+    this.requestBehavior = requestBehavior;
   }
 
   /**
@@ -59,17 +51,20 @@ public class PartnerBehavior implements ObservableProvider {
 
   /**
    * Sets partner
+   *
    * @param partnerId The partner's ID to set
    */
   public void setPartner(String partnerId) {
-    this.partnerId = partnerId;
-    sync.publish("partnerId");
+    properties
+      .property("partnerId")
+      .set(partnerId);
   }
 
   /**
    * Handles the partner request, either accepting or rejecting it
+   *
    * @param partnerId The partner ID
-   * @param accept True if accept, false if reject
+   * @param accept    True if accept, false if reject
    */
   public void handlePartnerRequest(String partnerId, boolean accept) {
     if (accept) {
@@ -109,7 +104,7 @@ public class PartnerBehavior implements ObservableProvider {
   }
 
   @Override
-  public <T> Observable<T> getObservable(String name) {
-    return sync.getObservable(name);
+  public Properties getProperties() {
+    return properties;
   }
 }

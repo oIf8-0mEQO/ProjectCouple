@@ -1,51 +1,50 @@
 package group50.coupletones.auth.user.behavior;
 
 import group50.coupletones.auth.user.User;
-import group50.coupletones.network.sync.Sync;
-import group50.coupletones.network.sync.Syncable;
-import group50.coupletones.util.ObservableProvider;
-import rx.Observable;
+import group50.coupletones.util.properties.Properties;
 
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Provides the behavior for handling the local user's partner
+ *
  * @author Henry Mao
  */
-public class PartnerRequestBehavior implements ObservableProvider {
+public class PartnerRequestBehavior {
   /**
    * Object responsible for syncing the object with database
    */
-  private final Sync sync;
+  private final Properties properties;
 
   /**
    * A list of all partner Ids who is trying to request partnership
    * with this user.
    */
-  @Syncable
   private List<String> partnerRequests = new LinkedList<>();
 
-  public PartnerRequestBehavior(Sync sync) {
-    this.sync = sync.watch(this).subscribeAll();
+  public PartnerRequestBehavior(Properties properties) {
+    this.properties = properties
+      .property("partnerRequests")
+      .bind(this);
   }
 
   /**
    * Requests to partner with this user.
+   *
    * @param requester The user sending the request
    */
   public void requestPartner(User requester) {
     partnerRequests.add(0, requester.getId());
-    sync.publish("partnerRequests");
+    properties
+      .property("partnerRequests")
+      .update();
   }
 
   void removeRequest(String requesterId) {
     partnerRequests.remove(requesterId);
-    sync.publish("partnerRequests");
-
-  }
-
-  public <T> Observable<T> getObservable(String name) {
-    return sync.getObservable(name);
+    properties
+      .property("partnerRequests")
+      .update();
   }
 }

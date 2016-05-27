@@ -1,4 +1,4 @@
-package group50.coupletones.controller.tab;
+package group50.coupletones.controller.tab.settings;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -16,6 +16,7 @@ import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
+import group50.coupletones.controller.tab.TabFragment;
 import group50.coupletones.di.InstanceComponent;
 import group50.coupletones.di.module.ContextModule;
 import rx.Observable;
@@ -60,6 +61,7 @@ public class SettingsFragment extends TabFragment<Object> {
 
   /**
    * getResourceID
+   *
    * @return - Settings fragment
    */
   @Override
@@ -69,6 +71,7 @@ public class SettingsFragment extends TabFragment<Object> {
 
   /**
    * onCreate
+   *
    * @param savedInstanceState - Bundle
    */
   @Override
@@ -146,13 +149,17 @@ public class SettingsFragment extends TabFragment<Object> {
 
     subs.add(
       localUser
-        .getObservable("name", String.class)
+        .getProperties()
+        .property("name", String.class)
+        .observable()
         .subscribe(name::setText)
     );
 
     subs.add(
       localUser
-        .getObservable("email", String.class)
+        .getProperties()
+        .property("email", String.class)
+        .observable()
         .subscribe(email::setText)
     );
 
@@ -173,11 +180,15 @@ public class SettingsFragment extends TabFragment<Object> {
 
           //Observe partner data
           Subscription nameChange = partner
-            .getObservable("name", String.class)
+            .getProperties()
+            .property("name", String.class)
+            .observable()
             .subscribe(partnerName::setText);
 
           Subscription emailChange = partner
-            .getObservable("email", String.class)
+            .getProperties()
+            .property("email", String.class)
+            .observable()
             .subscribe(partnerEmail::setText);
 
           partnerSubs.add(nameChange);

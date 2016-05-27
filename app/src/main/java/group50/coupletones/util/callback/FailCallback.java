@@ -6,6 +6,7 @@ import group50.coupletones.util.function.Function;
  * An object that can handle a fail callback
  * @author Henry Mao
  */
+//TODO: Change to Observable
 public interface FailCallback<T, S> {
   /**
    * @param callback The callback function upon failure

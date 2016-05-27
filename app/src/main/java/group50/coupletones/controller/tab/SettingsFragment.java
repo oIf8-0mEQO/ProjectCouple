@@ -12,11 +12,15 @@ import android.widget.TextView;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
+import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.di.InstanceComponent;
 import group50.coupletones.di.module.ContextModule;
+import rx.Observable;
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 import javax.inject.Inject;
 
@@ -34,16 +38,21 @@ public class SettingsFragment extends TabFragment<Object> {
 
   private TextView yourProfileText;
   private TextView yourNameText;
-  private TextView yourName;
+  private TextView name;
   private TextView yourAccountText;
-  private TextView yourAccount;
+  private TextView email;
   private TextView null_partner;
   private TextView partnersProfileText;
   private TextView partnerNameText;
   private TextView partnerName;
   private TextView partnerAccountText;
-  private TextView partnerAccount;
+  private TextView partnerEmail;
   private ImageButton add_partner_button;
+
+  private TextView logoutButton;
+  private TextView disconnectButton;
+
+  private CompositeSubscription subs;
 
   public SettingsFragment() {
     super(Object.class);
@@ -71,6 +80,7 @@ public class SettingsFragment extends TabFragment<Object> {
       .contextModule(new ContextModule(getContext()))
       .build();
     auth = component.auth();
+    subs = new CompositeSubscription();
   }
 
   /**
@@ -78,58 +88,125 @@ public class SettingsFragment extends TabFragment<Object> {
    */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View v = inflater.inflate(R.layout.fragment_settings, container, false);
-    Typeface pierSans = Typeface.createFromAsset(getActivity().getAssets(), getString(R.string.pier_sans));
+    View view = inflater.inflate(R.layout.fragment_settings, container, false);
 
+    setup(view);
+    observeData();
+    bindEvents(view);
+
+    return view;
+  }
+
+  private void setup(View view) {
     // User's Profile CardView
-    yourProfileText = (TextView) v.findViewById(R.id.my_profile_header);
-    yourNameText = (TextView) v.findViewById(R.id.your_name_header);
-    yourName = (TextView) v.findViewById(R.id.your_name);
-    yourAccountText = (TextView) v.findViewById(R.id.your_account_header);
-    yourAccount = (TextView) v.findViewById(R.id.your_email);
-    null_partner = (TextView) v.findViewById(R.id.null_partner);
+    yourProfileText = (TextView) view.findViewById(R.id.my_profile_header);
+    yourNameText = (TextView) view.findViewById(R.id.your_name_header);
+    name = (TextView) view.findViewById(R.id.your_name);
+    yourAccountText = (TextView) view.findViewById(R.id.your_account_header);
+    email = (TextView) view.findViewById(R.id.your_email);
+    null_partner = (TextView) view.findViewById(R.id.null_partner);
 
     // Partner's Profile CardView
-    partnersProfileText = (TextView) v.findViewById(R.id.partners_profile_text);
-    partnerNameText = (TextView) v.findViewById(R.id.partner_name_header);
-    partnerName = (TextView) v.findViewById(R.id.partner_name);
-    partnerAccountText = (TextView) v.findViewById(R.id.partner_account_header);
-    partnerAccount = (TextView) v.findViewById(R.id.partner_email);
+    partnersProfileText = (TextView) view.findViewById(R.id.partners_profile_text);
+    partnerNameText = (TextView) view.findViewById(R.id.partner_name_header);
+    partnerName = (TextView) view.findViewById(R.id.partner_name);
+    partnerAccountText = (TextView) view.findViewById(R.id.partner_account_header);
+    partnerEmail = (TextView) view.findViewById(R.id.partner_email);
 
-    add_partner_button = (ImageButton) v.findViewById(R.id.add_partner_button);
+    add_partner_button = (ImageButton) view.findViewById(R.id.add_partner_button);
 
     // Logout/Disconnect Buttons at Bottom
-    TextView logoutButton = (TextView) v.findViewById(R.id.logout_button);
-    TextView disconnectButton = (TextView) v.findViewById(R.id.disconnect_button);
+    logoutButton = (TextView) view.findViewById(R.id.logout_button);
+    disconnectButton = (TextView) view.findViewById(R.id.disconnect_button);
+
+    Typeface pierSans = Typeface.createFromAsset(getActivity().getAssets(), getString(R.string.pier_sans));
 
     // Set fonts
     yourProfileText.setTypeface(pierSans);
     yourNameText.setTypeface(pierSans);
-    yourName.setTypeface(pierSans);
+    name.setTypeface(pierSans);
     yourAccountText.setTypeface(pierSans);
-    yourAccount.setTypeface(pierSans);
+    email.setTypeface(pierSans);
     null_partner.setTypeface(pierSans);
     partnersProfileText.setTypeface(pierSans);
     partnerNameText.setTypeface(pierSans);
     partnerName.setTypeface(pierSans);
     partnerAccountText.setTypeface(pierSans);
-    partnerAccount.setTypeface(pierSans);
-
-    // Set local user data
-    yourName.setText(app.getLocalUser().getName());
-    yourAccount.setText(app.getLocalUser().getEmail());
-
-    // Control visibility and customizability of Partner Name and Partner Email
-    if (app.getLocalUser().getPartner() != null) {
-      updateUI(true);
-    } else {
-      updateUI(false);
-    }
-
-
+    partnerEmail.setTypeface(pierSans);
     logoutButton.setTypeface(pierSans);
     disconnectButton.setTypeface(pierSans);
+  }
 
+  /**
+   * Observe user data, and change the view based on the model changes.
+   */
+  private void observeData() {
+    // Set local user data
+    LocalUser localUser = app.getLocalUser();
+
+    subs.add(
+      localUser
+        .getObservable("name", String.class)
+        .subscribe(name::setText)
+    );
+
+    subs.add(
+      localUser
+        .getObservable("email", String.class)
+        .subscribe(email::setText)
+    );
+
+    CompositeSubscription partnerSubs = new CompositeSubscription();
+    Observable<User> partnerObservable = localUser.getPartnerObservable();
+
+    // When partner is not null, then render all the partner related UI
+    subs.add(
+      partnerObservable
+        .filter(partner -> partner != null)
+        .subscribe(partner -> {
+          partnerName.setVisibility(View.VISIBLE);
+          partnerNameText.setVisibility(View.VISIBLE);
+          partnerEmail.setVisibility(View.VISIBLE);
+          partnerAccountText.setVisibility(View.VISIBLE);
+          null_partner.setVisibility(View.INVISIBLE);
+          add_partner_button.setVisibility(View.INVISIBLE);
+
+          //Observe partner data
+          Subscription nameChange = partner
+            .getObservable("name", String.class)
+            .subscribe(partnerName::setText);
+
+          Subscription emailChange = partner
+            .getObservable("email", String.class)
+            .subscribe(partnerEmail::setText);
+
+          partnerSubs.add(nameChange);
+          partnerSubs.add(emailChange);
+          subs.add(nameChange);
+          subs.add(emailChange);
+        })
+    );
+
+    // When the partner is null
+    subs.add(
+      partnerObservable
+        .filter(partner -> partner == null)
+        .subscribe(partner -> {
+          add_partner_button.setVisibility(View.VISIBLE);
+          partnerNameText.setVisibility(View.INVISIBLE);
+          partnerName.setVisibility(View.INVISIBLE);
+          partnerAccountText.setVisibility(View.INVISIBLE);
+          partnerEmail.setVisibility(View.INVISIBLE);
+          null_partner.setVisibility(View.VISIBLE);
+
+          // Clear partner subscriptions
+          partnerSubs.unsubscribe();
+          partnerSubs.clear();
+        })
+    );
+  }
+
+  private void bindEvents(View v) {
     // Register button click handlers. After add partner, take the user to Add Partner page.
     v.findViewById(R.id.add_partner_button)
       .setOnClickListener(evt -> startActivity(new Intent(getContext(), AddPartnerActivity.class)));
@@ -142,38 +219,8 @@ public class SettingsFragment extends TabFragment<Object> {
     v.findViewById(R.id.disconnect_button)
       .setOnClickListener(evt -> {
           app.getLocalUser().setPartner(null);
-          updateUI(false);
         }
       );
-
-    return v;
-  }
-
-  /**
-   * Updates the UI based on whether
-   * user is connected to a partner.
-   * @param hasPartner - if user is connected with partner
-   *
-   * @param hasPartner Does the user have a partner?
-   */
-  private void updateUI(boolean hasPartner) {
-    if (hasPartner) {
-      partnerName.setText(app.getLocalUser().getPartner().getName());
-      partnerAccount.setText(app.getLocalUser().getPartner().getEmail());
-      partnerName.setVisibility(View.VISIBLE);
-      partnerNameText.setVisibility(View.VISIBLE);
-      partnerAccount.setVisibility(View.VISIBLE);
-      partnerAccountText.setVisibility(View.VISIBLE);
-      null_partner.setVisibility(View.INVISIBLE);
-      add_partner_button.setVisibility(View.INVISIBLE);
-    } else {
-      add_partner_button.setVisibility(View.VISIBLE);
-      partnerNameText.setVisibility(View.INVISIBLE);
-      partnerName.setVisibility(View.INVISIBLE);
-      partnerAccountText.setVisibility(View.INVISIBLE);
-      partnerAccount.setVisibility(View.INVISIBLE);
-      null_partner.setVisibility(View.VISIBLE);
-    }
   }
 
   /**
@@ -192,19 +239,6 @@ public class SettingsFragment extends TabFragment<Object> {
   public void onStop() {
     super.onStop();
     auth.disconnect();
-  }
-
-  /**
-   * onResume updates UI depending
-   * on if user has a partner or not
-   */
-  @Override
-  public void onResume() {
-    super.onResume();
-    if (app.getLocalUser().getPartner() != null) {
-      updateUI(true);
-    } else {
-      updateUI(false);
-    }
+    subs.unsubscribe();
   }
 }

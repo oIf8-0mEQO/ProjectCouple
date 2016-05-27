@@ -45,11 +45,14 @@ public class ProfileBehavior implements PropertiesProvider {
    * @param sync The sync object, with a database reference for this user.
    */
   public ProfileBehavior(Sync sync) {
-    this.properties = new ConcreteProperties(this)
+    //TODO: Use DI
+    properties = new ConcreteProperties(this)
       .property("id").bind()
       .property("name").bind()
       .property("email").bind()
       .property("favoriteLocations").bind();
+
+    sync.watchAll(properties);
   }
 
   /**

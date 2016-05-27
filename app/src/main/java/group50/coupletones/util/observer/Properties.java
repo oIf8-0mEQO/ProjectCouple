@@ -1,5 +1,7 @@
 package group50.coupletones.util.observer;
 
+import java.util.Collection;
+
 /**
  * An object managers observers an object's fields
  *
@@ -21,4 +23,5 @@ public interface Properties {
 
   <T> Property<T> property(String name, Class<T> type);
 
+  Collection<Property<?>> all();
 }

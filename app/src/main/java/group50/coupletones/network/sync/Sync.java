@@ -1,13 +1,14 @@
 package group50.coupletones.network.sync;
 
 import group50.coupletones.util.observer.Properties;
+import group50.coupletones.util.observer.Property;
 
 /**
  * @author Henry Mao
  * @since 5/27/16
  */
 public interface Sync {
-
+  //TODO: Recomment
   /**
    * Hooks listeners to every field in a class annotated with @Watch.
    * <p>
@@ -15,41 +16,17 @@ public interface Sync {
    *
    * @return The Properties object instance
    */
-  Properties subscribeAll();
+  Sync watch(Property<?> property);
 
   /**
    * Subscribes a field in the class to receive updates from the database automatically.
    *
-   * @param fieldName The name of the field
+   * @param properties The name of the field
    * @return Self instance
    */
-  Properties subscribe(String fieldName);
+  Sync watchAll(Properties properties);
 
-  /**
-   * Attempts to sync a specific field to the server
-   *
-   * @param fieldName The name of the field to publish
-   * @return Self instance
-   */
-  Properties publish(String fieldName);
+  Sync parent();
 
-  /**
-   * Publishes all fields to the database.
-   *
-   * @return Self instance
-   */
-  Properties publishAll();
-
-  /**
-   * The child observer, by name
-   *
-   * @param child The child
-   * @return The child observer
-   */
-  Properties child(String child);
-
-  /**
-   * @return The parent observer
-   */
-  Properties parent();
+  Sync child(String name);
 }

@@ -2,7 +2,7 @@ package group50.coupletones.util.observer;
 
 import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Supplier;
-import rx.Observable;
+import rx.subjects.Subject;
 
 /**
  * @author Henry Mao
@@ -11,6 +11,10 @@ import rx.Observable;
 public interface Property<T> {
 
   String name();
+
+  T get();
+
+  void set(T value);
 
   Property<T> setter(Consumer<T> setter);
 
@@ -21,5 +25,5 @@ public interface Property<T> {
   /**
    * @return An observable for this property
    */
-  Observable<T> observable();
+  Subject<T, T> observable();
 }

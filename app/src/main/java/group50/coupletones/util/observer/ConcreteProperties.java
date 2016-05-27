@@ -2,10 +2,11 @@ package group50.coupletones.util.observer;
 
 import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Supplier;
-import rx.Observable;
 import rx.subjects.BehaviorSubject;
+import rx.subjects.Subject;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -27,7 +28,7 @@ public class ConcreteProperties implements Properties {
   /**
    * Map of bindings the object watched by this property has.
    */
-  protected Map<String, ConcreteProperty<?>> bindings;
+  protected Map<String, Property<?>> bindings;
 
   /**
    * Creates an unusable Properties.
@@ -54,7 +55,13 @@ public class ConcreteProperties implements Properties {
   @Override
   public <T> Property<T> property(String name, Class<T> type) {
     verify();
-    return new ConcreteProperty<>(name);
+    return bindings.containsKey(name) ? (Property<T>) bindings.get(name) : new ConcreteProperty<>(name);
+  }
+
+
+  @Override
+  public Collection<Property<?>> all() {
+    return bindings.values();
   }
 
   public class ConcreteProperty<T> implements Property<T> {
@@ -118,7 +125,17 @@ public class ConcreteProperties implements Properties {
     }
 
     @Override
-    public Observable<T> observable() {
+    public T get() {
+      return getter.get();
+    }
+
+    @Override
+    public void set(T value) {
+      setter.accept(value);
+    }
+
+    @Override
+    public Subject<T, T> observable() {
       return observable;
     }
   }

@@ -107,6 +107,9 @@ public class ConcreteProperties implements Properties {
       preObservable = BehaviorSubject.create();
       observable = BehaviorSubject.create();
 
+      // Observables are notified when set is called
+      this.setter = setter.andThen(observable::onNext);
+
       // PreObservables will call the setter
       preObservable.subscribe(this::set);
 

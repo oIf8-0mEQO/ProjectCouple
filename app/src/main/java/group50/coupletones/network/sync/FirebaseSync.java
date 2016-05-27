@@ -71,8 +71,9 @@ public class FirebaseSync implements Sync {
       .preObservable()
       .subscribe(obj -> {
         // TODO: Depending on property type, subscribe differently.
-        Log.v("FirebaseSync", "Send " + property.name() + " with " + property.get());
-        ref.child(property.name()).setValue(property.get());
+        Object value = property.get();
+        Log.v("FirebaseSync", "Send " + property.name() + " with " + value);
+        ref.child(property.name()).setValue(value);
       });
 
     return this;

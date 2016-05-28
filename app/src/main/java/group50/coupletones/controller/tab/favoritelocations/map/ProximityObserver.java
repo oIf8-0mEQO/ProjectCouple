@@ -12,4 +12,5 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Visited
  */
 public interface ProximityObserver {
   void onEnterLocation(VisitedLocationEvent location);
+  void onLeaveLocation(VisitedLocationEvent location);
 }

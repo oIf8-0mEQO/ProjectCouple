@@ -42,6 +42,16 @@ public class VisitedLocationEvent implements Storable {
     this.timeVisited = timeVisited;
   }
 
+  /**
+   * Constructs a new visited location with the given enter and leave time.
+   */
+  public VisitedLocationEvent(FavoriteLocation favoriteLocation, Date timeVisited, Date timeLeft)
+  {
+    this.location = favoriteLocation;
+    this.timeVisited = timeVisited;
+    this.timeLeft = timeLeft;
+  }
+
   public String getName()
   {
     return location.getName();
@@ -86,6 +96,7 @@ public class VisitedLocationEvent implements Storable {
     timeVisited = new Date(storage.getLong("date"));
   }
 
+  @Override
   public boolean equals(Object object)
   {
     try {

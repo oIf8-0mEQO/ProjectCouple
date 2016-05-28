@@ -55,4 +55,13 @@ public class ProximityNetworkHandler implements ProximityObserver, Taggable {
       Log.e(getTag(), "Attempt to send location notification to null partner.");
     }
   }
+
+  @Override
+  public void onLeaveLocation(VisitedLocationEvent location)
+  {
+    if (app.getLocalUser().getPartner() != null)
+    {
+
+    }
+  }
 }

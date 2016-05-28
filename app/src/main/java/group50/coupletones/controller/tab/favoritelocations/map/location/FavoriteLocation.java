@@ -122,6 +122,7 @@ public class FavoriteLocation implements Location, Storable {
     location.load(storage);
   }
 
+  @Override
   public boolean equals(Object object)
   {
     try {

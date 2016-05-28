@@ -75,6 +75,16 @@ public class MapProximityManager implements ProximityManager, Taggable {
     }
   }
 
+  public void onLeaveLocation(FavoriteLocation location)
+  {
+    currentlyIn.remove(location);
+    VisitedLocationEvent newLoc = new VisitedLocationEvent(location, new Date(location.getTime()), new Date());
+    for (ProximityObserver i : observers)
+    {
+      i.onLeaveLocation(newLoc);
+    }
+  }
+
   /**
    * Handles the location change event
    * @param location - The changed location
@@ -94,8 +104,7 @@ public class MapProximityManager implements ProximityManager, Taggable {
       {
         if (distanceInMiles(new LatLng(location.getLatitude(), location.getLongitude()), loc.getPosition()) > .1)
         {
-          currentlyIn.remove(loc);
-          //TODO: implement leaving location.
+          onLeaveLocation(loc);
         }
       }
     }

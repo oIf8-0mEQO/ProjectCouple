@@ -26,6 +26,8 @@ public class ConcretePartner implements Partner {
   private final ProfileBehavior profile;
   private final PartnerRequestBehavior request;
 
+  private String partnerId;
+
   /**
    * @param sync The object handling synchronizing partner data
    */
@@ -33,6 +35,7 @@ public class ConcretePartner implements Partner {
     properties = new ConcreteProperties();
     profile = new ProfileBehavior(properties);
     request = new PartnerRequestBehavior(properties);
+    properties.property("partnerId").bind(this);
     sync.watchAll(properties);
   }
 

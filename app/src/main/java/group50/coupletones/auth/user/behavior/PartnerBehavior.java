@@ -122,13 +122,7 @@ public class PartnerBehavior implements PropertiesProvider {
         .first()
         .subscribe(partner -> {
           Log.v("PartnerBehavior", "Two way = " + partnerId);
-          // Set partner id to this partner.
-          sync.update(
-            partner
-              .getProperties()
-              .property("partnerId")
-              .set(localUser.getId())
-          );
+          partner.setPartnerId(localUser.getId());
         });
     }
   }

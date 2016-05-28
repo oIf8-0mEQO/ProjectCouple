@@ -41,9 +41,9 @@ public class VisitedLocationEventTest {
   @Test
   public void testEquality()
   {
-    VisitedLocationEvent locRef = new VisitedLocationEvent("name", new LatLng(10, 10), new Date(100), VibeTone.getTone());
-    VisitedLocationEvent locTest1 = new VisitedLocationEvent("name", new LatLng(10, 10), new Date(100), VibeTone.getTone());
-    VisitedLocationEvent locTest2 = new VisitedLocationEvent("name", new LatLng(10, 10), new Date(250), VibeTone.getTone());
+    VisitedLocationEvent locRef = new VisitedLocationEvent("name", new LatLng(10, 10), new Date(100), new Date(0), VibeTone.getTone());
+    VisitedLocationEvent locTest1 = new VisitedLocationEvent("name", new LatLng(10, 10), new Date(100), new Date(0),  VibeTone.getTone());
+    VisitedLocationEvent locTest2 = new VisitedLocationEvent("name", new LatLng(10, 10), new Date(250), new Date(0),  VibeTone.getTone());
     assert (locRef.equals(locTest1));
     assert (!locRef.equals(locTest2));
   }

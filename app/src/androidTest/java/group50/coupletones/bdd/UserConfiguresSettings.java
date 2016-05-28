@@ -6,6 +6,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.LocalUser;
+import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.di.DaggerMockAppComponent;
@@ -35,7 +36,7 @@ public class UserConfiguresSettings {
   public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
   private CoupleTones app;
   private LocalUser mockUser;
-  private User samplePartner;
+  private Partner samplePartner;
 
   @Before
   public void setup() {
@@ -59,7 +60,7 @@ public class UserConfiguresSettings {
   }
 
   private void givenUserConnectedToPartner() {
-    samplePartner = mock(User.class);
+    samplePartner = mock(Partner.class);
     when(samplePartner.getName()).thenReturn("Henry");
     when(samplePartner.getEmail()).thenReturn("henry@calclavia.com");
     when(mockUser.getPartner()).thenReturn(samplePartner);

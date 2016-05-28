@@ -8,6 +8,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
+import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.MapProximityManager;
@@ -73,7 +74,7 @@ public class UserNotifiesPartnerOfLocation {
     User mock = mock(User.class);
     when(mock.getName()).thenReturn("Henry");
     when(mock.getEmail()).thenReturn("henry@email.com");
-    when(mockUser.getPartner()).thenReturn(mock);
+    when(mockUser.getPartner()).thenReturn(mock(Partner.class));
 
   }
 

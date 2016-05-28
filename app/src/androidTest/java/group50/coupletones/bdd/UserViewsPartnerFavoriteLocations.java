@@ -2,6 +2,8 @@ package group50.coupletones.bdd;
 
 import android.support.test.rule.ActivityTestRule;
 
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.maps.model.LatLng;
 
 import org.junit.Before;
@@ -15,10 +17,12 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.Partner;
+import group50.coupletones.auth.user.UserFactory;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
+import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.sound.VibeTone;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -53,12 +57,13 @@ public class UserViewsPartnerFavoriteLocations {
         .build()
     );
 
-    List<FavoriteLocation> locations = new LinkedList<>();
-    locations.add(new FavoriteLocation("name", new LatLng(10, 10), 0, VibeTone.getTone()));
+    FavoriteLocation partnerFavorite = new FavoriteLocation("name", new LatLng(10, 10), 0, VibeTone.getTone());
+    List<FavoriteLocation> locationList = new LinkedList<>();
+    locationList.add(partnerFavorite);
     user = mock(LocalUser.class);
     partner = mock(Partner.class);
     when(user.getPartner()).thenReturn(partner);
-    when(partner.getFavoriteLocations()).thenReturn(locations);
+    when(partner.getFavoriteLocations()).thenReturn(locationList);
 
     app = CoupleTones.global().app();
     when(app.isLoggedIn()).thenReturn(true);

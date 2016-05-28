@@ -18,6 +18,7 @@ public class VisitedLocationEvent implements Storable {
 
   private FavoriteLocation location;
   private Date timeVisited;
+  private Date timeLeft;
 
   //Should only be used when loading.
   public VisitedLocationEvent()
@@ -25,10 +26,11 @@ public class VisitedLocationEvent implements Storable {
     location = new FavoriteLocation();
   }
 
-  public VisitedLocationEvent(String name, LatLng position, Date timeVisited, VibeTone tone)
+  public VisitedLocationEvent(String name, LatLng position, Date timeVisited, Date timeLeft, VibeTone tone)
   {
     location = new FavoriteLocation(name, position, 0, tone);
     this.timeVisited = timeVisited;
+    this.timeLeft = timeLeft;
   }
 
   /**
@@ -60,6 +62,11 @@ public class VisitedLocationEvent implements Storable {
     return timeVisited;
   }
 
+  public Date getTimeLeft()
+  {
+    return timeLeft;
+  }
+
   public VibeTone getVibeTone()
   {
     return location.getTone();
@@ -83,6 +90,7 @@ public class VisitedLocationEvent implements Storable {
   {
     if (!location.equals(other.location)) return false;
     if (!timeVisited.equals(other.timeVisited)) return false;
+    if (!timeLeft.equals(other.timeLeft)) return false;
     return true;
   }
 

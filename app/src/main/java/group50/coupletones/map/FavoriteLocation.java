@@ -1,6 +1,8 @@
-package group50.coupletones.util;
+package group50.coupletones.map;
 
 import com.google.android.gms.maps.model.LatLng;
+
+import group50.coupletones.map.Location;
 
 /**
  * Created by Joseph on 6/25/2016.

@@ -1,4 +1,4 @@
-package group50.coupletones.util;
+package group50.coupletones.map;
 
 import com.google.android.gms.maps.model.LatLng;
 

@@ -1,4 +1,4 @@
-package group50.coupletones;
+package group50.coupletones.map;
 
 import android.Manifest;
 import android.location.Address;
@@ -13,7 +13,6 @@ import android.location.LocationManager;
 import android.content.pm.PackageManager;
 import android.content.Context;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -24,32 +23,14 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import group50.coupletones.util.FavoriteLocation;
+import group50.coupletones.R;
+import group50.coupletones.map.FavoriteLocation;
 
-public class MapActivity extends FragmentActivity implements OnMapReadyCallback {
+public class Map extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private List<FavoriteLocation> favLocations = new LinkedList<FavoriteLocation>();
     private Geocoder geocoder = new Geocoder(this);
-
-    LocationListener locationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {
-            for (FavoriteLocation i : favLocations)
-            {
-                if (distanceInMiles(i.getPosition(), new LatLng(location.getLatitude(), location.getLongitude())) < 0.1)
-                {
-                    System.out.println(i);//TODO: properly implement this method call
-                }
-            }
-        }
-        @Override
-        public void onProviderDisabled (String provider) {}
-        @Override
-        public void onProviderEnabled (String provider) {}
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extra) {}
-    };
 
     GoogleMap.OnMapClickListener clickListener = new GoogleMap.OnMapClickListener() {
         @Override
@@ -90,7 +71,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             Log.d("test2", "outs");
             mMap.setMyLocationEnabled(true);
         }
-        locationManager.requestLocationUpdates(locationProvider, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(locationProvider, 0, 0, new MovementListener((FavoriteLocation)->{}, favLocations));//TODO: create actual ProximityHandler class
         this.populateMap();
         mMap.setOnMapClickListener(clickListener);
     }
@@ -107,16 +88,6 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
             markerSettings.title(i.getName());
             mMap.addMarker(markerSettings);
         }
-    }
-
-    /**Finds the distance in miles between two locations given by the gps.*/
-    double distanceInMiles(LatLng location1, LatLng location2)
-    {
-        double distLatKilometers = (location1.latitude - location2.latitude)/110.54;
-        double distLongKilometers = (location1.longitude - location2.longitude)/(111.32*Math.cos(location1.latitude - location2.latitude));
-        double distKilometers = Math.sqrt(Math.pow(distLatKilometers, 2) + Math.pow(distLongKilometers, 2));
-        double distMiles = 0.621371*distKilometers;
-        return distMiles;
     }
 
 

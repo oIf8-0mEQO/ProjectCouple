@@ -70,8 +70,18 @@ public class PartnerBehavior implements PropertiesProvider {
   public void handlePartnerRequest(String partnerId, boolean accept) {
     requestBehavior.removeRequest(partnerId);
     if (accept) {
+      // Two way partnering
       setPartner(partnerId);
-      //TODO: Two way adding?
+      // Wait for partner to load
+      partnerSubject
+        .first()
+        .filter(p -> p != null)
+        .subscribe(partner -> {
+          partner
+            .getProperties()
+            .property("partnerId")
+            .set(properties.property("id").get());
+        });
     }
   }
 

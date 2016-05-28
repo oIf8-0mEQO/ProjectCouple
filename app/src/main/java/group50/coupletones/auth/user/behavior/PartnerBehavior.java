@@ -81,6 +81,10 @@ public class PartnerBehavior implements PropertiesProvider {
             .getProperties()
             .property("partnerId")
             .set(properties.property("id").get());
+          partner
+              .getProperties()
+              .property("partnerId")
+              .update();
         });
     }
   }
@@ -99,12 +103,12 @@ public class PartnerBehavior implements PropertiesProvider {
           .build()
           .userFactory()
           .withId(partnerId)
-          .build();
+            .build();
 
         partner
-          .load()
-          .subscribe(x -> {
-            Log.d("SettingsFragment", "Next: " + x);
+            .load()
+            .subscribe(x -> {
+              Log.d("SettingsFragment", "Next: " + x);
             partnerSubject.onNext(x);
           });
       }

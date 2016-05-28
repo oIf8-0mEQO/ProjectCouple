@@ -149,17 +149,13 @@ public class SettingsFragment extends TabFragment<Object> {
 
     subs.add(
       localUser
-        .getProperties()
-        .property("name", String.class)
-        .observable()
+        .observable("name", String.class)
         .subscribe(name::setText)
     );
 
     subs.add(
       localUser
-        .getProperties()
-        .property("email", String.class)
-        .observable()
+        .observable("email", String.class)
         .subscribe(email::setText)
     );
 
@@ -180,15 +176,11 @@ public class SettingsFragment extends TabFragment<Object> {
 
           //Observe partner data
           Subscription nameChange = partner
-            .getProperties()
-            .property("name", String.class)
-            .observable()
+            .observable("name", String.class)
             .subscribe(partnerName::setText);
 
           Subscription emailChange = partner
-            .getProperties()
-            .property("email", String.class)
-            .observable()
+            .observable("email", String.class)
             .subscribe(partnerEmail::setText);
 
           partnerSubs.add(nameChange);

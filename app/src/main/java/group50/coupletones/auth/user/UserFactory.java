@@ -1,13 +1,16 @@
 package group50.coupletones.auth.user;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import group50.coupletones.auth.user.concrete.ConcreteLocalUser;
 import group50.coupletones.auth.user.concrete.ConcretePartner;
 import group50.coupletones.network.sync.FirebaseSync;
 import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.function.Function;
+import rx.Observable;
 
 import javax.inject.Inject;
 
@@ -38,7 +41,7 @@ public class UserFactory {
    * @param account The Google account
    * @return Self instance
    */
-  public Buildable<ConcreteLocalUser> withAccount(GoogleSignInAccount account) {
+  public Buildable<LocalUser> withAccount(GoogleSignInAccount account) {
     FirebaseSync sync = (FirebaseSync) buildSync().child(account.getId());
     sync.getRef().child("id").setValue(account.getId());
     sync.getRef().child("name").setValue(account.getDisplayName());
@@ -46,12 +49,48 @@ public class UserFactory {
     return new Buildable<>(ConcreteLocalUser::new, sync);
   }
 
-  protected Sync buildSync() {
-    return new FirebaseSync();
+  /**
+   * Finds a user by email
+   *
+   * @param email The email of the user
+   * @return A observable that will return the value when user is found (async).
+   */
+  public Observable<Buildable<Partner>> withEmail(String email) {
+    FirebaseSync ref = (FirebaseSync) buildSync();
+
+    // Find the user by email
+    return Observable.create(act ->
+      ref.getRef()
+        .orderByChild("email")
+        .equalTo(email)
+        .addListenerForSingleValueEvent(new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+            if (dataSnapshot.getValue() != null) {
+              // Gets the partner's DB
+              DatabaseReference partnerDb = dataSnapshot
+                .getChildren()
+                .iterator()
+                .next()
+                .getRef();
+
+              act.onNext(withId(partnerDb.getKey()));
+              act.onCompleted();
+            }
+            act.onError(new Throwable("Invalid Email"));
+            act.onCompleted();
+          }
+
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
+
+          }
+        })
+    );
   }
 
-  public DatabaseReference getDatabase() {
-    return FirebaseDatabase.getInstance().getReference("users");
+  public Sync buildSync() {
+    return new FirebaseSync().child("users");
   }
 
   public class Buildable<T extends User> {

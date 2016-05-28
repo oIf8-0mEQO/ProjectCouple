@@ -68,7 +68,7 @@ public class PartnerBehavior implements PropertiesProvider {
     if (this.partnerId != null &&
       partnerId == null &&
       this.partner != null &&
-      this.partnerId.equals(this.partner.getPartnerId())) {
+      this.localUser.getId().equals(this.partner.getPartnerId())) {
       Log.d("PartnerBehavior", "Removing partner's id");
       // Remove partner's partnerId
       partner

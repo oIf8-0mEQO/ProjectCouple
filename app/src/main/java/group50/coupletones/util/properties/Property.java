@@ -17,7 +17,7 @@ public interface Property<T> {
 
   T get();
 
-  void set(T value);
+  Property<T> set(T value);
 
   Property<T> setter(Consumer<T> setter);
 

@@ -1,6 +1,5 @@
 package group50.coupletones.auth.user.behavior;
 
-import android.util.Log;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.Partner;
@@ -64,7 +63,7 @@ public class PartnerBehavior implements PropertiesProvider {
    */
   public void setPartner(String partnerId) {
     Property<String> partnerIdProp = properties.property("partnerId", String.class);
-
+/*
     if (this.partnerId != null &&
       partnerId == null &&
       this.partner != null &&
@@ -81,7 +80,7 @@ public class PartnerBehavior implements PropertiesProvider {
         .getProperties()
         .property("partnerId")
         .update();
-    }
+    }*/
 
     partnerIdProp.set(partnerId);
     partnerIdProp.update();
@@ -107,11 +106,7 @@ public class PartnerBehavior implements PropertiesProvider {
           partner
             .getProperties()
             .property("partnerId")
-            .set(localUser.getId());
-          // Send update
-          partner
-            .getProperties()
-            .property("partnerId")
+            .set(localUser.getId())
             .update();
         });
     }

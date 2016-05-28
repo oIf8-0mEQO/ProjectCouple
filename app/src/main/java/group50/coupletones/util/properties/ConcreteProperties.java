@@ -14,6 +14,7 @@ import java.util.Map;
 /**
  * An object that watches an object's fields, notifies observers when a field updates
  * and updates them when publish is called.
+ *
  * @author Henry Mao
  * @since 5/22/16
  */
@@ -129,8 +130,9 @@ public class ConcreteProperties implements Properties {
     }
 
     @Override
-    public void set(T value) {
+    public Property<T> set(T value) {
       setter.accept(value);
+      return this;
     }
 
     @Override

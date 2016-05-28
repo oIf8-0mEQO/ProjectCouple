@@ -1,5 +1,6 @@
 package group50.coupletones.auth.user.behavior;
 
+import android.util.Log;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.Partner;
@@ -35,10 +36,11 @@ public class PartnerBehavior implements PropertiesProvider {
       .property("partnerId", String.class)
       .setter(newId -> {
         partnerId = newId;
-
+        Log.v("PartnerBehavior", "Setting partnerId =" + partnerId);
         // Check last partner cache.
         if (partnerId != null) {
           // Partner has changed
+          Log.v("PartnerBehavior", "Loading partner async = " + partnerId);
           CoupleTones
             .instanceComponentBuilder()
             .build()
@@ -48,6 +50,7 @@ public class PartnerBehavior implements PropertiesProvider {
             .load()
             .subscribe(x -> partnerCache.onNext((Partner) x));
         } else {
+          Log.v("PartnerBehavior", "Loading partner null = " + partnerId);
           partnerCache.onNext(null);
         }
       })
@@ -92,6 +95,7 @@ public class PartnerBehavior implements PropertiesProvider {
         .property("partnerId")
         .update();
     }*/
+    Log.v("PartnerBehavior", "setPartner = " + partnerId);
     this.partnerId = partnerId;
     properties.property("partnerId").update();
   }
@@ -103,8 +107,10 @@ public class PartnerBehavior implements PropertiesProvider {
    * @param accept    True if accept, false if reject
    */
   public void handlePartnerRequest(String partnerId, boolean accept) {
+    Log.v("PartnerBehavior", "removeRequest = " + partnerId);
     requestBehavior.removeRequest(partnerId);
     if (accept) {
+      Log.v("PartnerBehavior", "One way = " + partnerId);
       // Two way partnering
       setPartner(partnerId);
       // Wait for partner to load
@@ -112,6 +118,7 @@ public class PartnerBehavior implements PropertiesProvider {
         .filter(p -> p != null)
         .first()
         .subscribe(partner -> {
+          Log.v("PartnerBehavior", "Two way = " + partnerId);
           // Set partner id to this partner.
           partner
             .getProperties()

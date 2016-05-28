@@ -119,6 +119,8 @@ public class CoupleTones extends Application {
 
     // Register location observer
     ProximityManager proximity = global().proximity();
-    proximity.register(new ProximityNetworkHandler(this, network));
+    ProximityNetworkHandler proximityNetworkHandler = new ProximityNetworkHandler(this, network);
+    proximity.getEnterSubject().subscribe(proximityNetworkHandler::onEnterLocation);
+    proximity.getExitSubject().subscribe(proximityNetworkHandler::onLeaveLocation);
   }
 }

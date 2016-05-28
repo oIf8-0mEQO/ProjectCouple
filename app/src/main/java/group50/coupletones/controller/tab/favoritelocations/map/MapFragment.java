@@ -56,7 +56,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
     // Register an observer that updates the map as the user moves
-    proximityManager.register(location -> moveMap(location.getPosition()));
+    proximityManager.getEnterSubject().subscribe(location -> moveMap(location.getPosition()));
   }
 
   /**

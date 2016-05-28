@@ -18,7 +18,7 @@ import java.util.Locale;
  * @author Sharmaine Manalo
  * @since 5/5/16
  */
-public class ProximityNetworkHandler implements ProximityObserver, Taggable {
+public class ProximityNetworkHandler implements Taggable {
   private CoupleTones app;
   private NetworkManager network;
 
@@ -34,11 +34,10 @@ public class ProximityNetworkHandler implements ProximityObserver, Taggable {
   }
 
   /**
-   * onLocationChange
+   * onEnterLocation
    * @param location - Visited Location
    */
-  @Override
-  public void onLocationChange(VisitedLocationEvent location) {
+  public void onEnterLocation(VisitedLocationEvent location) {
     if (app.getLocalUser().getPartner() != null) {
       app.getLocalUser().addVisitedLocation(location);
       Format formatter = new SimpleDateFormat("HH:mm", Locale.US);
@@ -57,7 +56,6 @@ public class ProximityNetworkHandler implements ProximityObserver, Taggable {
     }
   }
 
-  @Override
   public void onLeaveLocation(VisitedLocationEvent location)
   {
     if (app.getLocalUser().getPartner() != null)

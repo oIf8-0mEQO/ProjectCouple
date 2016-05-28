@@ -4,6 +4,7 @@ import android.util.Log;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.Partner;
+import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.PropertiesProvider;
 import rx.Observable;
@@ -24,6 +25,8 @@ public class PartnerBehavior implements PropertiesProvider {
 
   private final LocalUser localUser;
 
+  private final Sync sync;
+
   /**
    * User's partner cache
    */
@@ -31,7 +34,7 @@ public class PartnerBehavior implements PropertiesProvider {
 
   private String partnerId;
 
-  public PartnerBehavior(Properties properties, LocalUser localUser, PartnerRequestBehavior requestBehavior) {
+  public PartnerBehavior(Properties properties, LocalUser localUser, Sync sync, PartnerRequestBehavior requestBehavior) {
     this.properties = properties
       .property("partnerId", String.class)
       .setter(newId -> {
@@ -58,8 +61,8 @@ public class PartnerBehavior implements PropertiesProvider {
       .bind(this);
 
     this.localUser = localUser;
-
     this.requestBehavior = requestBehavior;
+    this.sync = sync;
   }
 
   /**
@@ -97,7 +100,7 @@ public class PartnerBehavior implements PropertiesProvider {
     }*/
     Log.v("PartnerBehavior", "setPartner = " + partnerId);
     this.partnerId = partnerId;
-    properties.property("partnerId").update();
+    sync.update(properties.property("partnerId"));
   }
 
   /**
@@ -120,11 +123,12 @@ public class PartnerBehavior implements PropertiesProvider {
         .subscribe(partner -> {
           Log.v("PartnerBehavior", "Two way = " + partnerId);
           // Set partner id to this partner.
-          partner
-            .getProperties()
-            .property("partnerId")
-            .set(localUser.getId())
-            .update();
+          sync.update(
+            partner
+              .getProperties()
+              .property("partnerId")
+              .set(localUser.getId())
+          );
         });
     }
   }

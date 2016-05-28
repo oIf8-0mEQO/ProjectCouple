@@ -26,6 +26,14 @@ public interface Sync {
    */
   Sync watchAll(Properties properties);
 
+  /**
+   * Sends an update to the server
+   *
+   * @param property The property
+   * @return Self instance
+   */
+  Sync update(Property property);
+
   Sync parent();
 
   Sync child(String name);

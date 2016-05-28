@@ -23,8 +23,6 @@ public interface Property<T> {
 
   Property<T> getter(Supplier<T> getter);
 
-  Property<T> update();
-
   Property<T> mark(GenericTypeIndicator<?> indicator);
 
   GenericTypeIndicator<?> getIndicator();

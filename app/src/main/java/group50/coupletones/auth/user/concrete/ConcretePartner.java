@@ -34,8 +34,8 @@ public class ConcretePartner implements Partner {
    */
   public ConcretePartner(Sync sync) {
     properties = new ConcreteProperties();
-    profile = new ProfileBehavior(properties);
-    request = new PartnerRequestBehavior(properties);
+    profile = new ProfileBehavior(properties, sync);
+    request = new PartnerRequestBehavior(properties, sync);
     properties.property("partnerId").bind(this);
     sync.watchAll(properties);
   }
@@ -66,7 +66,9 @@ public class ConcretePartner implements Partner {
   }
 
   @Override
-  public List<VisitedLocationEvent> getVisitedLocations() { return profile.getVisitedLocations(); }
+  public List<VisitedLocationEvent> getVisitedLocations() {
+    return profile.getVisitedLocations();
+  }
 
   @Override
   public void requestPartner(User requester) {

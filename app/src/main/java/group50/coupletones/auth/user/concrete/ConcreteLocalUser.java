@@ -32,11 +32,10 @@ public class ConcreteLocalUser implements LocalUser {
   private final PartnerBehavior partnerBehavior;
 
   public ConcreteLocalUser(Sync sync) {
-    //TODO: Use DI
     properties = new ConcreteProperties();
-    profileBehavior = new ProfileBehavior(properties);
-    requestBehavior = new PartnerRequestBehavior(properties);
-    partnerBehavior = new PartnerBehavior(properties, this, requestBehavior);
+    profileBehavior = new ProfileBehavior(properties, sync);
+    requestBehavior = new PartnerRequestBehavior(properties, sync);
+    partnerBehavior = new PartnerBehavior(properties, this, sync, requestBehavior);
     sync.watchAll(properties);
   }
 

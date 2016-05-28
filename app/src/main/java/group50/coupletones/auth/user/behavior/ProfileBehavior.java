@@ -8,8 +8,10 @@ package group50.coupletones.auth.user.behavior;
 import com.google.firebase.database.GenericTypeIndicator;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
+import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.PropertiesProvider;
+
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,7 +25,7 @@ public class ProfileBehavior implements PropertiesProvider {
    * Object responsible for syncing the object with database
    */
   private final Properties properties;
-
+  private final Sync sync;
   private String id;
   /**
    * Name of the user
@@ -46,7 +48,7 @@ public class ProfileBehavior implements PropertiesProvider {
   /**
    * Creates a ConcreteUser
    */
-  public ProfileBehavior(Properties properties) {
+  public ProfileBehavior(Properties properties, Sync sync) {
     //TODO: Use DI
     this.properties = properties
       .property("id").bind(this)
@@ -56,6 +58,8 @@ public class ProfileBehavior implements PropertiesProvider {
       .mark(new GenericTypeIndicator<List<FavoriteLocation>>() {
       })
       .bind(this);
+
+    this.sync = sync;
   }
 
   /**
@@ -103,13 +107,15 @@ public class ProfileBehavior implements PropertiesProvider {
       favoriteLocations = new LinkedList<>();
     favoriteLocations.add(location);
 
-    properties
-      .property("favoriteLocations")
-      .update();
+    sync.update(
+      properties
+        .property("favoriteLocations")
+    );
   }
 
   /**
    * Adds a visited location
+   *
    * @param visitedLocation The visited location to add.
    */
   public void addVisitedLocation(VisitedLocationEvent visitedLocation) {
@@ -118,8 +124,8 @@ public class ProfileBehavior implements PropertiesProvider {
     visitedLocations.add(visitedLocation);
 
     properties
-        .property("visitedLocations")
-        .set(visitedLocations);
+      .property("visitedLocations")
+      .set(visitedLocations);
   }
 
 

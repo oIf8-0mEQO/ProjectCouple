@@ -119,12 +119,6 @@ public class ConcreteProperties implements Properties {
     }
 
     @Override
-    public Property<T> update() {
-      observable.onNext(get());
-      return this;
-    }
-
-    @Override
     public T get() {
       return getter.get();
     }

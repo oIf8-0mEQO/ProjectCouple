@@ -52,9 +52,8 @@ public class FirebaseSync implements Sync {
     verify();
 
     // When Firebase changes for this property, we want to know about it.
-    DatabaseReference child = ref.child(property.name());
     listeners.add(
-      child.addValueEventListener(new ValueEventListener() {
+      ref.child(property.name()).addValueEventListener(new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
           Subject observable = ((Property) property).observable();
@@ -75,14 +74,28 @@ public class FirebaseSync implements Sync {
     // When the property changes, we want to tell update Firebase about it
 
     // Datatype syncing
+    /*
     property
       .observable()
       .distinct()
       .subscribe(value -> {
         Log.v("FirebaseSync", "Sending " + property.name() + " = " + value);
         child.setValue(value);
-      });
+      });*/
 
+    return this;
+  }
+
+  /**
+   * Sends an update to the server
+   *
+   * @param property The property
+   * @return Self instance
+   */
+  @Override
+  public Sync update(Property property) {
+    Log.v("FirebaseSync", "Sending " + property.name());
+    ref.child(property.name()).setValue(property.get());
     return this;
   }
 

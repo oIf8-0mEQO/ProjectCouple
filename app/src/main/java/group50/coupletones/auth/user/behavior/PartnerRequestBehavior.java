@@ -42,19 +42,13 @@ public class PartnerRequestBehavior {
       partnerRequests = new LinkedList<>();
     }
     partnerRequests.add(0, requester.getId());
-    sync.update(
-      properties
-        .property("partnerRequests")
-    );
+    sync.update(properties.property("partnerRequests"));
   }
 
   void removeRequest(String requesterId) {
     if (partnerRequests != null) {
       partnerRequests.remove(requesterId);
     }
-    sync.update(
-      properties
-        .property("partnerRequests")
-    );
+    sync.update(properties.property("partnerRequests"));
   }
 }

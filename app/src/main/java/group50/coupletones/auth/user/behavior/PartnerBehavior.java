@@ -99,7 +99,7 @@ public class PartnerBehavior implements PropertiesProvider {
         .update();
     }*/
     Log.v("PartnerBehavior", "setPartner = " + partnerId);
-    this.partnerId = partnerId;
+    properties.property("partnerId").set(partnerId);
     sync.update(properties.property("partnerId"));
   }
 
@@ -110,7 +110,7 @@ public class PartnerBehavior implements PropertiesProvider {
    * @param accept    True if accept, false if reject
    */
   public void handlePartnerRequest(String partnerId, boolean accept) {
-    Log.v("PartnerBehavior", "removeRequest = " + partnerId);
+    Log.v("PartnerBehavior", "handleRequest = " + partnerId);
     requestBehavior.removeRequest(partnerId);
     if (accept) {
       Log.v("PartnerBehavior", "One way = " + partnerId);

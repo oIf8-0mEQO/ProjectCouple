@@ -80,24 +80,15 @@ public class PartnerBehavior implements PropertiesProvider {
    * @param partnerId The partner's ID to set
    */
   public void setPartner(String partnerId) {
-/*
-    if (this.partnerId != null &&
-      partnerId == null &&
-      this.partner != null &&
-      this.localUser.getId().equals(this.partner.getPartnerId())) {
-      Log.d("PartnerBehavior", "Removing partner's id");
-      // Remove partner's partnerId
-      partner
-        .getProperties()
-        .property("partnerId")
-        .set(null);
-
-      // Send update
-      partner
-        .getProperties()
-        .property("partnerId")
-        .update();
-    }*/
+    if (this.partnerId != null && partnerId == null) {
+      // Two way disconnection
+      getPartner()
+        .filter(p -> p != null)
+        .first()
+        .subscribe(partner -> {
+          partner.setPartnerId(null);
+        });
+    }
     Log.v("PartnerBehavior", "setPartner = " + partnerId);
     properties.property("partnerId").set(partnerId);
     sync.update(properties.property("partnerId"));

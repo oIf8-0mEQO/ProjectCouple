@@ -67,11 +67,10 @@ public class PartnerBehavior implements PropertiesProvider {
    * @param accept    True if accept, false if reject
    */
   public void handlePartnerRequest(String partnerId, boolean accept) {
+    requestBehavior.removeRequest(partnerId);
     if (accept) {
       setPartner(partnerId);
     }
-
-    requestBehavior.removeRequest(partnerId);
   }
 
   /**

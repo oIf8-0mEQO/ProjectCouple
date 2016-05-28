@@ -225,6 +225,90 @@
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
+        <!-- Cardview for User's Notification Settings -->
+
+        <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                            android:id="@+id/card_view_2"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="180dp"
+                                            android:layout_marginLeft="8dp"
+                                            android:layout_marginRight="8dp"
+                                            android:layout_marginTop="548dp"
+                                            android:layout_marginBottom="10dp"
+                                            card_view:cardCornerRadius="0dp"
+                                            card_view:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp">
+
+                    <!-- NOTIFICATION SETTINGS -->
+                    <TextView
+                        android:id="@+id/notif_settings_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/notif_settings_tite"
+                        android:textColor="@color/subtitleColor"
+                        android:textSize="16sp" />
+
+                    <!-- Notifications: -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/notif_title"
+                        android:text="@string/notif_title"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_below="@+id/notif_settings_text"
+                        android:layout_marginTop="30dp"
+                        />
+
+                    <!-- Toggle Switch for Notifications-->
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:showText="true"
+                        android:id="@+id/notif_switch"
+                        android:layout_marginEnd="26dp"
+                        android:checked="false"
+                        android:layout_alignBottom="@+id/notif_title"
+                        android:layout_alignParentEnd="true"/>
+
+                    <!-- VibeTones: -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/vibetone_notif_title"
+                        android:text="@string/notif_vibetone_title"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_below="@+id/notif_title"
+                        android:layout_marginTop="30dp"
+                        />
+
+                    <!-- Toggle Switch for VibeTones-->
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:showText="true"
+                        android:id="@+id/notif_vibetones_switch"
+                        android:checked="false"
+                        android:layout_alignBottom="@+id/vibetone_notif_title"
+                        android:layout_alignEnd="@+id/notif_switch"/>
+
+
+                </RelativeLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
         <!-- Log out Button -->
         <Button
             android:layout_width="wrap_content"

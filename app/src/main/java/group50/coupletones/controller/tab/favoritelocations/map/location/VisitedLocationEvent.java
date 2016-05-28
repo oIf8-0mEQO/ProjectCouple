@@ -14,7 +14,8 @@ import group50.coupletones.util.storage.Storage;
  * @Author Joseph
  * @Since 5/21/16
  */
-public class VisitedLocationEvent implements Storable {
+//TODO: Add properties
+public class VisitedLocationEvent {
 
   private FavoriteLocation location;
   private Date timeVisited;
@@ -65,19 +66,6 @@ public class VisitedLocationEvent implements Storable {
     return location.getTone();
   }
 
-  @Override
-  public void save(Storage storage)
-  {
-    location.save(storage);
-    storage.setLong("date", timeVisited.getTime());
-  }
-
-  @Override
-  public void load(Storage storage)
-  {
-    location.load(storage);
-    timeVisited = new Date(storage.getLong("date"));
-  }
 
   public boolean equals(VisitedLocationEvent other)
   {

@@ -5,6 +5,7 @@
 
 package group50.coupletones.auth.user.behavior;
 
+import com.google.firebase.database.GenericTypeIndicator;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.PropertiesProvider;
@@ -46,7 +47,10 @@ public class ProfileBehavior implements PropertiesProvider {
       .property("id").bind(this)
       .property("name").bind(this)
       .property("email").bind(this)
-      .property("favoriteLocations").bind(this);
+      .property("favoriteLocations")
+      .mark(new GenericTypeIndicator<List<FavoriteLocation>>() {
+      })
+      .bind(this);
   }
 
   /**
@@ -86,7 +90,7 @@ public class ProfileBehavior implements PropertiesProvider {
 
     properties
       .property("favoriteLocations")
-      .set(favoriteLocations);
+      .update();
   }
 
   /**

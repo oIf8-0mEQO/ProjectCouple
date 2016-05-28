@@ -1,5 +1,6 @@
 package group50.coupletones.util.properties;
 
+import com.google.firebase.database.GenericTypeIndicator;
 import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Supplier;
 import rx.subjects.Subject;
@@ -12,6 +13,8 @@ public interface Property<T> {
 
   String name();
 
+  Class<T> type();
+
   T get();
 
   void set(T value);
@@ -21,6 +24,10 @@ public interface Property<T> {
   Property<T> getter(Supplier<T> getter);
 
   Property<T> update();
+
+  Property<T> mark(GenericTypeIndicator<?> indicator);
+
+  GenericTypeIndicator<?> getIndicator();
 
   Properties bind();
 
@@ -37,7 +44,6 @@ public interface Property<T> {
    * An observable object for this property.
    * The observable object is responsible for notifying observers when this property changes.
    * When update() is called, subscribers to this property are notified.
-   *
    * @return The observable for this property
    */
   Subject<T, T> observable();

@@ -1,5 +1,6 @@
 package group50.coupletones.util.properties;
 
+import com.google.firebase.database.GenericTypeIndicator;
 import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Supplier;
 import rx.subjects.BehaviorSubject;
@@ -13,7 +14,6 @@ import java.util.Map;
 /**
  * An object that watches an object's fields, notifies observers when a field updates
  * and updates them when publish is called.
- *
  * @author Henry Mao
  * @since 5/22/16
  */
@@ -26,7 +26,7 @@ public class ConcreteProperties implements Properties {
 
   @Override
   public <T> Property<T> property(String name, Class<T> type) {
-    return bindings.containsKey(name) ? (Property<T>) bindings.get(name) : new ConcreteProperty<>(name);
+    return bindings.containsKey(name) ? (Property<T>) bindings.get(name) : new ConcreteProperty<>(name, type);
   }
 
   @Override
@@ -37,12 +37,15 @@ public class ConcreteProperties implements Properties {
   public class ConcreteProperty<T> implements Property<T> {
 
     private final String name;
+    private final Class<T> type;
     private BehaviorSubject<T> observable;
     private Consumer<T> setter;
     private Supplier<T> getter;
+    private GenericTypeIndicator<?> indicator;
 
-    public ConcreteProperty(String name) {
+    public ConcreteProperty(String name, Class<T> type) {
       this.name = name;
+      this.type = type;
     }
 
     @Override
@@ -64,8 +67,9 @@ public class ConcreteProperties implements Properties {
 
     @Override
     public Properties bind() {
-      if (setter == null || getter == null)
+      if (setter == null || getter == null) {
         throw new IllegalStateException("Setter or getter for " + name + " is null.");
+      }
 
       doBind();
       return ConcreteProperties.this;
@@ -81,7 +85,7 @@ public class ConcreteProperties implements Properties {
             field.setAccessible(true);
             return (T) field.get(bind);
           } catch (Exception e) {
-            throw new IllegalArgumentException("Default binding for " + name + " cannot be read.");
+            throw new IllegalArgumentException("Default binding for " + name + " cannot be read.", e);
           }
         };
       }
@@ -93,7 +97,7 @@ public class ConcreteProperties implements Properties {
             field.setAccessible(true);
             field.set(bind, value);
           } catch (Exception e) {
-            throw new IllegalArgumentException("Default binding for " + name + " cannot be written.");
+            throw new IllegalArgumentException("Default binding for " + name + " cannot be written.", e);
           }
         };
       }
@@ -107,8 +111,9 @@ public class ConcreteProperties implements Properties {
       // Observables will call the setter
       observable.subscribe(this::set);
 
-      if (ConcreteProperties.this.bindings.containsKey(name))
+      if (ConcreteProperties.this.bindings.containsKey(name)) {
         throw new IllegalStateException("Attempt to bind " + name + " property twice");
+      }
       ConcreteProperties.this.bindings.put(name, this);
     }
 
@@ -131,6 +136,22 @@ public class ConcreteProperties implements Properties {
     @Override
     public Subject<T, T> observable() {
       return observable;
+    }
+
+    @Override
+    public Class<T> type() {
+      return type;
+    }
+
+    @Override
+    public Property<T> mark(GenericTypeIndicator<?> indicator) {
+      this.indicator = indicator;
+      return this;
+    }
+
+    @Override
+    public GenericTypeIndicator<?> getIndicator() {
+      return indicator;
     }
   }
 }

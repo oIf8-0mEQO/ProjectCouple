@@ -1,6 +1,5 @@
 package group50.coupletones.auth.user.behavior;
 
-import android.util.Log;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
@@ -11,7 +10,6 @@ import rx.subjects.BehaviorSubject;
 
 /**
  * Provides the behavior for handling the local user's partner
- *
  * @author Henry Mao
  */
 public class PartnerBehavior implements PropertiesProvider {
@@ -32,11 +30,13 @@ public class PartnerBehavior implements PropertiesProvider {
    */
   private Partner partner;
 
+  private String partnerId;
+
   public PartnerBehavior(Properties properties, PartnerRequestBehavior requestBehavior) {
     this.properties = properties
       .property("partnerId", String.class)
       .setter(this::resetPartner)                             // Sets the partner object based on ID.
-      .getter(() -> partner != null ? partner.getId() : null) // Gets the partner ID.
+      .getter(() -> partnerId) // Gets the partner ID.
       .bind();
 
     this.requestBehavior = requestBehavior;
@@ -51,25 +51,23 @@ public class PartnerBehavior implements PropertiesProvider {
 
   /**
    * Sets partner
-   *
    * @param partnerId The partner's ID to set
    */
   public void setPartner(String partnerId) {
-    properties
-      .property("partnerId")
-      .set(partnerId);
+    properties.property("partnerId").set(partnerId);
+    properties.property("partnerId").update();
   }
 
   /**
    * Handles the partner request, either accepting or rejecting it
-   *
    * @param partnerId The partner ID
-   * @param accept    True if accept, false if reject
+   * @param accept True if accept, false if reject
    */
   public void handlePartnerRequest(String partnerId, boolean accept) {
     requestBehavior.removeRequest(partnerId);
     if (accept) {
       setPartner(partnerId);
+      //TODO: Two way adding?
     }
   }
 
@@ -77,6 +75,7 @@ public class PartnerBehavior implements PropertiesProvider {
    * Lazy initialize or destroy partner from ID
    */
   private void resetPartner(String partnerId) {
+    this.partnerId = partnerId;
     if (partnerId != null) {
       // An update has occurred. Attempt to reconstruct the partner object.
       if (partner == null || !partnerId.equals(partner.getId())) {
@@ -89,12 +88,10 @@ public class PartnerBehavior implements PropertiesProvider {
           .build();
 
         partnerSubject.onNext(partner);
-        Log.d("ConcreteUser", this + " Notify " + partnerId);
       }
     } else if (partner != null) {
       partner = null;
       partnerSubject.onNext(null);
-      Log.d("ConcreteUser", this + " Notify " + partnerId);
     }
   }
 

@@ -32,82 +32,6 @@ public class FirebaseSync implements Sync {
     this.ref = ref;
   }
 
-  /**
-   * Recursively stores into Firebase
-   * @param db The database
-   * @param value The value to store
-   */
-  private static void send(DatabaseReference db, Object value) {
-    Log.v("FirebaseSync", "Send " + db.getKey() + " with " + value);
-    db.setValue(value);
-/*
-    if (value instanceof String ||
-      value instanceof Integer ||
-      value instanceof Double ||
-      value instanceof Long) {
-      // Basic types
-      db.setValue(value);
-    } else if (value instanceof PropertiesProvider) {
-      // Store class information
-      db.child("class").setValue(value.getClass().getName());
-      // Sync all properties of object
-      Collection<Property<?>> all = ((PropertiesProvider) value).getProperties().all();
-      for (Property<?> childProperty : all) {
-        send(db.child(childProperty.name()), childProperty.get());
-      }
-    } else if (value instanceof Collection) {
-      // Collection type syncing
-      int index = 0;
-      for (Object item : (Collection) value) {
-        // Sync all property of nested object
-        send(db.child("" + index), item);
-        index++;
-      }
-    } else if (value == null) {
-      db.removeValue();
-    } else {
-      throw new IllegalArgumentException("Collection contain " + db.getKey() + " [" + value + "] which is not a syncable.");
-    }*/
-  }
-
-  private static Object receive(DataSnapshot snapshot) {
-    Log.v("FirebaseSync", "Receive " + snapshot.getKey());
-/*
-    if (snapshot.getValue() instanceof Map) {
-      // Custom properties provider class
-      if (snapshot.hasChild("class")) {
-        String className = (String) snapshot.child("class").getValue();
-        try {
-          PropertiesProvider newObject = (PropertiesProvider) Class.forName(className).newInstance();
-          for (Property prop : newObject.getProperties().all()) {
-            if (snapshot.hasChild(prop.name())) {
-              prop.set(snapshot.child(prop.name()));
-            }
-          }
-          return newObject;
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    }
-
-    if (snapshot.getValue() instanceof List) {
-      // This is a collection. Rebuild the list from scratch
-      List<Object> list = new LinkedList<>();
-      int i = 0;
-
-      while (snapshot.child("" + i).exists()) {
-        DataSnapshot child = snapshot.child("" + i);
-        list.add(child);
-        i++;
-      }
-
-      return list;
-    }*/
-
-    return snapshot.getValue();
-  }
-
   protected void verify() {
     if (ref == null) {
       throw new IllegalStateException("Database reference is null.");
@@ -140,7 +64,7 @@ public class FirebaseSync implements Sync {
             if (property.getIndicator() != null) {
               observable.onNext(dataSnapshot.getValue(property.getIndicator()));
             } else {
-              observable.onNext(receive(dataSnapshot));
+              observable.onNext(dataSnapshot.getValue());
             }
           }
 
@@ -157,7 +81,10 @@ public class FirebaseSync implements Sync {
     property
       .observable()
       .distinct()
-      .subscribe(value -> send(ref.child(property.name()), value));
+      .subscribe(value -> {
+        Log.v("FirebaseSync", "Sending " + property.name() + " = " + value);
+        ref.child(property.name()).setValue(value);
+      });
 
     return this;
   }

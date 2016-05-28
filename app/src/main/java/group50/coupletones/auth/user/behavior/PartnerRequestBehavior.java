@@ -1,5 +1,6 @@
 package group50.coupletones.auth.user.behavior;
 
+import android.util.Log;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.util.properties.Properties;
 

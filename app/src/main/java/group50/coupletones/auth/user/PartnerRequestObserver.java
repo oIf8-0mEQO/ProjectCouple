@@ -5,7 +5,6 @@ import android.content.Intent;
 import group50.coupletones.R;
 import group50.coupletones.controller.PartnerResponseActivity;
 import group50.coupletones.network.receiver.Notification;
-import rx.Observable;
 
 import java.util.List;
 
@@ -20,7 +19,6 @@ public class PartnerRequestObserver {
 
   private final Context context;
   private UserFactory factory;
-  private LocalUser localUser;
 
   public PartnerRequestObserver(Context context, UserFactory factory) {
     this.context = context;
@@ -34,12 +32,9 @@ public class PartnerRequestObserver {
    * @return Self instance
    */
   public PartnerRequestObserver bind(LocalUser localUser) {
-    this.localUser = localUser;
     localUser
-      .getProperties()
-      .property("partnerRequests")
-      .observable()
-      .distinctUntilChanged()
+      .observable("partnerRequests", List.class)
+      .distinct()
       .subscribe(this::onRequestsChange);
 
     return this;
@@ -48,50 +43,37 @@ public class PartnerRequestObserver {
   /**
    * Called when the list of partner request changes.
    *
-   * @param change The object that changes
+   * @param partnerRequests A list of partner requests
    */
-  public void onRequestsChange(Object change) {
+  public void onRequestsChange(List<String> partnerRequests) {
     // Get the end of the partner list
-    if (change instanceof List) {
-      List<String> partnerRequests = (List) change;
+    if (partnerRequests != null && partnerRequests.size() > 0) {
+      String firstUserId = partnerRequests.listIterator().next();
 
-      if (partnerRequests.size() > 0) {
-        String firstUserId = partnerRequests.listIterator().next();
+      // Retrieve the partner object
+      User partner = factory.withId(firstUserId).build();
 
-        // Retrieve the partner object
-        User partner = factory.withId(firstUserId).build();
+      // When the basic data is synced from DB, we can then create the notification
+      partner
+        .load()
+        .first()
+        .subscribe(syncedPartner -> {
+          // Bundle the data into the intent when opening MainActivity
+          Intent intent = new Intent(context, PartnerResponseActivity.class);
+          intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+          intent.putExtra("id", syncedPartner.getId());
+          intent.putExtra("name", syncedPartner.getName());
+          intent.putExtra("email", syncedPartner.getEmail());
 
-        // Wait until all data is received.
-        //TODO: Maybe add onLoaded to user?
-        Observable<User> basicData = Observable.zip(
-          partner.getProperties().property("id").observable(),
-          partner.getProperties().property("name").observable(),
-          partner.getProperties().property("email").observable(),
-          (a, b, c) -> partner
-        );
+          String title = context.getString(R.string.partner_request_header);
+          String msg = syncedPartner.getEmail() + " " + context.getString(R.string.partner_up_text);
 
-        // When the basic data is synced from DB, we can then create the notification
-        basicData
-          .skip(1)
-          .first()
-          .subscribe(syncedPartner -> {
-            // Bundle the data into the intent when opening MainActivity
-            Intent intent = new Intent(context, PartnerResponseActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra("id", syncedPartner.getId());
-            intent.putExtra("name", syncedPartner.getName());
-            intent.putExtra("email", syncedPartner.getEmail());
-
-            String title = context.getString(R.string.partner_request_header);
-            String msg = syncedPartner.getEmail() + " " + context.getString(R.string.partner_up_text);
-
-            new Notification(context)
-              .setIntent(intent)
-              .setTitle(title)
-              .setMsg(msg)
-              .show();
-          });
-      }
+          new Notification(context)
+            .setIntent(intent)
+            .setTitle(title)
+            .setMsg(msg)
+            .show();
+        });
     }
   }
 }

@@ -9,6 +9,7 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Visited
 import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.properties.ConcreteProperties;
 import group50.coupletones.util.properties.Properties;
+import rx.Observable;
 
 import java.util.List;
 
@@ -67,5 +68,10 @@ public class ConcretePartner implements Partner {
   @Override
   public Properties getProperties() {
     return properties;
+  }
+
+  @Override
+  public Observable<User> load() {
+    return Observable.combineLatest(properties.allObservables(), args -> this);
   }
 }

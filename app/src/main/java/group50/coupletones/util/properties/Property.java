@@ -2,7 +2,6 @@ package group50.coupletones.util.properties;
 
 import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Supplier;
-import rx.Observable;
 import rx.subjects.Subject;
 
 /**
@@ -21,26 +20,25 @@ public interface Property<T> {
 
   Property<T> getter(Supplier<T> getter);
 
-  default Property<T> update() {
-    set(get());
-    return this;
-  }
+  Property<T> update();
 
   Properties bind();
 
+  /**
+   * Automatically binds an object to this property being set.
+   * Internally reflection is used to perform get/set operation on a field
+   * within the bind's class for the field with the property's name.
+   * @param bind The object to bind
+   * @return Self instance
+   */
   Properties bind(Object bind);
 
   /**
-   * PreObservables will call the setter.
+   * An observable object for this property.
+   * The observable object is responsible for notifying observers when this property changes.
+   * When update() is called, subscribers to this property are notified.
    *
-   * @return An observable for this property that always notifies subscribers BEFORE obsevable().
+   * @return The observable for this property
    */
-  Subject<T, T> preObservable();
-
-  /**
-   * Observable that will not call the setter
-   *
-   * @return An observable for this property that always notifies subscribers AFTER beforeObservable().
-   */
-  Observable<T> observable();
+  Subject<T, T> observable();
 }

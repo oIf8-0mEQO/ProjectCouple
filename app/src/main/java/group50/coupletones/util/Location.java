@@ -5,33 +5,10 @@ import com.google.android.gms.maps.model.LatLng;
 /**
  * Created by Joseph on 6/25/2016.
  */
-public abstract class Location implements {
+public interface Location {
 
-    private String name;
-    private LatLng position;
+    public LatLng getPosition();
 
-    public Location(String name, LatLng position)
-    {
-        setName(name);
-        setPosition(position);
-    }
-
-    protected void setPosition(LatLng position)
-    {
-        this.position = position;
-    }
-    public LatLng getPosition()
-    {
-        return position;
-    }
-
-    protected void setName(String name)
-    {
-        this.name = name;
-    }
-    public String getName()
-    {
-        return name;
-    }
+    public String getName();
 
 }

@@ -126,7 +126,7 @@ public class MapActivity extends FragmentActivity implements OnMapReadyCallback 
         {
             List<Address> locations = geocoder.getFromLocationName(nameLocation, 10);
             Address pickedAddress = mockMethod1(locations);//TODO: properly implement this method
-            favLocations.add(new Location(pickedAddress.getAddressLine(0), new LatLong(pickedAddress.getLatitude(), pickedAddress.getLongitude())));
+            favLocations.add(new FavoriteLocation(pickedAddress.getAddressLine(0), new LatLng(pickedAddress.getLatitude(), pickedAddress.getLongitude())));
         }
         catch(IOException e)
         {

@@ -35,7 +35,7 @@ public class ConcreteLocalUser implements LocalUser {
     properties = new ConcreteProperties();
     profileBehavior = new ProfileBehavior(properties);
     requestBehavior = new PartnerRequestBehavior(properties);
-    partnerBehavior = new PartnerBehavior(properties, requestBehavior);
+    partnerBehavior = new PartnerBehavior(properties, this, requestBehavior);
     sync.watchAll(properties);
   }
 

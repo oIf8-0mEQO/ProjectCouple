@@ -11,6 +11,7 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Visited
 import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.PropertiesProvider;
+import group50.coupletones.util.properties.Property;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -43,7 +44,6 @@ public class ProfileBehavior implements PropertiesProvider {
    * The user's list of visited locations.
    */
   private List<VisitedLocationEvent> visitedLocations = new LinkedList<>();
-
 
   /**
    * Creates a ConcreteUser
@@ -107,10 +107,9 @@ public class ProfileBehavior implements PropertiesProvider {
       favoriteLocations = new LinkedList<>();
     favoriteLocations.add(location);
 
-    sync.update(
-      properties
-        .property("favoriteLocations")
-    );
+    Property<Object> prop = properties.property("favoriteLocations");
+    sync.update(prop);
+    prop.update();
   }
 
   /**
@@ -123,9 +122,10 @@ public class ProfileBehavior implements PropertiesProvider {
       visitedLocations = new LinkedList<>();
     visitedLocations.add(visitedLocation);
 
-    properties
-      .property("visitedLocations")
-      .set(visitedLocations);
+    Property<Object> prop = properties.property("visitedLocations");
+    prop.set(this.visitedLocations);
+    sync.update(prop);
+    prop.update();
   }
 
 
@@ -138,9 +138,10 @@ public class ProfileBehavior implements PropertiesProvider {
     if (favoriteLocations != null) {
       favoriteLocations.remove(location);
 
-      properties
-        .property("favoriteLocations")
-        .set(favoriteLocations);
+      Property<Object> prop = properties.property("favoriteLocations");
+      prop.set(this.visitedLocations);
+      sync.update(prop);
+      prop.update();
     }
   }
 

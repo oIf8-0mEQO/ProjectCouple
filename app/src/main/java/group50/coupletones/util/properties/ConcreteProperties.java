@@ -109,9 +109,6 @@ public class ConcreteProperties implements Properties {
     private void doBind() {
       observable = BehaviorSubject.create();
 
-      // Observables will call the setter
-      observable.subscribe(this::set);
-
       if (ConcreteProperties.this.bindings.containsKey(name)) {
         throw new IllegalStateException("Attempt to bind " + name + " property twice");
       }
@@ -126,6 +123,12 @@ public class ConcreteProperties implements Properties {
     @Override
     public Property<T> set(T value) {
       setter.accept(value);
+      return this;
+    }
+
+    @Override
+    public Property<T> update() {
+      observable.onNext(get());
       return this;
     }
 

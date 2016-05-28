@@ -4,7 +4,6 @@ import android.util.Log;
 import com.google.firebase.database.*;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.Property;
-import rx.subjects.Subject;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -56,12 +55,15 @@ public class FirebaseSync implements Sync {
       ref.child(property.name()).addValueEventListener(new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
-          Subject observable = ((Property) property).observable();
+          Property castProp = (Property) property;
+          Log.v("FirebaseSync", "Receiving " + property.name() + " = " + dataSnapshot.getValue());
           if (property.getIndicator() != null) {
-            observable.onNext(dataSnapshot.getValue(property.getIndicator()));
+            castProp.set(dataSnapshot.getValue(property.getIndicator()));
           } else {
-            observable.onNext(dataSnapshot.getValue());
+            castProp.set(dataSnapshot.getValue());
           }
+
+          castProp.update();
         }
 
         @Override
@@ -70,19 +72,6 @@ public class FirebaseSync implements Sync {
         }
       })
     );
-
-    // When the property changes, we want to tell update Firebase about it
-
-    // Datatype syncing
-    /*
-    property
-      .observable()
-      .distinct()
-      .subscribe(value -> {
-        Log.v("FirebaseSync", "Sending " + property.name() + " = " + value);
-        child.setValue(value);
-      });*/
-
     return this;
   }
 
@@ -94,7 +83,7 @@ public class FirebaseSync implements Sync {
    */
   @Override
   public Sync update(Property property) {
-    Log.v("FirebaseSync", "Sending " + property.name());
+    Log.v("FirebaseSync", "Sending " + property.name() + " = " + property.get());
     ref.child(property.name()).setValue(property.get());
     return this;
   }

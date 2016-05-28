@@ -19,6 +19,8 @@ public interface Property<T> {
 
   Property<T> set(T value);
 
+  Property<T> update();
+
   Property<T> setter(Consumer<T> setter);
 
   Property<T> getter(Supplier<T> getter);

@@ -101,6 +101,6 @@ public class ConcreteLocalUser implements LocalUser {
 
   @Override
   public Observable<User> load() {
-    return Observable.empty().zipWith(properties.allObservables(), (o, observable) -> this);
+    return Observable.combineLatest(properties.allObservables(), args -> this);
   }
 }

@@ -34,12 +34,13 @@ public class ProximityNetworkHandler implements ProximityObserver, Taggable {
   }
 
   /**
-   * onEnterLocation
+   * onLocationChange
    * @param location - Visited Location
    */
   @Override
-  public void onEnterLocation(VisitedLocationEvent location) {
+  public void onLocationChange(VisitedLocationEvent location) {
     if (app.getLocalUser().getPartner() != null) {
+      app.getLocalUser().addVisitedLocation(location);
       Format formatter = new SimpleDateFormat("HH:mm", Locale.US);
       Date date = location.getTimeVisited();
       String time = formatter.format(date);
@@ -61,7 +62,8 @@ public class ProximityNetworkHandler implements ProximityObserver, Taggable {
   {
     if (app.getLocalUser().getPartner() != null)
     {
-
+      app.getLocalUser().addVisitedLocation(location);
+      //TODO: implement
     }
   }
 }

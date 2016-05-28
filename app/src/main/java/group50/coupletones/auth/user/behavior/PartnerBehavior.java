@@ -116,8 +116,9 @@ public class PartnerBehavior implements PropertiesProvider {
           .subscribe(user -> {
             Partner partner = (Partner) user;
             if (!localUser.getId().equals(partner.getPartnerId())) {
-              // Remove one way partnerships
+              // Cancel out one way partnerships
               this.partnerId = null;
+              this.partner = null;
               partnerSubject.onNext(null);
             } else {
               partnerSubject.onNext(partner);
@@ -125,6 +126,19 @@ public class PartnerBehavior implements PropertiesProvider {
           });
       }
     } else if (partner != null) {
+      if (localUser.getId().equals(partner.getPartnerId())) {
+        // Remove partner
+        partner.getProperties()
+          .property("partnerId")
+          .set(null);
+
+        // Send update
+        partner
+          .getProperties()
+          .property("partnerId")
+          .update();
+      }
+
       partner = null;
       partnerSubject.onNext(null);
     }

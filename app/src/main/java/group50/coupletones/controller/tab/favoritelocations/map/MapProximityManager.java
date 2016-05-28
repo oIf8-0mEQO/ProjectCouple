@@ -30,6 +30,8 @@ public class MapProximityManager implements ProximityManager, Taggable {
    */
   private final List<ProximityObserver> observers;
 
+  private List<FavoriteLocation> currentlyIn;
+
   public CoupleTones app;
 
   /**
@@ -40,6 +42,7 @@ public class MapProximityManager implements ProximityManager, Taggable {
   public MapProximityManager(CoupleTones app) {
     observers = new LinkedList<>();
     this.app = app;
+    currentlyIn = new LinkedList<>();
   }
 
   /**
@@ -65,8 +68,8 @@ public class MapProximityManager implements ProximityManager, Taggable {
       for (ProximityObserver i : observers) {
         i.onEnterLocation(new VisitedLocationEvent(favoriteLocation, new Date()));
       }
-      app.getLocalUser().getFavoriteLocations().remove(favoriteLocation);
-      app.getLocalUser().getFavoriteLocations().add(new FavoriteLocation(favoriteLocation, System.currentTimeMillis()));
+      app.getLocalUser().removeFavoriteLocation(favoriteLocation);
+      app.getLocalUser().addFavoriteLocation(new FavoriteLocation(favoriteLocation, System.currentTimeMillis()));
     }
   }
 

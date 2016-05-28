@@ -6,5 +6,7 @@ package group50.coupletones.auth.user;
  */
 public interface Partner extends User {
 
+  String getPartnerId();
+
   void requestPartner(User requester);
 }

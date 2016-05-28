@@ -40,6 +40,11 @@ public class ConcretePartner implements Partner {
   }
 
   @Override
+  public String getPartnerId() {
+    return partnerId;
+  }
+
+  @Override
   public String getId() {
     return profile.getId();
   }

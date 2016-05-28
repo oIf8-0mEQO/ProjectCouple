@@ -7,8 +7,6 @@ import com.google.android.gms.maps.model.LatLng;
 import java.util.Date;
 
 import group50.coupletones.util.sound.VibeTone;
-import group50.coupletones.util.storage.Storable;
-import group50.coupletones.util.storage.Storage;
 
 /**
  * @Author Joseph

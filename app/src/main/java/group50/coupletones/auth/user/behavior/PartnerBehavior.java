@@ -65,7 +65,10 @@ public class PartnerBehavior implements PropertiesProvider {
   public void setPartner(String partnerId) {
     Property<String> partnerIdProp = properties.property("partnerId", String.class);
 
-    if (partnerIdProp.get() != null && partnerId == null) {
+    if (this.partnerId != null &&
+      partnerId == null &&
+      this.partner != null &&
+      this.partnerId.equals(this.partner.getPartnerId())) {
       Log.d("PartnerBehavior", "Removing partner's id");
       // Remove partner's partnerId
       partner

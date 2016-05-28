@@ -1,11 +1,13 @@
 package group50.coupletones.auth.user.behavior;
 
+import android.util.Log;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.PropertiesProvider;
+import group50.coupletones.util.properties.Property;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 
@@ -61,8 +63,25 @@ public class PartnerBehavior implements PropertiesProvider {
    * @param partnerId The partner's ID to set
    */
   public void setPartner(String partnerId) {
-    properties.property("partnerId").set(partnerId);
-    properties.property("partnerId").update();
+    Property<String> partnerIdProp = properties.property("partnerId", String.class);
+
+    if (partnerIdProp.get() != null && partnerId == null) {
+      Log.d("PartnerBehavior", "Removing partner's id");
+      // Remove partner's partnerId
+      partner
+        .getProperties()
+        .property("partnerId")
+        .set(null);
+
+      // Send update
+      partner
+        .getProperties()
+        .property("partnerId")
+        .update();
+    }
+
+    partnerIdProp.set(partnerId);
+    partnerIdProp.update();
   }
 
   /**
@@ -115,30 +134,10 @@ public class PartnerBehavior implements PropertiesProvider {
           .load()
           .subscribe(user -> {
             Partner partner = (Partner) user;
-            if (!localUser.getId().equals(partner.getPartnerId())) {
-              // Cancel out one way partnerships
-              this.partnerId = null;
-              this.partner = null;
-              partnerSubject.onNext(null);
-            } else {
-              partnerSubject.onNext(partner);
-            }
+            partnerSubject.onNext(partner);
           });
       }
     } else if (partner != null) {
-      if (localUser.getId().equals(partner.getPartnerId())) {
-        // Remove partner
-        partner.getProperties()
-          .property("partnerId")
-          .set(null);
-
-        // Send update
-        partner
-          .getProperties()
-          .property("partnerId")
-          .update();
-      }
-
       partner = null;
       partnerSubject.onNext(null);
     }

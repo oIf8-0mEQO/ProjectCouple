@@ -86,12 +86,19 @@ public class VisitedLocationEvent implements Storable {
     timeVisited = new Date(storage.getLong("date"));
   }
 
-  public boolean equals(VisitedLocationEvent other)
+  public boolean equals(Object object)
   {
-    if (!location.equals(other.location)) return false;
-    if (!timeVisited.equals(other.timeVisited)) return false;
-    if (!timeLeft.equals(other.timeLeft)) return false;
-    return true;
+    try {
+      VisitedLocationEvent other = (VisitedLocationEvent) object;
+      if (!location.equals(other.location)) return false;
+      if (!timeVisited.equals(other.timeVisited)) return false;
+      if (!timeLeft.equals(other.timeLeft)) return false;
+      return true;
+    }
+    catch (ClassCastException e)
+    {
+      return false;
+    }
   }
 
 }

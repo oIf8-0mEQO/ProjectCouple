@@ -66,12 +66,20 @@ public class ConcreteLocation implements Location, Storable {
     position = new LatLng(storage.getFloat("lat"), storage.getFloat("long"));
   }
 
-  public boolean equals(ConcreteLocation other)
+  @Override
+  public boolean equals(Object object)
   {
-    if (!name.equals(other.name)) return false;
-    if (position.latitude != other.position.latitude) return false;
-    if (position.longitude != other.position.longitude) return false;
-    return true;
+    try {
+      ConcreteLocation other = (ConcreteLocation) object;
+      if (!name.equals(other.name)) return false;
+      if (position.latitude != other.position.latitude) return false;
+      if (position.longitude != other.position.longitude) return false;
+      return true;
+    }
+    catch (ClassCastException e)
+    {
+      return false;
+    }
   }
 
 }

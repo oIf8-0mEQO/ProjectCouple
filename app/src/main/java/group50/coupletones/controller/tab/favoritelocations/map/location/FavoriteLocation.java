@@ -122,12 +122,19 @@ public class FavoriteLocation implements Location, Storable {
     location.load(storage);
   }
 
-  public boolean equals(FavoriteLocation other)
+  public boolean equals(Object object)
   {
-    if (!location.equals(other.location)) return false;
-    if (timeLastVisited != other.timeLastVisited) return false;
-    if (!tone.equals(other.tone)) return false;
-    return true;
+    try {
+      FavoriteLocation other = (FavoriteLocation) object;
+      if (!location.equals(other.location)) return false;
+      if (timeLastVisited != other.timeLastVisited) return false;
+      if (!tone.equals(other.tone)) return false;
+      return true;
+    }
+    catch (ClassCastException e)
+    {
+      return false;
+    }
   }
 
 }

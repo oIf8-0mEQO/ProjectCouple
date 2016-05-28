@@ -1,6 +1,5 @@
 package group50.coupletones.auth.user.behavior;
 
-import android.util.Log;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.util.properties.Properties;
 
@@ -9,7 +8,6 @@ import java.util.List;
 
 /**
  * Provides the behavior for handling the local user's partner
- *
  * @author Henry Mao
  */
 public class PartnerRequestBehavior {
@@ -22,7 +20,7 @@ public class PartnerRequestBehavior {
    * A list of all partner Ids who is trying to request partnership
    * with this user.
    */
-  private List<String> partnerRequests = new LinkedList<>();
+  private List<String> partnerRequests;
 
   public PartnerRequestBehavior(Properties properties) {
     this.properties = properties
@@ -32,10 +30,12 @@ public class PartnerRequestBehavior {
 
   /**
    * Requests to partner with this user.
-   *
    * @param requester The user sending the request
    */
   public void requestPartner(User requester) {
+    if (partnerRequests == null) {
+      partnerRequests = new LinkedList<>();
+    }
     partnerRequests.add(0, requester.getId());
     properties
       .property("partnerRequests")
@@ -43,7 +43,9 @@ public class PartnerRequestBehavior {
   }
 
   void removeRequest(String requesterId) {
-    partnerRequests.remove(requesterId);
+    if (partnerRequests != null) {
+      partnerRequests.remove(requesterId);
+    }
     properties
       .property("partnerRequests")
       .update();

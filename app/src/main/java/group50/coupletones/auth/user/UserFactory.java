@@ -1,5 +1,6 @@
 package group50.coupletones.auth.user;
 
+import android.util.Log;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -16,7 +17,6 @@ import javax.inject.Inject;
 
 /**
  * A factory object responsible for constructing User instances.
- *
  * @author Henry Mao
  * @since 5/25/16
  */
@@ -27,7 +27,6 @@ public class UserFactory {
 
   /**
    * Creates a user from an existing user.
-   *
    * @param userId The ID of the user
    * @return Self instance
    */
@@ -37,7 +36,6 @@ public class UserFactory {
 
   /**
    * Creates a new user from a Google account
-   *
    * @param account The Google account
    * @return Self instance
    */
@@ -51,7 +49,6 @@ public class UserFactory {
 
   /**
    * Finds a user by email
-   *
    * @param email The email of the user
    * @return A observable that will return the value when user is found (async).
    */
@@ -76,6 +73,7 @@ public class UserFactory {
 
               act.onNext(withId(partnerDb.getKey()));
               act.onCompleted();
+              return;
             }
             act.onError(new Throwable("Invalid Email"));
             act.onCompleted();

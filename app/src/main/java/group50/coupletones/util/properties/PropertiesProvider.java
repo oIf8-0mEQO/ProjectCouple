@@ -14,6 +14,7 @@ public interface PropertiesProvider {
    * @param type Type of the property
    * @return An observable for the given property
    */
+  //TODO: Check the observer on partnerBehavior
   default <T> Observable<T> defObservable(String name, Class<T> type) {
     Property<T> property = getProperties().property(name, type);
     return property.observable().startWith(property.get());

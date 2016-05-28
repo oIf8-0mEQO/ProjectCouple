@@ -68,6 +68,6 @@ public class ConcretePartner implements Partner {
 
   @Override
   public Observable<User> load() {
-    return Observable.combineLatest(properties.allObservables(), args -> this);
+    return Observable.zip(properties.allObservables(), args -> this);
   }
 }

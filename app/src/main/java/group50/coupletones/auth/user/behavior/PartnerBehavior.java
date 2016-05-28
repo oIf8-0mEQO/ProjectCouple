@@ -1,7 +1,7 @@
 package group50.coupletones.auth.user.behavior;
 
-import android.util.Log;
 import group50.coupletones.CoupleTones;
+import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.util.properties.Properties;
@@ -22,6 +22,8 @@ public class PartnerBehavior implements PropertiesProvider {
 
   private final PartnerRequestBehavior requestBehavior;
 
+  private final LocalUser localUser;
+
   /**
    * A subject that can be watched. Helps notify partner change.
    */
@@ -34,12 +36,14 @@ public class PartnerBehavior implements PropertiesProvider {
 
   private String partnerId;
 
-  public PartnerBehavior(Properties properties, PartnerRequestBehavior requestBehavior) {
+  public PartnerBehavior(Properties properties, LocalUser localUser, PartnerRequestBehavior requestBehavior) {
     this.properties = properties
       .property("partnerId", String.class)
       .setter(this::resetPartner)                             // Sets the partner object based on ID.
       .getter(() -> partnerId) // Gets the partner ID.
       .bind();
+
+    this.localUser = localUser;
 
     this.requestBehavior = requestBehavior;
   }
@@ -77,14 +81,16 @@ public class PartnerBehavior implements PropertiesProvider {
         .first()
         .filter(p -> p != null)
         .subscribe(partner -> {
+          // Set partner id to this partner.
           partner
             .getProperties()
             .property("partnerId")
-            .set(properties.property("id").get());
+            .set(localUser.getId());
+          // Send update
           partner
-              .getProperties()
-              .property("partnerId")
-              .update();
+            .getProperties()
+            .property("partnerId")
+            .update();
         });
     }
   }
@@ -103,13 +109,19 @@ public class PartnerBehavior implements PropertiesProvider {
           .build()
           .userFactory()
           .withId(partnerId)
-            .build();
+          .build();
 
         partner
-            .load()
-            .subscribe(x -> {
-              Log.d("SettingsFragment", "Next: " + x);
-            partnerSubject.onNext(x);
+          .load()
+          .subscribe(user -> {
+            Partner partner = (Partner) user;
+            if (!localUser.getId().equals(partner.getPartnerId())) {
+              // Remove one way partnerships
+              this.partnerId = null;
+              partnerSubject.onNext(null);
+            } else {
+              partnerSubject.onNext(partner);
+            }
           });
       }
     } else if (partner != null) {

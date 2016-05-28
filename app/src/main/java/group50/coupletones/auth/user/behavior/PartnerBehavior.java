@@ -1,5 +1,6 @@
 package group50.coupletones.auth.user.behavior;
 
+import android.util.Log;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
@@ -10,6 +11,7 @@ import rx.subjects.BehaviorSubject;
 
 /**
  * Provides the behavior for handling the local user's partner
+ *
  * @author Henry Mao
  */
 public class PartnerBehavior implements PropertiesProvider {
@@ -51,6 +53,7 @@ public class PartnerBehavior implements PropertiesProvider {
 
   /**
    * Sets partner
+   *
    * @param partnerId The partner's ID to set
    */
   public void setPartner(String partnerId) {
@@ -60,8 +63,9 @@ public class PartnerBehavior implements PropertiesProvider {
 
   /**
    * Handles the partner request, either accepting or rejecting it
+   *
    * @param partnerId The partner ID
-   * @param accept True if accept, false if reject
+   * @param accept    True if accept, false if reject
    */
   public void handlePartnerRequest(String partnerId, boolean accept) {
     requestBehavior.removeRequest(partnerId);
@@ -87,7 +91,12 @@ public class PartnerBehavior implements PropertiesProvider {
           .withId(partnerId)
           .build();
 
-        partnerSubject.onNext(partner);
+        partner
+          .load()
+          .subscribe(x -> {
+            Log.d("SettingsFragment", "Next: " + x);
+            partnerSubject.onNext(x);
+          });
       }
     } else if (partner != null) {
       partner = null;

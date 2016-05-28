@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -162,7 +163,7 @@ public class SettingsFragment extends TabFragment<Object> {
     CompositeSubscription partnerSubs = new CompositeSubscription();
     Observable<User> partnerObservable = localUser.getPartnerObservable();
 
-    // When partner is not null, then render all the partner related UI
+    // Partner not null
     subs.add(
       partnerObservable
         .filter(partner -> partner != null)
@@ -177,7 +178,10 @@ public class SettingsFragment extends TabFragment<Object> {
           //Observe partner data
           Subscription nameChange = partner
             .observable("name", String.class)
-            .subscribe(partnerName::setText);
+            .subscribe(t -> {
+              Log.d("Partner name: ", t);
+              partnerName.setText(t);
+            });
 
           Subscription emailChange = partner
             .observable("email", String.class)
@@ -190,11 +194,13 @@ public class SettingsFragment extends TabFragment<Object> {
         })
     );
 
-    // When the partner is null
+
+    // Partner null
     subs.add(
       partnerObservable
         .filter(partner -> partner == null)
         .subscribe(partner -> {
+
           add_partner_button.setVisibility(View.VISIBLE);
           partnerNameText.setVisibility(View.INVISIBLE);
           partnerName.setVisibility(View.INVISIBLE);
@@ -242,6 +248,12 @@ public class SettingsFragment extends TabFragment<Object> {
   public void onStop() {
     super.onStop();
     auth.disconnect();
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
     subs.unsubscribe();
+    subs.clear();
   }
 }

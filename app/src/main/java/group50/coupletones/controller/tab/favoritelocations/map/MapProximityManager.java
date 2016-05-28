@@ -9,6 +9,7 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.util.Taggable;
+import rx.subjects.BehaviorSubject;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -30,7 +31,12 @@ public class MapProximityManager implements ProximityManager, Taggable {
    */
   private final List<ProximityObserver> observers;
 
+  private List<FavoriteLocation> currentlyIn;
+
   public CoupleTones app;
+
+  private BehaviorSubject<VisitedLocationEvent> enterSubject = BehaviorSubject.create();
+  private BehaviorSubject<VisitedLocationEvent> exitSubject = BehaviorSubject.create();
 
   /**
    * Map Proximity Manager
@@ -40,6 +46,17 @@ public class MapProximityManager implements ProximityManager, Taggable {
   public MapProximityManager(CoupleTones app) {
     observers = new LinkedList<>();
     this.app = app;
+    currentlyIn = new LinkedList<>();
+  }
+
+  public BehaviorSubject<VisitedLocationEvent> getEnterSubject()
+  {
+    return enterSubject;
+  }
+
+  public BehaviorSubject<VisitedLocationEvent> getExitSubject()
+  {
+    return exitSubject;
   }
 
   /**
@@ -47,10 +64,6 @@ public class MapProximityManager implements ProximityManager, Taggable {
    */
   private static double distanceInMiles(LatLng location1, LatLng location2) {
     return (conversion * SphericalUtil.computeDistanceBetween(location1, location2));
-  }
-
-  public void register(ProximityObserver observer) {
-    observers.add(observer);
   }
 
   /**
@@ -61,13 +74,20 @@ public class MapProximityManager implements ProximityManager, Taggable {
    */
   public void onEnterLocation(FavoriteLocation favoriteLocation) {
     Log.d(getTag(), "Entering location: " + favoriteLocation.getName() + " cooldown = " + favoriteLocation.isOnCooldown());
-    if (!favoriteLocation.isOnCooldown()) {
-      for (ProximityObserver i : observers) {
-        i.onEnterLocation(new VisitedLocationEvent(favoriteLocation, new Date()));
-      }
-      app.getLocalUser().getFavoriteLocations().remove(favoriteLocation);
-      app.getLocalUser().getFavoriteLocations().add(new FavoriteLocation(favoriteLocation, System.currentTimeMillis()));
+    if (!favoriteLocation.isOnCooldown() && !currentlyIn.contains(favoriteLocation)) {
+      enterSubject.onNext(new VisitedLocationEvent(favoriteLocation, new Date()));
+      app.getLocalUser().removeFavoriteLocation(favoriteLocation);
+      FavoriteLocation newLoc = new FavoriteLocation(favoriteLocation, System.currentTimeMillis());
+      app.getLocalUser().addFavoriteLocation(newLoc);
+      currentlyIn.add(newLoc);
     }
+  }
+
+  public void onLeaveLocation(FavoriteLocation location)
+  {
+    currentlyIn.remove(location);
+    VisitedLocationEvent newLoc = new VisitedLocationEvent(location, new Date(location.getTime()), new Date());
+    exitSubject.onNext(newLoc);
   }
 
   /**
@@ -83,6 +103,13 @@ public class MapProximityManager implements ProximityManager, Taggable {
         // Check distance
         if (distanceInMiles(loc.getPosition(), new LatLng(location.getLatitude(), location.getLongitude())) < 0.1) {
           onEnterLocation(loc);
+        }
+      }
+      for (FavoriteLocation loc : currentlyIn)
+      {
+        if (distanceInMiles(new LatLng(location.getLatitude(), location.getLongitude()), loc.getPosition()) > .1)
+        {
+          onLeaveLocation(loc);
         }
       }
     }

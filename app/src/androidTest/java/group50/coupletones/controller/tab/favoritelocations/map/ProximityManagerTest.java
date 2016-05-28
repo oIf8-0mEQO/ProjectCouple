@@ -78,7 +78,7 @@ public class ProximityManagerTest {
     loc.setLatitude(10.0);
     loc.setLongitude(10.0);
     proximity.onLocationChanged(loc);
-    verify(mockObserver, never()).onEnterLocation(anyObject());
+    verify(mockObserver, never()).onLocationChange(anyObject());
   }
 
   @Test
@@ -87,7 +87,7 @@ public class ProximityManagerTest {
     loc.setLatitude(32.880351);
     loc.setLongitude(-117.236578);
     proximity.onLocationChanged(loc);
-    verify(mockObserver).onEnterLocation(anyObject());
+    verify(mockObserver).onLocationChange(anyObject());
   }
 
   @Test
@@ -96,7 +96,7 @@ public class ProximityManagerTest {
       int count = 0;
 
       @Override
-      public void onEnterLocation(VisitedLocationEvent location) {
+      public void onLocationChange(VisitedLocationEvent location) {
         assert (count == 0);
         count++;
       }

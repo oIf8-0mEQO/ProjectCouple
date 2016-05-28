@@ -1,6 +1,7 @@
 package group50.coupletones.auth.user;
 
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import rx.Observable;
 
 /**
@@ -18,6 +19,12 @@ public interface LocalUser extends User {
    * @param location The location to add
    */
   void addFavoriteLocation(FavoriteLocation location);
+
+  /**
+   * Adds a visited location
+   * @param visitedLocation The location to add
+   */
+  void addVisitedLocation(VisitedLocationEvent visitedLocation);
 
   /**
    * Removes a favorite location

@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
+import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.TabFragment;
+import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
 
 /**
  * @author Joanne Cho
@@ -52,6 +54,11 @@ public class PartnersFavoritesFragment extends TabFragment<Object> {
     partnersList.setLayoutManager(new LinearLayoutManager(getActivity()));
     adapter = new ListAdapterPartnerFavorites(app.getLocalUser().getPartner(), getActivity());
     partnersList.setAdapter(adapter);
+    v.findViewById(R.id.partner_mapview_button).setOnClickListener(evt -> {
+      MainActivity act = (MainActivity) getActivity();
+      ((MapFragment)act.getTabs().get(R.id.map)).setIsUser(false);
+      act.setFragment(act.getTabs().get(R.id.map));
+    });
     return v;
   }
 }

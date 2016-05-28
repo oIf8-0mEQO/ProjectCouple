@@ -5,6 +5,7 @@ import group50.coupletones.auth.user.User;
 import group50.coupletones.auth.user.behavior.PartnerRequestBehavior;
 import group50.coupletones.auth.user.behavior.ProfileBehavior;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.properties.ConcreteProperties;
 import group50.coupletones.util.properties.Properties;
@@ -63,6 +64,9 @@ public class ConcretePartner implements Partner {
   public List<FavoriteLocation> getFavoriteLocations() {
     return profile.getFavoriteLocations();
   }
+
+  @Override
+  public List<VisitedLocationEvent> getVisitedLocations() { return profile.getVisitedLocations(); }
 
   @Override
   public void requestPartner(User requester) {

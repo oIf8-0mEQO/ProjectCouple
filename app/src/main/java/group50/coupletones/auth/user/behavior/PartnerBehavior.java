@@ -65,7 +65,6 @@ public class PartnerBehavior implements PropertiesProvider {
    * @return The partner of the user.
    */
   public Observable<Partner> getPartner() {
-
     return partnerCache;
   }
 

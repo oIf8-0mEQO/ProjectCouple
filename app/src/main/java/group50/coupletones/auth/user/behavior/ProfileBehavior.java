@@ -7,9 +7,9 @@ package group50.coupletones.auth.user.behavior;
 
 import com.google.firebase.database.GenericTypeIndicator;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.PropertiesProvider;
-
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,6 +37,11 @@ public class ProfileBehavior implements PropertiesProvider {
    * The user's list of favorite location.
    */
   private List<FavoriteLocation> favoriteLocations = new LinkedList<>();
+  /**
+   * The user's list of visited locations.
+   */
+  private List<VisitedLocationEvent> visitedLocations = new LinkedList<>();
+
 
   /**
    * Creates a ConcreteUser
@@ -74,8 +79,18 @@ public class ProfileBehavior implements PropertiesProvider {
     return email;
   }
 
+  /**
+   * @return The list of favorite locations of the user
+   */
   public List<FavoriteLocation> getFavoriteLocations() {
     return favoriteLocations != null ? Collections.unmodifiableList(favoriteLocations) : Collections.emptyList();
+  }
+
+  /**
+   * @return The list of visited locations of the user
+   */
+  public List<VisitedLocationEvent> getVisitedLocations() {
+    return visitedLocations != null ? Collections.unmodifiableList(visitedLocations) : Collections.emptyList();
   }
 
   /**
@@ -92,6 +107,21 @@ public class ProfileBehavior implements PropertiesProvider {
       .property("favoriteLocations")
       .update();
   }
+
+  /**
+   * Adds a visited location
+   * @param visitedLocation The visited location to add.
+   */
+  public void addVisitedLocation(VisitedLocationEvent visitedLocation) {
+    if (visitedLocations == null)
+      visitedLocations = new LinkedList<>();
+    visitedLocations.add(visitedLocation);
+
+    properties
+        .property("visitedLocations")
+        .set(visitedLocations);
+  }
+
 
   /**
    * Removes a favorite location

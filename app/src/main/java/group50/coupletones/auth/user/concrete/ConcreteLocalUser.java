@@ -7,6 +7,7 @@ import group50.coupletones.auth.user.behavior.PartnerBehavior;
 import group50.coupletones.auth.user.behavior.PartnerRequestBehavior;
 import group50.coupletones.auth.user.behavior.ProfileBehavior;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.properties.ConcreteProperties;
 import group50.coupletones.util.properties.Properties;
@@ -70,8 +71,18 @@ public class ConcreteLocalUser implements LocalUser {
   }
 
   @Override
+  public List<VisitedLocationEvent> getVisitedLocations() {
+    return profileBehavior.getVisitedLocations();
+  }
+
+  @Override
   public void addFavoriteLocation(FavoriteLocation location) {
     profileBehavior.addFavoriteLocation(location);
+  }
+
+  @Override
+  public void addVisitedLocation(VisitedLocationEvent visitedLocation) {
+    profileBehavior.addVisitedLocation(visitedLocation);
   }
 
   @Override

@@ -17,6 +17,7 @@ public class VisitedLocationEvent {
 
   private FavoriteLocation location;
   private Date timeVisited;
+  private Date timeLeft;
 
   //Should only be used when loading.
   public VisitedLocationEvent()
@@ -24,10 +25,11 @@ public class VisitedLocationEvent {
     location = new FavoriteLocation();
   }
 
-  public VisitedLocationEvent(String name, LatLng position, Date timeVisited, VibeTone tone)
+  public VisitedLocationEvent(String name, LatLng position, Date timeVisited, Date timeLeft, VibeTone tone)
   {
     location = new FavoriteLocation(name, position, 0, tone);
     this.timeVisited = timeVisited;
+    this.timeLeft = timeLeft;
   }
 
   /**
@@ -37,6 +39,16 @@ public class VisitedLocationEvent {
   {
     this.location = favoriteLocation;
     this.timeVisited = timeVisited;
+  }
+
+  /**
+   * Constructs a new visited location with the given enter and leave time.
+   */
+  public VisitedLocationEvent(FavoriteLocation favoriteLocation, Date timeVisited, Date timeLeft)
+  {
+    this.location = favoriteLocation;
+    this.timeVisited = timeVisited;
+    this.timeLeft = timeLeft;
   }
 
   public String getName()
@@ -59,17 +71,31 @@ public class VisitedLocationEvent {
     return timeVisited;
   }
 
+  public Date getTimeLeft()
+  {
+    return timeLeft;
+  }
+
   public VibeTone getVibeTone()
   {
     return location.getTone();
   }
 
 
-  public boolean equals(VisitedLocationEvent other)
+  @Override
+  public boolean equals(Object object)
   {
-    if (!location.equals(other.location)) return false;
-    if (!timeVisited.equals(other.timeVisited)) return false;
-    return true;
+    try {
+      VisitedLocationEvent other = (VisitedLocationEvent) object;
+      if (!location.equals(other.location)) return false;
+      if (!timeVisited.equals(other.timeVisited)) return false;
+      if (!timeLeft.equals(other.timeLeft)) return false;
+      return true;
+    }
+    catch (ClassCastException e)
+    {
+      return false;
+    }
   }
 
 }

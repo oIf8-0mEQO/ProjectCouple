@@ -77,7 +77,6 @@ public class ConcreteLocation implements Location {
   public Address getAddress() {
     return addressProvider.getAddressFromPosition(getPosition());
   }
-
   @Override
   public boolean equals(Object o) {
     if (!(o instanceof ConcreteLocation)) {

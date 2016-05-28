@@ -14,6 +14,7 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.user.LocalUser;
+import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
@@ -161,7 +162,7 @@ public class SettingsFragment extends TabFragment<Object> {
     );
 
     CompositeSubscription partnerSubs = new CompositeSubscription();
-    Observable<User> partnerObservable = localUser.getPartnerObservable();
+    Observable<Partner> partnerObservable = localUser.getPartner();
 
     // Partner not null
     subs.add(
@@ -193,7 +194,6 @@ public class SettingsFragment extends TabFragment<Object> {
           subs.add(emailChange);
         })
     );
-
 
     // Partner null
     subs.add(

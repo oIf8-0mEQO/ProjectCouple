@@ -3,10 +3,8 @@ package group50.coupletones.auth.user.behavior;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.Partner;
-import group50.coupletones.auth.user.User;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.PropertiesProvider;
-import group50.coupletones.util.properties.Property;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
 
@@ -26,23 +24,35 @@ public class PartnerBehavior implements PropertiesProvider {
   private final LocalUser localUser;
 
   /**
-   * A subject that can be watched. Helps notify partner change.
+   * User's partner cache
    */
-  private BehaviorSubject<User> partnerSubject = BehaviorSubject.create();
-
-  /**
-   * User's partner
-   */
-  private Partner partner;
+  private BehaviorSubject<Partner> partnerCache = BehaviorSubject.create();
 
   private String partnerId;
 
   public PartnerBehavior(Properties properties, LocalUser localUser, PartnerRequestBehavior requestBehavior) {
     this.properties = properties
       .property("partnerId", String.class)
-      .setter(this::resetPartner)                             // Sets the partner object based on ID.
-      .getter(() -> partnerId) // Gets the partner ID.
-      .bind();
+      .setter(newId -> {
+        partnerId = newId;
+
+        // Check last partner cache.
+        if (partnerId != null) {
+          // Partner has changed
+          CoupleTones
+            .instanceComponentBuilder()
+            .build()
+            .userFactory()
+            .withId(partnerId)
+            .build()
+            .load()
+            .subscribe(x -> partnerCache.onNext((Partner) x));
+        } else {
+          partnerCache.onNext(null);
+        }
+      })
+      .getter(() -> partnerId)
+      .bind(this);
 
     this.localUser = localUser;
 
@@ -50,10 +60,13 @@ public class PartnerBehavior implements PropertiesProvider {
   }
 
   /**
-   * @return The partner of the user
+   * Partner may not have been loaded.
+   *
+   * @return The partner of the user.
    */
-  public Partner getPartner() {
-    return partner;
+  public Observable<Partner> getPartner() {
+
+    return partnerCache;
   }
 
   /**
@@ -62,7 +75,6 @@ public class PartnerBehavior implements PropertiesProvider {
    * @param partnerId The partner's ID to set
    */
   public void setPartner(String partnerId) {
-    Property<String> partnerIdProp = properties.property("partnerId", String.class);
 /*
     if (this.partnerId != null &&
       partnerId == null &&
@@ -81,9 +93,8 @@ public class PartnerBehavior implements PropertiesProvider {
         .property("partnerId")
         .update();
     }*/
-
-    partnerIdProp.set(partnerId);
-    partnerIdProp.update();
+    this.partnerId = partnerId;
+    properties.property("partnerId").update();
   }
 
   /**
@@ -98,9 +109,9 @@ public class PartnerBehavior implements PropertiesProvider {
       // Two way partnering
       setPartner(partnerId);
       // Wait for partner to load
-      partnerSubject
-        .first()
+      getPartner()
         .filter(p -> p != null)
+        .first()
         .subscribe(partner -> {
           // Set partner id to this partner.
           partner
@@ -110,39 +121,6 @@ public class PartnerBehavior implements PropertiesProvider {
             .update();
         });
     }
-  }
-
-  /**
-   * Lazy initialize or destroy partner from ID
-   */
-  private void resetPartner(String partnerId) {
-    this.partnerId = partnerId;
-    if (partnerId != null) {
-      // An update has occurred. Attempt to reconstruct the partner object.
-      if (partner == null || !partnerId.equals(partner.getId())) {
-        // Partner has changed
-        partner = CoupleTones
-          .instanceComponentBuilder()
-          .build()
-          .userFactory()
-          .withId(partnerId)
-          .build();
-
-        partner
-          .load()
-          .subscribe(user -> {
-            Partner partner = (Partner) user;
-            partnerSubject.onNext(partner);
-          });
-      }
-    } else if (partner != null) {
-      partner = null;
-      partnerSubject.onNext(null);
-    }
-  }
-
-  public Observable<User> getPartnerObservable() {
-    return partnerSubject.startWith(partner);
   }
 
   @Override

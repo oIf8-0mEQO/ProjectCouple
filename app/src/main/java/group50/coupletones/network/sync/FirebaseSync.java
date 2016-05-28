@@ -1,11 +1,7 @@
 package group50.coupletones.network.sync;
 
 import android.util.Log;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.*;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.Property;
 import rx.subjects.Subject;
@@ -16,6 +12,7 @@ import java.util.List;
 
 /**
  * Observes fields and syncs fields with Firebase
+ *
  * @author Henry Mao
  */
 public class FirebaseSync implements Sync {
@@ -55,24 +52,24 @@ public class FirebaseSync implements Sync {
     verify();
 
     // When Firebase changes for this property, we want to know about it.
+    DatabaseReference child = ref.child(property.name());
     listeners.add(
-      ref.child(property.name())
-        .addValueEventListener(new ValueEventListener() {
-          @Override
-          public void onDataChange(DataSnapshot dataSnapshot) {
-            Subject observable = ((Property) property).observable();
-            if (property.getIndicator() != null) {
-              observable.onNext(dataSnapshot.getValue(property.getIndicator()));
-            } else {
-              observable.onNext(dataSnapshot.getValue());
-            }
+      child.addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+          Subject observable = ((Property) property).observable();
+          if (property.getIndicator() != null) {
+            observable.onNext(dataSnapshot.getValue(property.getIndicator()));
+          } else {
+            observable.onNext(dataSnapshot.getValue());
           }
+        }
 
-          @Override
-          public void onCancelled(DatabaseError databaseError) {
-            throw databaseError.toException();
-          }
-        })
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+          throw databaseError.toException();
+        }
+      })
     );
 
     // When the property changes, we want to tell update Firebase about it
@@ -83,7 +80,7 @@ public class FirebaseSync implements Sync {
       .distinct()
       .subscribe(value -> {
         Log.v("FirebaseSync", "Sending " + property.name() + " = " + value);
-        ref.child(property.name()).setValue(value);
+        child.setValue(value);
       });
 
     return this;

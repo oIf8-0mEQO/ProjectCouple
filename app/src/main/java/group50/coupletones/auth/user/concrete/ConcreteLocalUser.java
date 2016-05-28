@@ -40,7 +40,7 @@ public class ConcreteLocalUser implements LocalUser {
   }
 
   @Override
-  public Partner getPartner() {
+  public Observable<Partner> getPartner() {
     return partnerBehavior.getPartner();
   }
 
@@ -87,11 +87,6 @@ public class ConcreteLocalUser implements LocalUser {
   @Override
   public void handlePartnerRequest(String partnerId, boolean accept) {
     partnerBehavior.handlePartnerRequest(partnerId, accept);
-  }
-
-  @Override
-  public Observable<User> getPartnerObservable() {
-    return partnerBehavior.getPartnerObservable();
   }
 
   @Override

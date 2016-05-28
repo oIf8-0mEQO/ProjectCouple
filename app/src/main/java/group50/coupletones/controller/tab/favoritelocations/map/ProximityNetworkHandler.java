@@ -24,7 +24,8 @@ public class ProximityNetworkHandler implements ProximityObserver, Taggable {
 
   /**
    * Proximity Network Handler
-   * @param app - CoupleTones app
+   *
+   * @param app     - CoupleTones app
    * @param network - Network Manager
    */
   @Inject
@@ -35,6 +36,7 @@ public class ProximityNetworkHandler implements ProximityObserver, Taggable {
 
   /**
    * onEnterLocation
+   *
    * @param location - Visited Location
    */
   @Override
@@ -44,13 +46,16 @@ public class ProximityNetworkHandler implements ProximityObserver, Taggable {
       Date date = location.getTimeVisited();
       String time = formatter.format(date);
 
-      network.send((OutgoingMessage) new OutgoingMessage(MessageType.SEND_LOCATION_NOTIFICATION.value)
-        .setString("name", location.getName())
-        .setDouble("lat", location.getPosition().latitude)
-        .setDouble("long", location.getPosition().longitude)
-        .setString("time", time)
-        .setString("partner", app.getLocalUser().getPartner().getEmail())
-      );
+      app.getLocalUser().getPartner()
+        .subscribe(partner -> {
+          network.send((OutgoingMessage) new OutgoingMessage(MessageType.SEND_LOCATION_NOTIFICATION.value)
+            .setString("name", location.getName())
+            .setDouble("lat", location.getPosition().latitude)
+            .setDouble("long", location.getPosition().longitude)
+            .setString("time", time)
+            .setString("partner", partner.getEmail())
+          );
+        });
     } else {
       Log.e(getTag(), "Attempt to send location notification to null partner.");
     }

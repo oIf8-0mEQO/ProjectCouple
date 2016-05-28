@@ -10,6 +10,7 @@ import group50.coupletones.util.sound.VibeTone;
  * @author Joseph
  * @since 5/21/16
  */
+//TODO: Clean up all the constructors
 @IgnoreExtraProperties
 public class FavoriteLocation implements Location {
   private static int COOL_DOWN_TIME = 600000;

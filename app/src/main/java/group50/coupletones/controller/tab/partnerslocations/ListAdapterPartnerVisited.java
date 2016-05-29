@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import group50.coupletones.R;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 
 import java.util.List;
 
@@ -20,16 +21,16 @@ import java.util.List;
 /**
  * Partner Locations List Adapter Class
  */
-public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.ListViewHolder> {
+public class ListAdapterPartnerVisited extends RecyclerView.Adapter<ListAdapterPartnerVisited.ListViewHolder> {
 
-  private List<PartnerLocation> data;
+  private List<VisitedLocationEvent> data;
   private LayoutInflater inflater;
 
   /**
    * Partner list adapter
    * @param data - Partner location data
    */
-  public ListAdapterPartner(List<PartnerLocation> data, Context context) {
+  public ListAdapterPartnerVisited(List<VisitedLocationEvent> data, Context context) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
   }
@@ -52,12 +53,12 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
    */
   @Override
   public void onBindViewHolder(ListViewHolder holder, int position) {
-    PartnerLocation location = data.get(position);
-    holder.name.setText(location.getName());
-    holder.address.setText(location.getAddress());
-    holder.icon.setImageResource(location.getIconId());
-    holder.timeValue.setText(location.getTime());
-
+    VisitedLocationEvent visitedLocation = data.get(position);
+    holder.name.setText(visitedLocation.getName());
+    holder.address.setText(visitedLocation.getAddress().toString());
+    holder.icon.setImageResource(R.drawable.target_icon);
+    holder.arrivalValue.setText(visitedLocation.getTimeVisited().toString());
+    holder.departureValue.setText(visitedLocation.getTimeLeft().toString());
   }
 
   /**
@@ -74,7 +75,7 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
    */
   class ListViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView name, address, timeValue;
+    private TextView name, address, arrivalValue, departureValue;
     private ImageView icon;
     private View container;
     private CardView cv;
@@ -89,7 +90,8 @@ public class ListAdapterPartner extends RecyclerView.Adapter<ListAdapterPartner.
       name = (TextView) itemView.findViewById(R.id.list_item_name);
       address = (TextView) itemView.findViewById(R.id.list_item_address);
       icon = (ImageView) itemView.findViewById(R.id.list_item_icon);
-      timeValue = (TextView) itemView.findViewById(R.id.list_item_time);
+      arrivalValue = (TextView) itemView.findViewById(R.id.list_item_arrival);
+      departureValue = (TextView) itemView.findViewById(R.id.list_item_departure);
       container = itemView.findViewById(R.id.list_item);
     }
   }

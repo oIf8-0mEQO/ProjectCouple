@@ -15,6 +15,8 @@ import javax.inject.Inject;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 
+import com.google.firebase.database.IgnoreExtraProperties;
+
 /**
  * @Author Joseph
  * @Since 5/21/16

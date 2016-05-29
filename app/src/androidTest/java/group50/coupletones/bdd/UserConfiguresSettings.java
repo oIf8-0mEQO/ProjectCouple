@@ -5,11 +5,11 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.user.LocalUser;
-import group50.coupletones.auth.user.Partner;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
+import group50.coupletones.mocker.ConcreteUserTestUtil;
+import group50.coupletones.mocker.UserTestUtil;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,8 +19,6 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * BDD style test for user configures settings story
@@ -33,9 +31,7 @@ import static org.mockito.Mockito.when;
 public class UserConfiguresSettings {
   @Rule
   public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
-  private CoupleTones app;
-  private LocalUser mockUser;
-  private Partner samplePartner;
+  private UserTestUtil userMocker = new ConcreteUserTestUtil();
 
   @Before
   public void setup() {
@@ -47,20 +43,24 @@ public class UserConfiguresSettings {
         .build()
     );
 
-    // Mock the user
-    mockUser = mock(LocalUser.class);
-    app = CoupleTones.global().app();
-    when(app.isLoggedIn()).thenReturn(true);
-    when(app.getLocalUser()).thenReturn(mockUser);
+    userMocker.injectLocalUser();
   }
 
   private void givenUserNotConnectedToPartner() {
-    when(mockUser.getPartner()).thenReturn(null);
+    userMocker.mockNoPartner();
+    userMocker.mockProperty("name");
+    userMocker.mockProperty("email");
   }
 
   private void givenUserConnectedToPartner() {
-    samplePartner = new Partner("Henry", "henry@calclavia.com");
-    when(mockUser.getPartner()).thenReturn(samplePartner);
+    userMocker
+      .mockProperty("name", "Henry")
+      .mockProperty("email", "henry@email.com");
+
+    userMocker
+      .mockPartner()
+      .mockProperty("name", "Sharmaine")
+      .mockProperty("email", "sharmaine@email.com");
   }
 
   private void whenOpenSettingsPage() {
@@ -74,8 +74,8 @@ public class UserConfiguresSettings {
 
   private void thenUserSeesPartnerName() {
     // I should see my partner's info
-    onView(withId(R.id.partner_name)).check(matches(withText(samplePartner.getName())));
-    onView(withId(R.id.partner_email)).check(matches(withText(samplePartner.getEmail())));
+    onView(withId(R.id.partner_name)).check(matches(withText("Sharmaine")));
+    onView(withId(R.id.partner_email)).check(matches(withText("sharmaine@email.com")));
     onView(withId(R.id.partner_name)).check(matches(isDisplayed()));
     onView(withId(R.id.partner_email)).check(matches(isDisplayed()));
   }

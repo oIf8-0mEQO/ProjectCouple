@@ -1,46 +1,15 @@
 package group50.coupletones.auth.user;
 
-import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.network.sync.Sync;
-
-import java.util.List;
-
 /**
- * Represents a Partner that a User.
- * Delegates all methods to ConcreteUser, but prevents modification
- * to fields.
+ * Represents the Partner as a user object
  *
- * @author Brandon Chi
- * @since 5/5/2016
+ * @author Henry Mao
  */
-public class Partner implements User {
+public interface Partner extends User {
 
-  private final ConcreteUser user;
+  String getPartnerId();
 
-  /**
-   * @param sync The object handling synchronizing partner data
-   */
-  public Partner(Sync sync) {
-    user = new ConcreteUser(sync);
-  }
+  void setPartnerId(String partnerId);
 
-  @Override
-  public String getId() {
-    return user.getId();
-  }
-
-  @Override
-  public String getName() {
-    return user.getName();
-  }
-
-  @Override
-  public String getEmail() {
-    return user.getEmail();
-  }
-
-  @Override
-  public List<FavoriteLocation> getFavoriteLocations() {
-    return user.getFavoriteLocations();
-  }
+  void requestPartner(User requester);
 }

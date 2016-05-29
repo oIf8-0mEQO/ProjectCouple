@@ -67,15 +67,26 @@
                     android:textColor="@color/subtitleColor"
                     android:textSize="14sp"/>
 
-                <!-- List Item Time Value -->
+                <!-- List Item Arrival Value -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/location_time"
+                    android:text="@string/arrival_time"
                     android:textColor="@color/subtitleColor"
-                    android:id="@+id/list_item_time"
+                    android:id="@+id/list_item_arrival"
                     android:layout_marginEnd="22dp"
                     android:layout_alignBottom="@+id/list_item_name"
+                    android:layout_alignParentEnd="true"/>
+
+                <!-- List Item Departure Value -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/arrival_time"
+                    android:textColor="@color/subtitleColor"
+                    android:id="@+id/list_item_departure"
+                    android:layout_marginEnd="22dp"
+                    android:layout_alignBottom="@+id/list_item_address"
                     android:layout_alignParentEnd="true"/>
             </RelativeLayout>
         </LinearLayout>

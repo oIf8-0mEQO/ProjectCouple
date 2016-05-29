@@ -3,19 +3,7 @@ package group50.coupletones.bdd;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-
 import com.google.android.gms.maps.model.LatLng;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import java.util.LinkedList;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.*;
-
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.LocalUser;
@@ -24,16 +12,22 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Favorit
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 import group50.coupletones.util.sound.VibeTone;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.mockito.Matchers.isNotNull;
-import static org.mockito.Matchers.isNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Sharmaine Manalo
@@ -49,17 +43,16 @@ public class UserDeletesFavoriteLocation {
   private LocalUser mockUser;
   private LatLng zoneLatLng = new LatLng(32.882, -117.233);
   private FavoriteLocation zone = new FavoriteLocation("Home", zoneLatLng, 0, VibeTone.getTone());
-  private List<FavoriteLocation> data, emptyData;
-  private Boolean empty;
+  private List<FavoriteLocation> emptyData;
 
   @Before
   public void setup() {
     // Mock DI
     CoupleTones.setGlobal(
-        DaggerMockAppComponent
-            .builder()
-            .mockProximityModule(new MockProximityModule())
-            .build()
+      DaggerMockAppComponent
+        .builder()
+        .mockProximityModule(new MockProximityModule())
+        .build()
     );
 
     // Mock the user
@@ -67,15 +60,12 @@ public class UserDeletesFavoriteLocation {
     app = CoupleTones.global().app();
     when(app.isLoggedIn()).thenReturn(true);
     when(app.getLocalUser()).thenReturn(mockUser);
-    data = new LinkedList<>();
-    data.add(zone);
     emptyData = new LinkedList<>();
   }
 
   private void givenUserHasFavoriteLocation() {
+    when(mockUser.getFavoriteLocations()).thenReturn(Collections.singletonList(zone));
     onView(withId(R.id.favorite_locations)).perform(click());
-    data = mockUser.getFavoriteLocations();
-    assertThat(data.size()).isNotEqualTo(0);
   }
 
   private void whenUserClicksDeleteOnFavoriteLocation() {
@@ -84,12 +74,11 @@ public class UserDeletesFavoriteLocation {
   }
 
   private void thenThatLocationWillBeRemovedFromList() {
-    assertThat(data.size()).isEqualTo(0);
+    verify(mockUser, times(1)).removeFavoriteLocation(zone);
   }
 
   @Test
   public void userHasAFavoriteLocation() {
-    when(mockUser.getFavoriteLocations()).thenReturn(data);
     givenUserHasFavoriteLocation();
     whenUserClicksDeleteOnFavoriteLocation();
     thenThatLocationWillBeRemovedFromList();

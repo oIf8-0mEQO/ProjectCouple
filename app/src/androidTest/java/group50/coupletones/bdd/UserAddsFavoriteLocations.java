@@ -22,11 +22,12 @@ import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
-import org.junit.Before;
+import group50.coupletones.mocker.MockUserTestUtil;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,8 +37,6 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * BDD style test for user adds favorite locations story
@@ -48,12 +47,40 @@ import static org.mockito.Mockito.when;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class UserAddsFavoriteLocations {
-  @Rule
-  public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
   private CoupleTones app;
   private LocalUser mockUser;
   private List<FavoriteLocation> favLocations = new LinkedList<>();
   private MapFragment mapFragment;
+  // Custom launch rule
+  @Rule
+  public final ActivityTestRule<MainActivity> rule = new ActivityTestRule<MainActivity>(MainActivity.class) {
+    @Override
+    protected void beforeActivityLaunched() {
+      super.beforeActivityLaunched();
+      // Mock DI
+      CoupleTones.setGlobal(
+        DaggerMockAppComponent
+          .builder()
+          .mockProximityModule(new MockProximityModule())
+          .build()
+      );
+
+      app = CoupleTones.global().app();
+
+      // Mock the local user
+      mockUser = (LocalUser) new MockUserTestUtil()
+        .injectLocalUser()
+        .mockFavoriateLocations(() -> Collections.unmodifiableList(favLocations))
+        .mockFavoriteLocationsAdd(favLocations::add)
+        .get();
+    }
+
+    @Override
+    protected void afterActivityLaunched() {
+      super.afterActivityLaunched();
+      mapFragment = (MapFragment) rule.getActivity().getTabs().get(R.id.map);
+    }
+  };
 
   private static void allowPermissionsIfNeeded() {
     if (Build.VERSION.SDK_INT >= 21) {
@@ -67,25 +94,6 @@ public class UserAddsFavoriteLocations {
         }
       }
     }
-  }
-
-  @Before
-  public void setup() {
-    // Mock DI
-    CoupleTones.setGlobal(
-      DaggerMockAppComponent
-        .builder()
-        .mockProximityModule(new MockProximityModule())
-        .build()
-    );
-
-    // Mock the user
-    mockUser = mock(LocalUser.class);
-    app = CoupleTones.global().app();
-    when(app.isLoggedIn()).thenReturn(true);
-    when(app.getLocalUser()).thenReturn(mockUser);
-    when(mockUser.getFavoriteLocations()).thenReturn(favLocations);
-    mapFragment = (MapFragment) rule.getActivity().getTabs().get(R.id.map);
   }
 
   private void givenLocationValidOnGoogleMaps() {

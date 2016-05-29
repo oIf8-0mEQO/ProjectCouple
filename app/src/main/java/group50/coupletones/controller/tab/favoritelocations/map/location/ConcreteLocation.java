@@ -1,77 +1,107 @@
 package group50.coupletones.controller.tab.favoritelocations.map.location;
 
 import android.location.Address;
-
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.Exclude;
+import group50.coupletones.CoupleTones;
 
 import javax.inject.Inject;
-
-import group50.coupletones.CoupleTones;
-import group50.coupletones.controller.tab.favoritelocations.map.LocationClickHandler;
-import group50.coupletones.util.storage.Storable;
-import group50.coupletones.util.storage.Storage;
 
 /**
  * @Author Joseph
  * @Since 5/21/16
  */
-public class ConcreteLocation implements Location, Storable {
+public class ConcreteLocation implements Location {
 
   @Inject
   public AddressProvider addressProvider;
 
+  /**
+   * Name of the location. May be null.
+   */
   private String name;
-  private LatLng position;
+
+  /**
+   * Position of the location.
+   */
+  private double latitude;
+
+  private double longitude;
 
   //Should only be used when loading.
-  public ConcreteLocation()
-  {
-    CoupleTones.global().inject(this);
+  public ConcreteLocation() {
+    this(null, new LatLng(0, 0));
   }
 
-  public ConcreteLocation(String name, LatLng position)
-  {
+  public ConcreteLocation(String name, LatLng pos) {
     this.name = name;
-    this.position = position;
+    this.latitude = pos.latitude;
+    this.longitude = pos.longitude;
 
     CoupleTones.global().inject(this);
   }
 
-  public LatLng getPosition()
-  {
-    return position;
+  @Exclude
+  public LatLng getPosition() {
+    return new LatLng(latitude, longitude);
   }
 
-  public String getName()
-  {
+  public String getName() {
     return name;
   }
 
-  public Address getAddress()
-  {
-    return addressProvider.getAddressFromPosition(position);
+  public ConcreteLocation setName(String name) {
+    this.name = name;
+    return this;
   }
 
+  public double getLatitude() {
+    return latitude;
+  }
+
+  public ConcreteLocation setLatitude(double latitude) {
+    this.latitude = latitude;
+    return this;
+  }
+
+  public double getLongitude() {
+    return longitude;
+  }
+
+  public ConcreteLocation setLongitude(double longitude) {
+    this.longitude = longitude;
+    return this;
+  }
+
+  @Exclude
+  public Address getAddress() {
+    return addressProvider.getAddressFromPosition(getPosition());
+  }
   @Override
-  public void save(Storage storage)
-  {
-    storage.setString("name", name);
-    storage.setFloat("lat", (float) position.latitude);
-    storage.setFloat("long", (float) position.longitude);
-  }
+  public boolean equals(Object o) {
+    if (!(o instanceof ConcreteLocation)) {
+      return false;
+    }
 
-  @Override
-  public void load(Storage storage) {
-    name = storage.getString("name");
-    position = new LatLng(storage.getFloat("lat"), storage.getFloat("long"));
-  }
-
-  public boolean equals(ConcreteLocation other)
-  {
-    if (!name.equals(other.name)) return false;
-    if (position.latitude != other.position.latitude) return false;
-    if (position.longitude != other.position.longitude) return false;
+    ConcreteLocation other = (ConcreteLocation) o;
+    if (name != null && !name.equals(other.name)) {
+      return false;
+    }
+    if (latitude != other.latitude) {
+      return false;
+    }
+    if (longitude != other.longitude) {
+      return false;
+    }
     return true;
   }
 
+  @Override
+  public int hashCode() {
+    int hashCode = 1;
+    hashCode = 31 * hashCode + (name != null ? name.hashCode() : 0);
+    hashCode = 31 * hashCode + Double.valueOf(latitude).hashCode();
+    hashCode = 31 * hashCode + Double.valueOf(longitude).hashCode();
+    return hashCode;
+  }
 }

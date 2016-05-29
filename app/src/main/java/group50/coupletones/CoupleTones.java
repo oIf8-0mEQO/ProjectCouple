@@ -20,8 +20,6 @@ import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.network.receiver.ErrorReceiver;
 import group50.coupletones.network.receiver.LocationNotificationReceiver;
-import group50.coupletones.network.receiver.PartnerRequestReceiver;
-import group50.coupletones.network.receiver.PartnerResponseReceiver;
 
 /**
  * A singleton object that holds global data.
@@ -115,14 +113,14 @@ public class CoupleTones extends Application {
     // Register network
     NetworkManager network = global().network();
     network.register(this);
-    network.register(new PartnerRequestReceiver(this));
-    network.register(new PartnerResponseReceiver(this, this));
     network.register(new LocationNotificationReceiver(this, this));
     network.register(MessageType.RECEIVE_PARTNER_ERROR.value, new ErrorReceiver(this));
     network.register(MessageType.RECEIVE_MAP_REJECT.value, new ErrorReceiver(this));
 
     // Register location observer
     ProximityManager proximity = global().proximity();
-    proximity.register(new ProximityNetworkHandler(this, network));
+    ProximityNetworkHandler proximityNetworkHandler = new ProximityNetworkHandler(this, network);
+    proximity.getEnterSubject().subscribe(proximityNetworkHandler::onEnterLocation);
+    proximity.getExitSubject().subscribe(proximityNetworkHandler::onLeaveLocation);
   }
 }

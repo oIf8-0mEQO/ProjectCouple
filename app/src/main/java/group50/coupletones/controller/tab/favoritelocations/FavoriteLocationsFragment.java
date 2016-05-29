@@ -12,6 +12,7 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.TabFragment;
+import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
 
 import javax.inject.Inject;
 
@@ -23,6 +24,11 @@ public class FavoriteLocationsFragment extends TabFragment<Object> {
   @Inject
   public CoupleTones app;
   public FavoriteLocationsListAdapter adapter;
+  public RecyclerView favesList;
+
+  public FavoriteLocationsFragment() {
+    super(Object.class);
+  }
 
   public RecyclerView getFavesList() {
     return favesList;
@@ -30,12 +36,6 @@ public class FavoriteLocationsFragment extends TabFragment<Object> {
 
   public FavoriteLocationsListAdapter getAdapter() {
     return adapter;
-  }
-
-  public RecyclerView favesList;
-
-  public FavoriteLocationsFragment() {
-    super(Object.class);
   }
 
   /**
@@ -72,12 +72,13 @@ public class FavoriteLocationsFragment extends TabFragment<Object> {
     View v = inflater.inflate(R.layout.fragment_favorite_locations, container, false);
     favesList = (RecyclerView) v.findViewById(R.id.favorite_locations_list);
     favesList.setLayoutManager(new LinearLayoutManager(getActivity()));
-    adapter = new FavoriteLocationsListAdapter(app.getLocalUser().getFavoriteLocations(), this, getActivity());
+    adapter = new FavoriteLocationsListAdapter(this, getActivity());
     favesList.setAdapter(adapter);
 
     // Clicking on the add button will open the map fragment
     v.findViewById(R.id.add_favorite_location).setOnClickListener(evt -> {
       MainActivity act = (MainActivity) getActivity();
+      ((MapFragment)act.getTabs().get(R.id.map)).setIsUser(true);
       act.setFragment(act.getTabs().get(R.id.map));
     });
     return v;

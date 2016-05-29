@@ -3,25 +3,24 @@ package group50.coupletones.controller;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import android.widget.Toast;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
+import group50.coupletones.auth.user.Partner;
+import group50.coupletones.auth.user.UserFactory;
 import group50.coupletones.network.NetworkManager;
-import group50.coupletones.network.message.MessageType;
-import group50.coupletones.network.message.OutgoingMessage;
 import group50.coupletones.util.Taggable;
+import rx.schedulers.Schedulers;
 
 import javax.inject.Inject;
 
 /**
  * Activity for Adding a Partner
  */
-public class AddPartnerActivity extends AppCompatActivity
-  implements View.OnClickListener, Taggable {
+public class AddPartnerActivity extends AppCompatActivity implements Taggable {
 
   @Inject
   public NetworkManager network;
@@ -30,7 +29,6 @@ public class AddPartnerActivity extends AppCompatActivity
   public CoupleTones app;
 
   /**
-   *
    * @param savedInstanceState
    */
   @Override
@@ -54,33 +52,35 @@ public class AddPartnerActivity extends AppCompatActivity
     connect_text.setTypeface(pierSans);
     skip_text.setTypeface(pierSans);
 
-    findViewById(R.id.connect_button).setOnClickListener(this);
-    findViewById(R.id.skip_button).setOnClickListener(this);
+    // Connect button
+    findViewById(R.id.connect_button).setOnClickListener(this::onClickConnect);
+
+    findViewById(R.id.skip_button)
+      .setOnClickListener(view -> finish());
   }
 
-  /**
-   * onClick for Adding Partner Activity
-   * @param v - The current view
-   */
-  public void onClick(View v) {
-    switch (v.getId()) {
+  private void onClickConnect(View view) {
+    // Send a partner request
+    UserFactory userFactory = CoupleTones
+      .instanceComponentBuilder()
+      .build()
+      .userFactory();
 
-      // Switches to AddPartnerActivity.
-      case R.id.connect_button:
-        // Send a partner request to the server
-        network.send(
-          (OutgoingMessage)
-            new OutgoingMessage(MessageType.SEND_PARTNER_REQUEST.value)
-              .setString("partner", ((EditText) findViewById(R.id.email_address)).getText().toString())
-        );
-        // TODO: Handle when used from login
-        finish();
-        break;
-      // Switches to AddPartnerActivity.
-      case R.id.skip_button:
-        finish();
-        Log.d(getTag(), "Switched to SettingsFragment Successfully");
-        break;
-    }
+    String email = ((EditText) findViewById(R.id.email_address)).getText().toString();
+
+    userFactory
+      .withEmail(email)  // Get user by email
+      .subscribeOn(Schedulers.newThread())
+      .flatMap(buildable -> buildable.build().load())
+      .subscribe(
+        partner -> {
+          // Found user! Set the email
+          Toast.makeText(AddPartnerActivity.this, "Request sent.", Toast.LENGTH_SHORT).show();
+          ((Partner) partner).requestPartner(app.getLocalUser());
+          finish();
+        },
+        // User does not exist.
+        error -> Toast.makeText(AddPartnerActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()
+      );
   }
 }

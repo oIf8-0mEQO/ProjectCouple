@@ -14,7 +14,6 @@ import group50.coupletones.R;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 
 import javax.inject.Inject;
-import java.util.List;
 
 /**
  * @author Sharmaine Manalo
@@ -29,20 +28,17 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
   @Inject
   public CoupleTones app;
 
-  private List<FavoriteLocation> data;
   private LayoutInflater inflater;
   private FavoriteLocationsFragment fragment;
 
   /**
    * Favorite Locations List Adapter
    *
-   * @param data - Favorite location data
-   * @param -    context
+   * @param - context
    */
-  public FavoriteLocationsListAdapter(List<FavoriteLocation> data, FavoriteLocationsFragment fragment, Context context) {
+  public FavoriteLocationsListAdapter(FavoriteLocationsFragment fragment, Context context) {
     this.inflater = LayoutInflater.from(context);
     this.fragment = fragment;
-    this.data = data;
 
     CoupleTones.global().inject(this);
   }
@@ -67,7 +63,7 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
    */
   @Override
   public void onBindViewHolder(ListViewHolder holder, int position) {
-    FavoriteLocation location = data.get(position);
+    FavoriteLocation location = app.getLocalUser().getFavoriteLocations().get(position);
     holder.name.setText(location.getName());
     holder.address.setText(location.getName());
     Address address = location.getAddress();
@@ -80,13 +76,13 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
     } else {
       holder.address.setText("");
     }
-    holder.icon.setImageResource(R.drawable.target_icon);
+    holder.icon.setImageResource(R.drawable.myfave_icon);
     //TODO: Implement custom icons?
     //holder.icon.setImageResource(location.getIconId());
 
     holder.itemView.findViewById(R.id.delete_location_icon)
       .setOnClickListener(evt -> {
-        app.getLocalUser().addFavoriteLocation(location);
+        app.getLocalUser().removeFavoriteLocation(location);
           fragment.adapter.notifyDataSetChanged();
         }
       );
@@ -99,7 +95,7 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
    */
   @Override
   public int getItemCount() {
-    return data.size();
+    return app.getLocalUser().getFavoriteLocations().size();
   }
 
   /**

@@ -96,7 +96,8 @@ public class VisitedLocationEvent {
   }
 
   public long getLeaveTime() {
-    return timeLeft.getTime();
+    if (timeLeft != null) return timeLeft.getTime();
+    else return -1;
   }
 
   public void setLeaveTime(long timeLeft) {

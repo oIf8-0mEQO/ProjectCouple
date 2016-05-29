@@ -32,8 +32,6 @@ public class VibeTone {
     new VibeTone("", new long[] {0, 800, 400, 200, 400, 200}),//Index 5.
     new VibeTone("", new long[] {0, 200, 400, 800, 400, 200}),//Index 6.
     new VibeTone("", new long[] {0, 200, 400, 200, 400, 800}),//Index 7.
-    new VibeTone("", new long[] {0, 1000}),//Arrival.
-    new VibeTone("", new long[] {0, 400, 200, 400}),//Departure.
   };
 
   @Inject
@@ -44,8 +42,8 @@ public class VibeTone {
 
   private static Ringtone arrivalSound;
   private static Ringtone departureSound;
-  private static long[] arrivalVibration;//TODO: define these.
-  private static long[] departureVibration;
+  private static long[] arrivalVibration = new long[] {0, 1000};
+  private static long[] departureVibration = new long[] {0, 400, 200, 400};
   private static long delay = 1500;//The amount of time in milliseconds to wait between arrival/departure global sound and specific sound.
 
 
@@ -62,7 +60,7 @@ public class VibeTone {
    */
   public static VibeTone getTone(int which)
   {
-    if (which < 0 || which >  7) return tones[0]
+    if (which < 0 || which >  7) return tones[0];
     return tones[which];
   }
 

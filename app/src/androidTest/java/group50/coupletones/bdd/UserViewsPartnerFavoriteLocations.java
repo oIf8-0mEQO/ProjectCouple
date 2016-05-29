@@ -24,7 +24,8 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 
 /**
- * Created by Joseph on 5/26/2016.
+ * @author Joseph
+ * @since 5/26/16
  */
 public class UserViewsPartnerFavoriteLocations {
 
@@ -47,11 +48,11 @@ public class UserViewsPartnerFavoriteLocations {
     UserTestUtil userTestUtil = new ConcreteUserTestUtil()
       .injectLocalUser()
       .mockProperty("name", "Henry")
-      .mockProperty("email", "henry@email.com")
-      .mockFavoriateLocations(() -> locationList);
+      .mockProperty("email", "henry@email.com");
 
     userTestUtil
-      .mockPartner();
+      .mockPartner()
+      .mockFavoriateLocations(() -> locationList);
   }
 
   private void givenUserNotOnPartnerFavoriteLocationList() {

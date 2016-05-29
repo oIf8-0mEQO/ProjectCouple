@@ -13,6 +13,8 @@ import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.TabFragment;
 
+import java.util.Collections;
+
 /**
  * @author Joanne Cho
  */
@@ -44,10 +46,12 @@ public class PartnersLocationsFragment extends TabFragment<Object> {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
+    CoupleTones app = CoupleTones.global().app();
+
     View v = inflater.inflate(R.layout.fragment_partners_locations, container, false);
     partnersList = (RecyclerView) v.findViewById(R.id.partners_location_list);
     partnersList.setLayoutManager(new LinearLayoutManager(getActivity()));
-    adapter = new ListAdapterPartnerVisited(CoupleTones.global().app().getLocalUser().getVisitedLocations(), getActivity());
+    adapter = new ListAdapterPartnerVisited(app.getLocalUser() != null ? app.getLocalUser().getVisitedLocations() : Collections.emptyList(), getActivity());
     partnersList.setAdapter(adapter);
 
     ImageButton partnerFaves;

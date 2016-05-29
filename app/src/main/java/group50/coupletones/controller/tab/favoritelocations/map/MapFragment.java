@@ -190,7 +190,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     }
   }
 
-  public void populateMap(){
+  public void populateMap() {
     if (isUser)
       populateMap(app.getLocalUser());
     else
@@ -202,12 +202,15 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
    */
   private void populateMap(User user) {
     mMap.clear();
-    MarkerOptions markerSettings = new MarkerOptions();
-    markerSettings.draggable(false);
-    for (group50.coupletones.controller.tab.favoritelocations.map.location.Location i : user.getFavoriteLocations()) {
-      markerSettings.position(i.getPosition());
-      markerSettings.title(i.getName());
-      mMap.addMarker(markerSettings);
+
+    if (user != null) {
+      MarkerOptions markerSettings = new MarkerOptions();
+      markerSettings.draggable(false);
+      for (group50.coupletones.controller.tab.favoritelocations.map.location.Location i : user.getFavoriteLocations()) {
+        markerSettings.position(i.getPosition());
+        markerSettings.title(i.getName());
+        mMap.addMarker(markerSettings);
+      }
     }
   }
 }

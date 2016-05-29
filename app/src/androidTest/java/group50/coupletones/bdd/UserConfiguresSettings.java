@@ -5,11 +5,11 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.UserMocker;
-import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
+import group50.coupletones.mocker.ConcreteUserTestUtil;
+import group50.coupletones.mocker.UserTestUtil;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,7 +19,6 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
-import static org.mockito.Mockito.mock;
 
 /**
  * BDD style test for user configures settings story
@@ -32,7 +31,7 @@ import static org.mockito.Mockito.mock;
 public class UserConfiguresSettings {
   @Rule
   public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
-  private UserMocker userMocker = new UserMocker(mock(LocalUser.class));
+  private UserTestUtil userMocker = new ConcreteUserTestUtil();
 
   @Before
   public void setup() {

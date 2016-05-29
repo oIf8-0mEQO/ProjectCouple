@@ -15,7 +15,6 @@ import android.widget.EditText;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.UserMocker;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.LocationClickHandler;
@@ -23,6 +22,7 @@ import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
+import group50.coupletones.mocker.MockUserTestUtil;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +37,6 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 /**
  * BDD style test for user adds favorite locations story
@@ -69,7 +68,7 @@ public class UserAddsFavoriteLocations {
       app = CoupleTones.global().app();
 
       // Mock the local user
-      mockUser = (LocalUser) new UserMocker(mock(LocalUser.class))
+      mockUser = (LocalUser) new MockUserTestUtil()
         .injectLocalUser()
         .mockFavoriateLocations(() -> Collections.unmodifiableList(favLocations))
         .mockFavoriteLocationsAdd(favLocations::add)

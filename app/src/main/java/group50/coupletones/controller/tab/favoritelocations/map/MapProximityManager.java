@@ -9,7 +9,8 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.util.Taggable;
-import rx.subjects.BehaviorSubject;
+import rx.Observable;
+import rx.subjects.PublishSubject;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -26,17 +27,10 @@ public class MapProximityManager implements ProximityManager, Taggable {
 
   //Meters to Miles conversion ratio
   private static final double conversion = (1.0) / (1609.0);
-  /**
-   * A list of observers that subscribe to changes in location.
-   */
-  private final List<ProximityObserver> observers;
-
-  private List<FavoriteLocation> currentlyIn;
-
+  private final PublishSubject<VisitedLocationEvent> enterSubject = PublishSubject.create();
+  private final PublishSubject<VisitedLocationEvent> exitSubject = PublishSubject.create();
   public CoupleTones app;
-
-  private BehaviorSubject<VisitedLocationEvent> enterSubject = BehaviorSubject.create();
-  private BehaviorSubject<VisitedLocationEvent> exitSubject = BehaviorSubject.create();
+  private List<FavoriteLocation> currentlyIn;
 
   /**
    * Map Proximity Manager
@@ -44,19 +38,8 @@ public class MapProximityManager implements ProximityManager, Taggable {
    */
   @Inject
   public MapProximityManager(CoupleTones app) {
-    observers = new LinkedList<>();
     this.app = app;
     currentlyIn = new LinkedList<>();
-  }
-
-  public BehaviorSubject<VisitedLocationEvent> getEnterSubject()
-  {
-    return enterSubject;
-  }
-
-  public BehaviorSubject<VisitedLocationEvent> getExitSubject()
-  {
-    return exitSubject;
   }
 
   /**
@@ -64,6 +47,16 @@ public class MapProximityManager implements ProximityManager, Taggable {
    */
   private static double distanceInMiles(LatLng location1, LatLng location2) {
     return (conversion * SphericalUtil.computeDistanceBetween(location1, location2));
+  }
+
+  public Observable<VisitedLocationEvent> getEnterSubject()
+  {
+    return enterSubject;
+  }
+
+  public Observable<VisitedLocationEvent> getExitSubject()
+  {
+    return exitSubject;
   }
 
   /**

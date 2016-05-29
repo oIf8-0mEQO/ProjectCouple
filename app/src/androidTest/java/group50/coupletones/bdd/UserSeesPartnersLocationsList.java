@@ -9,10 +9,16 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.LocalUser;
+import group50.coupletones.auth.user.Partner;
 import group50.coupletones.controller.MainActivity;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 
@@ -21,6 +27,8 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static org.assertj.core.api.Assertions.*;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -32,10 +40,13 @@ import static org.mockito.Mockito.when;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class UserSeesPartnersLocationsList {
+
   @Rule
-  public ActivityTestRule<MainActivity> notOwnListPage = new ActivityTestRule<>(MainActivity.class);
+  public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
   private CoupleTones app;
+  private List<VisitedLocationEvent> visitedLocations = new LinkedList<>();
   private LocalUser mockUser;
+  private Partner mockPartner;
 
   @Before
   public void setup() {
@@ -49,9 +60,15 @@ public class UserSeesPartnersLocationsList {
 
     // Mock the user
     mockUser = mock(LocalUser.class);
+    mockPartner = mock(Partner.class);
     app = CoupleTones.global().app();
     when(app.isLoggedIn()).thenReturn(true);
     when(app.getLocalUser()).thenReturn(mockUser);
+    when(app.getLocalUser().getPartner()).thenReturn(mockPartner);
+    doAnswer(ans -> visitedLocations.add((VisitedLocationEvent) ans.getArguments()[0]))
+        .when(mockUser)
+        .addVisitedLocation(any());
+    when(mockUser.getVisitedLocations()).then(ans -> Collections.unmodifiableList(visitedLocations));
   }
 
   private void givenUserHasPartner() {
@@ -59,7 +76,7 @@ public class UserSeesPartnersLocationsList {
   }
 
   private void whenPartnerVisitsZone() {
-    // TODO: Insert code that detects when partner visits zone
+    mockUser.addVisitedLocation(any());
   }
 
   private void andUserNavigatesToHomePage() {
@@ -67,15 +84,15 @@ public class UserSeesPartnersLocationsList {
   }
 
   private void thenUserWillSeeAllZonesPartnerHasBeenThatDay() {
-    // TODO: Insert code that detects if user can view list of location notifications
+    assertThat(mockUser.getVisitedLocations()).isNotEmpty();
   }
 
   private void andTheNewZonePartnerJustEntered() {
-    // TODO: Insert code that detects if user can view new location
+    assertThat(mockUser.getVisitedLocations()).hasSize(1);
   }
 
   private void whenPartnerDoesNotVisitNewZone() {
-    // TODO
+    assertThat(mockUser.getVisitedLocations()).hasSize(0);
   }
 
   @Test
@@ -88,9 +105,9 @@ public class UserSeesPartnersLocationsList {
   }
 
   @Test
-  private void usersPartnerDoesNotEnterZone() {
+  public void usersPartnerDoesNotEnterZone() {
     givenUserHasPartner();
-    whenPartnerVisitsZone();
+    whenPartnerDoesNotVisitNewZone();
     andUserNavigatesToHomePage();
     thenUserWillSeeAllZonesPartnerHasBeenThatDay();
   }

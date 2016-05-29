@@ -94,16 +94,12 @@ public class UserDeletesPartner {
   private void thenUserPartnerIsRemoved() {
     // Verify that "No Partner" is displayed on Partner Profile card
     // onView(withId(R.id.null_partner)).check(ViewAssertions.matches(isDisplayed()));
+    //assertThat(userMocker.getPartner()).isNull();
   }
 
-  private void andUserIsRemovedAsPartnersPartner() {
-    // TODO: Fix this code lol
-    /*userMocker.getPartner().subscribe(
-        partner -> {
-          verify(userMocker.getPartner(), times(1)).setPartnerId(null);
-        }
-    );*/
-  }
+  /*private void andUserIsRemovedAsPartnersPartner() {
+  //    assertThat(userMocker.getPartner()).isNull();
+  }*/
 
   @Test
   public void userDeletesPartner() {

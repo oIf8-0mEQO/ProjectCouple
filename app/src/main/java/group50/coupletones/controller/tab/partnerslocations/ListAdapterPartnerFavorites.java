@@ -46,6 +46,7 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
 
     this.subs.add(
       partnerObservable
+        .filter(partner -> partner != null)
         .subscribe(partner -> {
           // Initial list
           locations = partner.getFavoriteLocations();

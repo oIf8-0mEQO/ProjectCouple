@@ -14,6 +14,7 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Favorit
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -29,13 +30,11 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
   /**
    * The user's partner. Null if none exists.
    */
-  private Observable<Partner> partnerObservable;
+  private List<FavoriteLocation> locations = new LinkedList<>();
 
   private LayoutInflater inflater;
 
   private CompositeSubscription subs = new CompositeSubscription();
-
-  private int count = 0;
 
   /**
    * Partner's Favorites list adapter
@@ -44,10 +43,20 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
    */
   public ListAdapterPartnerFavorites(Observable<Partner> partnerObservable, Context context) {
     this.inflater = LayoutInflater.from(context);
-    this.partnerObservable = partnerObservable;
+
     this.subs.add(
       partnerObservable
-        .subscribe(partner -> count = partner.getFavoriteLocations().size())
+        .subscribe(partner -> {
+          // Initial list
+          locations = partner.getFavoriteLocations();
+
+          partner
+            .observable("favoriteLocations", List.class)
+            .subscribe(locations -> {
+              this.locations = locations;
+              notifyDataSetChanged();
+            });
+        })
     );
   }
 
@@ -72,21 +81,12 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
   @Override
   public void onBindViewHolder(ListViewHolder holder, int position) {
     // React to partner location edits
-    subs.add(
-      partnerObservable
-        .subscribe(partner -> {
-          partner
-            .observable("favoriteLocations", List.class)
-            .subscribe(locations -> {
-              FavoriteLocation location = (FavoriteLocation) locations.get(position);
-              holder.name.setText(location.getName());
-              holder.address.setText(location.getAddress().getLocality());
-              holder.icon.setImageResource(R.drawable.target_icon);
-              //TODO: Add
-              // holder.vibeTone.setText(location.getTone());
-            });
-        })
-    );
+    FavoriteLocation location = locations.get(position);
+    holder.name.setText(location.getName());
+    holder.address.setText(location.getAddress().getLocality());
+    holder.icon.setImageResource(R.drawable.target_icon);
+    //TODO: Add
+    // holder.vibeTone.setText(location.getTone());
   }
 
   /**
@@ -96,7 +96,7 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
    */
   @Override
   public int getItemCount() {
-    return count;
+    return locations.size();
   }
 
   @Override

@@ -37,6 +37,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 /**
  * BDD style test for user adds favorite locations story
@@ -68,8 +69,8 @@ public class UserAddsFavoriteLocations {
       app = CoupleTones.global().app();
 
       // Mock the local user
-      mockUser = (LocalUser) new UserMocker()
-        .mockLocalUser()
+      mockUser = (LocalUser) new UserMocker(mock(LocalUser.class))
+        .injectLocalUser()
         .mockFavoriateLocations(() -> Collections.unmodifiableList(favLocations))
         .mockFavoriteLocationsAdd(favLocations::add)
         .get();

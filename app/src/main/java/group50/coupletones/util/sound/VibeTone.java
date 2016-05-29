@@ -105,11 +105,29 @@ public class VibeTone {
     }
   }
 
-  public boolean equals(VibeTone other)
+  @Override
+  public int hashCode()
   {
-    if (!sound.equals(other.sound)) return false;
-    if (!vibration.equals(other.vibration)) return false;
-    return true;
+    for (int i = 0; i < tones.length; i++)
+    {
+      if (tones[i].equals(this)) return i;
+    }
+    throw new RuntimeException("VibeTones should only exist as one of the elements contained in tones.");
+  }
+
+  @Override
+  public boolean equals(Object object)
+  {
+    try {
+      VibeTone other = (VibeTone) object;
+      if (!sound.equals(other.sound)) return false;
+      if (!vibration.equals(other.vibration)) return false;
+      return true;
+    }
+    catch(ClassCastException e)
+    {
+      return false;
+    }
   }
 
 }

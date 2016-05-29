@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import rx.Observable;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -62,7 +63,8 @@ public class UserNotifiesPartnerOfLocation {
 
     // Create an instance of MapProxManager and register a network handler
     proximityManager = new MapProximityManager(app);
-    proximityManager.register(new ProximityNetworkHandler(app, CoupleTones.global().network()));
+    ProximityNetworkHandler proximityNetworkHandler = new ProximityNetworkHandler(app, CoupleTones.global().network());
+    proximityManager.getEnterSubject().subscribe(proximityNetworkHandler::onEnterLocation);
 
     //List of the user's favorite locations.
     List<FavoriteLocation> list = new LinkedList<>();
@@ -74,7 +76,7 @@ public class UserNotifiesPartnerOfLocation {
     User mock = mock(User.class);
     when(mock.getName()).thenReturn("Henry");
     when(mock.getEmail()).thenReturn("henry@email.com");
-    when(mockUser.getPartner()).thenReturn(mock(Partner.class));
+    when(mockUser.getPartner()).thenReturn(Observable.just(mock(Partner.class)));
 
   }
 

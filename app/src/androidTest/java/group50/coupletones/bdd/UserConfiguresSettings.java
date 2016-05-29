@@ -7,7 +7,6 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.Partner;
-import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
@@ -15,6 +14,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import rx.Observable;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -63,7 +63,7 @@ public class UserConfiguresSettings {
     samplePartner = mock(Partner.class);
     when(samplePartner.getName()).thenReturn("Henry");
     when(samplePartner.getEmail()).thenReturn("henry@calclavia.com");
-    when(mockUser.getPartner()).thenReturn(samplePartner);
+    when(mockUser.getPartner()).thenReturn(Observable.just(samplePartner));
   }
 
   private void whenOpenSettingsPage() {

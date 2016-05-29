@@ -11,7 +11,6 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Visited
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 import group50.coupletones.util.sound.VibeTone;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,7 +62,7 @@ public class ProximityManagerTest {
 
     proximity = new MapProximityManager(CoupleTones.global().app());
     mockObserver = mock(ProximityObserver.class);
-    proximity.register(mockObserver);
+    proximity.getEnterSubject().subscribe(mockObserver::onLocationChange);
   }
 
   //TODO: Organize this test into edge case, normal case, error case
@@ -101,7 +100,7 @@ public class ProximityManagerTest {
         count++;
       }
     };
-    proximity.register(observer);
+    proximity.getEnterSubject().subscribe(observer::onLocationChange);
     FavoriteLocation shouldNotifyOnce = new FavoriteLocation();
     proximity.onEnterLocation(shouldNotifyOnce);
     proximity.onEnterLocation(shouldNotifyOnce);

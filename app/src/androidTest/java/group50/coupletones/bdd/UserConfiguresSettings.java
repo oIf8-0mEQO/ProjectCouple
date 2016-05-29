@@ -5,6 +5,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
+import group50.coupletones.UserMocker;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.controller.MainActivity;
@@ -48,11 +49,7 @@ public class UserConfiguresSettings {
         .build()
     );
 
-    // Mock the user
-    mockUser = mock(LocalUser.class);
-    app = CoupleTones.global().app();
-    when(app.isLoggedIn()).thenReturn(true);
-    when(app.getLocalUser()).thenReturn(mockUser);
+    new UserMocker().mockLocalUser();
   }
 
   private void givenUserNotConnectedToPartner() {

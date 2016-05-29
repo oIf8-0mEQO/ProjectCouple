@@ -41,11 +41,14 @@ public class ProximityNetworkHandler implements Taggable {
    */
   public void onEnterLocation(VisitedLocationEvent location) {
     if (app.getLocalUser().getPartner() != null) {
+      // Adds the location as a visited location
       app.getLocalUser().addVisitedLocation(location);
+
       Format formatter = new SimpleDateFormat("HH:mm", Locale.US);
       Date date = location.getTimeVisited();
       String time = formatter.format(date);
 
+      // Send GCM notification
       app.getLocalUser().getPartner()
         .subscribe(partner -> {
           network.send((OutgoingMessage) new OutgoingMessage(MessageType.SEND_LOCATION_NOTIFICATION.value)
@@ -63,10 +66,6 @@ public class ProximityNetworkHandler implements Taggable {
 
   public void onLeaveLocation(VisitedLocationEvent location)
   {
-    if (app.getLocalUser().getPartner() != null)
-    {
-      app.getLocalUser().addVisitedLocation(location);
-      //TODO: implement
-    }
+    //TODO: Remove?
   }
 }

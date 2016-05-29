@@ -57,6 +57,8 @@ public class ProfileBehavior implements PropertiesProvider {
       .property("favoriteLocations")
       .mark(new GenericTypeIndicator<List<FavoriteLocation>>() {
       })
+      .bind(this)
+      .property("visitedLocations")
       .bind(this);
 
     this.sync = sync;

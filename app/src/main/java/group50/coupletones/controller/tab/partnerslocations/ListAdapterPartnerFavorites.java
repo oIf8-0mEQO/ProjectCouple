@@ -46,6 +46,7 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
 
     this.subs.add(
       partnerObservable
+        .filter(partner -> partner != null)
         .subscribe(partner -> {
           // Initial list
           locations = partner.getFavoriteLocations();
@@ -84,7 +85,7 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
     FavoriteLocation location = locations.get(position);
     holder.name.setText(location.getName());
     holder.address.setText(location.getAddress().getLocality());
-    holder.icon.setImageResource(R.drawable.target_icon);
+    holder.icon.setImageResource(R.drawable.partnerfave_icon);
     //TODO: Add
     // holder.vibeTone.setText(location.getTone());
   }

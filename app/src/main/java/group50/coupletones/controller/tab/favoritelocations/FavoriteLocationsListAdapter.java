@@ -76,7 +76,7 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
     } else {
       holder.address.setText("");
     }
-    holder.icon.setImageResource(R.drawable.target_icon);
+    holder.icon.setImageResource(R.drawable.myfave_icon);
     //TODO: Implement custom icons?
     //holder.icon.setImageResource(location.getIconId());
 

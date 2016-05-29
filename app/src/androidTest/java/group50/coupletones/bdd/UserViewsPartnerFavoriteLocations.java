@@ -1,37 +1,28 @@
 package group50.coupletones.bdd;
 
 import android.support.test.rule.ActivityTestRule;
-
-import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.maps.model.LatLng;
-
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
-import java.util.LinkedList;
-import java.util.List;
-
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.Partner;
-import group50.coupletones.auth.user.UserFactory;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
-import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.sound.VibeTone;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import rx.Observable;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -62,7 +53,7 @@ public class UserViewsPartnerFavoriteLocations {
     locationList.add(partnerFavorite);
     user = mock(LocalUser.class);
     partner = mock(Partner.class);
-    when(user.getPartner()).thenReturn(partner);
+    when(user.getPartner()).thenReturn(Observable.just(partner));
     when(partner.getFavoriteLocations()).thenReturn(locationList);
 
     app = CoupleTones.global().app();

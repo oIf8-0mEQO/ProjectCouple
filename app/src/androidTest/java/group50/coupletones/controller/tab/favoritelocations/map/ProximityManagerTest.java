@@ -86,7 +86,19 @@ public class ProximityManagerTest {
     loc.setLatitude(32.880351);
     loc.setLongitude(-117.236578);
     proximity.onLocationChanged(loc);
-    verify(mockObserver).onLocationChange(anyObject());
+    verify(mockObserver, times(1)).onLocationChange(anyObject());
+  }
+
+  @Test
+  public void testNotificationNearbyMultipleTimes() {
+    //Normal case - should pass
+    loc.setLatitude(32.880351);
+    loc.setLongitude(-117.236578);
+    proximity.onLocationChanged(loc);
+    proximity.onLocationChanged(loc);
+    proximity.onLocationChanged(loc);
+    proximity.onLocationChanged(loc);
+    verify(mockObserver, times(1)).onLocationChange(anyObject());
   }
 
   @Test

@@ -9,6 +9,7 @@ import com.google.firebase.database.GenericTypeIndicator;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.network.sync.Sync;
+import group50.coupletones.util.TimeUtility;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.PropertiesProvider;
 import group50.coupletones.util.properties.Property;
@@ -21,7 +22,7 @@ import java.util.List;
 /**
  * Holds the behavior of user's profile. Strategy pattern.
  */
-public class ProfileBehavior implements PropertiesProvider {
+public class ProfileBehavior extends TimeUtility implements PropertiesProvider {
 
   /**
    * Object responsible for syncing the object with database
@@ -119,30 +120,6 @@ public class ProfileBehavior implements PropertiesProvider {
     } else {
       return Collections.emptyList();
     }
-  }
-
-  /**
-   * This function checks to see if the time of the visited location is before 3AM
-   * @param visitedLocation The location to check the time of
-   * @return true if visited location time is before 3AM, otherwise false
-   */
-  public static boolean checkTime(VisitedLocationEvent visitedLocation) {
-
-    // Get the time visited of visited location
-    Date currentTime = visitedLocation.getTimeVisited();
-
-    // Refer to 3AM of current day
-    Calendar reset = Calendar.getInstance();
-    reset.set(Calendar.HOUR_OF_DAY, 3);
-    reset.set(Calendar.MINUTE, 00);
-    Date resetTime = reset.getTime();
-
-    boolean b = false;
-
-    if (currentTime.before(resetTime)) {
-      b = true;
-    }
-    return b;
   }
 
   /**

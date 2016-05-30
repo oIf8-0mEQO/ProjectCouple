@@ -179,10 +179,7 @@ public class SettingsFragment extends TabFragment<Object> {
           //Observe partner data
           Subscription nameChange = partner
             .observable("name", String.class)
-            .subscribe(t -> {
-              Log.d("Partner name: ", t);
-              partnerName.setText(t);
-            });
+            .subscribe(partnerName::setText);
 
           Subscription emailChange = partner
             .observable("email", String.class)

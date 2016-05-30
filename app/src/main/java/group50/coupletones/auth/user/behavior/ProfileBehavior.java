@@ -113,7 +113,7 @@ public class ProfileBehavior implements PropertiesProvider {
     if (visitedLocations != null) {
       for (int i = 0; i < visitedLocations.size(); i++) {
         VisitedLocationEvent currEvent = visitedLocations.get(i);
-        if(TimeUtility.checkTime(currEvent)) {
+        if(timeUtility.checkTime(currEvent)) {
           visitedLocations.remove(i);
           hasChanged = true;
         }

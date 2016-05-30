@@ -14,6 +14,7 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Favorit
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,18 +50,19 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
         .filter(partner -> partner != null)
         .subscribe(partner -> {
           // Initial list
-          locations = partner.getFavoriteLocations();
+          setLocations(partner.getFavoriteLocations());
 
           partner
             .observable("favoriteLocations", List.class)
-            .subscribe(locations -> {
-              this.locations = locations;
-              notifyDataSetChanged();
-            });
+            .subscribe(this::setLocations);
         })
     );
   }
 
+  private void setLocations(List<FavoriteLocation> locations) {
+    this.locations = locations != null ? locations : Collections.emptyList();
+    notifyDataSetChanged();
+  }
   /**
    * List view holder for partner's favorite locations
    *
@@ -84,8 +86,8 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
     // React to partner location edits
     FavoriteLocation location = locations.get(position);
     holder.name.setText(location.getName());
-    holder.address.setText(location.getAddress().getLocality());
-    holder.icon.setImageResource(R.drawable.partnerfave_icon);
+    holder.address.setText(location.getAddress() != null ? location.getAddress().getLocality() : "");
+    holder.icon.setImageResource(R.drawable.target_icon);
     //TODO: Add
     // holder.vibeTone.setText(location.getTone());
   }

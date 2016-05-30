@@ -5,6 +5,8 @@ import dagger.Provides;
 import group50.coupletones.auth.user.UserFactory;
 import group50.coupletones.network.sync.Sync;
 
+import javax.inject.Singleton;
+
 import static org.mockito.Mockito.*;
 
 /**
@@ -14,6 +16,7 @@ import static org.mockito.Mockito.*;
 @Module
 public class MockUserFactoryModule {
   @Provides
+  @Singleton
   protected UserFactory provide() {
     UserFactory spy = spy(new UserFactory());
     when(spy.buildSync()).thenReturn(mock(Sync.class));

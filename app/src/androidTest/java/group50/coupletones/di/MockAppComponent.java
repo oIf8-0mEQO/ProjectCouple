@@ -15,7 +15,8 @@ import javax.inject.Singleton;
   modules = {
     MockApplicationModule.class,
     MockNetworkModule.class,
-    MockProximityModule.class
+    MockProximityModule.class,
+    MockUserFactoryModule.class
   }
 )
 public interface MockAppComponent extends GlobalComponent {

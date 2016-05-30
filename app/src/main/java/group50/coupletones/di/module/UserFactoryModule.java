@@ -4,6 +4,8 @@ import dagger.Module;
 import dagger.Provides;
 import group50.coupletones.auth.user.UserFactory;
 
+import javax.inject.Singleton;
+
 /**
  * Dependency injection module to provide the Authenticator object
  *
@@ -14,6 +16,7 @@ import group50.coupletones.auth.user.UserFactory;
 public class UserFactoryModule {
 
   @Provides
+  @Singleton
   protected UserFactory provide() {
     return new UserFactory();
   }

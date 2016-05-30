@@ -14,9 +14,8 @@ public class TimeUtility {
   /**
    * @return System time
    */
-  public Date newDate() {
-    Calendar c = Calendar.getInstance();
-    return c.getTime();
+  public Long systemTime() {
+    return System.currentTimeMillis();
   }
 
   /**
@@ -24,7 +23,7 @@ public class TimeUtility {
    * @param visitedLocation The location to check the time of
    * @return true if visited location time is before 3AM, otherwise false
    */
-  public static boolean checkTime(VisitedLocationEvent visitedLocation) {
+  public boolean checkTime(VisitedLocationEvent visitedLocation) {
 
     // Get the time visited of visited location
     Date currentTime = visitedLocation.getTimeVisited();

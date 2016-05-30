@@ -4,6 +4,13 @@ import android.location.Address;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
+
+import java.sql.Time;
+
+import javax.inject.Inject;
+
+import group50.coupletones.CoupleTones;
+import group50.coupletones.util.TimeUtility;
 import group50.coupletones.util.sound.VibeTone;
 
 /**
@@ -13,6 +20,9 @@ import group50.coupletones.util.sound.VibeTone;
 //TODO: Clean up all the constructors
 @IgnoreExtraProperties
 public class FavoriteLocation implements Location {
+  @Inject
+  public TimeUtility timeUtility;
+
   private static int COOL_DOWN_TIME = 600000;
 
   private ConcreteLocation location;
@@ -22,12 +32,16 @@ public class FavoriteLocation implements Location {
   //Should only be used when loading.
   public FavoriteLocation() {
     this(null, new LatLng(0, 0), 0, null);
+    CoupleTones.global().inject(this);
+
   }
 
   public FavoriteLocation(String name, LatLng position, long timeLastVisited, VibeTone tone) {
     this.location = new ConcreteLocation(name, position);
     this.timeLastVisited = timeLastVisited;
     this.tone = tone;
+
+    CoupleTones.global().inject(this);
   }
 
   /**
@@ -109,7 +123,7 @@ public class FavoriteLocation implements Location {
    * @return true if the location is on cooldown, otherwise false.
    */
   public boolean isOnCooldown() {
-    return (System.currentTimeMillis() - timeLastVisited < COOL_DOWN_TIME);
+    return (timeUtility.systemTime() - timeLastVisited < COOL_DOWN_TIME);
   }
 
   @Override

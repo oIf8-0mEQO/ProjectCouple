@@ -1,5 +1,6 @@
 package group50.coupletones.controller.tab.favoritelocations;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,11 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.TabFragment;
 import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
+import group50.coupletones.controller.tab.partnerslocations.PartnersFavoritesFragment;
 
 import javax.inject.Inject;
 
@@ -75,10 +79,11 @@ public class FavoriteLocationsFragment extends TabFragment<Object> {
     adapter = new FavoriteLocationsListAdapter(this, getActivity());
     favesList.setAdapter(adapter);
 
+
     // Clicking on the add button will open the map fragment
     v.findViewById(R.id.add_favorite_location).setOnClickListener(evt -> {
       MainActivity act = (MainActivity) getActivity();
-      ((MapFragment)act.getTabs().get(R.id.map)).setIsUser(true);
+      ((MapFragment) act.getTabs().get(R.id.map)).setIsUser(true);
       act.setFragment(act.getTabs().get(R.id.map));
     });
 

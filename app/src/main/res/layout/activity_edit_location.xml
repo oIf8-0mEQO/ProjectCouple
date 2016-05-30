@@ -14,14 +14,22 @@
         tools:context=".MainActivity">
 
     <!-- Toolbar Settings for Settings Page -->
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:background="@color/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:layout_alignParentTop="true">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="?attr/colorPrimary"
+            app:layout_collapseMode="pin"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+        <!-- Edit Location title -->
         <ImageView
             android:src="@drawable/editlocation_title"
             android:layout_marginLeft="?attr/actionBarSize"
@@ -30,7 +38,7 @@
             android:layout_height="fill_parent"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="4dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="-5dp"
             android:layout_gravity="center" />
 
         <!-- Left side back button -->
@@ -38,11 +46,12 @@
             android:id="@+id/btn_backarrow"
             android:layout_width="?attr/actionBarSize"
             android:layout_height="?attr/actionBarSize"
-            android:layout_marginRight="15dp"
+            android:layout_marginEnd="15dp"
             android:layout_gravity="start|center_vertical"
             android:src="@drawable/back_arrow"
             style="@style/Widget.AppCompat.ActionButton" />
 
+            </FrameLayout>
     </android.support.v7.widget.Toolbar>
 
     <include layout="@layout/content_edit_location" />
@@ -64,7 +73,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="@string/location_name"
+            android:hint="@string/location_name"
             android:ems="12"
             android:id="@+id/location_name"
             android:textColor="@color/subtitleColor"
@@ -78,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="@string/location_address"
+            android:hint="@string/location_address"
             android:ems="12"
             android:id="@+id/location_address"
             android:textColor="@color/subtitleColor"

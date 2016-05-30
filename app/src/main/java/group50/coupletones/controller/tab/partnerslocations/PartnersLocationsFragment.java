@@ -56,8 +56,8 @@ public class PartnersLocationsFragment extends TabFragment<Object> {
 
     ImageButton partnerFaves;
     partnerFaves = (ImageButton) v.findViewById(R.id.partners_list_button);
-
     partnerFaves.setOnClickListener(view -> ((MainActivity) getActivity()).setFragment(new PartnersFavoritesFragment()));
+
     return v;
   }
 }

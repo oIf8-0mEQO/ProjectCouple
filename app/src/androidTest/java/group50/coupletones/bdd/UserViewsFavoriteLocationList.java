@@ -9,6 +9,7 @@ import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,8 +31,9 @@ import static org.mockito.Mockito.when;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class UserViewsFavoriteLocationList {
+
   @Rule
-  public ActivityTestRule<MainActivity> notOwnListPage = new ActivityTestRule<>(MainActivity.class);
+  public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
   private CoupleTones app;
   private LocalUser mockUser;
 
@@ -51,6 +53,7 @@ public class UserViewsFavoriteLocationList {
     when(app.isLoggedIn()).thenReturn(true);
     when(app.getLocalUser()).thenReturn(mockUser);
   }
+
   private void givenUserIsNotViewingOwnList() {
     onView(withId(R.id.partner_locations)).check(matches(isDisplayed()));
   }

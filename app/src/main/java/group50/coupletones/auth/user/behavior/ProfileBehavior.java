@@ -13,6 +13,7 @@ import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.PropertiesProvider;
 import group50.coupletones.util.properties.Property;
 
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -98,6 +99,9 @@ public class ProfileBehavior implements PropertiesProvider {
    * @return The list of visited locations of the user
    */
   public List<VisitedLocationEvent> getVisitedLocations() {
+    Calendar c = Calendar.getInstance();
+    System.out.println("Current time =&gt; "+ c.getTime());
+    
     return visitedLocations != null ? Collections.unmodifiableList(visitedLocations) : Collections.emptyList();
   }
 

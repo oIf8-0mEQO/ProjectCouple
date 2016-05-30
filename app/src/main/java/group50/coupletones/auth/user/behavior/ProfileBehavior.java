@@ -12,8 +12,6 @@ import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.PropertiesProvider;
 import group50.coupletones.util.properties.Property;
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;

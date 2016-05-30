@@ -12,6 +12,7 @@ import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 import group50.coupletones.mocker.ConcreteUserTestUtil;
 import group50.coupletones.mocker.UserTestUtil;
+import group50.coupletones.util.TimeUtility;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -61,6 +62,7 @@ public class SystemClearsLocationHistory {
 
     assertThat(userMocker.getPartner()).isNotNull();
 
+    
   }
 
   private void whenUserViewsPartnersVisitedLocations() {

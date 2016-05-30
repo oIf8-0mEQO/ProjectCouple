@@ -9,6 +9,7 @@ import group50.coupletones.util.TimeUtility;
 import javax.inject.Singleton;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
 /**
  * The mock dependency injection module that provides the main application singleton.
@@ -37,6 +38,6 @@ public class MockApplicationModule {
   @Provides
   @Singleton
   TimeUtility provideTimeUtility() {
-    return mock(TimeUtility.class);
+    return spy(TimeUtility.class);
   }
 }

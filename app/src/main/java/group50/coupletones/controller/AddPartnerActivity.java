@@ -28,6 +28,9 @@ public class AddPartnerActivity extends AppCompatActivity implements Taggable {
   @Inject
   public CoupleTones app;
 
+  @Inject
+  public UserFactory userFactory;
+
   /**
    * @param savedInstanceState
    */
@@ -61,11 +64,6 @@ public class AddPartnerActivity extends AppCompatActivity implements Taggable {
 
   private void onClickConnect(View view) {
     // Send a partner request
-    UserFactory userFactory = CoupleTones
-      .instanceComponentBuilder()
-      .build()
-      .userFactory();
-
     String email = ((EditText) findViewById(R.id.email_address)).getText().toString();
 
     userFactory

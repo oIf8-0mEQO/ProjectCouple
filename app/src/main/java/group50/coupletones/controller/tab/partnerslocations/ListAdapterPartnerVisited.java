@@ -92,7 +92,7 @@ public class ListAdapterPartnerVisited extends RecyclerView.Adapter<ListAdapterP
     holder.name.setText(visitedLocation.getName());
     holder.address.setText(visitedLocation.getAddress() != null ? visitedLocation.getAddress().getLocality() : "");
     holder.icon.setImageResource(R.drawable.target_icon);
-    holder.arrivalValue.setText(formatUtility.formatDate(visitedLocation.getTimeVisited())).;
+    holder.arrivalValue.setText(formatUtility.formatDate(visitedLocation.getTimeVisited()));
     holder.departureValue.setText(formatUtility.formatDate(visitedLocation.getTimeLeft()));
   }
 

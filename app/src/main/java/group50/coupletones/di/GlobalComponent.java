@@ -5,6 +5,7 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.GoogleAuthenticator;
 import group50.coupletones.auth.user.UserFactory;
 import group50.coupletones.auth.user.behavior.PartnerBehavior;
+import group50.coupletones.auth.user.behavior.ProfileBehavior;
 import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.controller.MainActivity;
@@ -89,5 +90,5 @@ public interface GlobalComponent {
 
   void inject(ConcreteLocation location);
 
-  void inject(TimeUtility time);
+  void inject(ProfileBehavior behavior);
 }

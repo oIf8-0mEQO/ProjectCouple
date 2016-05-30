@@ -6,6 +6,8 @@
 package group50.coupletones.auth.user.behavior;
 
 import com.google.firebase.database.GenericTypeIndicator;
+
+import group50.coupletones.CoupleTones;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.network.sync.Sync;
@@ -56,6 +58,8 @@ public class ProfileBehavior implements PropertiesProvider {
    */
   public ProfileBehavior(Properties properties, Sync sync) {
     //TODO: Use DI
+    CoupleTones.global().inject(this);
+
     this.properties = properties
       .property("id").bind(this)
       .property("name").bind(this)
@@ -109,7 +113,7 @@ public class ProfileBehavior implements PropertiesProvider {
     if (visitedLocations != null) {
       for (int i = 0; i < visitedLocations.size(); i++) {
         VisitedLocationEvent currEvent = visitedLocations.get(i);
-        if(checkTime(currEvent)) {
+        if(TimeUtility.checkTime(currEvent)) {
           visitedLocations.remove(i);
           hasChanged = true;
         }

@@ -7,7 +7,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import group50.coupletones.CoupleTones;
-import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;

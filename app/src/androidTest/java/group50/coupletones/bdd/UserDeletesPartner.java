@@ -5,12 +5,9 @@ import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.controller.MainActivity;
-import group50.coupletones.di.DaggerMockAppComponent;
-import group50.coupletones.di.MockProximityModule;
 import group50.coupletones.mocker.ConcreteUserTestUtil;
 import group50.coupletones.mocker.UserTestUtil;
 import org.junit.Before;
@@ -36,26 +33,14 @@ import static org.mockito.Mockito.verify;
 public class UserDeletesPartner {
 
   @Rule
-  public ActivityTestRule<MainActivity> rule = new ActivityTestRule(MainActivity.class){
-    @Override
-    protected void beforeActivityLaunched() {
-      super.beforeActivityLaunched();
-    }
-  };
+  public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
+
   private UserTestUtil userMocker = new ConcreteUserTestUtil();
 
   private Partner originalPartner;
 
   @Before
-  public void setup() {
-    // Mock DI
-    CoupleTones.setGlobal(
-      DaggerMockAppComponent
-        .builder()
-        .mockProximityModule(new MockProximityModule())
-        .build()
-    );
-
+  public void setUp() throws Exception {
     userMocker.injectLocalUser();
   }
 

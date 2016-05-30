@@ -20,6 +20,7 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Address
 import group50.coupletones.controller.tab.favoritelocations.map.location.ConcreteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
+import group50.coupletones.controller.tab.partnerslocations.ListAdapterPartnerVisited;
 import group50.coupletones.controller.tab.settings.SettingsFragment;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.NetworkModule;
@@ -91,4 +92,6 @@ public interface GlobalComponent {
   void inject(ConcreteLocation location);
 
   void inject(ProfileBehavior behavior);
+
+  void inject (ListAdapterPartnerVisited list);
 }

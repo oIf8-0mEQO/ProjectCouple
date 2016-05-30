@@ -1,5 +1,6 @@
 package group50.coupletones.controller.tab.favoritelocations;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,9 +10,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import group50.coupletones.R;
+import group50.coupletones.controller.MainActivity;
+import group50.coupletones.controller.tab.partnerslocations.PartnersFavoritesFragment;
 
 /**
  * Edit location activity
@@ -36,6 +40,10 @@ public class EditLocationActivity extends AppCompatActivity {
         address_text.setTypeface(pierSans);
         save_changes_text.setTypeface(pierSans);
         delete_location_text.setTypeface(pierSans);
+
+        ImageButton backButton;
+        backButton = (ImageButton) findViewById(R.id.btn_backarrow);
+        backButton.setOnClickListener(view -> finish());
     }
 
 

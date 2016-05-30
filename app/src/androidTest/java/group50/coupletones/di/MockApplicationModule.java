@@ -4,6 +4,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import dagger.Module;
 import dagger.Provides;
 import group50.coupletones.CoupleTones;
+import group50.coupletones.util.TimeUtility;
 
 import javax.inject.Singleton;
 
@@ -31,5 +32,11 @@ public class MockApplicationModule {
   @Singleton
   GoogleApiClient provideApiClient() {
     return mock(GoogleApiClient.class);
+  }
+
+  @Provides
+  @Singleton
+  TimeUtility provideTimeUtility() {
+    return mock(TimeUtility.class);
   }
 }

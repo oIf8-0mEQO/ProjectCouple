@@ -19,11 +19,15 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 /**
  * Holds the behavior of user's profile. Strategy pattern.
  */
-public class ProfileBehavior extends TimeUtility implements PropertiesProvider {
-
+public class ProfileBehavior implements PropertiesProvider {
+  @Inject
+  public TimeUtility timeUtility;
+  
   /**
    * Object responsible for syncing the object with database
    */

@@ -23,6 +23,7 @@ import group50.coupletones.di.module.NetworkModule;
 import group50.coupletones.di.module.ProximityModule;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.gcm.GcmIntentService;
+import group50.coupletones.util.TimeUtility;
 
 import javax.inject.Singleton;
 
@@ -79,4 +80,6 @@ public interface GlobalComponent {
   void inject(GcmIntentService receiver);
 
   void inject(ConcreteLocation location);
+
+  void inject(TimeUtility time);
 }

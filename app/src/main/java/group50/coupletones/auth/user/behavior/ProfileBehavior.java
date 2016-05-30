@@ -13,8 +13,10 @@ import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.PropertiesProvider;
 import group50.coupletones.util.properties.Property;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -99,10 +101,50 @@ public class ProfileBehavior implements PropertiesProvider {
    * @return The list of visited locations of the user
    */
   public List<VisitedLocationEvent> getVisitedLocations() {
-    Calendar c = Calendar.getInstance();
-    System.out.println("Current time =&gt; "+ c.getTime());
-    
-    return visitedLocations != null ? Collections.unmodifiableList(visitedLocations) : Collections.emptyList();
+    boolean hasChanged = false;
+
+    if (visitedLocations != null) {
+      for (int i = 0; i < visitedLocations.size(); i++) {
+        VisitedLocationEvent currEvent = visitedLocations.get(i);
+        if(checkTime(currEvent)) {
+          visitedLocations.remove(i);
+          hasChanged = true;
+        }
+        if (hasChanged) {
+          Property<Object> prop = properties.property("visitedLocations");
+          prop.set(this.visitedLocations);
+          sync.update(prop);
+          prop.update();
+        }
+      }
+      return visitedLocations;
+    } else {
+      return Collections.emptyList();
+    }
+  }
+
+  /**
+   * This function checks to see if the time of the visited location is before 3AM
+   * @param visitedLocation The location to check the time of
+   * @return true if visited location time is before 3AM, otherwise false
+   */
+  public static boolean checkTime(VisitedLocationEvent visitedLocation) {
+
+    // Get the time visited of visited location
+    Date currentTime = visitedLocation.getTimeVisited();
+
+    // Refer to 3AM of current day
+    Calendar reset = Calendar.getInstance();
+    reset.set(Calendar.HOUR_OF_DAY, 3);
+    reset.set(Calendar.MINUTE, 00);
+    Date resetTime = reset.getTime();
+
+    boolean b = false;
+
+    if (currentTime.before(resetTime)) {
+      b = true;
+    }
+    return b;
   }
 
   /**

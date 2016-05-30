@@ -84,8 +84,8 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
     // React to partner location edits
     FavoriteLocation location = locations.get(position);
     holder.name.setText(location.getName());
-    holder.address.setText(location.getAddress() != null ? location.getAddress().getLocality() : "");
-    holder.icon.setImageResource(R.drawable.target_icon);
+    holder.address.setText(location.getAddress().getLocality());
+    holder.icon.setImageResource(R.drawable.partnerfave_icon);
     //TODO: Add
     // holder.vibeTone.setText(location.getTone());
   }

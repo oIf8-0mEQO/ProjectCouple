@@ -81,6 +81,8 @@ public class FavoriteLocationsFragment extends TabFragment<Object> {
       ((MapFragment)act.getTabs().get(R.id.map)).setIsUser(true);
       act.setFragment(act.getTabs().get(R.id.map));
     });
+
+
     return v;
   }
 }

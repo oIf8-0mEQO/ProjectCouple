@@ -83,7 +83,8 @@ public class ListAdapterPartnerVisited extends RecyclerView.Adapter<ListAdapterP
     holder.name.setText(visitedLocation.getName());
     holder.address.setText(visitedLocation.getAddress() != null ? visitedLocation.getAddress().getLocality() : "");
     holder.icon.setImageResource(R.drawable.target_icon);
-    holder.timeValue.setText(visitedLocation.getTimeVisited().toString());
+    holder.arrivalValue.setText(visitedLocation.getTimeVisited().toString());
+    holder.departureValue.setText(visitedLocation.getTimeLeft().toString());
   }
 
   /**
@@ -101,7 +102,7 @@ public class ListAdapterPartnerVisited extends RecyclerView.Adapter<ListAdapterP
    */
   class ListViewHolder extends RecyclerView.ViewHolder {
 
-    private TextView name, address, timeValue;
+    private TextView name, address, arrivalValue, departureValue;
     private ImageView icon;
     private View container;
     private CardView cv;
@@ -117,7 +118,8 @@ public class ListAdapterPartnerVisited extends RecyclerView.Adapter<ListAdapterP
       name = (TextView) itemView.findViewById(R.id.list_item_name);
       address = (TextView) itemView.findViewById(R.id.list_item_address);
       icon = (ImageView) itemView.findViewById(R.id.list_item_icon);
-      timeValue = (TextView) itemView.findViewById(R.id.list_item_time);
+      arrivalValue = (TextView) itemView.findViewById(R.id.list_item_arrival);
+      departureValue = (TextView) itemView.findViewById(R.id.list_item_departure);
       container = itemView.findViewById(R.id.list_item);
     }
   }

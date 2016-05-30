@@ -65,7 +65,7 @@ public class UserViewsPartnerFavoriteLocations {
 
   private void thenUserSeesPartnerFavoriteLocations() {
     onView(withId(R.id.partner_locations)).check(matches(isDisplayed()));
-    onView(withId(R.id.partner_locations)).check(matches(hasDescendant(withText("name"))));
+    onView(withId(R.id.partners_static_list)).check(matches(hasDescendant(withText("name"))));
   }
 
   @Test

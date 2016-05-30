@@ -143,7 +143,7 @@ public class ProfileBehavior implements PropertiesProvider {
       favoriteLocations.remove(location);
 
       Property<Object> prop = properties.property("favoriteLocations");
-      prop.set(this.visitedLocations);
+      prop.set(this.favoriteLocations);
       sync.update(prop);
       prop.update();
     }

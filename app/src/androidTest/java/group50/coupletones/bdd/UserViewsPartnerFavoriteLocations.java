@@ -22,6 +22,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
+import static org.mockito.Mockito.doAnswer;
 
 /**
  * @author Joseph
@@ -50,9 +51,11 @@ public class UserViewsPartnerFavoriteLocations {
       .mockProperty("name", "Henry")
       .mockProperty("email", "henry@email.com");
 
-    userTestUtil
-      .mockPartner()
-      .mockFavoriateLocations(() -> locationList);
+    userTestUtil.injectSpyPartner();
+
+    doAnswer(act -> locationList)
+      .when(userTestUtil.getPartner())
+      .getFavoriteLocations();
   }
 
   private void givenUserNotOnPartnerFavoriteLocationList() {

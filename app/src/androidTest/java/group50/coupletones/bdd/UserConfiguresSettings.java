@@ -31,7 +31,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.*;
 public class UserConfiguresSettings {
   @Rule
   public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
-  private UserTestUtil userMocker = new ConcreteUserTestUtil();
+  private UserTestUtil testUtil = new ConcreteUserTestUtil();
 
   @Before
   public void setup() {
@@ -43,24 +43,21 @@ public class UserConfiguresSettings {
         .build()
     );
 
-    userMocker.injectLocalUser();
+    testUtil.injectLocalUser();
   }
 
   private void givenUserNotConnectedToPartner() {
-    userMocker.mockNoPartner();
-    userMocker.mockProperty("name");
-    userMocker.mockProperty("email");
+    testUtil.injectNoPartner();
+    testUtil.mockProperty("name");
+    testUtil.mockProperty("email");
   }
 
   private void givenUserConnectedToPartner() {
-    userMocker
+    testUtil
       .mockProperty("name", "Henry")
       .mockProperty("email", "henry@email.com");
 
-    userMocker
-      .mockPartner()
-      .mockProperty("name", "Sharmaine")
-      .mockProperty("email", "sharmaine@email.com");
+    testUtil.injectSpyPartner();
   }
 
   private void whenOpenSettingsPage() {

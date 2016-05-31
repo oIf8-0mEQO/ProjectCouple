@@ -20,9 +20,7 @@ import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.LocationClickHandler;
 import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.di.DaggerMockAppComponent;
-import group50.coupletones.di.MockProximityModule;
-import group50.coupletones.mocker.MockUserTestUtil;
+import group50.coupletones.mocker.ConcreteUserTestUtil;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -57,20 +55,12 @@ public class UserAddsFavoriteLocations {
     @Override
     protected void beforeActivityLaunched() {
       super.beforeActivityLaunched();
-      // Mock DI
-      CoupleTones.setGlobal(
-        DaggerMockAppComponent
-          .builder()
-          .mockProximityModule(new MockProximityModule())
-          .build()
-      );
-
       app = CoupleTones.global().app();
 
       // Mock the local user
-      mockUser = (LocalUser) new MockUserTestUtil()
+      mockUser = (LocalUser) new ConcreteUserTestUtil()
         .injectLocalUser()
-        .mockFavoriateLocations(() -> Collections.unmodifiableList(favLocations))
+        .mockFavoriteLocations(() -> Collections.unmodifiableList(favLocations))
         .mockFavoriteLocationsAdd(favLocations::add)
         .get();
     }

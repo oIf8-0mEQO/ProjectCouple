@@ -57,6 +57,10 @@ public class ProfileBehavior implements PropertiesProvider {
       .property("favoriteLocations")
       .mark(new GenericTypeIndicator<List<FavoriteLocation>>() {
       })
+      .bind(this)
+      .property("visitedLocations")
+      .mark(new GenericTypeIndicator<List<VisitedLocationEvent>>() {
+      })
       .bind(this);
 
     this.sync = sync;
@@ -139,7 +143,7 @@ public class ProfileBehavior implements PropertiesProvider {
       favoriteLocations.remove(location);
 
       Property<Object> prop = properties.property("favoriteLocations");
-      prop.set(this.visitedLocations);
+      prop.set(this.favoriteLocations);
       sync.update(prop);
       prop.update();
     }

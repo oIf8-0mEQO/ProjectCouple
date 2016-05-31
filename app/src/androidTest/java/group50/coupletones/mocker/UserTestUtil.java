@@ -45,6 +45,10 @@ public abstract class UserTestUtil {
       .thenReturn(true);
     when(CoupleTones.global().app().getLocalUser())
       .thenReturn((LocalUser) user);
+
+    // By default, inject a fake user name
+    mockProperty("name", "Henry");
+    mockProperty("email", "henry@email.com");
     return this;
   }
 

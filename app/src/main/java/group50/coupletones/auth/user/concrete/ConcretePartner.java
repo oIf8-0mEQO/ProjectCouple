@@ -9,6 +9,7 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Visited
 import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.properties.ConcreteProperties;
 import group50.coupletones.util.properties.Properties;
+import group50.coupletones.util.properties.Property;
 import rx.Observable;
 
 import java.util.List;
@@ -27,14 +28,34 @@ public class ConcretePartner implements Partner {
   private final ProfileBehavior profile;
   private final PartnerRequestBehavior request;
 
+  private String partnerId;
+
+  private Sync sync;
+
   /**
    * @param sync The object handling synchronizing partner data
    */
   public ConcretePartner(Sync sync) {
     properties = new ConcreteProperties();
-    profile = new ProfileBehavior(properties);
-    request = new PartnerRequestBehavior(properties);
+    profile = new ProfileBehavior(properties, sync);
+    request = new PartnerRequestBehavior(properties, sync);
+    properties.property("partnerId").bind(this);
     sync.watchAll(properties);
+    this.sync = sync;
+  }
+
+  @Override
+  public String getPartnerId() {
+    return partnerId;
+  }
+
+  @Override
+  public void setPartnerId(String partnerId) {
+    // Set partner id to this partner.
+    this.partnerId = partnerId;
+    Property<Object> prop = properties.property("partnerId");
+    sync.update(prop);
+    prop.update();
   }
 
   @Override
@@ -58,7 +79,9 @@ public class ConcretePartner implements Partner {
   }
 
   @Override
-  public List<VisitedLocationEvent> getVisitedLocations() { return profile.getVisitedLocations(); }
+  public List<VisitedLocationEvent> getVisitedLocations() {
+    return profile.getVisitedLocations();
+  }
 
   @Override
   public void requestPartner(User requester) {
@@ -72,6 +95,6 @@ public class ConcretePartner implements Partner {
 
   @Override
   public Observable<User> load() {
-    return Observable.combineLatest(properties.allObservables(), args -> this);
+    return Observable.zip(properties.allObservables(), args -> this);
   }
 }

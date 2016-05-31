@@ -8,13 +8,13 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.partnerslocations.PartnersLocationsFragment;
 import group50.coupletones.controller.tab.settings.SettingsFragment;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
+import group50.coupletones.mocker.ConcreteUserTestUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,8 +25,6 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Henry Mao
@@ -79,8 +77,10 @@ public class UserNavigatesWithMainMenu extends ActivityInstrumentationTestCase2<
 
   private void givenThatIAmLoggedIn() {
     // Stub getLocalUser method
-    when(CoupleTones.global().app().getLocalUser())
-      .thenReturn(mock(LocalUser.class));
+    new ConcreteUserTestUtil()
+      .injectLocalUser()
+      .mockProperty("name", "Henry")
+      .mockProperty("email", "henry@email.com");
   }
 
   private void whenITapOnPartnersLocation() {

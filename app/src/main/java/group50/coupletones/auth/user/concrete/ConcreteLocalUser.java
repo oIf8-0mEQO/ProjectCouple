@@ -32,16 +32,15 @@ public class ConcreteLocalUser implements LocalUser {
   private final PartnerBehavior partnerBehavior;
 
   public ConcreteLocalUser(Sync sync) {
-    //TODO: Use DI
     properties = new ConcreteProperties();
-    profileBehavior = new ProfileBehavior(properties);
-    requestBehavior = new PartnerRequestBehavior(properties);
-    partnerBehavior = new PartnerBehavior(properties, requestBehavior);
+    profileBehavior = new ProfileBehavior(properties, sync);
+    requestBehavior = new PartnerRequestBehavior(properties, sync);
+    partnerBehavior = new PartnerBehavior(properties, this, sync, requestBehavior);
     sync.watchAll(properties);
   }
 
   @Override
-  public Partner getPartner() {
+  public Observable<Partner> getPartner() {
     return partnerBehavior.getPartner();
   }
 
@@ -101,17 +100,12 @@ public class ConcreteLocalUser implements LocalUser {
   }
 
   @Override
-  public Observable<User> getPartnerObservable() {
-    return partnerBehavior.getPartnerObservable();
-  }
-
-  @Override
   public Properties getProperties() {
     return properties;
   }
 
   @Override
   public Observable<User> load() {
-    return Observable.combineLatest(properties.allObservables(), args -> this);
+    return Observable.zip(properties.allObservables(), args -> this);
   }
 }

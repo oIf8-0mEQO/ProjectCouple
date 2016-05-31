@@ -56,7 +56,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
     // Register an observer that updates the map as the user moves
-    proximityManager.register(location -> moveMap(location.getPosition()));
+    proximityManager.getEnterSubject().subscribe(location -> moveMap(location.getPosition()));
   }
 
   /**
@@ -155,8 +155,7 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
   /**
    * @param user true if the map represents the users data, false if the map represents partner data.
    */
-  public void setIsUser(boolean user)
-  {
+  public void setIsUser(boolean user) {
     this.isUser = user;
     clickListener.setIsDisabled(!user);
   }
@@ -186,24 +185,32 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
   @Override
   public void onResume() {
     super.onResume();
-    if (mMap != null)
+    if (mMap != null) {
       populateMap();
+    }
+  }
+
+  public void populateMap() {
+    if (isUser)
+      populateMap(app.getLocalUser());
+    else
+      app.getLocalUser().getPartner().subscribe(this::populateMap);
   }
 
   /**
    * Draws all of the favorited locations as markers on the map.
    */
-  public void populateMap() {
-    User user;
-    if (isUser) user = app.getLocalUser();
-    else user = app.getLocalUser().getPartner();
+  private void populateMap(User user) {
     mMap.clear();
-    MarkerOptions markerSettings = new MarkerOptions();
-    markerSettings.draggable(false);
-    for (group50.coupletones.controller.tab.favoritelocations.map.location.Location i : user.getFavoriteLocations()) {
-      markerSettings.position(i.getPosition());
-      markerSettings.title(i.getName());
-      mMap.addMarker(markerSettings);
+
+    if (user != null) {
+      MarkerOptions markerSettings = new MarkerOptions();
+      markerSettings.draggable(false);
+      for (group50.coupletones.controller.tab.favoritelocations.map.location.Location i : user.getFavoriteLocations()) {
+        markerSettings.position(i.getPosition());
+        markerSettings.title(i.getName());
+        mMap.addMarker(markerSettings);
+      }
     }
   }
 }

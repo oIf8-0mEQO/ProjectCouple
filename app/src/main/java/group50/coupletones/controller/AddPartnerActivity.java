@@ -9,9 +9,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
+import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.UserFactory;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.util.Taggable;
+import rx.schedulers.Schedulers;
 
 import javax.inject.Inject;
 
@@ -25,6 +27,9 @@ public class AddPartnerActivity extends AppCompatActivity implements Taggable {
 
   @Inject
   public CoupleTones app;
+
+  @Inject
+  public UserFactory userFactory;
 
   /**
    * @param savedInstanceState
@@ -59,20 +64,17 @@ public class AddPartnerActivity extends AppCompatActivity implements Taggable {
 
   private void onClickConnect(View view) {
     // Send a partner request
-    UserFactory userFactory = CoupleTones
-      .instanceComponentBuilder()
-      .build()
-      .userFactory();
-
     String email = ((EditText) findViewById(R.id.email_address)).getText().toString();
 
     userFactory
       .withEmail(email)  // Get user by email
+      .subscribeOn(Schedulers.newThread())
+      .flatMap(buildable -> buildable.build().load())
       .subscribe(
-        buildable -> {
+        partner -> {
           // Found user! Set the email
           Toast.makeText(AddPartnerActivity.this, "Request sent.", Toast.LENGTH_SHORT).show();
-          buildable.build().requestPartner(app.getLocalUser());
+          ((Partner) partner).requestPartner(app.getLocalUser());
           finish();
         },
         // User does not exist.

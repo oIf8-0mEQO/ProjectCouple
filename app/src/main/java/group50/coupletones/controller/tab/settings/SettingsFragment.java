@@ -13,6 +13,7 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.user.LocalUser;
+import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
@@ -160,9 +161,9 @@ public class SettingsFragment extends TabFragment<Object> {
     );
 
     CompositeSubscription partnerSubs = new CompositeSubscription();
-    Observable<User> partnerObservable = localUser.getPartnerObservable();
+    Observable<Partner> partnerObservable = localUser.getPartner();
 
-    // When partner is not null, then render all the partner related UI
+    // Partner not null
     subs.add(
       partnerObservable
         .filter(partner -> partner != null)
@@ -175,10 +176,12 @@ public class SettingsFragment extends TabFragment<Object> {
           add_partner_button.setVisibility(View.INVISIBLE);
 
           //Observe partner data
+          partnerName.setText(partner.getName());
           Subscription nameChange = partner
             .observable("name", String.class)
             .subscribe(partnerName::setText);
 
+          partnerEmail.setText(partner.getEmail());
           Subscription emailChange = partner
             .observable("email", String.class)
             .subscribe(partnerEmail::setText);
@@ -190,11 +193,12 @@ public class SettingsFragment extends TabFragment<Object> {
         })
     );
 
-    // When the partner is null
+    // Partner null
     subs.add(
       partnerObservable
         .filter(partner -> partner == null)
         .subscribe(partner -> {
+
           add_partner_button.setVisibility(View.VISIBLE);
           partnerNameText.setVisibility(View.INVISIBLE);
           partnerName.setVisibility(View.INVISIBLE);
@@ -242,6 +246,12 @@ public class SettingsFragment extends TabFragment<Object> {
   public void onStop() {
     super.onStop();
     auth.disconnect();
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
     subs.unsubscribe();
+    subs.clear();
   }
 }

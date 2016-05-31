@@ -46,18 +46,16 @@ public interface LocalUser extends User {
   void handlePartnerRequest(String partnerId, boolean accept);
 
   /**
-   * @return The partner of the user
+   * Gets the partner of the local user.
+   * The partner could be null, if this user does not have a partner.
+   * The Observable completes when the partner object is fully loaded.
+   * @return The observable of the user's partner.
    */
-  Partner getPartner();
+  Observable<Partner> getPartner();
 
   /**
    * Sets the partner
    * @param id The partner's user id to set
    */
   void setPartner(String id);
-
-  /**
-   * @return An observable that notifies when the partner changes.
-   */
-  Observable<User> getPartnerObservable();
 }

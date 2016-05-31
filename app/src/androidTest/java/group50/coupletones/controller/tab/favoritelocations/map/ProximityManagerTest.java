@@ -11,7 +11,6 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Visited
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 import group50.coupletones.util.sound.VibeTone;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,7 +62,7 @@ public class ProximityManagerTest {
 
     proximity = new MapProximityManager(CoupleTones.global().app());
     mockObserver = mock(ProximityObserver.class);
-    proximity.register(mockObserver);
+    proximity.getEnterSubject().subscribe(mockObserver::onLocationChange);
   }
 
   //TODO: Organize this test into edge case, normal case, error case
@@ -78,7 +77,7 @@ public class ProximityManagerTest {
     loc.setLatitude(10.0);
     loc.setLongitude(10.0);
     proximity.onLocationChanged(loc);
-    verify(mockObserver, never()).onEnterLocation(anyObject());
+    verify(mockObserver, never()).onLocationChange(anyObject());
   }
 
   @Test
@@ -87,7 +86,19 @@ public class ProximityManagerTest {
     loc.setLatitude(32.880351);
     loc.setLongitude(-117.236578);
     proximity.onLocationChanged(loc);
-    verify(mockObserver).onEnterLocation(anyObject());
+    verify(mockObserver, times(1)).onLocationChange(anyObject());
+  }
+
+  @Test
+  public void testNotificationNearbyMultipleTimes() {
+    //Normal case - should pass
+    loc.setLatitude(32.880351);
+    loc.setLongitude(-117.236578);
+    proximity.onLocationChanged(loc);
+    proximity.onLocationChanged(loc);
+    proximity.onLocationChanged(loc);
+    proximity.onLocationChanged(loc);
+    verify(mockObserver, times(1)).onLocationChange(anyObject());
   }
 
   @Test
@@ -96,12 +107,12 @@ public class ProximityManagerTest {
       int count = 0;
 
       @Override
-      public void onEnterLocation(VisitedLocationEvent location) {
+      public void onLocationChange(VisitedLocationEvent location) {
         assert (count == 0);
         count++;
       }
     };
-    proximity.register(observer);
+    proximity.getEnterSubject().subscribe(observer::onLocationChange);
     FavoriteLocation shouldNotifyOnce = new FavoriteLocation();
     proximity.onEnterLocation(shouldNotifyOnce);
     proximity.onEnterLocation(shouldNotifyOnce);

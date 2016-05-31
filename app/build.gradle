@@ -22,7 +22,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "group50.coupletones.InjectionTestRunner"
     }
 
     buildTypes {
@@ -113,8 +113,9 @@ dependencies {
     androidTestCompile 'junit:junit:4.12'
     androidTestCompile 'org.assertj:assertj-core:2.4.1'
     androidTestCompile "org.mockito:mockito-core:1.+"
-    androidTestCompile 'com.google.dexmaker:dexmaker:1.2'
-    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
+    androidTestCompile "com.crittercism.dexmaker:dexmaker:1.4"
+    androidTestCompile "com.crittercism.dexmaker:dexmaker-dx:1.4"
+    androidTestCompile "com.crittercism.dexmaker:dexmaker-mockito:1.4"
 
     // Set this dependency to build and run UI Automator tests
     androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'

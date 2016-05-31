@@ -1,23 +1,25 @@
 package group50.coupletones.controller;
 
-import android.support.test.InstrumentationRegistry;
+import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.widget.Button;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
-import group50.coupletones.network.NetworkManager;
-import group50.coupletones.network.message.OutgoingMessage;
+import group50.coupletones.mocker.ConcreteUserTestUtil;
+import group50.coupletones.mocker.UserTestUtil;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author Calvin
@@ -25,21 +27,15 @@ import static org.mockito.Mockito.*;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class AddPartnerActivityTest extends ActivityInstrumentationTestCase2<AddPartnerActivity> {
+public class AddPartnerActivityTest {
+  @Rule
+  public ActivityTestRule<AddPartnerActivity> rule = new ActivityTestRule<>(AddPartnerActivity.class);
 
-  public NetworkManager network;
   public CoupleTones app;
-  private AddPartnerActivity activity;
-
-  public AddPartnerActivityTest() {
-    super(AddPartnerActivity.class);
-  }
+  private UserTestUtil testUtil;
 
   @Before
-  @Override
-  public void setUp() throws Exception {
-    super.setUp();
-
+  public void setUp() {
     CoupleTones.setGlobal(
       DaggerMockAppComponent
         .builder()
@@ -47,27 +43,19 @@ public class AddPartnerActivityTest extends ActivityInstrumentationTestCase2<Add
         .build());
 
     // Stub getLocalUser method
-    when(CoupleTones.global().app().getLocalUser()).thenReturn(mock(LocalUser.class));
+    testUtil =
+      new ConcreteUserTestUtil()
+        .injectLocalUser();
 
-    injectInstrumentation(InstrumentationRegistry.getInstrumentation());
+    testUtil.injectSpyPartner();
   }
 
   /**
    * Test the login button click and if it calls sign in for the authenticator
    */
   @Test
-  public void testOnClick() {
-    activity = getActivity();
-
-    activity.runOnUiThread(() -> {
-      OutgoingMessage mockMessage = mock(OutgoingMessage.class);
-      when(mockMessage.getString("partner")).thenReturn("rah005@ucsd.edu");
-      network = CoupleTones.global().network();
-
-      Button button = (Button) activity.findViewById(R.id.connect_button);
-      button.performClick();
-      // Verify sign in is called
-      verify(network).send(any());
-    });
+  public void testOnClick() throws Throwable {
+    onView(withId(R.id.connect_button)).perform(click());
+    verify(testUtil.getPartner(), times(1)).requestPartner(any());
   }
 }

@@ -3,7 +3,6 @@ package group50.coupletones.network.sync;
 import android.util.Log;
 import com.google.firebase.database.*;
 import group50.coupletones.util.properties.Properties;
-import group50.coupletones.util.properties.PropertiesProvider;
 import group50.coupletones.util.properties.Property;
 
 import java.util.Collection;
@@ -30,8 +29,9 @@ public class FirebaseSync implements Sync {
   }
 
   protected void verify() {
-    if (ref == null)
+    if (ref == null) {
       throw new IllegalStateException("Database reference is null.");
+    }
   }
 
   @Override
@@ -52,59 +52,49 @@ public class FirebaseSync implements Sync {
 
     // When Firebase changes for this property, we want to know about it.
     listeners.add(
-      ref.child(property.name())
-        .addValueEventListener(new ValueEventListener() {
-          @Override
-          public void onDataChange(DataSnapshot dataSnapshot) {
-            Log.v("FirebaseSync", "Receive " + property.name() + " => " + dataSnapshot.getValue());
-            ((Property) property).observable().onNext(dataSnapshot.getValue());
+      ref.child(property.name()).addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+          Property castProp = (Property) property;
+          Log.v("FirebaseSync", "Receiving " + property.name() + " = " + dataSnapshot.getValue());
+          if (property.getIndicator() != null) {
+            castProp.set(dataSnapshot.getValue(property.getIndicator()));
+          } else {
+            castProp.set(dataSnapshot.getValue());
           }
 
-          @Override
-          public void onCancelled(DatabaseError databaseError) {
-            throw databaseError.toException();
-          }
-        })
-    );
-
-    // When the property changes, we want to tell update Firebase about it
-
-    // Primitive datatype syncing
-    property
-      .observable()
-      .filter(obj -> obj instanceof String)
-      .filter(obj -> obj instanceof Integer)
-      .filter(obj -> obj instanceof Float)
-      .filter(obj -> obj instanceof Double)
-      .distinct()
-      .subscribe(value -> {
-        Log.v("FirebaseSync", "Send [primitive] " + property.name() + " with " + value);
-        ref.child(property.name()).setValue(value);
-      });
-
-    property
-      .observable()
-      .filter(obj -> obj instanceof List)
-      .distinct()
-      .subscribe(value -> {
-        Log.v("FirebaseSync", "Send [list] " + property.name() + " with " + value);
-
-        // TODO: Depending on property type, subscribe differently.
-        if (value instanceof PropertiesProvider) {
+          castProp.update();
         }
-        ref.child(property.name()).setValue(value);
-      });
 
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+          throw databaseError.toException();
+        }
+      })
+    );
+    return this;
+  }
+
+  /**
+   * Sends an update to the server
+   *
+   * @param property The property
+   * @return Self instance
+   */
+  @Override
+  public Sync update(Property property) {
+    Log.v("FirebaseSync", "Sending " + property.name() + " = " + property.get());
+    ref.child(property.name()).setValue(property.get());
     return this;
   }
 
   @Override
-  public Sync parent() {
+  public FirebaseSync parent() {
     return new FirebaseSync(ref.getParent());
   }
 
   @Override
-  public Sync child(String name) {
+  public FirebaseSync child(String name) {
     return new FirebaseSync(ref.child(name));
   }
 

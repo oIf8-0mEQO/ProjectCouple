@@ -2,12 +2,16 @@ package group50.coupletones.auth.user.behavior;
 
 import android.util.Log;
 import group50.coupletones.CoupleTones;
+import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.Partner;
-import group50.coupletones.auth.user.User;
+import group50.coupletones.auth.user.UserFactory;
+import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.PropertiesProvider;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
+
+import javax.inject.Inject;
 
 /**
  * Provides the behavior for handling the local user's partner
@@ -15,38 +19,60 @@ import rx.subjects.BehaviorSubject;
  * @author Henry Mao
  */
 public class PartnerBehavior implements PropertiesProvider {
+
   /**
    * Object responsible for syncing the object with database
    */
   private final Properties properties;
-
   private final PartnerRequestBehavior requestBehavior;
-
+  private final LocalUser localUser;
+  private final Sync sync;
+  @Inject
+  public UserFactory userFactory;
   /**
-   * A subject that can be watched. Helps notify partner change.
+   * User's partner cache
    */
-  private BehaviorSubject<User> partnerSubject = BehaviorSubject.create();
+  private BehaviorSubject<Partner> partnerCache = BehaviorSubject.create();
 
-  /**
-   * User's partner
-   */
-  private Partner partner;
+  private String partnerId;
 
-  public PartnerBehavior(Properties properties, PartnerRequestBehavior requestBehavior) {
+  public PartnerBehavior(Properties properties, LocalUser localUser, Sync sync, PartnerRequestBehavior requestBehavior) {
+    CoupleTones.global().inject(this);
+
     this.properties = properties
       .property("partnerId", String.class)
-      .setter(this::resetPartner)                             // Sets the partner object based on ID.
-      .getter(() -> partner != null ? partner.getId() : null) // Gets the partner ID.
-      .bind();
+      .setter(newId -> {
+        partnerId = newId;
+        Log.v("PartnerBehavior", "Setting partnerId =" + partnerId);
+        // Check last partner cache.
+        if (partnerId != null) {
+          // Partner has changed
+          Log.v("PartnerBehavior", "Loading partner async = " + partnerId);
+          userFactory
+            .withId(partnerId)
+            .build()
+            .load()
+            .subscribe(x -> partnerCache.onNext((Partner) x));
+        } else {
+          Log.v("PartnerBehavior", "Loading partner null = " + partnerId);
+          partnerCache.onNext(null);
+        }
+      })
+      .getter(() -> partnerId)
+      .bind(this);
 
+    this.localUser = localUser;
     this.requestBehavior = requestBehavior;
+    this.sync = sync;
   }
 
   /**
-   * @return The partner of the user
+   * Partner may not have been loaded.
+   *
+   * @return The partner of the user.
    */
-  public Partner getPartner() {
-    return partner;
+  public Observable<Partner> getPartner() {
+    return partnerCache;
   }
 
   /**
@@ -55,9 +81,18 @@ public class PartnerBehavior implements PropertiesProvider {
    * @param partnerId The partner's ID to set
    */
   public void setPartner(String partnerId) {
-    properties
-      .property("partnerId")
-      .set(partnerId);
+    if (this.partnerId != null && partnerId == null) {
+      // Two way disconnection
+      getPartner()
+        .filter(p -> p != null)
+        .first()
+        .subscribe(partner -> {
+          partner.setPartnerId(null);
+        });
+    }
+    Log.v("PartnerBehavior", "setPartner = " + partnerId);
+    properties.property("partnerId").set(partnerId);
+    sync.update(properties.property("partnerId"));
   }
 
   /**
@@ -67,40 +102,21 @@ public class PartnerBehavior implements PropertiesProvider {
    * @param accept    True if accept, false if reject
    */
   public void handlePartnerRequest(String partnerId, boolean accept) {
-    if (accept) {
-      setPartner(partnerId);
-    }
-
+    Log.v("PartnerBehavior", "handleRequest = " + partnerId);
     requestBehavior.removeRequest(partnerId);
-  }
-
-  /**
-   * Lazy initialize or destroy partner from ID
-   */
-  private void resetPartner(String partnerId) {
-    if (partnerId != null) {
-      // An update has occurred. Attempt to reconstruct the partner object.
-      if (partner == null || !partnerId.equals(partner.getId())) {
-        // Partner has changed
-        partner = CoupleTones
-          .instanceComponentBuilder()
-          .build()
-          .userFactory()
-          .withId(partnerId)
-          .build();
-
-        partnerSubject.onNext(partner);
-        Log.d("ConcreteUser", this + " Notify " + partnerId);
-      }
-    } else if (partner != null) {
-      partner = null;
-      partnerSubject.onNext(null);
-      Log.d("ConcreteUser", this + " Notify " + partnerId);
+    if (accept) {
+      Log.v("PartnerBehavior", "One way = " + partnerId);
+      // Two way partnering
+      setPartner(partnerId);
+      // Wait for partner to load
+      getPartner()
+        .filter(p -> p != null)
+        .first()
+        .subscribe(partner -> {
+          Log.v("PartnerBehavior", "Two way = " + partnerId);
+          partner.setPartnerId(localUser.getId());
+        });
     }
-  }
-
-  public Observable<User> getPartnerObservable() {
-    return partnerSubject.startWith(partner);
   }
 
   @Override

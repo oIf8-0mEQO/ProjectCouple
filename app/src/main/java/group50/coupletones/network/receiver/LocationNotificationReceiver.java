@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
+import group50.coupletones.auth.user.Partner;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.network.message.Message;
 import group50.coupletones.network.message.MessageReceiver;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.util.Identifiable;
+import rx.Observable;
 
 /**
  * @author Sharmaine Manalo
@@ -26,6 +28,7 @@ public class LocationNotificationReceiver implements MessageReceiver, Identifiab
 
   /**
    * Location Notification Receiver
+   *
    * @param app - Coupletones
    */
   public LocationNotificationReceiver(CoupleTones app, Context context) {
@@ -35,6 +38,7 @@ public class LocationNotificationReceiver implements MessageReceiver, Identifiab
 
   /**
    * onReceive for location notification
+   *
    * @param message - The incoming message object that
    *                contains data from the server
    */
@@ -42,18 +46,26 @@ public class LocationNotificationReceiver implements MessageReceiver, Identifiab
   public void onReceive(Message message) {
     Notification notification = new Notification(context);
     notification.setTitle(context.getString(R.string.app_name));
-    notification.setMsg(app.getLocalUser().getPartner().getName() + " " +
-        context.getString(R.string.partner_visited_text) + " " + message.getString("name"));
+    Observable<Partner> partnerObserver = app.getLocalUser().getPartner();
+    partnerObserver
+      .subscribe(partner -> {
+        notification.setMsg(
+          partner.getName() + " " +
+            context.getString(R.string.partner_visited_text) + " " +
+            message.getString("name")
+        );
 
-    Intent intent = new Intent(context, MainActivity.class);
-    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-    notification.setIntent(intent);
-    notification.show();
+        notification.setIntent(intent);
+        notification.show();
+      });
   }
 
   /**
    * Gets the ID of notification
+   *
    * @return - String of notification
    */
   @Override

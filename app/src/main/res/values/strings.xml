@@ -22,7 +22,8 @@
     <string name="disconnect">Disconnect with Partner</string>
     <string name="location_name">Location Name</string>
     <string name="location_address">Address</string>
-    <string name="location_time">Visited Time</string>
+    <string name="arrival_time">Arrival Time</string>
+    <string name="departure_time">Departure Time</string>
     <string name="save_changes">Save Changes</string>
     <string name="delete_location">Delete Location</string>
     <string name="title_activity_edit_location">EditLocationActivity</string>

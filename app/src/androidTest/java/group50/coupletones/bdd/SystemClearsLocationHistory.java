@@ -2,20 +2,32 @@ package group50.coupletones.bdd;
 
 import android.support.test.rule.ActivityTestRule;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import group50.coupletones.CoupleTones;
+import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 import group50.coupletones.mocker.ConcreteUserTestUtil;
 import group50.coupletones.mocker.UserTestUtil;
 import group50.coupletones.util.TimeUtility;
+import group50.coupletones.util.sound.VibeTone;
 
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
 
 /**
  * @author Sharmaine Manalo
@@ -24,22 +36,16 @@ import static org.mockito.Mockito.when;
 public class SystemClearsLocationHistory {
   @Rule
   public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
-  private CoupleTones app;
   private UserTestUtil userMocker = new ConcreteUserTestUtil();
+  TimeUtility timeUtility;
 
   @Before
   public void setup() {
-    // Mock DI
-    CoupleTones.setGlobal(
-        DaggerMockAppComponent
-            .builder()
-            .mockProximityModule(new MockProximityModule())
-            .build()
-    );
-
-    app = CoupleTones.global().app();
-    when(app.isLoggedIn()).thenReturn(true);
-
+    LatLng position = new LatLng(10, 10);
+    /*VisitedLocationEvent visitedLocation =
+    List<FavoriteLocation> locationList = new LinkedList<>();
+    locationList.add(partnerFavorite);*/
+    timeUtility = CoupleTones.global().timeUtility();
     userMocker.injectLocalUser();
   }
 
@@ -53,7 +59,8 @@ public class SystemClearsLocationHistory {
   private void givenThatUserHasPartnerAndViewsListBefore3AM() {
     userMocker
         .mockProperty("name", "Henry")
-        .mockProperty("email", "henry@email.com");
+        .mockProperty("email", "henry@email.com")
+        .mockProperty("visitedLocations", )
 
     userMocker
         .mockPartner()
@@ -62,15 +69,15 @@ public class SystemClearsLocationHistory {
 
     assertThat(userMocker.getPartner()).isNotNull();
 
-    
+    doReturn(150).when(timeUtility).systemTime();
   }
 
   private void whenUserViewsPartnersVisitedLocations() {
-
+    onView(withId(R.id.partner_locations)).perform(click());
   }
 
   private void thenAppDisplaysListofPartnersVisitedLocationsSinceLast3AM() {
-
+    onView(withId(R.id.partner_locations)).perform(click());
   }
 
   @Test

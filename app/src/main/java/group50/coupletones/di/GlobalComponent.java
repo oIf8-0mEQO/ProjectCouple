@@ -59,6 +59,8 @@ public interface GlobalComponent {
 
   UserFactory userFactory();
 
+  TimeUtility timeUtility();
+
   void inject(PartnerBehavior obj);
 
   void inject(FavoriteLocationsListAdapter obj);

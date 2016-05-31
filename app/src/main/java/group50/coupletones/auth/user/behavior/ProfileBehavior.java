@@ -57,7 +57,6 @@ public class ProfileBehavior implements PropertiesProvider {
    * Creates a ConcreteUser
    */
   public ProfileBehavior(Properties properties, Sync sync) {
-    //TODO: Use DI
     CoupleTones.global().inject(this);
 
     this.properties = properties

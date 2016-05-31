@@ -4,11 +4,14 @@ import android.util.Log;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.Partner;
+import group50.coupletones.auth.user.UserFactory;
 import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.PropertiesProvider;
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
+
+import javax.inject.Inject;
 
 /**
  * Provides the behavior for handling the local user's partner
@@ -16,17 +19,16 @@ import rx.subjects.BehaviorSubject;
  * @author Henry Mao
  */
 public class PartnerBehavior implements PropertiesProvider {
+
   /**
    * Object responsible for syncing the object with database
    */
   private final Properties properties;
-
   private final PartnerRequestBehavior requestBehavior;
-
   private final LocalUser localUser;
-
   private final Sync sync;
-
+  @Inject
+  public UserFactory userFactory;
   /**
    * User's partner cache
    */
@@ -35,6 +37,8 @@ public class PartnerBehavior implements PropertiesProvider {
   private String partnerId;
 
   public PartnerBehavior(Properties properties, LocalUser localUser, Sync sync, PartnerRequestBehavior requestBehavior) {
+    CoupleTones.global().inject(this);
+
     this.properties = properties
       .property("partnerId", String.class)
       .setter(newId -> {
@@ -44,10 +48,7 @@ public class PartnerBehavior implements PropertiesProvider {
         if (partnerId != null) {
           // Partner has changed
           Log.v("PartnerBehavior", "Loading partner async = " + partnerId);
-          CoupleTones
-            .instanceComponentBuilder()
-            .build()
-            .userFactory()
+          userFactory
             .withId(partnerId)
             .build()
             .load()

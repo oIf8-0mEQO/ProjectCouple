@@ -3,11 +3,8 @@ package group50.coupletones.bdd;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
-import group50.coupletones.di.DaggerMockAppComponent;
-import group50.coupletones.di.MockProximityModule;
 import group50.coupletones.mocker.ConcreteUserTestUtil;
 import group50.coupletones.mocker.UserTestUtil;
 import org.junit.Before;
@@ -30,37 +27,20 @@ import static android.support.test.espresso.matcher.ViewMatchers.*;
 @LargeTest
 public class UserConfiguresSettings {
   @Rule
-  public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
-  private UserTestUtil userMocker = new ConcreteUserTestUtil();
+  public ActivityTestRule<MainActivity> rule = new ActivityTestRule(MainActivity.class);
+  private UserTestUtil testUtil = new ConcreteUserTestUtil();
 
   @Before
-  public void setup() {
-    // Mock DI
-    CoupleTones.setGlobal(
-      DaggerMockAppComponent
-        .builder()
-        .mockProximityModule(new MockProximityModule())
-        .build()
-    );
-
-    userMocker.injectLocalUser();
+  public void setUp() throws Exception {
+    testUtil.injectLocalUser();
   }
 
-  private void givenUserNotConnectedToPartner() {
-    userMocker.mockNoPartner();
-    userMocker.mockProperty("name");
-    userMocker.mockProperty("email");
+  private void givenUserNotConnectedToPartner() throws Throwable {
+    rule.runOnUiThread(() -> testUtil.injectNoPartner());
   }
 
-  private void givenUserConnectedToPartner() {
-    userMocker
-      .mockProperty("name", "Henry")
-      .mockProperty("email", "henry@email.com");
-
-    userMocker
-      .mockPartner()
-      .mockProperty("name", "Sharmaine")
-      .mockProperty("email", "sharmaine@email.com");
+  private void givenUserConnectedToPartner() throws Throwable {
+    rule.runOnUiThread(() -> testUtil.injectSpyPartner());
   }
 
   private void whenOpenSettingsPage() {
@@ -81,14 +61,14 @@ public class UserConfiguresSettings {
   }
 
   @Test
-  public void userAddsPartner() {
+  public void userAddsPartner() throws Throwable {
     givenUserNotConnectedToPartner();
     whenOpenSettingsPage();
     thenUserSeesButtonToAddPartner();
   }
 
   @Test
-  public void userSeesPartner() {
+  public void userSeesPartner() throws Throwable {
     givenUserConnectedToPartner();
     whenOpenSettingsPage();
     thenUserSeesPartnerName();

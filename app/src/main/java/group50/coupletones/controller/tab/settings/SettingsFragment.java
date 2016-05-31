@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -177,13 +176,12 @@ public class SettingsFragment extends TabFragment<Object> {
           add_partner_button.setVisibility(View.INVISIBLE);
 
           //Observe partner data
+          partnerName.setText(partner.getName());
           Subscription nameChange = partner
             .observable("name", String.class)
-            .subscribe(t -> {
-              Log.d("Partner name: ", t);
-              partnerName.setText(t);
-            });
+            .subscribe(partnerName::setText);
 
+          partnerEmail.setText(partner.getEmail());
           Subscription emailChange = partner
             .observable("email", String.class)
             .subscribe(partnerEmail::setText);

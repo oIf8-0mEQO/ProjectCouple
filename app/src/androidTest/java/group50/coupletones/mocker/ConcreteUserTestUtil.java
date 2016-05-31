@@ -1,15 +1,12 @@
 package group50.coupletones.mocker;
 
-import group50.coupletones.auth.user.LocalUser;
-import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.auth.user.concrete.ConcreteLocalUser;
-import group50.coupletones.auth.user.concrete.ConcretePartner;
 import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.function.Function;
-import rx.Observable;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 
 /**
  * @author Henry Mao
@@ -30,16 +27,6 @@ public class ConcreteUserTestUtil extends UserTestUtil {
 
   public Sync getSync() {
     return syncMock;
-  }
-
-  @Override
-  public UserTestUtil mockPartner() {
-    ConcreteUserTestUtil concreteUserTestUtil = new ConcreteUserTestUtil(ConcretePartner::new, mock(Sync.class));
-
-    when(((LocalUser) user).getPartner())
-      .thenReturn(Observable.just((Partner) concreteUserTestUtil.get()));
-
-    return concreteUserTestUtil;
   }
 
   @Override

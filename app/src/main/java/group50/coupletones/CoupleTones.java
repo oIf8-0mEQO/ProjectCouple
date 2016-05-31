@@ -56,7 +56,8 @@ public class CoupleTones extends Application {
    * @param component The global to set
    */
   public static void setGlobal(GlobalComponent component) {
-    CoupleTones.component = component;
+    if (CoupleTones.component == null)
+      CoupleTones.component = component;
   }
 
   public static DaggerInstanceComponent.Builder instanceComponentBuilder() {
@@ -96,11 +97,12 @@ public class CoupleTones extends Application {
   public void onCreate() {
     super.onCreate();
 
-    component = DaggerGlobalComponent
+    setGlobal(DaggerGlobalComponent
       .builder()
       .applicationModule(new ApplicationModule(this))
       .proximityModule(new ProximityModule(new Geocoder(getApplicationContext())))
-      .build();
+      .build()
+    );
 
     setInstanceComponentBuilder(
       DaggerInstanceComponent

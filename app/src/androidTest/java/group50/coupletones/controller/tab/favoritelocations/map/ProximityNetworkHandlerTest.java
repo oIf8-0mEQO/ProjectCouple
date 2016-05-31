@@ -52,8 +52,7 @@ public class ProximityNetworkHandlerTest {
     testUtil = new ConcreteUserTestUtil()
       .injectLocalUser();
 
-    testUtil.mockPartner()
-      .mockProperty("email", "henry@email.com");
+    testUtil.injectSpyPartner();
 
     proximityNetworkHandler = new ProximityNetworkHandler(CoupleTones.global().app(), CoupleTones.global().network());
   }

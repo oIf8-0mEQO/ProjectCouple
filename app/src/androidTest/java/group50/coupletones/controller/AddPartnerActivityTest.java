@@ -47,8 +47,7 @@ public class AddPartnerActivityTest {
       new ConcreteUserTestUtil()
         .injectLocalUser();
 
-    testUtil
-      .mockPartner();
+    testUtil.injectSpyPartner();
   }
 
   /**

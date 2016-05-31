@@ -43,7 +43,7 @@ public class UserSeesPartnerVisitedLocations {
   private void givenUserHasAPartner() {
     testUtil
       .injectLocalUser()
-      .mockPartner();
+      .injectSpyPartner();
   }
 
   private void whenThePartnerVistsAZone() {

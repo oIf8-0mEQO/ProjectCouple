@@ -12,7 +12,6 @@ import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Function;
 import group50.coupletones.util.function.Supplier;
 import rx.Observable;
-import rx.subjects.BehaviorSubject;
 
 import java.util.List;
 
@@ -49,11 +48,28 @@ public abstract class UserTestUtil {
     return this;
   }
 
-  public UserTestUtil mockPartner() {
-    when(((LocalUser) user).getPartner()).thenReturn(Observable.just(mock(Partner.class)));
-    return new MockUserTestUtil(getPartner());
+  /**
+   * Shorthand for injecting partner.
+   *
+   * @return Self instance
+   */
+  public UserTestUtil injectSpyPartner() {
+    injectUserWithId("sharmaine", user -> {
+      user.getProperties().property("name").set("Sharmaine");
+      user.getProperties().property("email").set("sharmaine@email.com");
+      return user;
+    });
+    injectPartner("sharmaine");
+    return this;
   }
 
+  /**
+   * Injects a user to UserFactory, as if the user was "loaded" from database
+   *
+   * @param id      The ID of the user
+   * @param builder The function for building the user object
+   * @return Self instance
+   */
   public UserTestUtil injectUserWithId(String id, Function<Partner, Partner> builder) {
     UserFactory userFactory = CoupleTones.global().userFactory();
 
@@ -70,7 +86,7 @@ public abstract class UserTestUtil {
           return builder.apply(super.build());
         }
       };
-    doReturn(buildable).when(userFactory).withId(any());
+    doReturn(buildable).when(userFactory).withId(id);
     return this;
   }
 
@@ -79,9 +95,8 @@ public abstract class UserTestUtil {
     return this;
   }
 
-  public UserTestUtil mockNoPartner() {
-    when(((LocalUser) user).getPartner()).thenReturn(Observable.just(null));
-    return this;
+  public UserTestUtil injectNoPartner() {
+    return injectPartner(null);
   }
 
   public UserTestUtil mockFavoriteLocationsAdd(Consumer<FavoriteLocation> adder) {
@@ -95,7 +110,7 @@ public abstract class UserTestUtil {
     return this;
   }
 
-  public UserTestUtil mockFavoriateLocations(Supplier<List<FavoriteLocation>> locationGetter) {
+  public UserTestUtil mockFavoriteLocations(Supplier<List<FavoriteLocation>> locationGetter) {
     when(user.getFavoriteLocations())
       .then(ans -> locationGetter.get());
     return this;

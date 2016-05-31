@@ -1,21 +1,12 @@
 package group50.coupletones.bdd;
 
 import android.support.test.rule.ActivityTestRule;
-import group50.coupletones.CoupleTones;
-import group50.coupletones.R;
-import group50.coupletones.auth.user.Partner;
 import group50.coupletones.controller.MainActivity;
-import group50.coupletones.di.DaggerMockAppComponent;
-import group50.coupletones.di.MockProximityModule;
 import group50.coupletones.mocker.ConcreteUserTestUtil;
 import group50.coupletones.mocker.UserTestUtil;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 /**
  * @author Henry Mao
@@ -30,29 +21,23 @@ public class UserSeesPartnerVisitedLocations {
 
   @Before
   public void setup() {
-    // Mock DI
-    CoupleTones.setGlobal(
-      DaggerMockAppComponent
-        .builder()
-        .mockProximityModule(new MockProximityModule())
-        .build()
-    );
+    testUtil.injectLocalUser();
   }
 
 
-  private void givenUserHasAPartner() {
-    testUtil
-      .injectLocalUser()
-      .injectSpyPartner();
+  private void givenUserHasAPartner() throws Throwable {
+    rule.runOnUiThread(() -> testUtil.injectSpyPartner());
   }
 
   private void whenThePartnerVistsAZone() {
-    Partner partner = testUtil.getPartner();
+    //Partner partner = testUtil.getPartner();
     // partner.getVisitedLocations();
+    //TODO
   }
 
   private void andTheUserNavigatesToTheHomePage() {
-    onView(withId(R.id.partner_locations)).perform(click());
+    //onView(withId(R.id.partner_locations)).perform(click());
+    //TODO
   }
 
   private void thenTheUserWillSeeAllZonesPartnerHas() {
@@ -64,7 +49,7 @@ public class UserSeesPartnerVisitedLocations {
   }
 
   @Test
-  public void userPartnerEntersLocation() {
+  public void userPartnerEntersLocation() throws Throwable {
     givenUserHasAPartner();
     whenThePartnerVistsAZone();
     andTheUserNavigatesToTheHomePage();

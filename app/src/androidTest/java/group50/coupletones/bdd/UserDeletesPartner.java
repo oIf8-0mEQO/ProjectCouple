@@ -10,7 +10,6 @@ import group50.coupletones.auth.user.Partner;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.mocker.ConcreteUserTestUtil;
 import group50.coupletones.mocker.UserTestUtil;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,30 +31,19 @@ import static org.mockito.Mockito.verify;
 @LargeTest
 public class UserDeletesPartner {
 
-  @Rule
-  public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
-
   private UserTestUtil userMocker = new ConcreteUserTestUtil();
-
+  @Rule
+  public ActivityTestRule<MainActivity> rule = new ActivityTestRule(MainActivity.class) {
+    @Override
+    protected void beforeActivityLaunched() {
+      userMocker.injectLocalUser();
+      super.beforeActivityLaunched();
+    }
+  };
   private Partner originalPartner;
 
-  @Before
-  public void setUp() throws Exception {
-    userMocker.injectLocalUser();
-  }
-
-  private void givenThatTheUserHasPartner() {
-    userMocker
-      .mockProperty("name", "Henry")
-      .mockProperty("email", "henry@email.com");
-
-    userMocker
-      .injectUserWithId("sharmaine", user -> {
-        user.getProperties().property("name").set("Sharmaine");
-        user.getProperties().property("email").set("sharmaine@email.com");
-        return user;
-      })
-      .injectPartner("sharmaine");
+  private void givenThatTheUserHasPartner() throws Throwable {
+    rule.runOnUiThread(() -> userMocker.injectSpyPartner());
 
     originalPartner = userMocker.getPartner();
     assertThat(originalPartner).isNotNull();
@@ -80,7 +68,7 @@ public class UserDeletesPartner {
   }
 
   @Test
-  public void userDeletesPartner() {
+  public void userDeletesPartner() throws Throwable {
     givenThatTheUserHasPartner();
     whenUserClicksRemovePartnerOnSettingsPage();
     thenUserPartnerIsRemoved();

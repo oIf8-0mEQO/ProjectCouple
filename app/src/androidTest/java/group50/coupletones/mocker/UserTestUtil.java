@@ -34,10 +34,6 @@ public abstract class UserTestUtil {
     return ((LocalUser) user).getPartner().toBlocking().next().iterator().next();
   }
 
-  public UserTestUtil mockProperty(String property) {
-    return mockProperty(property, null);
-  }
-
   public abstract UserTestUtil mockProperty(String property, Object value);
 
   public UserTestUtil injectLocalUser() {
@@ -45,6 +41,10 @@ public abstract class UserTestUtil {
       .thenReturn(true);
     when(CoupleTones.global().app().getLocalUser())
       .thenReturn((LocalUser) user);
+
+    // By default, inject a fake user name
+    mockProperty("name", "Henry");
+    mockProperty("email", "henry@email.com");
     return this;
   }
 

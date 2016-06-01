@@ -23,25 +23,25 @@ import com.google.firebase.database.IgnoreExtraProperties;
  */
 public class VibeTone {
 
-  private static VibeTone[] tones = {//TODO: Collect sounds and implement this.
-    new VibeTone("", new long[] {0, 2000}),//Index 0 / default tone.
-    new VibeTone("", new long[] {0, 400, 400, 400, 400, 400}),//Index 1.
-    new VibeTone("", new long[] {0, 800, 400, 800}),//Index 2.
-    new VibeTone("", new long[] {0, 1200, 400, 400}),//Index 3.
-    new VibeTone("", new long[] {0, 400, 400, 1200}),//Index 4.
-    new VibeTone("", new long[] {0, 800, 400, 200, 400, 200}),//Index 5.
-    new VibeTone("", new long[] {0, 200, 400, 800, 400, 200}),//Index 6.
-    new VibeTone("", new long[] {0, 200, 400, 200, 400, 800}),//Index 7.
+  private static VibeTone[] tones = {
+    new VibeTone("/assets/tones/vibetone1.mps", new long[] {0, 2000}),//Index 0 / default tone.
+    new VibeTone("/assets/tones/vibetone2.mps", new long[] {0, 400, 400, 400, 400, 400}),//Index 1.
+    new VibeTone("/assets/tones/vibetone3.mps", new long[] {0, 800, 400, 800}),//Index 2.
+    new VibeTone("/assets/tones/vibetone4.mps", new long[] {0, 1200, 400, 400}),//Index 3.
+    new VibeTone("/assets/tones/vibetone5.mps", new long[] {0, 400, 400, 1200}),//Index 4.
+    new VibeTone("/assets/tones/vibetone6.mps", new long[] {0, 800, 400, 200, 400, 200}),//Index 5.
+    new VibeTone("/assets/tones/vibetone7.mps", new long[] {0, 200, 400, 800, 400, 200}),//Index 6.
+    new VibeTone("/assets/tones/vibetone8.mps", new long[] {0, 200, 400, 200, 400, 800}),//Index 7.
   };
 
   @Inject
-  public CoupleTones app;
+  public static CoupleTones app;
 
   private Ringtone sound;
   private long[] vibration;
 
-  private static Ringtone arrivalSound;
-  private static Ringtone departureSound;
+  private static Ringtone arrivalSound = RingtoneManager.getRingtone(app.getApplicationContext(), Uri.fromFile(new File("/assets/tones/arrivaltone.mp3")));
+  private static Ringtone departureSound = RingtoneManager.getRingtone(app.getApplicationContext(), Uri.fromFile(new File("/assets/tones/departuretone.mp3")));
   private static long[] arrivalVibration = new long[] {0, 1000};
   private static long[] departureVibration = new long[] {0, 400, 200, 400};
   private static long delay = 1500;//The amount of time in milliseconds to wait between arrival/departure global sound and specific sound.
@@ -76,11 +76,11 @@ public class VibeTone {
     try
     {
       Vibrator vib = (Vibrator) app.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-      vib.vibrate(arrivalVibration, 0);
-      arrivalSound.play();
+      if (app.getLocalUser().vibrationEnabled()) vib.vibrate(arrivalVibration, 0);
+      if (app.getLocalUser().soundEnabled()) arrivalSound.play();
       wait(delay);
-      vib.vibrate(vibration, 0);
-      sound.play();
+      if (app.getLocalUser().vibrationEnabled()) vib.vibrate(vibration, 0);
+      if (app.getLocalUser().soundEnabled()) arrivalSound.play();sound.play();
     }
     catch (Exception e)
     {
@@ -93,11 +93,11 @@ public class VibeTone {
     try
     {
       Vibrator vib = (Vibrator) app.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-      vib.vibrate(departureVibration, 0);
-      departureSound.play();
+      if (app.getLocalUser().vibrationEnabled()) vib.vibrate(departureVibration, 0);
+      if (app.getLocalUser().soundEnabled()) arrivalSound.play();departureSound.play();
       wait(delay);
-      vib.vibrate(vibration, 0);
-      sound.play();
+      if (app.getLocalUser().vibrationEnabled()) vib.vibrate(vibration, 0);
+      if (app.getLocalUser().soundEnabled()) arrivalSound.play();sound.play();
     }
     catch (Exception e)
     {

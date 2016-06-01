@@ -113,24 +113,6 @@
             android:layout_alignStart="@+id/location_address"
             android:layout_alignEnd="@+id/location_address" />
 
-        <!-- Delete Location Button -->
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/delete_location"
-            android:textAllCaps="false"
-            android:id="@+id/delete_location_button"
-            android:minWidth="260dp"
-            android:minHeight="40dp"
-            android:textSize="16dp"
-            android:textColor="@color/white"
-            android:background="@color/disconnectColor"
-            android:layout_below="@+id/save_changes_button"
-            android:layout_marginTop="10dp"
-            android:layout_alignStart="@+id/location_address"
-            android:layout_alignEnd="@+id/location_address"
-            android:layout_centerInParent="true" />
-
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

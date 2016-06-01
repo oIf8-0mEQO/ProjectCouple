@@ -33,17 +33,18 @@ public class EditLocationActivity extends AppCompatActivity {
         TextView location_text = (TextView) findViewById(R.id.location_name);
         TextView address_text = (TextView) findViewById(R.id.location_address);
         TextView save_changes_text = (TextView) findViewById(R.id.save_changes_button);
-        TextView delete_location_text = (TextView) findViewById(R.id.delete_location_button);
 
         Typeface pierSans = Typeface.createFromAsset(getAssets(), getString(R.string.pier_sans));
         location_text.setTypeface(pierSans);
         address_text.setTypeface(pierSans);
         save_changes_text.setTypeface(pierSans);
-        delete_location_text.setTypeface(pierSans);
 
         ImageButton backButton;
         backButton = (ImageButton) findViewById(R.id.btn_backarrow);
         backButton.setOnClickListener(view -> finish());
+
+
+
     }
 
 

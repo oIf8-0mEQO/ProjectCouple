@@ -1,12 +1,14 @@
 package group50.coupletones.controller.tab.favoritelocations;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import group50.coupletones.CoupleTones;
@@ -14,6 +16,9 @@ import group50.coupletones.R;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 
 import javax.inject.Inject;
+
+import static android.app.PendingIntent.getActivity;
+import static android.support.v4.app.ActivityCompat.startActivity;
 
 /**
  * @author Sharmaine Manalo
@@ -31,6 +36,9 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
   private LayoutInflater inflater;
   private FavoriteLocationsFragment fragment;
 
+  private Context context;
+
+
   /**
    * Favorite Locations List Adapter
    *
@@ -39,6 +47,7 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
   public FavoriteLocationsListAdapter(FavoriteLocationsFragment fragment, Context context) {
     this.inflater = LayoutInflater.from(context);
     this.fragment = fragment;
+    this.context = context;
 
     CoupleTones.global().inject(this);
   }
@@ -79,6 +88,13 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
     holder.icon.setImageResource(R.drawable.myfave_icon);
     //TODO: Implement custom icons?
     //holder.icon.setImageResource(location.getIconId());
+
+    holder.itemView.findViewById(R.id.edit_location_icon)
+      .setOnClickListener((view) -> {
+        Intent intent = new Intent(context, EditLocationActivity.class);
+        context.startActivity(intent);
+      });
+
 
     holder.itemView.findViewById(R.id.delete_location_icon)
       .setOnClickListener(evt -> {

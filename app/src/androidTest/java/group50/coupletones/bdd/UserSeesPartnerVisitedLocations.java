@@ -29,7 +29,7 @@ public class UserSeesPartnerVisitedLocations {
     rule.runOnUiThread(() -> testUtil.injectSpyPartner());
   }
 
-  private void whenThePartnerVistsAZone() {
+  private void whenThePartnerVisitsAZone() {
     //Partner partner = testUtil.getPartner();
     // partner.getVisitedLocations();
     //TODO
@@ -51,7 +51,7 @@ public class UserSeesPartnerVisitedLocations {
   @Test
   public void userPartnerEntersLocation() throws Throwable {
     givenUserHasAPartner();
-    whenThePartnerVistsAZone();
+    whenThePartnerVisitsAZone();
     andTheUserNavigatesToTheHomePage();
     thenTheUserWillSeeAllZonesPartnerHas();
     thenTheUserWillSeeTheNewZonePartnerEntered();

@@ -8,15 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
+import group50.coupletones.util.FormatUtility;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
 
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * @author Joanne Cho
@@ -27,6 +32,8 @@ import java.util.List;
  * Partner Locations List Adapter Class
  */
 public class ListAdapterPartnerVisited extends RecyclerView.Adapter<ListAdapterPartnerVisited.ListViewHolder> {
+  @Inject
+  public FormatUtility formatUtility;
 
   private List<VisitedLocationEvent> locations = new LinkedList<>();
   private LayoutInflater inflater;
@@ -52,6 +59,8 @@ public class ListAdapterPartnerVisited extends RecyclerView.Adapter<ListAdapterP
             .subscribe(this::setLocations);
         })
     );
+
+    CoupleTones.global().inject(this);
   }
 
   private void setLocations(List<VisitedLocationEvent> locations) {
@@ -83,8 +92,8 @@ public class ListAdapterPartnerVisited extends RecyclerView.Adapter<ListAdapterP
     holder.name.setText(visitedLocation.getName());
     holder.address.setText(visitedLocation.getAddress() != null ? visitedLocation.getAddress().getLocality() : "");
     holder.icon.setImageResource(R.drawable.target_icon);
-    holder.arrivalValue.setText(visitedLocation.getTimeVisited().toString());
-    holder.departureValue.setText(visitedLocation.getTimeLeft().toString());
+    holder.arrivalValue.setText(formatUtility.formatDate(visitedLocation.getTimeVisited()));
+    holder.departureValue.setText(formatUtility.formatDate(visitedLocation.getTimeLeft()));
   }
 
   /**

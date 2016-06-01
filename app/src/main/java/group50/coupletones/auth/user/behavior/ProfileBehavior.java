@@ -5,8 +5,8 @@
 
 package group50.coupletones.auth.user.behavior;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.GenericTypeIndicator;
-
 import group50.coupletones.CoupleTones;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
@@ -15,21 +15,20 @@ import group50.coupletones.util.TimeUtility;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.PropertiesProvider;
 import group50.coupletones.util.properties.Property;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.inject.Inject;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Holds the behavior of user's profile. Strategy pattern.
  */
 public class ProfileBehavior implements PropertiesProvider {
   @Inject
+  @Exclude
   public TimeUtility timeUtility;
-  
+
   /**
    * Object responsible for syncing the object with database
    */
@@ -112,7 +111,7 @@ public class ProfileBehavior implements PropertiesProvider {
     if (visitedLocations != null) {
       for (int i = 0; i < visitedLocations.size(); i++) {
         VisitedLocationEvent currEvent = visitedLocations.get(i);
-        if(timeUtility.checkTime(currEvent)) {
+        if (timeUtility.checkTime(currEvent)) {
           visitedLocations.remove(i);
           hasChanged = true;
         }

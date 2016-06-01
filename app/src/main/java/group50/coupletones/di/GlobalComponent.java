@@ -3,6 +3,9 @@ package group50.coupletones.di;
 import dagger.Component;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.GoogleAuthenticator;
+import group50.coupletones.auth.user.UserFactory;
+import group50.coupletones.auth.user.behavior.PartnerBehavior;
+import group50.coupletones.auth.user.behavior.ProfileBehavior;
 import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.controller.MainActivity;
@@ -17,13 +20,16 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Address
 import group50.coupletones.controller.tab.favoritelocations.map.location.ConcreteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
+import group50.coupletones.controller.tab.partnerslocations.ListAdapterPartnerVisited;
 import group50.coupletones.controller.tab.settings.SettingsFragment;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.NetworkModule;
 import group50.coupletones.di.module.ProximityModule;
+import group50.coupletones.di.module.UserFactoryModule;
 import group50.coupletones.network.NetworkManager;
 import group50.coupletones.network.gcm.GcmIntentService;
 import group50.coupletones.util.sound.VibeTone;
+import group50.coupletones.util.TimeUtility;
 
 import javax.inject.Singleton;
 
@@ -39,6 +45,7 @@ import javax.inject.Singleton;
     ApplicationModule.class,
     NetworkModule.class,
     ProximityModule.class,
+    UserFactoryModule.class
   }
 )
 public interface GlobalComponent {
@@ -50,6 +57,12 @@ public interface GlobalComponent {
   ProximityManager proximity();
 
   AddressProvider geocoder();
+
+  UserFactory userFactory();
+
+  TimeUtility timeUtility();
+
+  void inject(PartnerBehavior obj);
 
   void inject(FavoriteLocationsListAdapter obj);
 
@@ -82,4 +95,8 @@ public interface GlobalComponent {
   void inject(ConcreteLocation location);
 
   void inject(VibeTone vibeTone);
+
+  void inject(ProfileBehavior behavior);
+
+  void inject (ListAdapterPartnerVisited list);
 }

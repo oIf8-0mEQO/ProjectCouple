@@ -16,8 +16,7 @@ import javax.inject.Singleton;
 @Component(
   modules = {
     ContextModule.class,
-    AuthenticatorModule.class,
-    MockUserFactoryModule.class
+    AuthenticatorModule.class
   }
 )
 public interface MockInstanceComponent extends InstanceComponent {

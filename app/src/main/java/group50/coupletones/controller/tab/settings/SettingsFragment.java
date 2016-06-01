@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
@@ -53,6 +54,9 @@ public class SettingsFragment extends TabFragment<Object> {
 
   private TextView logoutButton;
   private TextView disconnectButton;
+
+  private TextView notificationSwitch;
+  private TextView vibeToneSwitch;
 
   private CompositeSubscription subs;
 
@@ -123,6 +127,10 @@ public class SettingsFragment extends TabFragment<Object> {
     logoutButton = (TextView) view.findViewById(R.id.logout_button);
     disconnectButton = (TextView) view.findViewById(R.id.disconnect_button);
 
+    // Notification and VibeTone switches
+    notificationSwitch = (TextView) view.findViewById(R.id.notif_title);
+    vibeToneSwitch = (TextView) view.findViewById(R.id.vibetone_notif_title);
+
     Typeface pierSans = Typeface.createFromAsset(getActivity().getAssets(), getString(R.string.pier_sans));
 
     // Set fonts
@@ -139,6 +147,8 @@ public class SettingsFragment extends TabFragment<Object> {
     partnerEmail.setTypeface(pierSans);
     logoutButton.setTypeface(pierSans);
     disconnectButton.setTypeface(pierSans);
+    notificationSwitch.setTypeface(pierSans);
+    vibeToneSwitch.setTypeface(pierSans);
   }
 
   /**

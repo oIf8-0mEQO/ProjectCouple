@@ -90,7 +90,7 @@ public class ProfileBehavior implements PropertiesProvider {
    * This function turns on/off the global notifications setting
    * @return globalNotificationsAreOn true if notifications are on, false if turned off
    */
-  public Boolean setGlobalNotificationSetting(Boolean setting) {
+  public Boolean setGlobalNotificationsSetting(Boolean setting) {
     globalNotificationsAreOn = setting;
     return globalNotificationsAreOn;
   }

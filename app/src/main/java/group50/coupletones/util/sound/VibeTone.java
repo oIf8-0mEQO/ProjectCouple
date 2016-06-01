@@ -105,14 +105,19 @@ public class VibeTone {
     }
   }
 
-  @Override
-  public int hashCode()
+  public int getIndex()
   {
     for (int i = 0; i < tones.length; i++)
     {
       if (tones[i].equals(this)) return i;
     }
     throw new RuntimeException("VibeTones should only exist as one of the elements contained in tones.");
+  }
+
+  @Override
+  public int hashCode()
+  {
+    return getIndex();
   }
 
   @Override

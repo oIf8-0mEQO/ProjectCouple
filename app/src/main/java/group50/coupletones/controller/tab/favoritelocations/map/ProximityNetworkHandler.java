@@ -57,6 +57,8 @@ public class ProximityNetworkHandler implements Taggable {
             .setDouble("long", location.getPosition().longitude)
             .setString("time", time)
             .setString("partner", partner.getEmail())
+            .setInt("vibetone", location.getVibeTone().getIndex())
+            .setBoolean("arrival", location.getArrival())
           );
         });
     } else {

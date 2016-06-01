@@ -10,6 +10,7 @@ import group50.coupletones.network.message.Message;
 import group50.coupletones.network.message.MessageReceiver;
 import group50.coupletones.network.message.MessageType;
 import group50.coupletones.util.Identifiable;
+import group50.coupletones.util.sound.VibeTone;
 import rx.Observable;
 
 /**
@@ -60,6 +61,9 @@ public class LocationNotificationReceiver implements MessageReceiver, Identifiab
 
         notification.setIntent(intent);
         notification.show();
+
+        if (message.getBoolean("arrival")) VibeTone.getTone(message.getInt("vibetone")).playArrival();
+        else VibeTone.getTone(message.getInt("vibetone")).playDeparture();
       });
   }
 

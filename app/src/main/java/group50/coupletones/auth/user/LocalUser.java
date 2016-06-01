@@ -29,13 +29,13 @@ public interface LocalUser extends User {
   /**
    * @return Global notifications setting
    */
-  Boolean getGlobalNotificationsSetting();
+  boolean getGlobalNotificationsSetting();
 
   /**
    * This function turns on/off the global notifications setting
    * @return globalNotificationsAreOn true if notifications are on, false if turned off
    */
-  Boolean setGlobalNotificationsSetting(Boolean setting);
+  boolean setGlobalNotificationsSetting(boolean setting);
 
   /**
    * Removes a favorite location

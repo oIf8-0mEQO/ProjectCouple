@@ -39,7 +39,7 @@ public class ProfileBehavior implements PropertiesProvider {
   /**
    * Boolean that handles global notification toggling
    */
-  private boolean globalNotificationsAreOn;
+  private boolean globalNotificationsAreOn = true;
   /**
    * Name of the user
    */
@@ -67,6 +67,7 @@ public class ProfileBehavior implements PropertiesProvider {
       .property("id").bind(this)
       .property("name").bind(this)
       .property("email").bind(this)
+      .property("globalNotificationsAreOn").bind(this)
       .property("favoriteLocations")
       .mark(new GenericTypeIndicator<List<FavoriteLocation>>() {
       })
@@ -82,7 +83,7 @@ public class ProfileBehavior implements PropertiesProvider {
   /**
    * @return Global notifications setting
    */
-  public Boolean getGlobalNotificationsSetting() {
+  public boolean getGlobalNotificationsSetting() {
     return globalNotificationsAreOn;
   }
 
@@ -90,8 +91,13 @@ public class ProfileBehavior implements PropertiesProvider {
    * This function turns on/off the global notifications setting
    * @return globalNotificationsAreOn true if notifications are on, false if turned off
    */
-  public Boolean setGlobalNotificationsSetting(Boolean setting) {
+  public Boolean setGlobalNotificationsSetting(boolean setting) {
     globalNotificationsAreOn = setting;
+
+    Property<Object> prop = properties.property("globalNotificationsAreOn");
+    sync.update(prop);
+    prop.update();
+
     return globalNotificationsAreOn;
   }
 

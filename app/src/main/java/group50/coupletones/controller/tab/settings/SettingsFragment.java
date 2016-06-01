@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
@@ -55,8 +58,10 @@ public class SettingsFragment extends TabFragment<Object> {
   private TextView logoutButton;
   private TextView disconnectButton;
 
-  private TextView notificationSwitch;
-  private TextView vibeToneSwitch;
+  private TextView notificationSwitchText;
+  private TextView vibeToneSwitchText;
+  private Switch notificationSwitch;
+  private Switch vibeToneSwitch;
 
   private CompositeSubscription subs;
 
@@ -128,8 +133,11 @@ public class SettingsFragment extends TabFragment<Object> {
     disconnectButton = (TextView) view.findViewById(R.id.disconnect_button);
 
     // Notification and VibeTone switches
-    notificationSwitch = (TextView) view.findViewById(R.id.notif_title);
-    vibeToneSwitch = (TextView) view.findViewById(R.id.vibetone_notif_title);
+    notificationSwitchText = (TextView) view.findViewById(R.id.notif_title);
+    vibeToneSwitchText = (TextView) view.findViewById(R.id.vibetone_notif_title);
+    notificationSwitch = (Switch) view.findViewById(R.id.notif_switch);
+    vibeToneSwitch = (Switch) view.findViewById(R.id.notif_vibetones_switch);
+
 
     Typeface pierSans = Typeface.createFromAsset(getActivity().getAssets(), getString(R.string.pier_sans));
 
@@ -147,8 +155,8 @@ public class SettingsFragment extends TabFragment<Object> {
     partnerEmail.setTypeface(pierSans);
     logoutButton.setTypeface(pierSans);
     disconnectButton.setTypeface(pierSans);
-    notificationSwitch.setTypeface(pierSans);
-    vibeToneSwitch.setTypeface(pierSans);
+    notificationSwitchText.setTypeface(pierSans);
+    vibeToneSwitchText.setTypeface(pierSans);
   }
 
   /**
@@ -168,6 +176,13 @@ public class SettingsFragment extends TabFragment<Object> {
       localUser
         .observable("email", String.class)
         .subscribe(email::setText)
+    );
+
+
+    subs.add(
+      localUser
+        .observable("globalNotificationsAreOn", Boolean.TYPE)
+        .subscribe(notificationSwitch::setChecked)
     );
 
     CompositeSubscription partnerSubs = new CompositeSubscription();
@@ -238,6 +253,14 @@ public class SettingsFragment extends TabFragment<Object> {
           app.getLocalUser().setPartner(null);
         }
       );
+
+    // Global notification handler
+    notificationSwitch.setOnCheckedChangeListener(
+      (CompoundButton buttonView, boolean isChecked) ->
+        app.getLocalUser().setGlobalNotificationsSetting(isChecked)
+    );
+
+    vibeToneSwitch.setChecked(true);
   }
 
   /**

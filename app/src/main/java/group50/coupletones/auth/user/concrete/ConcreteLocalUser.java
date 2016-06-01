@@ -70,12 +70,12 @@ public class ConcreteLocalUser implements LocalUser {
   }
 
   @Override
-  public Boolean getGlobalNotificationsSetting() {
+  public boolean getGlobalNotificationsSetting() {
     return profileBehavior.getGlobalNotificationsSetting();
   }
 
   @Override
-  public Boolean setGlobalNotificationsSetting(Boolean setting) {
+  public boolean setGlobalNotificationsSetting(boolean setting) {
     return profileBehavior.setGlobalNotificationsSetting(setting);
   }
 

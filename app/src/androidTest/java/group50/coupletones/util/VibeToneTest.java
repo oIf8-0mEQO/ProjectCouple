@@ -26,13 +26,6 @@ public class VibeToneTest {
   @Before
   public void setup()
   {
-    // Mock DI
-    CoupleTones.setGlobal(
-      DaggerMockAppComponent
-        .builder()
-        .mockProximityModule(new MockProximityModule())
-        .build()
-    );
     app = CoupleTones.global().app();
 
     mockContext = mock(Context.class);

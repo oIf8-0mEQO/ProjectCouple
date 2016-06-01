@@ -209,7 +209,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignParentEnd="true"/>
 
-                    <!-- No Parter Message -->
+                    <!-- No Partner Message -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -274,7 +274,7 @@
                     <Switch
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:showText="true"
+                        android:showText="false"
                         android:id="@+id/notif_switch"
                         android:layout_marginEnd="26dp"
                         android:checked="false"
@@ -298,7 +298,7 @@
                     <Switch
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:showText="true"
+                        android:showText="false"
                         android:id="@+id/notif_vibetones_switch"
                         android:checked="false"
                         android:layout_alignBottom="@+id/vibetone_notif_title"

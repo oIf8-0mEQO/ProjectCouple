@@ -37,6 +37,10 @@ public class ProfileBehavior implements PropertiesProvider {
   private final Sync sync;
   private String id;
   /**
+   * Boolean that handles global notification toggling
+   */
+  private boolean globalNotificationsAreOn;
+  /**
    * Name of the user
    */
   private String name;
@@ -73,6 +77,22 @@ public class ProfileBehavior implements PropertiesProvider {
       .bind(this);
 
     this.sync = sync;
+  }
+
+  /**
+   * @return Global notifications setting
+   */
+  public Boolean getGlobalNotificationsSetting() {
+    return globalNotificationsAreOn;
+  }
+
+  /**
+   * This function turns on/off the global notifications setting
+   * @return globalNotificationsAreOn true if notifications are on, false if turned off
+   */
+  public Boolean setGlobalNotificationSetting(Boolean setting) {
+    globalNotificationsAreOn = setting;
+    return globalNotificationsAreOn;
   }
 
   /**

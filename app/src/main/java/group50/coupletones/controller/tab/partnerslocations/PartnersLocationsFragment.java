@@ -7,12 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-
+import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.TabFragment;
+import rx.Observable;
 
 /**
  * @author Joanne Cho
@@ -23,7 +23,7 @@ import group50.coupletones.controller.tab.TabFragment;
  */
 public class PartnersLocationsFragment extends TabFragment<Object> {
   private RecyclerView partnersList;
-  private ListAdapterPartner adapter;
+  private ListAdapterPartnerVisited adapter;
 
   public PartnersLocationsFragment() {
     super(Object.class);
@@ -31,6 +31,7 @@ public class PartnersLocationsFragment extends TabFragment<Object> {
 
   /**
    * getResourceID
+   *
    * @return - Partner's locations fragment
    */
   @Override
@@ -40,15 +41,24 @@ public class PartnersLocationsFragment extends TabFragment<Object> {
 
   /**
    * onCreateView
+   *
    * @return - View of app
    */
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
+    CoupleTones app = CoupleTones.global().app();
+
     View v = inflater.inflate(R.layout.fragment_partners_locations, container, false);
     partnersList = (RecyclerView) v.findViewById(R.id.partners_location_list);
     partnersList.setLayoutManager(new LinearLayoutManager(getActivity()));
-    adapter = new ListAdapterPartner(PartnerLocationsData.getPartnerLocations(), getActivity());
+
+    adapter = new ListAdapterPartnerVisited(
+      app.getLocalUser() != null ?
+        app.getLocalUser().getPartner() : Observable.empty(),
+      getActivity()
+    );
+
     partnersList.setAdapter(adapter);
 
     ImageButton partnerFaves;

@@ -12,6 +12,7 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.TabFragment;
+import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
 
 import javax.inject.Inject;
 
@@ -77,6 +78,7 @@ public class FavoriteLocationsFragment extends TabFragment<Object> {
     // Clicking on the add button will open the map fragment
     v.findViewById(R.id.add_favorite_location).setOnClickListener(evt -> {
       MainActivity act = (MainActivity) getActivity();
+      ((MapFragment)act.getTabs().get(R.id.map)).setIsUser(true);
       act.setFragment(act.getTabs().get(R.id.map));
     });
     return v;

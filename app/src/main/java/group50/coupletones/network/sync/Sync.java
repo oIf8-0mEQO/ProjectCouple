@@ -1,73 +1,40 @@
 package group50.coupletones.network.sync;
 
-import com.google.firebase.database.DatabaseReference;
-import rx.Observable;
+import group50.coupletones.util.properties.Properties;
+import group50.coupletones.util.properties.Property;
 
 /**
- * An object that handles real time database syncing for objects.
- *
  * @author Henry Mao
- * @since 5/24/16
+ * @since 5/27/16
  */
 public interface Sync {
+  //TODO: Recomment
   /**
-   * Sets the Sync object to watch a particular object
-   *
-   * @param obj The object to watch
-   * @return Self instance
-   */
-  FirebaseSync watch(Object obj);
-
-  /**
-   * Sets the Sync object to refer a particular database
-   *
-   * @param ref The database use
-   * @return Self instance
-   */
-  FirebaseSync setRef(DatabaseReference ref);
-
-  /**
-   * @return Reference to the database this object is synced with
-   */
-  DatabaseReference getRef();
-
-  /**
-   * Gets the observable associated with this field.
-   *
-   * @param fieldName The name of the field in this class.
-   * @return An observable object.
-   */
-  Observable<?> get(String fieldName);
-
-  /**
-   * Hooks listeners to every field in a class annotated with @Syncable.
-   *
+   * Hooks listeners to every field in a class annotated with @Watch.
+   * <p>
    * When the database for this field changes, the field itself will be automatically updated.
    *
-   * @return The Sync object instance
+   * @return The Properties object instance
    */
-  Sync subscribeAll();
+  Sync watch(Property<?> property);
 
   /**
    * Subscribes a field in the class to receive updates from the database automatically.
    *
-   * @param fieldName The name of the field
+   * @param properties The name of the field
    * @return Self instance
    */
-  Sync subscribe(String fieldName);
+  Sync watchAll(Properties properties);
 
   /**
-   * Attempts to sync a specific field to the server
+   * Sends an update to the server
    *
-   * @param fieldNames The names of the field to publish
+   * @param property The property
    * @return Self instance
    */
-  Sync publish(String... fieldNames);
+  Sync update(Property property);
 
-  /**
-   * Publishes all fields to the database.
-   *
-   * @return Self instance
-   */
-  Sync publishAll();
+  Sync parent();
+
+  Sync child(String name);
 }

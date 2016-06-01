@@ -18,13 +18,14 @@ import java.util.Locale;
  * @author Sharmaine Manalo
  * @since 5/5/16
  */
-public class ProximityNetworkHandler implements ProximityObserver, Taggable {
+public class ProximityNetworkHandler implements Taggable {
   private CoupleTones app;
   private NetworkManager network;
 
   /**
    * Proximity Network Handler
-   * @param app - CoupleTones app
+   *
+   * @param app     - CoupleTones app
    * @param network - Network Manager
    */
   @Inject
@@ -35,24 +36,36 @@ public class ProximityNetworkHandler implements ProximityObserver, Taggable {
 
   /**
    * onEnterLocation
+   *
    * @param location - Visited Location
    */
-  @Override
   public void onEnterLocation(VisitedLocationEvent location) {
     if (app.getLocalUser().getPartner() != null) {
+      // Adds the location as a visited location
+      app.getLocalUser().addVisitedLocation(location);
+
       Format formatter = new SimpleDateFormat("HH:mm", Locale.US);
       Date date = location.getTimeVisited();
       String time = formatter.format(date);
 
-      network.send((OutgoingMessage) new OutgoingMessage(MessageType.SEND_LOCATION_NOTIFICATION.value)
-        .setString("name", location.getName())
-        .setDouble("lat", location.getPosition().latitude)
-        .setDouble("long", location.getPosition().longitude)
-        .setString("time", time)
-        .setString("partner", app.getLocalUser().getPartner().getEmail())
-      );
+      // Send GCM notification
+      app.getLocalUser().getPartner()
+        .subscribe(partner -> {
+          network.send((OutgoingMessage) new OutgoingMessage(MessageType.SEND_LOCATION_NOTIFICATION.value)
+            .setString("name", location.getName())
+            .setDouble("lat", location.getPosition().latitude)
+            .setDouble("long", location.getPosition().longitude)
+            .setString("time", time)
+            .setString("partner", partner.getEmail())
+          );
+        });
     } else {
       Log.e(getTag(), "Attempt to send location notification to null partner.");
     }
+  }
+
+  public void onLeaveLocation(VisitedLocationEvent location)
+  {
+    //TODO: Remove?
   }
 }

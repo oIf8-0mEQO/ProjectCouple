@@ -6,6 +6,7 @@ import group50.coupletones.util.function.Function;
  * An object that can handle a success callback
  * @author Henry Mao
  */
+//TODO: Change to Observable
 public interface SuccessCallback<T, S> {
   /**
    * @param callback The callback function upon success

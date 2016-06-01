@@ -2,6 +2,8 @@ package group50.coupletones.controller.tab.favoritelocations.map;
 
 
 import android.location.LocationListener;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
+import rx.Observable;
 
 /**
  * @author Joseph Cox
@@ -9,11 +11,8 @@ import android.location.LocationListener;
  */
 public interface ProximityManager extends LocationListener {
 
-  /**
-   * Registers a ProximityObserver, which will be notified when the
-   * user enters a favorite location.
-   *
-   * @param observer The observer
-   */
-  void register(ProximityObserver observer);
+  Observable<VisitedLocationEvent> getEnterSubject();
+
+  Observable<VisitedLocationEvent> getExitSubject();
+
 }

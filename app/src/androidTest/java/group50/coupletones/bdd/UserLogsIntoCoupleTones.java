@@ -11,14 +11,13 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.Authenticator;
 import group50.coupletones.auth.GoogleAuthenticator;
-import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.di.DaggerInstanceComponent;
-import group50.coupletones.di.DaggerMockAppComponent;
-import group50.coupletones.di.MockProximityModule;
 import group50.coupletones.di.module.AuthenticatorModule;
+import group50.coupletones.mocker.ConcreteUserTestUtil;
+import group50.coupletones.mocker.UserTestUtil;
 import group50.coupletones.util.function.Function;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +46,8 @@ public class UserLogsIntoCoupleTones extends ActivityInstrumentationTestCase2<Lo
   // The mock authenticator
   private Authenticator<User, String> authenticator;
 
+  private UserTestUtil testUtil;
+
   public UserLogsIntoCoupleTones() {
     super(LoginActivity.class);
   }
@@ -55,13 +56,7 @@ public class UserLogsIntoCoupleTones extends ActivityInstrumentationTestCase2<Lo
   @Override
   public void setUp() throws Exception {
     super.setUp();
-
-    CoupleTones.setGlobal(
-      DaggerMockAppComponent
-        .builder()
-        .mockProximityModule(new MockProximityModule())
-        .build()
-    );
+    testUtil = new ConcreteUserTestUtil();
 
     // Inject mock authenticator
     authenticator = mock(Authenticator.class);
@@ -78,9 +73,7 @@ public class UserLogsIntoCoupleTones extends ActivityInstrumentationTestCase2<Lo
         })
     );
 
-    // Stub getLocalUser method
-    when(CoupleTones.global().app().getLocalUser())
-      .thenReturn(mock(LocalUser.class));
+    testUtil.injectLocalUser();
 
     injectInstrumentation(InstrumentationRegistry.getInstrumentation());
   }

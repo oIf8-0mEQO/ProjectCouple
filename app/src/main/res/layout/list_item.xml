@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="20dp"
-                    android:src="@drawable/target_icon"/>
+                    android:src="@drawable/myfave_icon"/>
 
                 <!-- List Item Location Name -->
                 <TextView

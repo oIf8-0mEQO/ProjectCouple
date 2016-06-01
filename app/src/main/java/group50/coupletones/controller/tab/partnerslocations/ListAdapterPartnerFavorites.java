@@ -9,7 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import group50.coupletones.R;
+import group50.coupletones.auth.user.Partner;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import rx.Observable;
+import rx.subscriptions.CompositeSubscription;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -18,24 +24,48 @@ import java.util.List;
  */
 
 /**
- * Partner Locations List Adapter Class
+ * Partner's favorite locations List Adapter Class
  */
-public class ListAdapterFavorites extends RecyclerView.Adapter<ListAdapterFavorites.ListViewHolder>{
+public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapterPartnerFavorites.ListViewHolder> {
 
-  private List<PartnerLocation> data;
+  /**
+   * The user's partner. Null if none exists.
+   */
+  private List<FavoriteLocation> locations = new LinkedList<>();
+
   private LayoutInflater inflater;
+
+  private CompositeSubscription subs = new CompositeSubscription();
 
   /**
    * Partner's Favorites list adapter
-   * @param data - Partner location data
+   *
+   * @param partnerObservable - The partnerObservable object
    */
-  public ListAdapterFavorites(List<PartnerLocation> data, Context context) {
+  public ListAdapterPartnerFavorites(Observable<Partner> partnerObservable, Context context) {
     this.inflater = LayoutInflater.from(context);
-    this.data = data;
+
+    this.subs.add(
+      partnerObservable
+        .filter(partner -> partner != null)
+        .subscribe(partner -> {
+          // Initial list
+          setLocations(partner.getFavoriteLocations());
+
+          partner
+            .observable("favoriteLocations", List.class)
+            .subscribe(this::setLocations);
+        })
+    );
   }
 
+  private void setLocations(List<FavoriteLocation> locations) {
+    this.locations = locations != null ? locations : Collections.emptyList();
+    notifyDataSetChanged();
+  }
   /**
    * List view holder for partner's favorite locations
+   *
    * @param parent - ViewGroup
    * @return - ListViewholder
    */
@@ -47,26 +77,36 @@ public class ListAdapterFavorites extends RecyclerView.Adapter<ListAdapterFavori
 
   /**
    * View holder for partner's favorite locations
-   * @param holder - ListViewHolder
+   *
+   * @param holder   - ListViewHolder
    * @param position - Partner location's position
    */
   @Override
   public void onBindViewHolder(ListViewHolder holder, int position) {
-    PartnerLocation location = data.get(position);
+    // React to partner location edits
+    FavoriteLocation location = locations.get(position);
     holder.name.setText(location.getName());
-    holder.address.setText(location.getAddress());
-    holder.icon.setImageResource(location.getIconId());
-    holder.vibeTone.setText(location.getVibeTone());
-
+    holder.address.setText(location.getAddress() != null ? location.getAddress().getLocality() : "");
+    holder.icon.setImageResource(R.drawable.target_icon);
+    //TODO: Add
+    // holder.vibeTone.setText(location.getTone());
   }
 
   /**
    * Gets Item Count
+   *
    * @return - number of items
    */
   @Override
   public int getItemCount() {
-    return data.size();
+    return locations.size();
+  }
+
+  @Override
+  public void onViewRecycled(ListViewHolder holder) {
+    subs.unsubscribe();
+    subs.clear();
+    super.onViewRecycled(holder);
   }
 
   /**
@@ -81,6 +121,7 @@ public class ListAdapterFavorites extends RecyclerView.Adapter<ListAdapterFavori
 
     /**
      * ListViewHolder Constructor
+     *
      * @param itemView - View
      */
     public ListViewHolder(View itemView) {

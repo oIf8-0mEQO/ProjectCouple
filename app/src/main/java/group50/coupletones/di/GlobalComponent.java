@@ -10,14 +10,10 @@ import group50.coupletones.controller.AddPartnerActivity;
 import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.PartnerResponseActivity;
+import group50.coupletones.controller.tab.favoritelocations.EditLocationActivity;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsListAdapter;
-import group50.coupletones.controller.tab.favoritelocations.map.LocationClickHandler;
-import group50.coupletones.controller.tab.favoritelocations.map.LocationDragMediator;
-import group50.coupletones.controller.tab.favoritelocations.map.LocationNotificationMediator;
-import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
-import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
-import group50.coupletones.controller.tab.favoritelocations.map.ProximityService;
+import group50.coupletones.controller.tab.favoritelocations.map.*;
 import group50.coupletones.controller.tab.favoritelocations.map.location.AddressProvider;
 import group50.coupletones.controller.tab.favoritelocations.map.location.ConcreteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
@@ -38,6 +34,7 @@ import javax.inject.Singleton;
 
 /**
  * The dependency injection global for the entire app.
+ *
  * @author Henry Mao
  * @since 28/4/2016
  */
@@ -65,6 +62,8 @@ public interface GlobalComponent {
   TimeUtility timeUtility();
 
   FormatUtility formatUtility();
+
+  void inject(EditLocationActivity obj);
 
   void inject(LocationNotificationMediator obj);
 

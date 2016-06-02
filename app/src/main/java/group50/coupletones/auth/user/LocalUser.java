@@ -27,6 +27,13 @@ public interface LocalUser extends User {
   void addVisitedLocation(VisitedLocationEvent visitedLocation);
 
   /**
+   * Sets a favorite location at an index in the list
+   * @param index Index to set the location. Must be greater than 0.
+   * @param location The location to remove
+   */
+  void setFavoriteLocation(int index, FavoriteLocation location);
+
+  /**
    * Removes a favorite location
    * @param location The location to remove
    */

@@ -12,6 +12,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -29,6 +32,7 @@ public class UserConfiguresSettings {
   @Rule
   public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
   private UserTestUtil testUtil = new ConcreteUserTestUtil();
+  private Lock lock = new ReentrantLock();
 
   @Before
   public void setUp() throws Exception {
@@ -36,11 +40,19 @@ public class UserConfiguresSettings {
   }
 
   private void givenUserNotConnectedToPartner() throws Throwable {
-    rule.runOnUiThread(() -> testUtil.injectNoPartner());
+    rule.runOnUiThread(() -> {
+      lock.lock();
+      testUtil.injectNoPartner();
+      lock.unlock();
+    });
   }
 
   private void givenUserConnectedToPartner() throws Throwable {
-    rule.runOnUiThread(() -> testUtil.injectSpyPartner());
+    rule.runOnUiThread(() -> {
+      lock.lock();
+      testUtil.injectSpyPartner();
+      lock.unlock();
+    });
   }
 
   private void whenOpenSettingsPage() {
@@ -63,6 +75,7 @@ public class UserConfiguresSettings {
   @Test
   public void userAddsPartner() throws Throwable {
     givenUserNotConnectedToPartner();
+    lock.lockInterruptibly();
     whenOpenSettingsPage();
     thenUserSeesButtonToAddPartner();
   }
@@ -70,6 +83,7 @@ public class UserConfiguresSettings {
   @Test
   public void userSeesPartner() throws Throwable {
     givenUserConnectedToPartner();
+    lock.lockInterruptibly();
     whenOpenSettingsPage();
     thenUserSeesPartnerName();
   }

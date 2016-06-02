@@ -76,12 +76,11 @@ dependencies {
     compile 'com.google.android.gms:play-services-gcm:9.0.0'
     compile 'com.google.android.gms:play-services-maps:9.0.0'
     compile 'com.google.maps.android:android-maps-utils:0.4.3'
-
+	// Firebase
     compile 'com.google.firebase:firebase-database:9.0.0'
 	compile 'com.google.firebase:firebase-messaging:9.0.0'
-	//TODO: Still need?
-	compile 'org.hashids:hashids:1.0.1'
 
+	// RXJava
 	compile 'io.reactivex:rxandroid:1.2.0'
 	compile 'io.reactivex:rxjava:1.1.+'
 

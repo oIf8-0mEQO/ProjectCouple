@@ -5,13 +5,11 @@ package group50.coupletones.network.fcm;
  * @since 5/4/16
  */
 
-import android.os.Handler;
 import android.util.Log;
 import com.google.firebase.messaging.RemoteMessage;
 import group50.coupletones.network.fcm.message.Message;
 import group50.coupletones.util.Taggable;
 import org.json.JSONObject;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
@@ -73,11 +71,16 @@ public class FcmManager implements NetworkManager, Taggable {
       conn.setRequestProperty("Authorization", AUTH_HEADER);
       conn.setUseCaches(false);
 
-      JSONObject jsonObject = new JSONObject(message.getData());
       DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-      wr.write(jsonObject.toString().getBytes());
+      String payload = new JSONObject(message.getPayload()).toString();
+      wr.write(payload.getBytes());
       wr.close();
-      Log.v(getTag(), "Sending outgoing FCM message to: " + message.getTo() + " with payload: " + jsonObject.toString());
+      int responseCode = conn.getResponseCode();
+      Log.v(getTag(), "Sending FCM message to: " + message.getTo() + " with payload: " + payload);
+
+      if (responseCode != 200) {
+        Log.e(getTag(), "Error sending FCM POST Request (" + conn.getResponseCode() + "): " + conn.getResponseMessage());
+      }
     } catch (Exception e) {
       Log.e(getTag(), "Unable to send FCM message.");
       e.printStackTrace();

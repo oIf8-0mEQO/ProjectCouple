@@ -13,15 +13,15 @@ public class FcmMessage implements Message {
   /**
    * The data to send to the server.
    */
-  private final Map<String, Object> data;
+  private final Map<String, Object> payload;
 
   public FcmMessage(String type) {
     this(new HashMap<>());
-    setString("type", type);
+    payload.put("type", type);
   }
 
-  public FcmMessage(Map<String, Object> data) {
-    this.data = data;
+  public FcmMessage(Map<String, Object> payload) {
+    this.payload = payload;
   }
 
   /**
@@ -30,7 +30,7 @@ public class FcmMessage implements Message {
    */
   @Override
   public String getType() {
-    return (String) data.get("type");
+    return (String) payload.get("type");
   }
 
   /**
@@ -38,45 +38,49 @@ public class FcmMessage implements Message {
    * @return - data of message
    */
   @Override
-  public Map<String, Object> getData() {
-    if (!data.containsKey("data")) {
-      data.put("data", new HashMap<>());
-    }
-    return (Map) data.get("data");
+  public Map<String, Object> getPayload() {
+    return payload;
   }
 
-  private void initNotification() {
-    if (!data.containsKey("notification")) {
-      data.put("notification", new HashMap<>());
+  @Override
+  public Map<String, Object> getData() {
+    if (!payload.containsKey("data")) {
+      payload.put("data", new HashMap<>());
     }
+    return (Map) payload.get("data");
+  }
+
+  @Override
+  public Map<String, Object> getNotification() {
+    if (!payload.containsKey("notification")) {
+      payload.put("notification", new HashMap<>());
+    }
+    return (Map) payload.get("notification");
   }
 
   public FcmMessage setTitle(String title) {
-    initNotification();
-    ((Map) data.get("notification")).put("title", title);
+    getNotification().put("title", title);
     return this;
   }
 
   public FcmMessage setBody(String body) {
-    initNotification();
-    ((Map) data.get("notification")).put("body", body);
+    getNotification().put("body", body);
     return this;
   }
 
   public FcmMessage setIcon(String icon) {
-    initNotification();
-    ((Map) data.get("notification")).put("icon", icon);
+    getNotification().put("icon", icon);
     return this;
   }
 
   @Override
   public String getTo() {
-    return (String) data.get("to");
+    return (String) payload.get("to");
   }
 
-  public FcmMessage setTo(String to) {
-    initNotification();
-    data.put("to", to);
+  @Override
+  public Message setTo(String to) {
+    payload.put("to", to);
     return this;
   }
 }

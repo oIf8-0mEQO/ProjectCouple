@@ -16,6 +16,8 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Favorit
 import group50.coupletones.util.FormatUtility;
 
 import javax.inject.Inject;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Sharmaine Manalo
@@ -38,6 +40,8 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
 
   private Context context;
 
+  private List<FavoriteLocation> locations;
+
 
   /**
    * Favorite Locations List Adapter
@@ -50,6 +54,21 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
     this.context = context;
 
     CoupleTones.global().inject(this);
+
+    setLocations(app.getLocalUser().getFavoriteLocations());
+
+    // Observe update
+    app
+      .getLocalUser()
+      .getProperties()
+      .property("favoriteLocations", List.class)
+      .observable()
+      .subscribe(this::setLocations);
+  }
+
+  private void setLocations(List<FavoriteLocation> locations) {
+    this.locations = locations != null ? locations : Collections.emptyList();
+    notifyDataSetChanged();
   }
 
   /**
@@ -72,15 +91,13 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
    */
   @Override
   public void onBindViewHolder(ListViewHolder holder, int position) {
-    FavoriteLocation location = app.getLocalUser().getFavoriteLocations().get(position);
+    FavoriteLocation location = locations.get(position);
     holder.name.setText(location.getName());
     holder.address.setText(location.getName());
     Address address = location.getAddress();
     holder.address.setText(formatUtility.formatAddress(address));
 
     holder.icon.setImageResource(R.drawable.myfave_icon);
-    //TODO: Implement custom icons?
-    //holder.icon.setImageResource(location.getIconId());
 
     // Clicking on the edit location icon takes you to the Edit Location activity
     holder.itemView.findViewById(R.id.edit_location_icon)
@@ -107,7 +124,7 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
    */
   @Override
   public int getItemCount() {
-    return app.getLocalUser().getFavoriteLocations().size();
+    return locations.size();
   }
 
   /**

@@ -76,11 +76,11 @@ public class VibeTone {
     try
     {
       Vibrator vib = (Vibrator) app.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-      if (app.getLocalUser().vibrationEnabled()) vib.vibrate(tones[10].vibration, 0);
-      if (app.getLocalUser().soundEnabled()) tones[11].sound.play();
+      if (app.getLocalUser().getVibrationSetting()) vib.vibrate(tones[10].vibration, 0);
+      if (app.getLocalUser().getTonesSetting()) tones[11].sound.play();
       wait(delay);
-      if (app.getLocalUser().vibrationEnabled()) vib.vibrate(vibration, 0);
-      if (app.getLocalUser().soundEnabled()) sound.play();
+      if (app.getLocalUser().getVibrationSetting()) vib.vibrate(vibration, 0);
+      if (app.getLocalUser().getTonesSetting()) sound.play();
     }
     catch (Exception e)
     {
@@ -93,11 +93,11 @@ public class VibeTone {
     try
     {
       Vibrator vib = (Vibrator) app.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-      if (app.getLocalUser().vibrationEnabled()) vib.vibrate(tones[11].vibration, 0);
-      if (app.getLocalUser().soundEnabled()) tones[11].sound.play();
+      if (app.getLocalUser().getVibrationSetting()) vib.vibrate(tones[11].vibration, 0);
+      if (app.getLocalUser().getTonesSetting()) tones[11].sound.play();
       wait(delay);
-      if (app.getLocalUser().vibrationEnabled()) vib.vibrate(vibration, 0);
-      if (app.getLocalUser().soundEnabled()) sound.play();
+      if (app.getLocalUser().getVibrationSetting()) vib.vibrate(vibration, 0);
+      if (app.getLocalUser().getTonesSetting()) sound.play();
     }
     catch (Exception e)
     {

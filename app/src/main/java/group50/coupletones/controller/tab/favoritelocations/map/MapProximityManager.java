@@ -9,6 +9,7 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.util.Taggable;
+import group50.coupletones.util.properties.Property;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
@@ -69,6 +70,7 @@ public class MapProximityManager implements ProximityManager, Taggable {
     Log.d(getTag(), "Entering location: " + favoriteLocation.getName() + " cooldown = " + favoriteLocation.isOnCooldown());
     if (!favoriteLocation.isOnCooldown() && !currentlyIn.contains(favoriteLocation)) {
       enterSubject.onNext(new VisitedLocationEvent(favoriteLocation, new Date()));
+      //TODO: Make this a member function? Update the server?
       favoriteLocation.setTimeLastVisited(System.currentTimeMillis());
       currentlyIn.add(favoriteLocation);
     }

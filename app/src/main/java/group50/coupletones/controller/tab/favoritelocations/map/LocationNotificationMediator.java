@@ -2,11 +2,10 @@ package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.util.Log;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.R;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.network.fcm.NetworkManager;
-import group50.coupletones.network.fcm.message.MessageType;
 import group50.coupletones.network.fcm.message.FcmMessage;
+import group50.coupletones.network.fcm.message.MessageType;
 import group50.coupletones.util.FormatUtility;
 import group50.coupletones.util.Taggable;
 
@@ -17,20 +16,22 @@ import javax.inject.Inject;
  * @since 5/5/16
  */
 public class LocationNotificationMediator implements Taggable {
-  private CoupleTones app;
-  private NetworkManager network;
-  private FormatUtility formatUtility;
+
+  private static final String NOTIFY_TITLE = "%1$s visited %2$s";
+  private static final String NOTIFY_ICON = "icon";
+
+  @Inject
+  public CoupleTones app;
+  @Inject
+  public NetworkManager network;
+  @Inject
+  public FormatUtility formatUtility;
 
   /**
    * Proximity Network Handler
-   * @param app - CoupleTones app
-   * @param network - Network Manager
    */
-  @Inject
-  public LocationNotificationMediator(CoupleTones app, NetworkManager network, FormatUtility formatUtility) {
-    this.app = app;
-    this.network = network;
-    this.formatUtility = formatUtility;
+  public LocationNotificationMediator() {
+    CoupleTones.global().inject(this);
   }
 
   /**
@@ -50,13 +51,9 @@ public class LocationNotificationMediator implements Taggable {
             .getOutgoingStream()
             .onNext(
               new FcmMessage(MessageType.LOCATION_NOTIFICATION.value)
-                .setTitle(
-                  partner.getName() + " " +
-                    app.getApplicationContext().getString(R.string.partner_visited_text) + " " +
-                    location.getName()
-                )
+                .setTitle(String.format(NOTIFY_TITLE, app.getLocalUser().getName(), location.getName()))
                 .setBody(formatUtility.formatDate(location.getTimeVisited()))
-                .setIcon("logo")
+                .setIcon(NOTIFY_ICON)
                 .setTo(partner.getFcmToken())
             );
         });

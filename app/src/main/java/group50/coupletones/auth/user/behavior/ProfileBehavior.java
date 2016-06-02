@@ -18,6 +18,7 @@ import group50.coupletones.util.properties.Property;
 
 import javax.inject.Inject;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,15 +26,14 @@ import java.util.List;
  * Holds the behavior of user's profile. Strategy pattern.
  */
 public class ProfileBehavior implements PropertiesProvider {
-  @Inject
-  @Exclude
-  public TimeUtility timeUtility;
-
   /**
    * Object responsible for syncing the object with database
    */
   private final Properties properties;
   private final Sync sync;
+  @Inject
+  @Exclude
+  public TimeUtility timeUtility;
   private String id;
   /**
    * Booleans that handle settings toggling
@@ -178,23 +178,26 @@ public class ProfileBehavior implements PropertiesProvider {
    * @return The list of visited locations of the user
    */
   public List<VisitedLocationEvent> getVisitedLocations() {
-    boolean hasChanged = false;
 
     if (visitedLocations != null) {
-      for (int i = 0; i < visitedLocations.size(); i++) {
-        VisitedLocationEvent currEvent = visitedLocations.get(i);
-        if (timeUtility.checkTime(currEvent)) {
-          visitedLocations.remove(i);
+      Iterator<VisitedLocationEvent> it = visitedLocations.iterator();
+      boolean hasChanged = false;
+
+      while (it.hasNext()) {
+        VisitedLocationEvent currEvent = it.next();
+        if (timeUtility.isFromPreviousDay(currEvent)) {
+          it.remove();
           hasChanged = true;
         }
-        if (hasChanged) {
-          Property<Object> prop = properties.property("visitedLocations");
-          prop.set(this.visitedLocations);
-          sync.update(prop);
-          prop.update();
-        }
       }
-      return visitedLocations;
+
+      if (hasChanged) {
+        Property<Object> prop = properties.property("visitedLocations");
+        sync.update(prop);
+        prop.update();
+      }
+
+      return Collections.unmodifiableList(visitedLocations);
     } else {
       return Collections.emptyList();
     }

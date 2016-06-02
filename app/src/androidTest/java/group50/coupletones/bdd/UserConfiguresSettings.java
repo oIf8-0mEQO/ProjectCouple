@@ -27,7 +27,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.*;
 @LargeTest
 public class UserConfiguresSettings {
   @Rule
-  public ActivityTestRule<MainActivity> rule = new ActivityTestRule(MainActivity.class);
+  public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
   private UserTestUtil testUtil = new ConcreteUserTestUtil();
 
   @Before

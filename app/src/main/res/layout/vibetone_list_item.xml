@@ -32,6 +32,18 @@
                 android:layout_height="wrap_content"
                 >
 
+                <!-- List Item VibeTone Icon -->
+                <ImageView
+                    android:id="@+id/list_item_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp"
+                    android:src="@drawable/ringtone_icon"
+                    android:layout_marginStart="77dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentStart="true"/>
+
                 <!-- List Item VibeTone Name -->
                 <TextView
                     android:id="@+id/list_vibetone_name"

@@ -8,20 +8,26 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.User;
-import group50.coupletones.di.DaggerMockAppComponent;
-import group50.coupletones.di.MockProximityModule;
-import group50.coupletones.network.fcm.FcmManager;
+import group50.coupletones.network.fcm.NetworkManager;
+import group50.coupletones.network.fcm.message.Message;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import rx.subjects.Subject;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Calvin
@@ -37,14 +43,14 @@ public class PartnerResponseActivityTest {
   User storedPartner = null;
   private CoupleTones app;
   private LocalUser user;
+  private Subject<Message, Message> outgoingStream;
 
   @Before
   public void setUp() throws Exception {
-    CoupleTones.setGlobal(
-      DaggerMockAppComponent
-        .builder()
-        .mockProximityModule(new MockProximityModule())
-        .build());
+    // Make sure FCM message is sent
+    NetworkManager network = CoupleTones.global().network();
+    outgoingStream = spy(Subject.class);
+    doReturn(outgoingStream).when(network).getOutgoingStream();
 
     app = CoupleTones.global().app();
     user = mock(LocalUser.class);
@@ -72,19 +78,22 @@ public class PartnerResponseActivityTest {
     // Click on the button
     onView(withId(R.id.accept_button)).perform(click());
     // Verify response message
-    verify((FcmManager) CoupleTones.global().network(), times(1)).sendMessage(any());
+    //TODO: Do we want to send a notification?
+    //verify(outgoingStream, times(1)).onNext(any());
 
     // Verify that the user partner is set
-    verify(user, times(1)).setPartner("1234");
+    verify(user, times(1)).handlePartnerRequest("1234", true);
   }
 
   public void sendRejectResponse() throws Exception {
     // Click on the button
     onView(withId(R.id.reject_button)).perform(click());
     // Verify response message
-    verify((FcmManager) CoupleTones.global().network(), times(1)).sendMessage(any());
+    //TODO: Do we want to send a notification?
+    verify(outgoingStream, times(1)).onNext(any());
 
     // Verify that the user partner not set
+    verify(user, times(1)).handlePartnerRequest("1234", false);
     assertThat(user.getPartner()).isNull();
   }
 

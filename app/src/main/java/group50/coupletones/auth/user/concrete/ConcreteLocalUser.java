@@ -118,4 +118,9 @@ public class ConcreteLocalUser implements LocalUser {
   public void setFcmToken(String id) {
     profile.setFcmToken(id);
   }
+
+  @Override
+  public void setFavoriteLocation(int index, FavoriteLocation location) {
+    profile.setFavoriteLocation(index, location);
+  }
 }

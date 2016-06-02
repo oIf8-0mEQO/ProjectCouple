@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import group50.coupletones.CoupleTones;
@@ -36,7 +37,7 @@ public class EditLocationActivity extends AppCompatActivity {
     setup();
 
     // Retrieve the FavoriteLocation
-    int index = savedInstanceState.getInt("index");
+    int index = getIntent().getExtras().getInt("index");
     LocalUser localUser = app.getLocalUser();
     List<FavoriteLocation> favoriteLocations = localUser.getFavoriteLocations();
 
@@ -44,7 +45,7 @@ public class EditLocationActivity extends AppCompatActivity {
     if (index < favoriteLocations.size()) {
       FavoriteLocation location = favoriteLocations.get(index);
       bindData(location);
-      bindEvents(location);
+      bindEvents(index, location);
     }
   }
 
@@ -70,10 +71,15 @@ public class EditLocationActivity extends AppCompatActivity {
     textAddress.setText(formatUtility.formatAddress(location.getAddress()));
   }
 
-  private void bindEvents(FavoriteLocation location) {
+  private void bindEvents(int index, FavoriteLocation location) {
     // Clicking the back button takes you to the previous activity
-    ImageButton backButton;
-    backButton = (ImageButton) findViewById(R.id.btn_backarrow);
+    ImageButton backButton = (ImageButton) findViewById(R.id.btn_backarrow);
+    Button saveButton = (Button) findViewById(R.id.save_changes_button);
     backButton.setOnClickListener(view -> finish());
+    saveButton.setOnClickListener(view -> {
+      location.setName(textLocationName.getText().toString());
+      app.getLocalUser().setFavoriteLocation(index, location);
+      finish();
+    });
   }
 }

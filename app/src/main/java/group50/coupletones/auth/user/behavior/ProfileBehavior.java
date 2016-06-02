@@ -153,6 +153,7 @@ public class ProfileBehavior implements PropertiesProvider {
 
   /**
    * Adds a favorite location
+   *
    * @param location The location to add
    */
   public void addFavoriteLocation(FavoriteLocation location) {
@@ -167,7 +168,24 @@ public class ProfileBehavior implements PropertiesProvider {
   }
 
   /**
+   * Adds a favorite location
+   *
+   * @param location The location to add
+   */
+  public void setFavoriteLocation(int index, FavoriteLocation location) {
+    if (favoriteLocations != null) {
+      if (index < favoriteLocations.size()) {
+        favoriteLocations.set(index, location);
+        Property<Object> prop = properties.property("favoriteLocations");
+        sync.update(prop);
+        prop.update();
+      }
+    }
+  }
+
+  /**
    * Adds a visited location
+   *
    * @param visitedLocation The visited location to add.
    */
   public void addVisitedLocation(VisitedLocationEvent visitedLocation) {
@@ -184,6 +202,7 @@ public class ProfileBehavior implements PropertiesProvider {
 
   /**
    * Removes a favorite location
+   *
    * @param location The location to remove
    */
   public void removeFavoriteLocation(FavoriteLocation location) {

@@ -91,4 +91,9 @@ public interface LocalUser extends User {
    * @param id The partner's user id to set
    */
   void setPartner(String id);
+
+  /**
+   * Updates the cooldown of the passed FavoriteLocation
+   */
+  public void updateCooldownOfFavorite(FavoriteLocation location);
 }

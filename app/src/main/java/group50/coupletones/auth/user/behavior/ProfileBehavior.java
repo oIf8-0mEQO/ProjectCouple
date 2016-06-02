@@ -5,6 +5,7 @@
 
 package group50.coupletones.auth.user.behavior;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.GenericTypeIndicator;
 import group50.coupletones.CoupleTones;
@@ -246,6 +247,15 @@ public class ProfileBehavior implements PropertiesProvider {
       sync.update(prop);
       prop.update();
     }
+  }
+
+  public void updateCooldownOfFavorite(FavoriteLocation location)
+  {
+    location.setTimeLastVisited(System.currentTimeMillis());
+
+    Property<Object> prop = properties.property("favoriteLocations");
+    sync.update(prop);
+    prop.update();
   }
 
   @Override

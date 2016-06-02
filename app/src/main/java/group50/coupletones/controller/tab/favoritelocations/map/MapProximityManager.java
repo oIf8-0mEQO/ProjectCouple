@@ -68,8 +68,10 @@ public class MapProximityManager implements ProximityManager, Taggable {
   public void onEnterLocation(FavoriteLocation favoriteLocation) {
     Log.d(getTag(), "Entering location: " + favoriteLocation.getName() + " cooldown = " + favoriteLocation.isOnCooldown());
     if (!favoriteLocation.isOnCooldown() && !currentlyIn.contains(favoriteLocation)) {
-      enterSubject.onNext(new VisitedLocationEvent(favoriteLocation, new Date()));
-      favoriteLocation.setTimeLastVisited(System.currentTimeMillis());
+      VisitedLocationEvent newLoc = new VisitedLocationEvent(favoriteLocation, new Date());
+      app.getLocalUser().addVisitedLocation(newLoc);
+      app.getLocalUser().updateCooldownOfFavorite(favoriteLocation);
+      enterSubject.onNext(newLoc);
       currentlyIn.add(favoriteLocation);
     }
   }
@@ -78,6 +80,7 @@ public class MapProximityManager implements ProximityManager, Taggable {
   {
     currentlyIn.remove(location);
     VisitedLocationEvent newLoc = new VisitedLocationEvent(location, new Date(location.getTime()), new Date());
+    app.getLocalUser().addVisitedLocation(newLoc);
     exitSubject.onNext(newLoc);
   }
 

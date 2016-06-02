@@ -8,19 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.controller.tab.partnerslocations.VibeTonesFragment;
+import group50.coupletones.util.FormatUtility;
 
 import javax.inject.Inject;
-
-import static android.app.PendingIntent.getActivity;
-import static android.support.v4.app.ActivityCompat.startActivity;
 
 /**
  * @author Sharmaine Manalo
@@ -34,6 +29,9 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
 
   @Inject
   public CoupleTones app;
+
+  @Inject
+  public FormatUtility formatUtility;
 
   private LayoutInflater inflater;
   private FavoriteLocationsFragment fragment;
@@ -78,15 +76,8 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
     holder.name.setText(location.getName());
     holder.address.setText(location.getName());
     Address address = location.getAddress();
-    if (address != null) {
-      if (address.getLocality() != null) {
-        holder.address.setText(address.getLocality() + ", " + address.getAdminArea());
-      } else {
-        holder.address.setText(address.getAdminArea());
-      }
-    } else {
-      holder.address.setText("");
-    }
+    holder.address.setText(formatUtility.formatAddress(address));
+
     holder.icon.setImageResource(R.drawable.myfave_icon);
     //TODO: Implement custom icons?
     //holder.icon.setImageResource(location.getIconId());
@@ -94,16 +85,18 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
     // Clicking on the edit location icon takes you to the Edit Location activity
     holder.itemView.findViewById(R.id.edit_location_icon)
       .setOnClickListener((view) -> {
+        // Launch EditLocationActivity
         Intent intent = new Intent(context, EditLocationActivity.class);
+        intent.putExtra("index", position);
         context.startActivity(intent);
       });
 
     // Clicking on the delete icon deletes the location from the list
     holder.itemView.findViewById(R.id.delete_location_icon)
       .setOnClickListener(evt -> {
-            app.getLocalUser().removeFavoriteLocation(location);
-            fragment.adapter.notifyDataSetChanged();
-          }
+          app.getLocalUser().removeFavoriteLocation(location);
+          fragment.adapter.notifyDataSetChanged();
+        }
       );
   }
 

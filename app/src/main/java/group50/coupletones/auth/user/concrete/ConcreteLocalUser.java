@@ -33,7 +33,7 @@ public class ConcreteLocalUser implements LocalUser {
 
   public ConcreteLocalUser(Sync sync) {
     properties = new ConcreteProperties();
-    profile = new ProfileBehavior(properties, sync);
+    profile = new ProfileBehavior(properties, sync, this);
     requestBehavior = new PartnerRequestBehavior(properties, sync);
     partnerBehavior = new PartnerBehavior(properties, this, sync, requestBehavior);
     sync.watchAll(properties);

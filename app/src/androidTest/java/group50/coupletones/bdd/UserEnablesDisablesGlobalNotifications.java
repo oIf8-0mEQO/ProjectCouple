@@ -4,12 +4,20 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.mocker.ConcreteUserTestUtil;
 import group50.coupletones.mocker.UserTestUtil;
 
@@ -29,6 +37,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 @LargeTest
 public class UserEnablesDisablesGlobalNotifications {
   private UserTestUtil testUtil = new ConcreteUserTestUtil();
+  FavoriteLocation home;
 
   @Rule
   public ActivityTestRule<MainActivity> rule = new ActivityTestRule(MainActivity.class) {
@@ -60,11 +69,17 @@ public class UserEnablesDisablesGlobalNotifications {
   }
 
   private void andUserPartnerGoesToFavoriteLocation() {
-    // TODO
+    home = new FavoriteLocation("Home", new LatLng(0, 0), 0, null);
+    VisitedLocationEvent evt = new VisitedLocationEvent(home, new Date(), new Date());
+    List<VisitedLocationEvent> visitedLocations = new LinkedList<VisitedLocationEvent>();
+    visitedLocations.add(evt);
+    testUtil.getPartner()
+      .getProperties()
+      .property("visitedLocations").set(visitedLocations);
   }
 
   private void thenUserWillReceiveNotification() {
-    // TODO
+
   }
 
   @Test

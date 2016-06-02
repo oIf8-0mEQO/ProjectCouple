@@ -5,11 +5,14 @@ package group50.coupletones.network.fcm;
  * @since 5/4/16
  */
 
+import android.os.Handler;
 import android.util.Log;
 import com.google.firebase.messaging.RemoteMessage;
 import group50.coupletones.network.fcm.message.Message;
 import group50.coupletones.util.Taggable;
 import org.json.JSONObject;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
 import javax.inject.Inject;
@@ -45,7 +48,9 @@ public class FcmManager implements NetworkManager, Taggable {
     outgoingStream = PublishSubject.create();
 
     // Register the default sending behavior
-    outgoingStream.subscribe(this::onSendMessage);
+    outgoingStream
+      .observeOn(Schedulers.newThread())
+      .subscribe(this::onSendMessage);
   }
 
   /**
@@ -55,6 +60,7 @@ public class FcmManager implements NetworkManager, Taggable {
   private void onSendMessage(Message message) {
     if (message.getTo() == null) {
       Log.e(getTag(), "Message must have a destination.");
+      return;
     }
 
     try {
@@ -70,6 +76,8 @@ public class FcmManager implements NetworkManager, Taggable {
       JSONObject jsonObject = new JSONObject(message.getData());
       DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
       wr.write(jsonObject.toString().getBytes());
+      wr.close();
+      Log.v(getTag(), "Sending outgoing FCM message to: " + message.getTo() + " with payload: " + jsonObject.toString());
     } catch (Exception e) {
       Log.e(getTag(), "Unable to send FCM message.");
       e.printStackTrace();

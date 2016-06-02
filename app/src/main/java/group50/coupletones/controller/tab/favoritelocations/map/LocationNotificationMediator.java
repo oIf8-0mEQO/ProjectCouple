@@ -50,6 +50,7 @@ public class LocationNotificationMediator implements Taggable {
             .getOutgoingStream()
             .onNext(
               new FcmMessage(MessageType.LOCATION_NOTIFICATION.value)
+                .setTo(partner.getFcmToken())
                 .setTitle(
                   partner.getName() + " " +
                     app.getApplicationContext().getString(R.string.partner_visited_text) + " " +

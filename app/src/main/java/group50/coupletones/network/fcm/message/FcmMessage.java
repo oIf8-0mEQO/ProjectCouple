@@ -76,7 +76,7 @@ public class FcmMessage implements Message {
 
   public FcmMessage setTo(String to) {
     initNotification();
-    ((Map) data.get("notification")).put("to", to);
+    data.put("to", to);
     return this;
   }
 }

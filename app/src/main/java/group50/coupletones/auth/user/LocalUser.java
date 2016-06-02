@@ -27,6 +27,39 @@ public interface LocalUser extends User {
   void addVisitedLocation(VisitedLocationEvent visitedLocation);
 
   /**
+   * @return Global notifications setting
+   */
+  boolean getGlobalNotificationsSetting();
+
+  /**
+   * @return Tones setting
+   */
+  boolean getTonesSetting();
+
+  /**
+   * @return Vibration setting
+   */
+  boolean getVibrationSetting();
+
+  /**
+   * This function turns on/off the global notifications
+   * @return globalNotificationsAreOn true if notifications are on, false if turned off
+   */
+  boolean setGlobalNotificationsSetting(boolean setting);
+
+  /**
+   * This function turns on/off the tones
+   * @return tonesAreOn true if notifications are on, false if turned off
+   */
+  boolean setTonesSetting(boolean setting);
+
+  /**
+   * This function turns on/off the vibration
+   * @return vibrationIsOn true if notifications are on, false if turned off
+   */
+  boolean setVibrationSetting(boolean setting);
+
+  /**
    * Removes a favorite location
    * @param location The location to remove
    */

@@ -23,7 +23,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "group50.coupletones.InjectionTestRunner"
-    }
+		com.android.ddmlib.DdmPreferences.setTimeOut(60000)
+	}
 
     buildTypes {
         release {

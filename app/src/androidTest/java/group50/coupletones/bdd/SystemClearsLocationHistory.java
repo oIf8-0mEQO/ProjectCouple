@@ -1,43 +1,35 @@
 package group50.coupletones.bdd;
 
-import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.view.View;
-
 import com.google.android.gms.maps.model.LatLng;
-
+import group50.coupletones.CoupleTones;
+import group50.coupletones.R;
+import group50.coupletones.controller.MainActivity;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
+import group50.coupletones.mocker.ConcreteUserTestUtil;
+import group50.coupletones.mocker.UserTestUtil;
+import group50.coupletones.util.TimeUtility;
+import group50.coupletones.util.sound.VibeTone;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import group50.coupletones.CoupleTones;
-import group50.coupletones.R;
-import group50.coupletones.controller.MainActivity;
-import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
-import group50.coupletones.di.DaggerMockAppComponent;
-import group50.coupletones.di.MockProximityModule;
-import group50.coupletones.mocker.ConcreteUserTestUtil;
-import group50.coupletones.mocker.UserTestUtil;
-import group50.coupletones.util.TimeUtility;
-import group50.coupletones.util.sound.VibeTone;
-
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.matches;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Sharmaine Manalo
@@ -47,26 +39,35 @@ import static org.mockito.Mockito.when;
 @LargeTest
 
 public class SystemClearsLocationHistory {
+  private UserTestUtil testUtil = new ConcreteUserTestUtil();
   @Rule
-  public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
-  private UserTestUtil userMocker = new ConcreteUserTestUtil();
-  TimeUtility timeUtility;
-  List<VisitedLocationEvent> visitedLocations;
-  VisitedLocationEvent visitedLocation;
+  public ActivityTestRule<MainActivity> rule = new ActivityTestRule(MainActivity.class) {
+    @Override
+    protected void beforeActivityLaunched() {
+      testUtil.injectLocalUser();
+      super.beforeActivityLaunched();
+    }
+  };
+  private TimeUtility timeUtility;
+  private List<VisitedLocationEvent> visitedLocations;
+  private VisitedLocationEvent visitedLocation;
 
   @Before
   public void setup() {
-    FavoriteLocation partnerFavorite = new FavoriteLocation("name", new LatLng(10, 10), 0, VibeTone.getTone());
+    // Simulate a time the favorite location was visited.
+    Calendar june1ElevenPM = Calendar.getInstance();
+    june1ElevenPM.set(2016, Calendar.JUNE, 1, 11 + 12, 0, 0);
+    FavoriteLocation partnerFavorite = new FavoriteLocation("name",
+      new LatLng(10, 10),
+      0,
+      VibeTone.getTone()
+    );
+
     timeUtility = CoupleTones.global().timeUtility();
 
-    Date date = new Date(1464480000000L);
-    doReturn(date).when(timeUtility).systemDate();
-
-    visitedLocation = new VisitedLocationEvent(partnerFavorite, timeUtility.systemDate(), timeUtility.systemDate());
+    visitedLocation = new VisitedLocationEvent(partnerFavorite, june1ElevenPM.getTime(), june1ElevenPM.getTime());
     visitedLocations = new LinkedList<>();
     visitedLocations.add(visitedLocation);
-
-    userMocker.injectLocalUser();
   }
 
   /**
@@ -75,72 +76,71 @@ public class SystemClearsLocationHistory {
    * When the user views his/her partner's visited locations
    * Then the app will display the list of partner's visited locations since the last 3AM
    */
+  private void givenThatItIsBefore3AM() throws Throwable {
+    // Stub current time
+    Calendar june2TwelveAM = Calendar.getInstance();
+    june2TwelveAM.set(2016, Calendar.JUNE, 2, 0, 0, 0);
+    doReturn(june2TwelveAM.getTimeInMillis()).when(timeUtility).systemTime();
+  }
 
-  private void givenThatUserHasPartnerAndViewsListBefore3AM() {
-    userMocker
+  private void givenThatItIsAfter3AM() throws Throwable {
+    // Stub current time
+    Calendar june2FourAM = Calendar.getInstance();
+    june2FourAM.set(2016, Calendar.JUNE, 2, 4, 0, 0);
+    doReturn(june2FourAM.getTimeInMillis()).when(timeUtility).systemTime();
+  }
+
+  private void givenThatUserHasPartner() throws Throwable {
+    // User has partner
+    rule.runOnUiThread(() -> {
+
+      testUtil
         .mockProperty("name", "Henry")
         .mockProperty("email", "henry@email.com");
 
-    userMocker.injectUserWithId("sharmaine", user -> {
-      user.getProperties().property("name").set("Sharmaine");
-      user.getProperties().property("email").set("sharmaine@email.com");
-      user.getProperties().property("visitedLocations").set(visitedLocations);
-      return user;
+      testUtil.injectUserWithId("sharmaine", user -> {
+        user.getProperties().property("name").set("Sharmaine");
+        user.getProperties().property("email").set("sharmaine@email.com");
+        user.getProperties().property("visitedLocations").set(visitedLocations);
+        return user;
+      });
+
+      testUtil.injectPartner("sharmaine");
     });
 
-    userMocker.injectPartner("sharmaine");
-
-    assertThat(userMocker.getPartner()).isNotNull();
-
-    assertThat(userMocker.getPartner().getProperties().property("visitedLocations", List.class).get()).hasSize(1);
-    assertThat(userMocker.getPartner().getProperties().property("visitedLocations", List.class).get()).contains(visitedLocation);
-
-    doReturn(1464480000000L).when(timeUtility).systemTime();
+    assertThat(testUtil.getPartner()).isNotNull();
   }
 
   private void whenUserViewsPartnersVisitedLocations() {
     onView(withId(R.id.partner_locations)).perform(click());
   }
 
-  private void thenAppDisplaysListofPartnersVisitedLocationsSinceLast3AM() throws Throwable{
-    assertThat(userMocker.getPartner().getVisitedLocations()).hasSize(1);
-    assertThat(userMocker.getPartner().getVisitedLocations()).contains(visitedLocation);
+  private void thenAppDisplaysListOfPartnersVisitedLocationsSinceLast3AM() {
+    assertThat(testUtil.getPartner().getVisitedLocations()).hasSize(1);
+    assertThat(testUtil.getPartner().getVisitedLocations()).contains(visitedLocation);
 
-    onView(withId(R.id.partner_locations)).check(ViewAssertions.matches(isDisplayed()));
-    onView(withId(R.id.partners_location_list)).check(ViewAssertions.matches(isDisplayed()));
+    onView(withId(R.id.list_item_name)).check(matches(isDisplayed()));
   }
 
   @Test
-  public void userViewsPartnersVisitedLocationsBefore3AM() throws Throwable{
-    givenThatUserHasPartnerAndViewsListBefore3AM();
+  public void userViewsPartnersVisitedLocationsBefore3AM() throws Throwable {
+    givenThatItIsBefore3AM();
+    givenThatUserHasPartner();
     whenUserViewsPartnersVisitedLocations();
-    thenAppDisplaysListofPartnersVisitedLocationsSinceLast3AM();
+    thenAppDisplaysListOfPartnersVisitedLocationsSinceLast3AM();
   }
 
-  /**
-   * Scenario 2: User's views the partner's visited after 3AM
-   * Given that the user has a partner and views the partner's visited locations list after 3AM
-   * When the user views his/her partner's visited locations
-   * Then the app will clear the previous day's visited locations
-   * And display the list of partner's visited locations since the most recent 3AM
-   */
+  private void thenAppDisplaysListOfPartnersVisitedLocationsAfter3AM() {
+    assertThat(testUtil.getPartner().getVisitedLocations()).hasSize(0);
 
-  private void givenThatUserHasPartnerAndViewsListAfter3AM() {
-
+    onView(withId(R.id.list_item_name)).check(doesNotExist());
   }
 
-  private void thenAppWillClearPreviousDaysVisitedLocations() {
-
+  @Test
+  public void userViewsPartnersVisitedLocationsAfter3AM() throws Throwable {
+    givenThatItIsAfter3AM();
+    givenThatUserHasPartner();
+    whenUserViewsPartnersVisitedLocations();
+    thenAppDisplaysListOfPartnersVisitedLocationsAfter3AM();
   }
-
-  private void andDisplayListofPartnersVisitedLocationsSinceLast3AM() {
-
-  }
-
-  /*@Test
-  public void userViewsPartnersVisitedLocationsAfter3AM() {
-
-  }*/
-
-
 }

@@ -4,14 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import group50.coupletones.R;
 import group50.coupletones.controller.PartnerResponseActivity;
-import group50.coupletones.network.fcm.receiver.Notification;
+import group50.coupletones.network.fcm.NotificationBuilder;
 
 import java.util.List;
 
 /**
  * Observes whenever a partner request is added to the user.
  * The observer notifies the user of this request.
- *
  * @author Henry Mao
  * @since 5/25/16
  */
@@ -27,7 +26,6 @@ public class PartnerRequestObserver {
 
   /**
    * Binds the observer to act on a given user
-   *
    * @param localUser The user to observe
    * @return Self instance
    */
@@ -42,7 +40,6 @@ public class PartnerRequestObserver {
 
   /**
    * Called when the list of partner request changes.
-   *
    * @param partnerRequests A list of partner requests
    */
   public void onRequestsChange(List<String> partnerRequests) {
@@ -68,7 +65,7 @@ public class PartnerRequestObserver {
           String title = context.getString(R.string.partner_request_header);
           String msg = syncedPartner.getEmail() + " " + context.getString(R.string.partner_up_text);
 
-          new Notification(context)
+          new NotificationBuilder(context)
             .setIntent(intent)
             .setTitle(title)
             .setMsg(msg)

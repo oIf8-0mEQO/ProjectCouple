@@ -47,17 +47,7 @@
 				android:label="@string/title_activity_add_partner"/>
 		android:label="@string/title_activity_add_partner">
 
-		<receiver
-				android:name=".network.gcm.GcmReceiver"
-				android:permission="com.google.android.c2dm.permission.SEND">
-			<intent-filter>
-				<action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-				<category android:name="group50.coupletones"/>
-			</intent-filter>
-		</receiver>
-
 		<service android:name=".controller.tab.favoritelocations.map.ProximityService"/>
-		<service android:name=".network.gcm.GcmIntentService"/>
 
 		<meta-data
 				android:name="com.google.android.geo.API_KEY"

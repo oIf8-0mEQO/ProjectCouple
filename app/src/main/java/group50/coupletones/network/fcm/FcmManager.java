@@ -6,6 +6,7 @@ package group50.coupletones.network.fcm;
  */
 
 import android.util.Log;
+import com.google.firebase.messaging.RemoteMessage;
 import group50.coupletones.network.fcm.message.Message;
 import group50.coupletones.util.Taggable;
 import org.json.JSONObject;
@@ -31,7 +32,7 @@ public class FcmManager implements NetworkManager, Taggable {
   /**
    * Subject that is observed by objects that want to listen to incoming messages
    */
-  final PublishSubject<Message> incomingStream;
+  final PublishSubject<RemoteMessage> incomingStream;
 
   /**
    * Subject that is observed by objects that want to listen to outgoing messages
@@ -47,6 +48,10 @@ public class FcmManager implements NetworkManager, Taggable {
     outgoingStream.subscribe(this::onSendMessage);
   }
 
+  /**
+   * Handles sending outgoing messages
+   * @param message The outgoing message.
+   */
   private void onSendMessage(Message message) {
     try {
       URL url = new URL(ENDPOINT);
@@ -71,7 +76,7 @@ public class FcmManager implements NetworkManager, Taggable {
   }
 
   @Override
-  public PublishSubject<Message> getIncomingStream() {
+  public PublishSubject<RemoteMessage> getIncomingStream() {
     return incomingStream;
   }
 

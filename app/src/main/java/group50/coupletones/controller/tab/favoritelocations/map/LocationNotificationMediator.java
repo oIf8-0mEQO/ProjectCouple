@@ -2,41 +2,39 @@ package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.util.Log;
 import group50.coupletones.CoupleTones;
+import group50.coupletones.R;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.network.fcm.NetworkManager;
 import group50.coupletones.network.fcm.message.MessageType;
-import group50.coupletones.network.fcm.message.OutgoingMessage;
+import group50.coupletones.network.fcm.message.NotificationMessage;
+import group50.coupletones.util.FormatUtility;
 import group50.coupletones.util.Taggable;
 
 import javax.inject.Inject;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 /**
  * @author Sharmaine Manalo
  * @since 5/5/16
  */
-public class ProximityNetworkHandler implements Taggable {
+public class LocationNotificationMediator implements Taggable {
   private CoupleTones app;
   private NetworkManager network;
+  private FormatUtility formatUtility;
 
   /**
    * Proximity Network Handler
-   *
-   * @param app     - CoupleTones app
+   * @param app - CoupleTones app
    * @param network - Network Manager
    */
   @Inject
-  public ProximityNetworkHandler(CoupleTones app, NetworkManager network) {
+  public LocationNotificationMediator(CoupleTones app, NetworkManager network, FormatUtility formatUtility) {
     this.app = app;
     this.network = network;
+    this.formatUtility = formatUtility;
   }
 
   /**
    * onEnterLocation
-   *
    * @param location - Visited Location
    */
   public void onEnterLocation(VisitedLocationEvent location) {
@@ -44,28 +42,28 @@ public class ProximityNetworkHandler implements Taggable {
       // Adds the location as a visited location
       app.getLocalUser().addVisitedLocation(location);
 
-      Format formatter = new SimpleDateFormat("HH:mm", Locale.US);
-      Date date = location.getTimeVisited();
-      String time = formatter.format(date);
-
-      // Send GCM notification
+      // Send notification to partner about location visit
       app.getLocalUser().getPartner()
+        .filter(partner -> partner != null)
         .subscribe(partner -> {
-          network.send((OutgoingMessage) new OutgoingMessage(MessageType.SEND_LOCATION_NOTIFICATION.value)
-            .setString("name", location.getName())
-            .setDouble("lat", location.getPosition().latitude)
-            .setDouble("long", location.getPosition().longitude)
-            .setString("time", time)
-            .setString("partner", partner.getEmail())
-          );
+          network
+            .getOutgoingStream()
+            .onNext(
+              new NotificationMessage(MessageType.LOCATION_NOTIFICATION.value)
+                .setTitle(
+                  partner.getName() + " " +
+                    app.getApplicationContext().getString(R.string.partner_visited_text) + " " +
+                    location.getName()
+                )
+                .setBody(formatUtility.formatDate(location.getTimeVisited()))
+            );
         });
     } else {
       Log.e(getTag(), "Attempt to send location notification to null partner.");
     }
   }
 
-  public void onLeaveLocation(VisitedLocationEvent location)
-  {
+  public void onLeaveLocation(VisitedLocationEvent location) {
     //TODO: Remove?
   }
 }

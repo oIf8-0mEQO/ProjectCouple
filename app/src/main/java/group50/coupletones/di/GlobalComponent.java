@@ -26,7 +26,9 @@ import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.NetworkModule;
 import group50.coupletones.di.module.ProximityModule;
 import group50.coupletones.di.module.UserFactoryModule;
+import group50.coupletones.network.fcm.MessagingService;
 import group50.coupletones.network.fcm.NetworkManager;
+import group50.coupletones.util.FormatUtility;
 import group50.coupletones.util.TimeUtility;
 
 import javax.inject.Singleton;
@@ -58,6 +60,10 @@ public interface GlobalComponent {
   UserFactory userFactory();
 
   TimeUtility timeUtility();
+
+  FormatUtility formatUtility();
+
+  void inject(MessagingService obj);
 
   void inject(PartnerBehavior obj);
 

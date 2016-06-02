@@ -5,6 +5,7 @@ package group50.coupletones.network.fcm;
  * @since 2/5/16
  */
 
+import com.google.firebase.messaging.RemoteMessage;
 import group50.coupletones.network.fcm.message.Message;
 import rx.Observable;
 import rx.subjects.Subject;
@@ -19,7 +20,7 @@ public interface NetworkManager {
    * listened.
    * @return The incoming stream of messages from the server.
    */
-  Observable<Message> getIncomingStream();
+  Observable<RemoteMessage> getIncomingStream();
 
   /**
    * Holds a stream of outgoing messages that can be published

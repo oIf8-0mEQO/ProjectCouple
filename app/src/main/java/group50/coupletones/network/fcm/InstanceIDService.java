@@ -15,8 +15,8 @@ public class InstanceIDService extends FirebaseInstanceIdService implements Tagg
   public void onTokenRefresh() {
     // Get updated InstanceID token.
     String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-    Log.d(getTag(), "Refreshed token: " + refreshedToken);
+    Log.d(getTag(), "Token refresh: " + refreshedToken);
 
-    // TODO: Implement this method to send any registration to your app's servers.
+    //TODO: Update user instance?
   }
 }

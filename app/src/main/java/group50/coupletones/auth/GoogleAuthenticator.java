@@ -13,10 +13,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.Status;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.auth.user.*;
+import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.PartnerRequestObserver;
+import group50.coupletones.auth.user.User;
+import group50.coupletones.auth.user.UserFactory;
 import group50.coupletones.network.fcm.NetworkManager;
-import group50.coupletones.network.fcm.message.OutgoingMessage;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Function;
@@ -25,7 +26,6 @@ import javax.inject.Inject;
 
 /**
  * Handles Google Authentication
- *
  * @author Henry Mao
  */
 //TODO: Unit test
@@ -97,7 +97,6 @@ public class GoogleAuthenticator implements
   /**
    * Attempts to sign in the user automatically by using silent
    * sign in.
-   *
    * @return This instance
    */
   @Override
@@ -125,7 +124,6 @@ public class GoogleAuthenticator implements
   /**
    * Attempts to sign in the user.
    * Opens an Android Intent and asks Google to sign in.
-   *
    * @return This instance
    */
   @Override
@@ -153,10 +151,9 @@ public class GoogleAuthenticator implements
 
   /**
    * Method that handles the intent result callback
-   *
    * @param requestCode The request code of the intent
-   * @param resultCode  The result code of the intent
-   * @param data        The data of the intent
+   * @param resultCode The result code of the intent
+   * @param data The data of the intent
    */
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -169,7 +166,6 @@ public class GoogleAuthenticator implements
 
   /**
    * Handles the sign in request. Called after the sign in request is complete.
-   *
    * @param result The GoogleSignInResult
    */
   private void handleSignInResult(GoogleSignInResult result) {
@@ -185,15 +181,6 @@ public class GoogleAuthenticator implements
       new PartnerRequestObserver(context, factory).bind(localUser);
 
       app.setLocalUser(localUser);
-
-      // Notify server of registration
-      network.send(
-        (OutgoingMessage) new OutgoingMessage("registration")
-          .setString("id", localUser.getId())
-          .setString("name", localUser.getName())
-          .setString("email", localUser.getEmail())
-      );
-
       successCallback.apply(localUser);
     } else {
       // Signed out, show unauthenticated UI.

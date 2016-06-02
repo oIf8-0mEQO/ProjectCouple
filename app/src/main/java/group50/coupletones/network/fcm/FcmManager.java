@@ -1,4 +1,4 @@
-package group50.coupletones.network.gcm;
+package group50.coupletones.network.fcm;
 
 /**
  * @author Sharmaine Manalo
@@ -22,7 +22,12 @@ import java.util.HashMap;
 /**
  * GCM Manager for the app
  */
-public class GcmManager implements NetworkManager, Taggable {
+public class FcmManager implements NetworkManager, Taggable {
+
+  /**
+   * FCM key
+   */
+  private static final String KEY = "AIzaSyCyMy2k4cpGNsqqvcilg2GyFjXQSAZ_qbE";
 
   /**
    * Project number registered with Google API
@@ -50,7 +55,7 @@ public class GcmManager implements NetworkManager, Taggable {
   private String regid;
 
   @Inject
-  public GcmManager() {
+  public FcmManager() {
 
   }
 

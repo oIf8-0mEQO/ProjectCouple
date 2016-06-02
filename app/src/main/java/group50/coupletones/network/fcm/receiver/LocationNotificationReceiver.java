@@ -1,4 +1,4 @@
-package group50.coupletones.network.receiver;
+package group50.coupletones.network.fcm.receiver;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,9 +6,9 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.controller.MainActivity;
-import group50.coupletones.network.message.Message;
-import group50.coupletones.network.message.MessageReceiver;
-import group50.coupletones.network.message.MessageType;
+import group50.coupletones.network.fcm.message.Message;
+import group50.coupletones.network.fcm.message.MessageReceiver;
+import group50.coupletones.network.fcm.message.MessageType;
 import group50.coupletones.util.Identifiable;
 import rx.Observable;
 

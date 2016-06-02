@@ -1,4 +1,4 @@
-package group50.coupletones.network.receiver;
+package group50.coupletones.network.fcm.receiver;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;

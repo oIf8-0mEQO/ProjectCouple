@@ -1,4 +1,4 @@
-package group50.coupletones.network;
+package group50.coupletones.network.fcm;
 
 /**
  * @author Sharmaine Manalo
@@ -7,8 +7,8 @@ package group50.coupletones.network;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import group50.coupletones.network.message.MessageReceiver;
-import group50.coupletones.network.message.OutgoingMessage;
+import group50.coupletones.network.fcm.message.MessageReceiver;
+import group50.coupletones.network.fcm.message.OutgoingMessage;
 import group50.coupletones.util.Identifiable;
 
 /**

@@ -26,15 +26,13 @@ import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.NetworkModule;
 import group50.coupletones.di.module.ProximityModule;
 import group50.coupletones.di.module.UserFactoryModule;
-import group50.coupletones.network.NetworkManager;
-import group50.coupletones.network.gcm.GcmIntentService;
+import group50.coupletones.network.fcm.NetworkManager;
 import group50.coupletones.util.TimeUtility;
 
 import javax.inject.Singleton;
 
 /**
  * The dependency injection global for the entire app.
- *
  * @author Henry Mao
  * @since 28/4/2016
  */
@@ -89,11 +87,9 @@ public interface GlobalComponent {
 
   void inject(SettingsFragment fragment);
 
-  void inject(GcmIntentService receiver);
-
   void inject(ConcreteLocation location);
 
   void inject(ProfileBehavior behavior);
 
-  void inject (ListAdapterPartnerVisited list);
+  void inject(ListAdapterPartnerVisited list);
 }

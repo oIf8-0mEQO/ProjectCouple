@@ -16,10 +16,10 @@ import group50.coupletones.di.DaggerInstanceComponent;
 import group50.coupletones.di.GlobalComponent;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.ProximityModule;
-import group50.coupletones.network.NetworkManager;
-import group50.coupletones.network.message.MessageType;
-import group50.coupletones.network.receiver.ErrorReceiver;
-import group50.coupletones.network.receiver.LocationNotificationReceiver;
+import group50.coupletones.network.fcm.NetworkManager;
+import group50.coupletones.network.fcm.message.MessageType;
+import group50.coupletones.network.fcm.receiver.ErrorReceiver;
+import group50.coupletones.network.fcm.receiver.LocationNotificationReceiver;
 
 /**
  * A singleton object that holds global data.

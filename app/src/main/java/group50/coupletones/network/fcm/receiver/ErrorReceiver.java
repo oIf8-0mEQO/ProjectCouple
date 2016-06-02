@@ -1,10 +1,10 @@
-package group50.coupletones.network.receiver;
+package group50.coupletones.network.fcm.receiver;
 
 import android.content.Context;
 import android.os.Handler;
 import android.widget.Toast;
-import group50.coupletones.network.message.Message;
-import group50.coupletones.network.message.MessageReceiver;
+import group50.coupletones.network.fcm.message.Message;
+import group50.coupletones.network.fcm.message.MessageReceiver;
 
 /**
  * Handles general error request.

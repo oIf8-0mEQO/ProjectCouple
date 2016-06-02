@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import group50.coupletones.R;
 import group50.coupletones.controller.PartnerResponseActivity;
-import group50.coupletones.network.receiver.Notification;
+import group50.coupletones.network.fcm.receiver.Notification;
 
 import java.util.List;
 

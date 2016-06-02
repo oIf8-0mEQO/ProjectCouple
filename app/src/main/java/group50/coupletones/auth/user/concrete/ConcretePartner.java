@@ -18,7 +18,6 @@ import java.util.List;
  * Represents a Partner that a User.
  * Delegates all methods to ConcreteUser, but prevents modification
  * to fields.
- *
  * @author Brandon Chi
  * @since 5/5/2016
  */
@@ -61,6 +60,11 @@ public class ConcretePartner implements Partner {
   @Override
   public String getId() {
     return profile.getId();
+  }
+
+  @Override
+  public String getFcmToken() {
+    return profile.getFcmToken();
   }
 
   @Override

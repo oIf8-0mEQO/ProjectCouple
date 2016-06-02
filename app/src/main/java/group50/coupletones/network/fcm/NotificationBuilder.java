@@ -1,4 +1,4 @@
-package group50.coupletones.network.receiver;
+package group50.coupletones.network.fcm;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,6 +8,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import group50.coupletones.R;
+import group50.coupletones.controller.MainActivity;
 
 /**
  * A simple class that builds a notification
@@ -15,7 +16,7 @@ import group50.coupletones.R;
  * @author Henry Mao
  * @since 5/6/16
  */
-public class Notification {
+public class NotificationBuilder {
   private final Context context;
 
   /**
@@ -32,16 +33,17 @@ public class Notification {
    * Notification Constructor
    * @param context
    */
-  public Notification(Context context) {
+  public NotificationBuilder(Context context) {
     this.context = context;
     builder = new NotificationCompat.Builder(context);
+    intent = new Intent(context, MainActivity.class);
   }
 
   /**
    * Sets the intent
    * @return - Notification user receives
    */
-  public Notification setIntent(Intent intent) {
+  public NotificationBuilder setIntent(Intent intent) {
     this.intent = intent;
     return this;
   }
@@ -51,7 +53,7 @@ public class Notification {
    * @param title - title of notification
    * @return - the Notification
    */
-  public Notification setTitle(String title) {
+  public NotificationBuilder setTitle(String title) {
     builder.setContentTitle(title);
     return this;
   }
@@ -61,7 +63,7 @@ public class Notification {
    * @param msg - Notification message
    * @return - the Notification
    */
-  public Notification setMsg(String msg) {
+  public NotificationBuilder setMsg(String msg) {
     builder.setContentText(msg);
     return this;
   }
@@ -70,7 +72,7 @@ public class Notification {
    * Shows the notification
    * @return - the Notification
    */
-  public Notification show() {
+  public NotificationBuilder show() {
     PendingIntent pendingIntent = PendingIntent.getActivity(
       context,
       0 /* Request code */,

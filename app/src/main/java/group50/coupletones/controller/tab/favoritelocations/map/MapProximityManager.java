@@ -9,6 +9,7 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.util.Taggable;
+import group50.coupletones.util.properties.Property;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 

@@ -3,13 +3,10 @@ package group50.coupletones.bdd;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
-import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
-import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.MainActivity;
-import group50.coupletones.di.DaggerMockAppComponent;
-import group50.coupletones.di.MockProximityModule;
-
+import group50.coupletones.mocker.ConcreteUserTestUtil;
+import group50.coupletones.mocker.UserTestUtil;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -20,8 +17,6 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * @author Sharmaine Manalo
@@ -34,24 +29,11 @@ public class UserViewsFavoriteLocationList {
 
   @Rule
   public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
-  private CoupleTones app;
-  private LocalUser mockUser;
+  private UserTestUtil testUtil = new ConcreteUserTestUtil();
 
   @Before
   public void setup() {
-    // Mock DI
-    CoupleTones.setGlobal(
-        DaggerMockAppComponent
-            .builder()
-            .mockProximityModule(new MockProximityModule())
-            .build()
-    );
-
-    // Mock the user
-    mockUser = mock(LocalUser.class);
-    app = CoupleTones.global().app();
-    when(app.isLoggedIn()).thenReturn(true);
-    when(app.getLocalUser()).thenReturn(mockUser);
+    testUtil.injectLocalUser();
   }
 
   private void givenUserIsNotViewingOwnList() {

@@ -16,7 +16,11 @@ import rx.Observable;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Henry Mao
@@ -50,7 +54,6 @@ public abstract class UserTestUtil {
 
   /**
    * Shorthand for injecting partner.
-   *
    * @return Self instance
    */
   public UserTestUtil injectSpyPartner() {
@@ -65,29 +68,46 @@ public abstract class UserTestUtil {
 
   /**
    * Injects a user to UserFactory, as if the user was "loaded" from database
-   *
-   * @param id      The ID of the user
+   * @param id The ID of the user
    * @param builder The function for building the user object
    * @return Self instance
    */
   public UserTestUtil injectUserWithId(String id, Function<Partner, Partner> builder) {
     UserFactory userFactory = CoupleTones.global().userFactory();
 
-    Function<Sync, Partner> ctor = sync -> {
+    Function<Sync, Partner> ctor = getSyncPartnerFunction();
+    UserFactory.Buildable<Partner> buildable = getPartnerBuildable(builder, userFactory, ctor);
+    doReturn(buildable).when(userFactory).withId(id);
+    return this;
+  }
+
+  public UserTestUtil injectUserWithEmail(String email, Function<Partner, Partner> builder) {
+    UserFactory userFactory = CoupleTones.global().userFactory();
+    Function<Sync, Partner> ctor = getSyncPartnerFunction();
+    UserFactory.Buildable<Partner> buildable = getPartnerBuildable(builder, userFactory, ctor);
+    doReturn(Observable.just(buildable)).when(userFactory).withEmail(email);
+    return this;
+  }
+
+  private UserFactory.Buildable<Partner> getPartnerBuildable(
+    final Function<Partner, Partner> builder,
+    UserFactory userFactory,
+    final Function<Sync, Partner> ctor) {
+    return userFactory.new Buildable<Partner>(ctor, mock(Sync.class)) {
+      @Override
+      public Partner build() {
+        return builder.apply(super.build());
+      }
+    };
+  }
+
+  private Function<Sync, Partner> getSyncPartnerFunction() {
+    return sync -> {
       ConcretePartner spy = spy(new ConcretePartner(sync));
       // Immediately load
       doReturn(Observable.just(spy)).when(spy).load();
       return spy;
     };
-    UserFactory.Buildable<Partner> buildable =
-      userFactory.new Buildable<Partner>(ctor, mock(Sync.class)) {
-        @Override
-        public Partner build() {
-          return builder.apply(super.build());
-        }
-      };
-    doReturn(buildable).when(userFactory).withId(id);
-    return this;
   }
 
   public UserTestUtil injectPartner(String id) {

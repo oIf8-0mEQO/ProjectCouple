@@ -1,16 +1,21 @@
 package group50.coupletones.controller.tab.partnerslocations;
 
-import android.app.Activity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.util.Taggable;
+import group50.coupletones.util.sound.VibeTone;
 
+import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -21,24 +26,33 @@ import java.util.List;
 /**
  * Partner Locations List Adapter Class
  */
-public class ListAdapterVibeTones extends RecyclerView.Adapter<ListAdapterVibeTones.ListViewHolder> {
+public class ListAdapterVibeTones extends RecyclerView.Adapter<ListAdapterVibeTones.ListViewHolder>
+  implements Taggable {
 
-  private Activity activity;
-  private List<PartnerLocation> data;
+  @Inject
+  public CoupleTones app;
+
+  private PartnersLocationsFragment fragment;
+  private List<VibeTone> tones;
   private LayoutInflater inflater;
+  private int locationIndex;
 
   /**
    * Partner list adapter
-   * @param data - VibeTones location data
+   *
+   * @param tones - VibeTones location tones
    */
-  public ListAdapterVibeTones(List<PartnerLocation> data, Activity context) {
-    this.inflater = LayoutInflater.from(context);
-    this.data = data;
-    this.activity = context;
+  public ListAdapterVibeTones(int locationIndex, List<VibeTone> tones, PartnersLocationsFragment fragment) {
+    this.inflater = LayoutInflater.from(fragment.getContext());
+    this.fragment = fragment;
+    this.tones = tones;
+    this.locationIndex = locationIndex;
+    CoupleTones.global().inject(this);
   }
 
   /**
    * List view holder for VibeTones
+   *
    * @param parent - ViewGroup
    * @return - ListViewholder
    */
@@ -50,22 +64,46 @@ public class ListAdapterVibeTones extends RecyclerView.Adapter<ListAdapterVibeTo
 
   /**
    * View holder for partner locations
-   * @param holder - ListViewHolder
+   *
+   * @param holder   - ListViewHolder
    * @param position - Partner location's position
    */
   @Override
   public void onBindViewHolder(ListViewHolder holder, int position) {
-    PartnerLocation tone = data.get(position);
+    // position is the ID of the vibetone
+    VibeTone tone = tones.get(position);
     holder.name.setText(tone.getName());
+
+    // Set the VibeTone for this location.
+    holder.itemView.setOnClickListener(view -> {
+      // Set the vibe tone for this location
+      app.getLocalUser()
+        .getPartner()
+        .subscribe(partner -> {
+          List<FavoriteLocation> locations = partner.getFavoriteLocations();
+
+          if (position < locations.size()) {
+            FavoriteLocation favoriteLocation = locations.get(position);
+            favoriteLocation.setVibeToneId(tone.getId());
+            partner.setFavoriteLocation(position, favoriteLocation);
+          } else {
+            Log.e(getTag(), "Vibe tone assigning to invalid location. Partner might have changed their locations!");
+          }
+        });
+
+      // Go back to Partner's favorite location fragment
+      ((MainActivity) fragment.getActivity()).setFragment(fragment);
+    });
   }
 
   /**
    * Gets Item Count
+   *
    * @return - number of items
    */
   @Override
   public int getItemCount() {
-    return data.size();
+    return tones.size();
   }
 
   /**
@@ -80,6 +118,7 @@ public class ListAdapterVibeTones extends RecyclerView.Adapter<ListAdapterVibeTo
 
     /**
      * ListViewHolder Constructor
+     *
      * @param itemView - View
      */
     public ListViewHolder(View itemView) {

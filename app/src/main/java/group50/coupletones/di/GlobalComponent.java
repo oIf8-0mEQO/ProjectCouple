@@ -19,6 +19,7 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Concret
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.controller.tab.partnerslocations.ListAdapterPartnerVisited;
+import group50.coupletones.controller.tab.partnerslocations.ListAdapterVibeTones;
 import group50.coupletones.controller.tab.settings.SettingsFragment;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.NetworkModule;
@@ -62,6 +63,8 @@ public interface GlobalComponent {
   TimeUtility timeUtility();
 
   FormatUtility formatUtility();
+
+  void inject(ListAdapterVibeTones obj);
 
   void inject(EditLocationActivity obj);
 

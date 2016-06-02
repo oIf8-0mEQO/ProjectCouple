@@ -8,29 +8,33 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ListView;
-
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.TabFragment;
+import group50.coupletones.util.sound.VibeTone;
 
 /**
+ * A simple {@link Fragment} subclass for showing vibe tone assign choice.
+ *
  * @author Joanne Cho
- */
-
-/**
- * A simple {@link Fragment} subclass for the Favorite Locations tab.
  */
 public class VibeTonesFragment extends TabFragment<Object> {
   private RecyclerView vibeTonesList;
   private ListAdapterVibeTones adapter;
 
-  public VibeTonesFragment() {
+  /**
+   * Index of the partner's favorite location.
+   */
+  private int locationIndex;
+
+  public VibeTonesFragment(int locationIndex) {
     super(Object.class);
+    this.locationIndex = locationIndex;
   }
 
   /**
    * getResourceID
+   *
    * @return - VibeTones fragment
    */
   @Override
@@ -40,6 +44,7 @@ public class VibeTonesFragment extends TabFragment<Object> {
 
   /**
    * onCreateView
+   *
    * @return - View of app
    */
   @Override
@@ -48,7 +53,7 @@ public class VibeTonesFragment extends TabFragment<Object> {
     View v = inflater.inflate(R.layout.fragment_edit_vibetone, container, false);
     vibeTonesList = (RecyclerView) v.findViewById(R.id.partners_location_list);
     vibeTonesList.setLayoutManager(new LinearLayoutManager(getActivity()));
-    adapter = new ListAdapterVibeTones(VibeTonesData.getVibeTones(), getActivity());
+    adapter = new ListAdapterVibeTones(locationIndex, VibeTone.getVibeTones(), this);
     vibeTonesList.setAdapter(adapter);
 
     // Clicking back button returns user to Partner's Favorite List

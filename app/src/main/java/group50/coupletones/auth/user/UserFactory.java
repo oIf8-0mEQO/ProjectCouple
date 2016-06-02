@@ -1,11 +1,11 @@
 package group50.coupletones.auth.user;
 
-import android.util.Log;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import group50.coupletones.auth.user.concrete.ConcreteLocalUser;
 import group50.coupletones.auth.user.concrete.ConcretePartner;
 import group50.coupletones.network.sync.FirebaseSync;
@@ -44,6 +44,7 @@ public class UserFactory {
     sync.getRef().child("id").setValue(account.getId());
     sync.getRef().child("name").setValue(account.getDisplayName());
     sync.getRef().child("email").setValue(account.getEmail());
+    sync.getRef().child("fcmToken").setValue(FirebaseInstanceId.getInstance().getToken());
     return new Buildable<>(ConcreteLocalUser::new, sync);
   }
 

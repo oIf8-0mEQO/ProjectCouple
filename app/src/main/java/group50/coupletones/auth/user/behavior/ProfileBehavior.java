@@ -31,9 +31,14 @@ public class ProfileBehavior implements PropertiesProvider {
    */
   private final Properties properties;
   private final Sync sync;
+
   @Inject
   @Exclude
   public TimeUtility timeUtility;
+
+  /**
+   * Google user id
+   */
   private String id;
   /**
    * Booleans that handle settings toggling
@@ -41,6 +46,11 @@ public class ProfileBehavior implements PropertiesProvider {
   private boolean globalNotificationsAreOn = true;
   private boolean tonesAreOn = true;
   private boolean vibrationIsOn = true;
+  /**
+   * ID for FCM
+   */
+  private String fcmToken;
+
   /**
    * Name of the user
    */
@@ -66,6 +76,7 @@ public class ProfileBehavior implements PropertiesProvider {
 
     this.properties = properties
       .property("id").bind(this)
+      .property("fcmToken").bind(this)
       .property("name").bind(this)
       .property("email").bind(this)
       .property("globalNotificationsAreOn").bind(this)
@@ -167,6 +178,16 @@ public class ProfileBehavior implements PropertiesProvider {
     return email;
   }
 
+  public String getFcmToken() {
+    return fcmToken;
+  }
+
+  public void setFcmToken(String fcmToken) {
+    this.fcmToken = fcmToken;
+    sync.update(properties.property("fcmToken"));
+    properties.property("fcmToken").update();
+  }
+
   /**
    * @return The list of favorite locations of the user
    */
@@ -205,12 +226,12 @@ public class ProfileBehavior implements PropertiesProvider {
 
   /**
    * Adds a favorite location
-   *
    * @param location The location to add
    */
   public void addFavoriteLocation(FavoriteLocation location) {
-    if (favoriteLocations == null)
+    if (favoriteLocations == null) {
       favoriteLocations = new LinkedList<>();
+    }
     favoriteLocations.add(location);
 
     Property<Object> prop = properties.property("favoriteLocations");
@@ -220,12 +241,12 @@ public class ProfileBehavior implements PropertiesProvider {
 
   /**
    * Adds a visited location
-   *
    * @param visitedLocation The visited location to add.
    */
   public void addVisitedLocation(VisitedLocationEvent visitedLocation) {
-    if (visitedLocations == null)
+    if (visitedLocations == null) {
       visitedLocations = new LinkedList<>();
+    }
     visitedLocations.add(visitedLocation);
 
     Property<Object> prop = properties.property("visitedLocations");
@@ -234,10 +255,8 @@ public class ProfileBehavior implements PropertiesProvider {
     prop.update();
   }
 
-
   /**
    * Removes a favorite location
-   *
    * @param location The location to remove
    */
   public void removeFavoriteLocation(FavoriteLocation location) {

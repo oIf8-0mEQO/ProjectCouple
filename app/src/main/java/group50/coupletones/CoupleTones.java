@@ -10,16 +10,13 @@ import android.location.Geocoder;
 import com.google.firebase.database.FirebaseDatabase;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
-import group50.coupletones.controller.tab.favoritelocations.map.ProximityNetworkHandler;
+import group50.coupletones.controller.tab.favoritelocations.map.LocationNotificationMediator;
 import group50.coupletones.di.DaggerGlobalComponent;
 import group50.coupletones.di.DaggerInstanceComponent;
 import group50.coupletones.di.GlobalComponent;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.ProximityModule;
-import group50.coupletones.network.NetworkManager;
-import group50.coupletones.network.message.MessageType;
-import group50.coupletones.network.receiver.ErrorReceiver;
-import group50.coupletones.network.receiver.LocationNotificationReceiver;
+import group50.coupletones.network.fcm.NetworkManager;
 
 /**
  * A singleton object that holds global data.
@@ -52,12 +49,12 @@ public class CoupleTones extends Application {
 
   /**
    * Should ONLY be set for unit testing
-   *
    * @param component The global to set
    */
   public static void setGlobal(GlobalComponent component) {
-    if (CoupleTones.component == null)
+    if (CoupleTones.component == null) {
       CoupleTones.component = component;
+    }
   }
 
   public static DaggerInstanceComponent.Builder instanceComponentBuilder() {
@@ -78,7 +75,6 @@ public class CoupleTones extends Application {
   /**
    * Sets the local user of the app. This method should only be
    * during login/logout events.
-   *
    * @param localUser The local user object
    */
   public void setLocalUser(LocalUser localUser) {
@@ -91,7 +87,6 @@ public class CoupleTones extends Application {
   public boolean isLoggedIn() {
     return localUser != null;
   }
-
 
   @Override
   public void onCreate() {
@@ -114,15 +109,21 @@ public class CoupleTones extends Application {
 
     // Register network
     NetworkManager network = global().network();
-    network.register(this);
-    network.register(new LocationNotificationReceiver(this, this));
-    network.register(MessageType.RECEIVE_PARTNER_ERROR.value, new ErrorReceiver(this));
-    network.register(MessageType.RECEIVE_MAP_REJECT.value, new ErrorReceiver(this));
+
+    //TODO: May need in future
+    /*
+    LocationNotificationReceiver locationNotificationReceiver = new LocationNotificationReceiver(this, this);
+    network.getOutgoingStream()
+      .filter(msg -> MessageType.LOCATION_NOTIFICATION.value.equals(msg.getType()))
+      .subscribe(locationNotificationReceiver::onReceive);
+    //network.register(MessageType.RECEIVE_PARTNER_ERROR.value, new ErrorReceiver(this));
+    //network.register(MessageType.RECEIVE_MAP_REJECT.value, new ErrorReceiver(this));
+    */
 
     // Register location observer
     ProximityManager proximity = global().proximity();
-    ProximityNetworkHandler proximityNetworkHandler = new ProximityNetworkHandler(this, network);
-    proximity.getEnterSubject().subscribe(proximityNetworkHandler::onEnterLocation);
-    proximity.getExitSubject().subscribe(proximityNetworkHandler::onLeaveLocation);
+    LocationNotificationMediator mediator = new LocationNotificationMediator();
+    proximity.getEnterSubject().subscribe(mediator::onEnterLocation);
+    proximity.getExitSubject().subscribe(mediator::onLeaveLocation);
   }
 }

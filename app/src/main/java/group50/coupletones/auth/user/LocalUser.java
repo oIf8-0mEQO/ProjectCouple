@@ -27,6 +27,39 @@ public interface LocalUser extends User {
   void addVisitedLocation(VisitedLocationEvent visitedLocation);
 
   /**
+   * @return Global notifications setting
+   */
+  boolean getGlobalNotificationsSetting();
+
+  /**
+   * @return Tones setting
+   */
+  boolean getTonesSetting();
+
+  /**
+   * @return Vibration setting
+   */
+  boolean getVibrationSetting();
+
+  /**
+   * This function turns on/off the global notifications
+   * @return globalNotificationsAreOn true if notifications are on, false if turned off
+   */
+  boolean setGlobalNotificationsSetting(boolean setting);
+
+  /**
+   * This function turns on/off the tones
+   * @return tonesAreOn true if notifications are on, false if turned off
+   */
+  boolean setTonesSetting(boolean setting);
+
+  /**
+   * This function turns on/off the vibration
+   * @return vibrationIsOn true if notifications are on, false if turned off
+   */
+  boolean setVibrationSetting(boolean setting);
+
+  /**
    * Sets a favorite location at an index in the list
    * @param index Index to set the location. Must be greater than 0.
    * @param location The location to remove
@@ -65,6 +98,11 @@ public interface LocalUser extends User {
    * @param id The partner's user id to set
    */
   void setPartner(String id);
+
+  /**
+   * Updates the cooldown of the passed FavoriteLocation
+   */
+  public void updateCooldownOfFavorite(FavoriteLocation location);
 
   /**
    * Sets the FCM id of the user

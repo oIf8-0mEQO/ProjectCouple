@@ -76,6 +76,12 @@ public class VisitedLocationEvent {
     return timeLeft;
   }
 
+  @Exclude
+  public boolean getArrival()
+  {
+    return (timeLeft == null);
+  }
+
   /**
    * Firebase serialization
    */

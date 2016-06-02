@@ -1,6 +1,7 @@
 package group50.coupletones.util.properties;
 
 import com.google.firebase.database.GenericTypeIndicator;
+
 import group50.coupletones.util.function.Consumer;
 import group50.coupletones.util.function.Supplier;
 import rx.subjects.BehaviorSubject;
@@ -96,7 +97,12 @@ public class ConcreteProperties implements Properties {
           try {
             Field field = bind.getClass().getDeclaredField(name);
             field.setAccessible(true);
-            field.set(bind, value);
+            if (field.getType() == Boolean.TYPE) {
+              if (value != null)
+                field.set(bind, value);
+            } else {
+              field.set(bind, value);
+            }
           } catch (Exception e) {
             throw new IllegalArgumentException("Default binding for " + name + " cannot be written.", e);
           }

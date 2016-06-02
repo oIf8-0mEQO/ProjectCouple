@@ -29,6 +29,9 @@ import group50.coupletones.network.fcm.InstanceIDService;
 import group50.coupletones.network.fcm.MessagingService;
 import group50.coupletones.network.fcm.NetworkManager;
 import group50.coupletones.util.FormatUtility;
+import group50.coupletones.network.NetworkManager;
+import group50.coupletones.network.gcm.GcmIntentService;
+import group50.coupletones.util.sound.VibeTone;
 import group50.coupletones.util.TimeUtility;
 
 import javax.inject.Singleton;
@@ -103,6 +106,8 @@ public interface GlobalComponent {
   void inject(SettingsFragment fragment);
 
   void inject(ConcreteLocation location);
+
+  void inject(VibeTone vibeTone);
 
   void inject(ProfileBehavior behavior);
 

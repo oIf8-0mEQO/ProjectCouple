@@ -5,6 +5,7 @@
 
 package group50.coupletones.auth.user.behavior;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.GenericTypeIndicator;
 import group50.coupletones.CoupleTones;
@@ -41,6 +42,12 @@ public class ProfileBehavior implements PropertiesProvider {
    */
   private String id;
   /**
+   * Booleans that handle settings toggling
+   */
+  private boolean globalNotificationsAreOn = true;
+  private boolean tonesAreOn = true;
+  private boolean vibrationIsOn = true;
+  /**
    * ID for FCM
    */
   private String fcmToken;
@@ -72,6 +79,9 @@ public class ProfileBehavior implements PropertiesProvider {
       .property("fcmToken").bind(this)
       .property("name").bind(this)
       .property("email").bind(this)
+      .property("globalNotificationsAreOn").bind(this)
+      .property("tonesAreOn").bind(this)
+      .property("vibrationIsOn").bind(this)
       .property("favoriteLocations")
       .mark(new GenericTypeIndicator<List<FavoriteLocation>>() {
       })
@@ -82,6 +92,69 @@ public class ProfileBehavior implements PropertiesProvider {
       .bind(this);
 
     this.sync = sync;
+  }
+
+  /**
+   * @return Global notifications setting
+   */
+  public boolean getGlobalNotificationsSetting() {
+    return globalNotificationsAreOn;
+  }
+
+  /**
+   * @return Tones setting
+   */
+  public boolean getTonesSetting() {
+    return tonesAreOn;
+  }
+
+  /**
+   * @return Vibration setting
+   */
+  public boolean getVibrationSetting() {
+    return vibrationIsOn;
+  }
+
+  /**
+   * This function turns on/off the global notifications setting
+   * @return globalNotificationsAreOn true if notifications are on, false if turned off
+   */
+  public Boolean setGlobalNotificationsSetting(boolean setting) {
+    globalNotificationsAreOn = setting;
+
+    Property<Object> prop = properties.property("globalNotificationsAreOn");
+    sync.update(prop);
+    prop.update();
+
+    return globalNotificationsAreOn;
+  }
+
+  /**
+   * This function turns on/off tones
+   * @return tonesAreOn true if tones are on, false if turned off
+   */
+  public Boolean setTonesSetting(boolean setting) {
+    tonesAreOn = setting;
+
+    Property<Object> prop = properties.property("tonesAreOn");
+    sync.update(prop);
+    prop.update();
+
+    return tonesAreOn;
+  }
+
+  /**
+   * This function turns on/off vibration
+   * @return vibrationIsOn true if vibration is on, false if turned off
+   */
+  public Boolean setVibrationSetting(boolean setting) {
+    vibrationIsOn = setting;
+
+    Property<Object> prop = properties.property("vibrationIsOn");
+    sync.update(prop);
+    prop.update();
+
+    return vibrationIsOn;
   }
 
   /**
@@ -214,6 +287,15 @@ public class ProfileBehavior implements PropertiesProvider {
       sync.update(prop);
       prop.update();
     }
+  }
+
+  public void updateCooldownOfFavorite(FavoriteLocation location)
+  {
+    location.setTimeLastVisited(System.currentTimeMillis());
+
+    Property<Object> prop = properties.property("favoriteLocations");
+    sync.update(prop);
+    prop.update();
   }
 
   @Override

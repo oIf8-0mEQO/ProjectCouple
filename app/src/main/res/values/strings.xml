@@ -42,5 +42,12 @@
     <string name="partner_up_text">wants to partner with you!</string>
     <string name="partner_request_header">Partner Request</string>
     <string name="partner_vibetone">Custom Vibetone</string>
+    <string name="notif_settings_tite">NOTIFICATION SETTINGS</string>
+    <string name="notif_title">Notifications:</string>
+    <string name="notif_tone_title">Tones:</string>
+    <string name="notif_vibe_title">Vibration:</string>
+    <string name="notif_on_off">On/Off</string>
+
+
 
 </resources>

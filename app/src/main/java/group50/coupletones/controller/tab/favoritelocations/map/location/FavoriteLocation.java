@@ -21,6 +21,7 @@ import group50.coupletones.util.sound.VibeTone;
 @IgnoreExtraProperties
 public class FavoriteLocation implements Location {
   @Inject
+  @Exclude
   public TimeUtility timeUtility;
 
   private static int COOL_DOWN_TIME = 600000;

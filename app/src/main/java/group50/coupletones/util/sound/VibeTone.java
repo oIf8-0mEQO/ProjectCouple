@@ -32,18 +32,18 @@ public class VibeTone {
     new VibeTone("/assets/tones/vibetone6.mps", new long[] {0, 800, 400, 200, 400, 200}),//Index 5.
     new VibeTone("/assets/tones/vibetone7.mps", new long[] {0, 200, 400, 800, 400, 200}),//Index 6.
     new VibeTone("/assets/tones/vibetone8.mps", new long[] {0, 200, 400, 200, 400, 800}),//Index 7.
+    new VibeTone("/assets/tones/vibetone9.mps", new long[] {0, 800, 400, 800, 400, 800}),//Index 8.
+    new VibeTone("/assets/tones/vibetone10.mps", new long[] {0, 800, 400, 800, 400, 800, 400, 800}),//Index 9.
+    new VibeTone("/assets/tones/arrivaltone.mp3", new long[] {0, 1000}),//Index 10 / Arrival.
+    new VibeTone("/assets/tones/vibetone10.mps", new long[] {0, 400, 200, 400}),//Index 11 / Departure.
   };
 
   @Inject
-  public static CoupleTones app;
+  public CoupleTones app;
 
   private Ringtone sound;
   private long[] vibration;
 
-  private static Ringtone arrivalSound = RingtoneManager.getRingtone(app.getApplicationContext(), Uri.fromFile(new File("/assets/tones/arrivaltone.mp3")));
-  private static Ringtone departureSound = RingtoneManager.getRingtone(app.getApplicationContext(), Uri.fromFile(new File("/assets/tones/departuretone.mp3")));
-  private static long[] arrivalVibration = new long[] {0, 1000};
-  private static long[] departureVibration = new long[] {0, 400, 200, 400};
   private static long delay = 1500;//The amount of time in milliseconds to wait between arrival/departure global sound and specific sound.
 
 
@@ -60,7 +60,7 @@ public class VibeTone {
    */
   public static VibeTone getTone(int which)
   {
-    if (which < 0 || which >  7) return tones[0];
+    if (which < 0 || which >  9) return tones[0];
     return tones[which];
   }
 
@@ -76,11 +76,11 @@ public class VibeTone {
     try
     {
       Vibrator vib = (Vibrator) app.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-      if (app.getLocalUser().vibrationEnabled()) vib.vibrate(arrivalVibration, 0);
-      if (app.getLocalUser().soundEnabled()) arrivalSound.play();
+      if (app.getLocalUser().vibrationEnabled()) vib.vibrate(tones[10].vibration, 0);
+      if (app.getLocalUser().soundEnabled()) tones[11].sound.play();
       wait(delay);
       if (app.getLocalUser().vibrationEnabled()) vib.vibrate(vibration, 0);
-      if (app.getLocalUser().soundEnabled()) arrivalSound.play();sound.play();
+      if (app.getLocalUser().soundEnabled()) sound.play();
     }
     catch (Exception e)
     {
@@ -93,11 +93,11 @@ public class VibeTone {
     try
     {
       Vibrator vib = (Vibrator) app.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-      if (app.getLocalUser().vibrationEnabled()) vib.vibrate(departureVibration, 0);
-      if (app.getLocalUser().soundEnabled()) arrivalSound.play();departureSound.play();
+      if (app.getLocalUser().vibrationEnabled()) vib.vibrate(tones[11].vibration, 0);
+      if (app.getLocalUser().soundEnabled()) tones[11].sound.play();
       wait(delay);
       if (app.getLocalUser().vibrationEnabled()) vib.vibrate(vibration, 0);
-      if (app.getLocalUser().soundEnabled()) arrivalSound.play();sound.play();
+      if (app.getLocalUser().soundEnabled()) sound.play();
     }
     catch (Exception e)
     {

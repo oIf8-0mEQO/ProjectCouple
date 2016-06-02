@@ -99,10 +99,10 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
     holder.address.setText(location.getAddress() != null ? location.getAddress().getLocality() : "");
     holder.icon.setImageResource(R.drawable.target_icon);
     //TODO: Add
-    //
+
+    // Clicking the Edit Button takes user to the List of VibeTones to choose from
     ImageButton editButton;
     editButton = (ImageButton) holder.itemView.findViewById(R.id.edit_location_icon);
-    //holder.itemView.findViewById(R.id.edit_location_icon)
     editButton.setOnClickListener(view -> ((MainActivity) activity).setFragment(new VibeTonesFragment()));
 
   }

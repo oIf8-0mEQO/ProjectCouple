@@ -91,13 +91,14 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
     //TODO: Implement custom icons?
     //holder.icon.setImageResource(location.getIconId());
 
+    // Clicking on the edit location icon takes you to the Edit Location activity
     holder.itemView.findViewById(R.id.edit_location_icon)
       .setOnClickListener((view) -> {
         Intent intent = new Intent(context, EditLocationActivity.class);
         context.startActivity(intent);
       });
 
-
+    // Clicking on the delete icon deletes the location from the list
     holder.itemView.findViewById(R.id.delete_location_icon)
       .setOnClickListener(evt -> {
             app.getLocalUser().removeFavoriteLocation(location);

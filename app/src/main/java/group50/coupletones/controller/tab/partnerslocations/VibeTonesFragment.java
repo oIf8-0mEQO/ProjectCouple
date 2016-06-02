@@ -51,6 +51,7 @@ public class VibeTonesFragment extends TabFragment<Object> {
     adapter = new ListAdapterVibeTones(VibeTonesData.getVibeTones(), getActivity());
     vibeTonesList.setAdapter(adapter);
 
+    // Clicking back button returns user to Partner's Favorite List
     ImageButton backButton;
     backButton = (ImageButton) v.findViewById(R.id.btn_backarrow);
     backButton.setOnClickListener(view -> ((MainActivity) getActivity()).setFragment(new PartnersFavoritesFragment()));

@@ -28,6 +28,8 @@ test:
             parallel: true
         # wait for it to have booted
         - circle-android wait-for-boot
+        # Unlock the screen
+        adb shell input keyevent 82
         # run tests  against the emulator.
         - ./gradlew createDebugCoverageReport -PpreDexEnable=false -Pcom.android.build.threadPoolSize=1 -Dorg.gradle.parallel=false -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError"
         # copy the build outputs to artifacts

@@ -15,25 +15,29 @@ import group50.coupletones.controller.tab.favoritelocations.map.LocationNotifica
 import group50.coupletones.controller.tab.favoritelocations.map.MapProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.di.DaggerMockAppComponent;
-import group50.coupletones.di.MockProximityModule;
-import group50.coupletones.network.fcm.FcmManager;
-import group50.coupletones.network.fcm.message.FcmMessage;
+import group50.coupletones.network.fcm.NetworkManager;
+import group50.coupletones.network.fcm.message.Message;
 import group50.coupletones.util.sound.VibeTone;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import rx.Observable;
+import rx.subjects.Subject;
 
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * BDD style test for user notifies partner of location
- *
  * @author Henry Mao
  * @since 5/8/16
  */
@@ -48,16 +52,14 @@ public class UserNotifiesPartnerOfLocation {
   private ProximityManager proximityManager;
   private LatLng zoneLatLng = new LatLng(32.882, -117.233);
   private FavoriteLocation zone = new FavoriteLocation("Home", zoneLatLng, 0, VibeTone.getTone());
+  private Subject<Message, Message> outgoingStream;
 
   @Before
   public void setup() {
-    // Mock DI
-    CoupleTones.setGlobal(
-      DaggerMockAppComponent
-        .builder()
-        .mockProximityModule(new MockProximityModule())
-        .build()
-    );
+    // Make sure FCM message is sent
+    NetworkManager network = CoupleTones.global().network();
+    outgoingStream = spy(Subject.class);
+    doReturn(outgoingStream).when(network).getOutgoingStream();
 
     // Mock the user
     mockUser = mock(LocalUser.class);
@@ -108,7 +110,7 @@ public class UserNotifiesPartnerOfLocation {
 
   private void thenMyPartnerIsNotified() {
     // Check message sent to server
-    verify((FcmManager) CoupleTones.global().network(), times(1)).sendMessage(any());
+    verify(outgoingStream, times(1)).onNext(any());
   }
 
   @Test

@@ -26,10 +26,18 @@ public class MessagingService extends FirebaseMessagingService implements Taggab
   public void onMessageReceived(RemoteMessage remoteMessage) {
     super.onMessageReceived(remoteMessage);
 
-    Log.d(getTag(), "Received FCM message: " + remoteMessage.getMessageType());
-
+    Log.d(getTag(), "Received FCM message: " + remoteMessage);
     // Publish the received message
     ((Subject<RemoteMessage, RemoteMessage>) network.getIncomingStream())
       .onNext(remoteMessage);
+
+    // Show the notification anyway (in foreground)
+    RemoteMessage.Notification notification = remoteMessage.getNotification();
+    if (notification != null) {
+      new NotificationBuilder(this)
+        .setTitle(notification.getTitle())
+        .setMsg(notification.getBody())
+        .show();
+    }
   }
 }

@@ -8,6 +8,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import group50.coupletones.R;
+import group50.coupletones.controller.MainActivity;
 
 /**
  * A simple class that builds a notification
@@ -35,6 +36,7 @@ public class NotificationBuilder {
   public NotificationBuilder(Context context) {
     this.context = context;
     builder = new NotificationCompat.Builder(context);
+    intent = new Intent(context, MainActivity.class);
   }
 
   /**

@@ -12,7 +12,15 @@ import java.util.Map;
  * message sent to partner on the app.
  */
 public interface Message {
+  /**
+   * @return The type of the message
+   */
   String getType();
+
+  /**
+   * @return The Firebase ID of the device to send the message to
+   */
+  String getTo();
 
   Map<String, Object> getData();
 

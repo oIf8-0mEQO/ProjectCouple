@@ -7,6 +7,7 @@ package group50.coupletones.network.fcm;
 
 import android.util.Log;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.firebase.messaging.SendException;
 import group50.coupletones.network.fcm.message.Message;
 import group50.coupletones.util.Taggable;
 import org.json.JSONObject;
@@ -53,6 +54,10 @@ public class FcmManager implements NetworkManager, Taggable {
    * @param message The outgoing message.
    */
   private void onSendMessage(Message message) {
+    if (message.getType() == null || message.getTo() == null) {
+      throw new IllegalArgumentException("Message must have a destination");
+    }
+
     try {
       URL url = new URL(ENDPOINT);
       HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -64,11 +69,8 @@ public class FcmManager implements NetworkManager, Taggable {
       conn.setUseCaches(false);
 
       JSONObject jsonObject = new JSONObject(message.getData());
-
-      try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
-        wr.write(jsonObject.toString().getBytes());
-      }
-
+      DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
+      wr.write(jsonObject.toString().getBytes());
     } catch (Exception e) {
       Log.e(getTag(), "Unable to send FCM message.");
       e.printStackTrace();

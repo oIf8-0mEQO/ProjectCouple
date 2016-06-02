@@ -8,19 +8,19 @@ import java.util.Map;
  * @author Sharmaine Manalo
  * @since 5/4/16
  */
-public class NotificationMessage implements Message {
+public class FcmMessage implements Message {
 
   /**
    * The data to send to the server.
    */
   private final Map<String, Object> data;
 
-  public NotificationMessage(String type) {
+  public FcmMessage(String type) {
     this(new HashMap<>());
     setString("type", type);
   }
 
-  public NotificationMessage(Map<String, Object> data) {
+  public FcmMessage(Map<String, Object> data) {
     this.data = data;
   }
 
@@ -39,7 +39,10 @@ public class NotificationMessage implements Message {
    */
   @Override
   public Map<String, Object> getData() {
-    return data;
+    if (!data.containsKey("data")) {
+      data.put("data", new HashMap<>());
+    }
+    return (Map) data.get("data");
   }
 
   private void initNotification() {
@@ -48,21 +51,32 @@ public class NotificationMessage implements Message {
     }
   }
 
-  public NotificationMessage setTitle(String title) {
+  public FcmMessage setTitle(String title) {
     initNotification();
     ((Map) data.get("notification")).put("title", title);
     return this;
   }
 
-  public NotificationMessage setBody(String body) {
+  public FcmMessage setBody(String body) {
     initNotification();
     ((Map) data.get("notification")).put("body", body);
     return this;
   }
 
-  public NotificationMessage setIcon(String icon) {
+  public FcmMessage setIcon(String icon) {
     initNotification();
     ((Map) data.get("notification")).put("icon", icon);
+    return this;
+  }
+
+  @Override
+  public String getTo() {
+    return (String) data.get("to");
+  }
+
+  public FcmMessage setTo(String to) {
+    initNotification();
+    ((Map) data.get("notification")).put("to", to);
     return this;
   }
 }

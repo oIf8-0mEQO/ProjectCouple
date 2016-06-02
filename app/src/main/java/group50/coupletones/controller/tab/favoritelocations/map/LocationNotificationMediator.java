@@ -6,7 +6,7 @@ import group50.coupletones.R;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.network.fcm.NetworkManager;
 import group50.coupletones.network.fcm.message.MessageType;
-import group50.coupletones.network.fcm.message.NotificationMessage;
+import group50.coupletones.network.fcm.message.FcmMessage;
 import group50.coupletones.util.FormatUtility;
 import group50.coupletones.util.Taggable;
 
@@ -49,7 +49,7 @@ public class LocationNotificationMediator implements Taggable {
           network
             .getOutgoingStream()
             .onNext(
-              new NotificationMessage(MessageType.LOCATION_NOTIFICATION.value)
+              new FcmMessage(MessageType.LOCATION_NOTIFICATION.value)
                 .setTitle(
                   partner.getName() + " " +
                     app.getApplicationContext().getString(R.string.partner_visited_text) + " " +

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <!-- Toolbar Settings for Settings Page -->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="@color/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_alignParentTop="true">
+
+        <!-- Edit VibeTone Title -->
+        <ImageView
+            android:src="@drawable/editvibetone_title"
+            android:layout_marginLeft="?attr/actionBarSize"
+            android:layout_marginRight="?attr/actionBarSize"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center" />
+
+        <!-- Left side back button -->
+        <ImageButton
+            android:id="@+id/btn_backarrow"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginRight="15dp"
+            android:layout_gravity="start|center_vertical"
+            android:src="@drawable/back_arrow"
+            style="@style/Widget.AppCompat.ActionButton" />
+
+    </android.support.v7.widget.Toolbar>
+    <!-- Scroll View for the Page -->
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- Recycler View for the Page -->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/partners_location_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="6dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
+

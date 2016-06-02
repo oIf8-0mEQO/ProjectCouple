@@ -39,13 +39,9 @@ public class EditLocationActivity extends AppCompatActivity {
         address_text.setTypeface(pierSans);
         save_changes_text.setTypeface(pierSans);
 
+        // Clicking the back button takes you to the previous activity
         ImageButton backButton;
         backButton = (ImageButton) findViewById(R.id.btn_backarrow);
         backButton.setOnClickListener(view -> finish());
-
-
-
     }
-
-
 }

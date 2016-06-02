@@ -58,4 +58,10 @@ public interface LocalUser extends User {
    * @param id The partner's user id to set
    */
   void setPartner(String id);
+
+  /**
+   * Sets the FCM id of the user
+   * @param id The FCM ID of the user
+   */
+  void setFcmToken(String id);
 }

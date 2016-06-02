@@ -22,6 +22,11 @@ public interface User extends PropertiesProvider {
   String getId();
 
   /**
+   * @return The FCM id of the user
+   */
+  String getFcmToken();
+
+  /**
    * @return The name of the user
    */
   String getName();

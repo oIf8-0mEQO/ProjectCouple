@@ -9,7 +9,6 @@ import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.util.sound.VibeTone;
 
 import javax.inject.Inject;
 
@@ -39,8 +38,7 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
     CoupleTones.global().inject(this);
   }
 
-  public void setIsDisabled(boolean isDisabled)
-  {
+  public void setIsDisabled(boolean isDisabled) {
     this.isDisabled = isDisabled;
   }
 
@@ -98,7 +96,7 @@ public class LocationClickHandler implements GoogleMap.OnMapClickListener {
     public void onClick(DialogInterface dialog, int which) {
       // Save the favorite location
       String name = input.getText().toString();
-      FavoriteLocation clickedLocation = new FavoriteLocation(name, position, 0, VibeTone.getTone());
+      FavoriteLocation clickedLocation = new FavoriteLocation(name, position, 0, 0);
       app.getLocalUser().addFavoriteLocation(clickedLocation);
       moveMap(clickedLocation);
     }

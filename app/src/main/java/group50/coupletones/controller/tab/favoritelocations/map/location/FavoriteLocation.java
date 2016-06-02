@@ -20,12 +20,10 @@ import group50.coupletones.util.sound.VibeTone;
 //TODO: Clean up all the constructors
 @IgnoreExtraProperties
 public class FavoriteLocation implements Location {
+  private static int COOL_DOWN_TIME = 600000;
   @Inject
   @Exclude
   public TimeUtility timeUtility;
-
-  private static int COOL_DOWN_TIME = 600000;
-
   private ConcreteLocation location;
   private VibeTone tone;
   private long timeLastVisited;
@@ -123,6 +121,7 @@ public class FavoriteLocation implements Location {
   /**
    * @return true if the location is on cooldown, otherwise false.
    */
+  @Exclude
   public boolean isOnCooldown() {
     return (timeUtility.systemTime() - timeLastVisited < COOL_DOWN_TIME);
   }

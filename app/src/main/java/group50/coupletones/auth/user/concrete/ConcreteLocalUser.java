@@ -25,7 +25,7 @@ public class ConcreteLocalUser implements LocalUser {
   // Composed behavior
   private final Properties properties;
 
-  private final ProfileBehavior profileBehavior;
+  private final ProfileBehavior profile;
 
   private final PartnerRequestBehavior requestBehavior;
 
@@ -33,7 +33,7 @@ public class ConcreteLocalUser implements LocalUser {
 
   public ConcreteLocalUser(Sync sync) {
     properties = new ConcreteProperties();
-    profileBehavior = new ProfileBehavior(properties, sync);
+    profile = new ProfileBehavior(properties, sync);
     requestBehavior = new PartnerRequestBehavior(properties, sync);
     partnerBehavior = new PartnerBehavior(properties, this, sync, requestBehavior);
     sync.watchAll(properties);
@@ -51,22 +51,22 @@ public class ConcreteLocalUser implements LocalUser {
 
   @Override
   public String getId() {
-    return profileBehavior.getId();
+    return profile.getId();
   }
 
   @Override
   public String getName() {
-    return profileBehavior.getName();
+    return profile.getName();
   }
 
   @Override
   public String getEmail() {
-    return profileBehavior.getEmail();
+    return profile.getEmail();
   }
 
   @Override
   public List<FavoriteLocation> getFavoriteLocations() {
-    return profileBehavior.getFavoriteLocations();
+    return profile.getFavoriteLocations();
   }
 
   @Override
@@ -101,22 +101,22 @@ public class ConcreteLocalUser implements LocalUser {
 
   @Override
   public List<VisitedLocationEvent> getVisitedLocations() {
-    return profileBehavior.getVisitedLocations();
+    return profile.getVisitedLocations();
   }
 
   @Override
   public void addFavoriteLocation(FavoriteLocation location) {
-    profileBehavior.addFavoriteLocation(location);
+    profile.addFavoriteLocation(location);
   }
 
   @Override
   public void addVisitedLocation(VisitedLocationEvent visitedLocation) {
-    profileBehavior.addVisitedLocation(visitedLocation);
+    profile.addVisitedLocation(visitedLocation);
   }
 
   @Override
   public void removeFavoriteLocation(FavoriteLocation location) {
-    profileBehavior.removeFavoriteLocation(location);
+    profile.removeFavoriteLocation(location);
   }
 
   @Override
@@ -137,5 +137,15 @@ public class ConcreteLocalUser implements LocalUser {
   @Override
   public Observable<User> load() {
     return Observable.zip(properties.allObservables(), args -> this);
+  }
+
+  @Override
+  public String getFcmToken() {
+    return profile.getFcmToken();
+  }
+
+  @Override
+  public void setFcmToken(String id) {
+    profile.setFcmToken(id);
   }
 }

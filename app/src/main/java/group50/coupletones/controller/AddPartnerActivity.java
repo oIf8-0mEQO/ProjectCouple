@@ -11,7 +11,7 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.UserFactory;
-import group50.coupletones.network.NetworkManager;
+import group50.coupletones.network.fcm.NetworkManager;
 import group50.coupletones.util.Taggable;
 import rx.schedulers.Schedulers;
 
@@ -68,7 +68,6 @@ public class AddPartnerActivity extends AppCompatActivity implements Taggable {
 
     userFactory
       .withEmail(email)  // Get user by email
-      .subscribeOn(Schedulers.newThread())
       .flatMap(buildable -> buildable.build().load())
       .subscribe(
         partner -> {

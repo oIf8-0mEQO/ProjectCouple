@@ -31,16 +31,19 @@ public class ProfileBehavior implements PropertiesProvider {
    */
   private final Properties properties;
   private final Sync sync;
+
   @Inject
   @Exclude
   public TimeUtility timeUtility;
+
+  /**
+   * Google user id
+   */
   private String id;
   /**
-   * Booleans that handle settings toggling
+   * ID for FCM
    */
-  private boolean globalNotificationsAreOn = true;
-  private boolean tonesAreOn = true;
-  private boolean vibrationIsOn = true;
+  private String fcmToken;
   /**
    * Name of the user
    */
@@ -66,11 +69,9 @@ public class ProfileBehavior implements PropertiesProvider {
 
     this.properties = properties
       .property("id").bind(this)
+      .property("fcmToken").bind(this)
       .property("name").bind(this)
       .property("email").bind(this)
-      .property("globalNotificationsAreOn").bind(this)
-      .property("tonesAreOn").bind(this)
-      .property("vibrationIsOn").bind(this)
       .property("favoriteLocations")
       .mark(new GenericTypeIndicator<List<FavoriteLocation>>() {
       })
@@ -81,69 +82,6 @@ public class ProfileBehavior implements PropertiesProvider {
       .bind(this);
 
     this.sync = sync;
-  }
-
-  /**
-   * @return Global notifications setting
-   */
-  public boolean getGlobalNotificationsSetting() {
-    return globalNotificationsAreOn;
-  }
-
-  /**
-   * @return Tones setting
-   */
-  public boolean getTonesSetting() {
-    return tonesAreOn;
-  }
-
-  /**
-   * @return Vibration setting
-   */
-  public boolean getVibrationSetting() {
-    return vibrationIsOn;
-  }
-
-  /**
-   * This function turns on/off the global notifications setting
-   * @return globalNotificationsAreOn true if notifications are on, false if turned off
-   */
-  public Boolean setGlobalNotificationsSetting(boolean setting) {
-    globalNotificationsAreOn = setting;
-
-    Property<Object> prop = properties.property("globalNotificationsAreOn");
-    sync.update(prop);
-    prop.update();
-
-    return globalNotificationsAreOn;
-  }
-
-  /**
-   * This function turns on/off tones
-   * @return tonesAreOn true if tones are on, false if turned off
-   */
-  public Boolean setTonesSetting(boolean setting) {
-    tonesAreOn = setting;
-
-    Property<Object> prop = properties.property("tonesAreOn");
-    sync.update(prop);
-    prop.update();
-
-    return tonesAreOn;
-  }
-
-  /**
-   * This function turns on/off vibration
-   * @return vibrationIsOn true if vibration is on, false if turned off
-   */
-  public Boolean setVibrationSetting(boolean setting) {
-    vibrationIsOn = setting;
-
-    Property<Object> prop = properties.property("vibrationIsOn");
-    sync.update(prop);
-    prop.update();
-
-    return vibrationIsOn;
   }
 
   /**
@@ -165,6 +103,16 @@ public class ProfileBehavior implements PropertiesProvider {
    */
   public String getEmail() {
     return email;
+  }
+
+  public String getFcmToken() {
+    return fcmToken;
+  }
+
+  public void setFcmToken(String fcmToken) {
+    this.fcmToken = fcmToken;
+    sync.update(properties.property("fcmToken"));
+    properties.property("fcmToken").update();
   }
 
   /**
@@ -205,12 +153,12 @@ public class ProfileBehavior implements PropertiesProvider {
 
   /**
    * Adds a favorite location
-   *
    * @param location The location to add
    */
   public void addFavoriteLocation(FavoriteLocation location) {
-    if (favoriteLocations == null)
+    if (favoriteLocations == null) {
       favoriteLocations = new LinkedList<>();
+    }
     favoriteLocations.add(location);
 
     Property<Object> prop = properties.property("favoriteLocations");
@@ -220,12 +168,12 @@ public class ProfileBehavior implements PropertiesProvider {
 
   /**
    * Adds a visited location
-   *
    * @param visitedLocation The visited location to add.
    */
   public void addVisitedLocation(VisitedLocationEvent visitedLocation) {
-    if (visitedLocations == null)
+    if (visitedLocations == null) {
       visitedLocations = new LinkedList<>();
+    }
     visitedLocations.add(visitedLocation);
 
     Property<Object> prop = properties.property("visitedLocations");
@@ -234,10 +182,8 @@ public class ProfileBehavior implements PropertiesProvider {
     prop.update();
   }
 
-
   /**
    * Removes a favorite location
-   *
    * @param location The location to remove
    */
   public void removeFavoriteLocation(FavoriteLocation location) {

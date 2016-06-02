@@ -35,8 +35,10 @@ public class VibeTone {
     new VibeTone("/assets/tones/vibetone9.mps", new long[] {0, 800, 400, 800, 400, 800}),//Index 8.
     new VibeTone("/assets/tones/vibetone10.mps", new long[] {0, 800, 400, 800, 400, 800, 400, 800}),//Index 9.
     new VibeTone("/assets/tones/arrivaltone.mp3", new long[] {0, 1000}),//Index 10 / Arrival.
-    new VibeTone("/assets/tones/vibetone10.mps", new long[] {0, 400, 200, 400}),//Index 11 / Departure.
+    new VibeTone("/assets/tones/departuretone.mps", new long[] {0, 400, 200, 400}),//Index 11 / Departure.
   };
+
+  public static final int MAX_VIBETONE_COUNT = 10;
 
   @Inject
   public CoupleTones app;
@@ -60,7 +62,7 @@ public class VibeTone {
    */
   public static VibeTone getTone(int which)
   {
-    if (which < 0 || which >  9) return tones[0];
+    if (which < 0 || which >=  MAX_VIBETONE_COUNT) return tones[0];
     return tones[which];
   }
 
@@ -77,7 +79,7 @@ public class VibeTone {
     {
       Vibrator vib = (Vibrator) app.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
       if (app.getLocalUser().getVibrationSetting()) vib.vibrate(tones[10].vibration, 0);
-      if (app.getLocalUser().getTonesSetting()) tones[11].sound.play();
+      if (app.getLocalUser().getTonesSetting()) tones[10].sound.play();
       wait(delay);
       if (app.getLocalUser().getVibrationSetting()) vib.vibrate(vibration, 0);
       if (app.getLocalUser().getTonesSetting()) sound.play();

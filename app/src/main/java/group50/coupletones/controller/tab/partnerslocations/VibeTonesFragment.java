@@ -21,7 +21,6 @@ import group50.coupletones.util.sound.VibeTone;
 public class VibeTonesFragment extends TabFragment<Object> {
   private RecyclerView vibeTonesList;
   private ListAdapterVibeTones adapter;
-
   /**
    * Index of the partner's favorite location.
    */

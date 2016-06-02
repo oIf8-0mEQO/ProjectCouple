@@ -2,7 +2,6 @@ package group50.coupletones.controller.tab.partnerslocations;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.TextView;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
-import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.util.Taggable;
 import group50.coupletones.util.sound.VibeTone;
 
@@ -32,21 +30,21 @@ public class ListAdapterVibeTones extends RecyclerView.Adapter<ListAdapterVibeTo
   @Inject
   public CoupleTones app;
 
-  private PartnersLocationsFragment fragment;
   private List<VibeTone> tones;
   private LayoutInflater inflater;
   private int locationIndex;
+  private VibeTonesFragment fragment;
 
   /**
    * Partner list adapter
    *
    * @param tones - VibeTones location tones
    */
-  public ListAdapterVibeTones(int locationIndex, List<VibeTone> tones, PartnersLocationsFragment fragment) {
-    this.inflater = LayoutInflater.from(fragment.getContext());
-    this.fragment = fragment;
+  public ListAdapterVibeTones(int locationIndex, List<VibeTone> tones, VibeTonesFragment fragment) {
+    this.inflater = LayoutInflater.from(fragment.getActivity());
     this.tones = tones;
     this.locationIndex = locationIndex;
+    this.fragment = fragment;
     CoupleTones.global().inject(this);
   }
 
@@ -80,19 +78,11 @@ public class ListAdapterVibeTones extends RecyclerView.Adapter<ListAdapterVibeTo
       app.getLocalUser()
         .getPartner()
         .subscribe(partner -> {
-          List<FavoriteLocation> locations = partner.getFavoriteLocations();
-
-          if (position < locations.size()) {
-            FavoriteLocation favoriteLocation = locations.get(position);
-            favoriteLocation.setVibeToneId(tone.getId());
-            partner.setFavoriteLocation(position, favoriteLocation);
-          } else {
-            Log.e(getTag(), "Vibe tone assigning to invalid location. Partner might have changed their locations!");
-          }
+          partner.setVibeTone(locationIndex, position);
         });
 
       // Go back to Partner's favorite location fragment
-      ((MainActivity) fragment.getActivity()).setFragment(fragment);
+      ((MainActivity) fragment.getActivity()).setFragment(new PartnersLocationsFragment());
     });
   }
 

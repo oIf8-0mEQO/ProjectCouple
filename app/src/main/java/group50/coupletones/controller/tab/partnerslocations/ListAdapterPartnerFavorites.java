@@ -68,6 +68,7 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
     this.locations = locations != null ? locations : Collections.emptyList();
     notifyDataSetChanged();
   }
+
   /**
    * List view holder for partner's favorite locations
    *

@@ -1,5 +1,6 @@
 package group50.coupletones.auth.user.concrete;
 
+import android.util.Log;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.auth.user.behavior.PartnerRequestBehavior;
@@ -7,6 +8,7 @@ import group50.coupletones.auth.user.behavior.ProfileBehavior;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.network.sync.Sync;
+import group50.coupletones.util.Taggable;
 import group50.coupletones.util.properties.ConcreteProperties;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.Property;
@@ -18,10 +20,11 @@ import java.util.List;
  * Represents a Partner that a User.
  * Delegates all methods to ConcreteUser, but prevents modification
  * to fields.
+ *
  * @author Brandon Chi
  * @since 5/5/2016
  */
-public class ConcretePartner implements Partner {
+public class ConcretePartner implements Partner, Taggable {
   // Composed behavior
   private final Properties properties;
   private final ProfileBehavior profile;
@@ -57,6 +60,7 @@ public class ConcretePartner implements Partner {
     prop.update();
   }
 
+
   @Override
   public String getId() {
     return profile.getId();
@@ -90,6 +94,18 @@ public class ConcretePartner implements Partner {
   @Override
   public void requestPartner(User requester) {
     request.requestPartner(requester);
+  }
+
+  @Override
+  public void setVibeTone(int locationId, int vibeToneId) {
+    List<FavoriteLocation> favoriteLocations = getFavoriteLocations();
+    if (locationId < favoriteLocations.size()) {
+      FavoriteLocation favoriteLocation = favoriteLocations.get(locationId);
+      favoriteLocation.setVibeToneId(vibeToneId);
+      profile.setFavoriteLocation(locationId, favoriteLocation);
+    } else {
+      Log.e(getTag(), "Vibe tone assigning to invalid location. Partner might have changed their locations!");
+    }
   }
 
   @Override

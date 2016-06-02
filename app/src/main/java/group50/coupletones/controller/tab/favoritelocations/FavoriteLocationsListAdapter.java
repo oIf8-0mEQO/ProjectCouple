@@ -1,6 +1,7 @@
 package group50.coupletones.controller.tab.favoritelocations;
 
 import android.content.Context;
+import android.content.Intent;
 import android.location.Address;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +13,11 @@ import android.widget.TextView;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.util.FormatUtility;
 
 import javax.inject.Inject;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Sharmaine Manalo
@@ -28,8 +32,16 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
   @Inject
   public CoupleTones app;
 
+  @Inject
+  public FormatUtility formatUtility;
+
   private LayoutInflater inflater;
   private FavoriteLocationsFragment fragment;
+
+  private Context context;
+
+  private List<FavoriteLocation> locations;
+
 
   /**
    * Favorite Locations List Adapter
@@ -39,8 +51,22 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
   public FavoriteLocationsListAdapter(FavoriteLocationsFragment fragment, Context context) {
     this.inflater = LayoutInflater.from(context);
     this.fragment = fragment;
+    this.context = context;
 
     CoupleTones.global().inject(this);
+
+    setLocations(app.getLocalUser().getFavoriteLocations());
+
+    // Observe update
+    app
+      .getLocalUser()
+      .observable("favoriteLocations", List.class)
+      .subscribe(this::setLocations);
+  }
+
+  private void setLocations(List<FavoriteLocation> locations) {
+    this.locations = locations != null ? locations : Collections.emptyList();
+    notifyDataSetChanged();
   }
 
   /**
@@ -63,26 +89,27 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
    */
   @Override
   public void onBindViewHolder(ListViewHolder holder, int position) {
-    FavoriteLocation location = app.getLocalUser().getFavoriteLocations().get(position);
+    FavoriteLocation location = locations.get(position);
     holder.name.setText(location.getName());
     holder.address.setText(location.getName());
     Address address = location.getAddress();
-    if (address != null) {
-      if (address.getLocality() != null) {
-        holder.address.setText(address.getLocality() + ", " + address.getAdminArea());
-      } else {
-        holder.address.setText(address.getAdminArea());
-      }
-    } else {
-      holder.address.setText("");
-    }
-    holder.icon.setImageResource(R.drawable.myfave_icon);
-    //TODO: Implement custom icons?
-    //holder.icon.setImageResource(location.getIconId());
+    holder.address.setText(formatUtility.formatAddress(address));
 
+    holder.icon.setImageResource(R.drawable.myfave_icon);
+
+    // Clicking on the edit location icon takes you to the Edit Location activity
+    holder.itemView.findViewById(R.id.edit_location_icon)
+      .setOnClickListener((view) -> {
+        // Launch EditLocationActivity
+        Intent intent = new Intent(context, EditLocationActivity.class);
+        intent.putExtra("index", position);
+        context.startActivity(intent);
+      });
+
+    // Clicking on the delete icon deletes the location from the list
     holder.itemView.findViewById(R.id.delete_location_icon)
       .setOnClickListener(evt -> {
-        app.getLocalUser().removeFavoriteLocation(location);
+          app.getLocalUser().removeFavoriteLocation(location);
           fragment.adapter.notifyDataSetChanged();
         }
       );
@@ -95,7 +122,7 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
    */
   @Override
   public int getItemCount() {
-    return app.getLocalUser().getFavoriteLocations().size();
+    return locations.size();
   }
 
   /**

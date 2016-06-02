@@ -61,10 +61,11 @@ public class PartnersLocationsFragment extends TabFragment<Object> {
 
     partnersList.setAdapter(adapter);
 
+    // Clicking the List Button in the Upper Right Corner takes user to Partner's Favorites List
     ImageButton partnerFaves;
     partnerFaves = (ImageButton) v.findViewById(R.id.partners_list_button);
-
     partnerFaves.setOnClickListener(view -> ((MainActivity) getActivity()).setFragment(new PartnersFavoritesFragment()));
+
     return v;
   }
 }

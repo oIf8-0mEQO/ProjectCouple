@@ -27,6 +27,7 @@ public interface LocalUser extends User {
   void addVisitedLocation(VisitedLocationEvent visitedLocation);
 
   /**
+<<<<<<< HEAD
    * @return Global notifications setting
    */
   boolean getGlobalNotificationsSetting();
@@ -58,6 +59,12 @@ public interface LocalUser extends User {
    * @return vibrationIsOn true if notifications are on, false if turned off
    */
   boolean setVibrationSetting(boolean setting);
+  /**
+   * Sets a favorite location at an index in the list
+   * @param index Index to set the location. Must be greater than 0.
+   * @param location The location to remove
+   */
+  void setFavoriteLocation(int index, FavoriteLocation location);
 
   /**
    * Removes a favorite location

@@ -45,6 +45,7 @@ public class UserConfiguresSettings {
       testUtil.injectNoPartner();
       lock.unlock();
     });
+    lock.lockInterruptibly();
   }
 
   private void givenUserConnectedToPartner() throws Throwable {
@@ -53,6 +54,7 @@ public class UserConfiguresSettings {
       testUtil.injectSpyPartner();
       lock.unlock();
     });
+    lock.lockInterruptibly();
   }
 
   private void whenOpenSettingsPage() {
@@ -61,7 +63,7 @@ public class UserConfiguresSettings {
 
   private void thenUserSeesButtonToAddPartner() {
     // I should see a button that allows me to add partner
-    onView(withId(R.id.add_partner_button)).perform(click());
+    onView(withId(R.id.add_partner_button)).check(matches(isDisplayed()));
   }
 
   private void thenUserSeesPartnerName() {
@@ -75,7 +77,6 @@ public class UserConfiguresSettings {
   @Test
   public void userAddsPartner() throws Throwable {
     givenUserNotConnectedToPartner();
-    lock.lockInterruptibly();
     whenOpenSettingsPage();
     thenUserSeesButtonToAddPartner();
   }
@@ -83,7 +84,6 @@ public class UserConfiguresSettings {
   @Test
   public void userSeesPartner() throws Throwable {
     givenUserConnectedToPartner();
-    lock.lockInterruptibly();
     whenOpenSettingsPage();
     thenUserSeesPartnerName();
   }

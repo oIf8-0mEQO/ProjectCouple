@@ -11,7 +11,7 @@ machine:
         _JAVA_OPTIONS: "-Xms512m -Xmx1024m"
         ADB_INSTALL_TIMEOUT: "10"
         TERM: "dumb"
-        GRADLE_OPTS: '-Xmx1024m -XX:MaxPermSize=1024m -Dorg.gradle.jvmargs="-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError"'
+        GRADLE_OPTS: '-Xmx2048M -XX:MaxPermSize=1024m -Dorg.gradle.jvmargs="-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError"'
     java:
         version: oraclejdk8
 
@@ -30,7 +30,6 @@ test:
         # wait for it to have booted
         - circle-android wait-for-boot
         # unlock the emulator screen
-        - sleep 30
         - adb shell input keyevent 82
         # run tests  against the emulator.
         #  -Pcom.android.build.threadPoolSize=1 -Dorg.gradle.parallel=false -Dorg.gradle.daemon=false -Dorg.gradle.jvmargs="-Xmx1024m -XX:+HeapDumpOnOutOfMemoryError"

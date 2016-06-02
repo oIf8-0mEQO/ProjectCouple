@@ -5,15 +5,20 @@
 
 package group50.coupletones.auth.user.behavior;
 
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.GenericTypeIndicator;
+import group50.coupletones.CoupleTones;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.network.sync.Sync;
+import group50.coupletones.util.TimeUtility;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.PropertiesProvider;
 import group50.coupletones.util.properties.Property;
 
+import javax.inject.Inject;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,12 +26,14 @@ import java.util.List;
  * Holds the behavior of user's profile. Strategy pattern.
  */
 public class ProfileBehavior implements PropertiesProvider {
-
   /**
    * Object responsible for syncing the object with database
    */
   private final Properties properties;
   private final Sync sync;
+  @Inject
+  @Exclude
+  public TimeUtility timeUtility;
   private String id;
   /**
    * Name of the user
@@ -49,7 +56,8 @@ public class ProfileBehavior implements PropertiesProvider {
    * Creates a ConcreteUser
    */
   public ProfileBehavior(Properties properties, Sync sync) {
-    //TODO: Use DI
+    CoupleTones.global().inject(this);
+
     this.properties = properties
       .property("id").bind(this)
       .property("name").bind(this)
@@ -98,7 +106,29 @@ public class ProfileBehavior implements PropertiesProvider {
    * @return The list of visited locations of the user
    */
   public List<VisitedLocationEvent> getVisitedLocations() {
-    return visitedLocations != null ? Collections.unmodifiableList(visitedLocations) : Collections.emptyList();
+
+    if (visitedLocations != null) {
+      Iterator<VisitedLocationEvent> it = visitedLocations.iterator();
+      boolean hasChanged = false;
+
+      while (it.hasNext()) {
+        VisitedLocationEvent currEvent = it.next();
+        if (timeUtility.isFromPreviousDay(currEvent)) {
+          it.remove();
+          hasChanged = true;
+        }
+      }
+
+      if (hasChanged) {
+        Property<Object> prop = properties.property("visitedLocations");
+        sync.update(prop);
+        prop.update();
+      }
+
+      return Collections.unmodifiableList(visitedLocations);
+    } else {
+      return Collections.emptyList();
+    }
   }
 
   /**

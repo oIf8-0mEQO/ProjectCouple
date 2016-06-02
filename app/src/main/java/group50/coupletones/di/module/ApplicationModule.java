@@ -3,6 +3,8 @@ package group50.coupletones.di.module;
 import dagger.Module;
 import dagger.Provides;
 import group50.coupletones.CoupleTones;
+import group50.coupletones.util.FormatUtility;
+import group50.coupletones.util.TimeUtility;
 
 import javax.inject.Singleton;
 
@@ -28,4 +30,17 @@ public class ApplicationModule {
   CoupleTones provide() {
     return application;
   }
+
+  @Provides
+  @Singleton
+  TimeUtility provideTimeUtility() {
+    return new TimeUtility();
+  }
+
+  @Provides
+  @Singleton
+  FormatUtility provideFormatUtility() {
+    return new FormatUtility();
+  }
 }
+

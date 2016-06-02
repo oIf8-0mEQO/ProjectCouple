@@ -230,7 +230,7 @@
         <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                                             android:id="@+id/card_view_2"
                                             android:layout_width="match_parent"
-                                            android:layout_height="180dp"
+                                            android:layout_height="230dp"
                                             android:layout_marginLeft="8dp"
                                             android:layout_marginRight="8dp"
                                             android:layout_marginTop="548dp"
@@ -281,12 +281,12 @@
                         android:layout_alignBottom="@+id/notif_title"
                         android:layout_alignParentEnd="true"/>
 
-                    <!-- VibeTones: -->
+                    <!-- Tones: -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/vibetone_notif_title"
-                        android:text="@string/notif_vibetone_title"
+                        android:id="@+id/tone_notif_title"
+                        android:text="@string/notif_tone_title"
                         android:textColor="@color/textColor"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -294,16 +294,39 @@
                         android:layout_marginTop="30dp"
                         />
 
-                    <!-- Toggle Switch for VibeTones-->
+                    <!-- Toggle Switch for Tones-->
                     <Switch
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:showText="false"
-                        android:id="@+id/notif_vibetones_switch"
+                        android:id="@+id/notif_tones_switch"
                         android:checked="false"
-                        android:layout_alignBottom="@+id/vibetone_notif_title"
+                        android:layout_alignBottom="@+id/tone_notif_title"
                         android:layout_alignEnd="@+id/notif_switch"/>
 
+                    <!-- Vibration: -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/vibe_notif_title"
+                        android:text="@string/notif_vibe_title"
+                        android:textColor="@color/textColor"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_below="@+id/tone_notif_title"
+                        android:layout_marginTop="30dp"
+                        />
+
+                    <!-- Toggle Switch for Vibration-->
+                    <Switch
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:showText="false"
+                        android:id="@+id/notif_vibe_switch"
+                        android:layout_marginEnd="26dp"
+                        android:checked="false"
+                        android:layout_alignBottom="@+id/vibe_notif_title"
+                        android:layout_alignParentEnd="true"/>
 
                 </RelativeLayout>
             </LinearLayout>

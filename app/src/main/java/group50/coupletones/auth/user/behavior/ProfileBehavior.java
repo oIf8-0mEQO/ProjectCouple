@@ -247,7 +247,7 @@ public class ProfileBehavior implements PropertiesProvider {
     if (visitedLocations == null) {
       visitedLocations = new LinkedList<>();
     }
-    visitedLocations.add(visitedLocation);
+    visitedLocations.add(0, visitedLocation);
 
     Property<Object> prop = properties.property("visitedLocations");
     prop.set(this.visitedLocations);

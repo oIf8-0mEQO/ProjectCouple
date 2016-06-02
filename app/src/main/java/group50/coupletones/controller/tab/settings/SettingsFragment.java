@@ -185,6 +185,12 @@ public class SettingsFragment extends TabFragment<Object> {
         .subscribe(notificationSwitch::setChecked)
     );
 
+    subs.add(
+      localUser
+        .observable("tonesAreOn", Boolean.TYPE)
+        .subscribe(vibeToneSwitch::setChecked)
+    );
+
     CompositeSubscription partnerSubs = new CompositeSubscription();
     Observable<Partner> partnerObservable = localUser.getPartner();
 

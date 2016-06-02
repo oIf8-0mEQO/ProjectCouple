@@ -37,9 +37,11 @@ public class ProfileBehavior implements PropertiesProvider {
   private final Sync sync;
   private String id;
   /**
-   * Boolean that handles global notification toggling
+   * Booleans that handle settings toggling
    */
   private boolean globalNotificationsAreOn = true;
+  private boolean tonesAreOn = true;
+  private boolean vibrationIsOn = true;
   /**
    * Name of the user
    */
@@ -68,6 +70,8 @@ public class ProfileBehavior implements PropertiesProvider {
       .property("name").bind(this)
       .property("email").bind(this)
       .property("globalNotificationsAreOn").bind(this)
+      .property("tonesAreOn").bind(this)
+      .property("vibrationIsOn").bind(this)
       .property("favoriteLocations")
       .mark(new GenericTypeIndicator<List<FavoriteLocation>>() {
       })
@@ -88,6 +92,20 @@ public class ProfileBehavior implements PropertiesProvider {
   }
 
   /**
+   * @return Tones setting
+   */
+  public boolean getTonesSetting() {
+    return tonesAreOn;
+  }
+
+  /**
+   * @return Vibration setting
+   */
+  public boolean getVibrationSetting() {
+    return vibrationIsOn;
+  }
+
+  /**
    * This function turns on/off the global notifications setting
    * @return globalNotificationsAreOn true if notifications are on, false if turned off
    */
@@ -99,6 +117,34 @@ public class ProfileBehavior implements PropertiesProvider {
     prop.update();
 
     return globalNotificationsAreOn;
+  }
+
+  /**
+   * This function turns on/off tones
+   * @return tonesAreOn true if tones are on, false if turned off
+   */
+  public Boolean setTonesSetting(boolean setting) {
+    tonesAreOn = setting;
+
+    Property<Object> prop = properties.property("tonesAreOn");
+    sync.update(prop);
+    prop.update();
+
+    return tonesAreOn;
+  }
+
+  /**
+   * This function turns on/off vibration
+   * @return vibrationIsOn true if vibration is on, false if turned off
+   */
+  public Boolean setVibrationSetting(boolean setting) {
+    vibrationIsOn = setting;
+
+    Property<Object> prop = properties.property("vibrationIsOn");
+    sync.update(prop);
+    prop.update();
+
+    return vibrationIsOn;
   }
 
   /**

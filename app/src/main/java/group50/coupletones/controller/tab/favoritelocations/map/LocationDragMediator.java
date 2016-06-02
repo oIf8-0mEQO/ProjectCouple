@@ -21,30 +21,42 @@ public class LocationDragMediator implements GoogleMap.OnMarkerDragListener {
   @Inject
   CoupleTones app;
 
-  private List<Marker> markers;
+  private List<Pair> pairs;
 
   public LocationDragMediator()
   {
     CoupleTones.global().inject(this);
-    markers = new LinkedList<>();
-    locations = new LinkedList<>();
+    pairs = new LinkedList<>();
   }
 
   public void bindPair(Marker marker, FavoriteLocation location)
   {
-    markers.add(marker);
-    locations.add(location);
-    locations.
+    pairs.add(new Pair(marker, location));
   }
 
   @Override
   public void onMarkerDragEnd(Marker marker)
   {
-
+    FavoriteLocation location = null;
+    for (Pair p : pairs)
+    {
+      if (p.marker.equals(marker))
+      {
+        location = p.location;
+        break;
+      }
+    }
+    app.getLocalUser().setFavoriteLocation(app.getLocalUser().getFavoriteLocations().indexOf(location), location);
   }
 
   private class Pair
   {
+
+    public Pair(Marker marker, FavoriteLocation location)
+    {
+      this.marker = marker;
+      this.location = location;
+    }
 
     private Marker marker;
     private FavoriteLocation location;

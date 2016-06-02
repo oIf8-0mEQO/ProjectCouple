@@ -1,15 +1,22 @@
 package group50.coupletones.controller.tab.partnerslocations;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.Partner;
+import group50.coupletones.controller.MainActivity;
+import group50.coupletones.controller.tab.favoritelocations.EditLocationActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
@@ -35,6 +42,8 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
 
   private LayoutInflater inflater;
 
+  private Activity activity;
+
   private CompositeSubscription subs = new CompositeSubscription();
 
   /**
@@ -42,8 +51,9 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
    *
    * @param partnerObservable - The partnerObservable object
    */
-  public ListAdapterPartnerFavorites(Observable<Partner> partnerObservable, Context context) {
+  public ListAdapterPartnerFavorites(Observable<Partner> partnerObservable, Activity context) {
     this.inflater = LayoutInflater.from(context);
+    this.activity = context;
 
     this.subs.add(
       partnerObservable
@@ -89,7 +99,12 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
     holder.address.setText(location.getAddress() != null ? location.getAddress().getLocality() : "");
     holder.icon.setImageResource(R.drawable.target_icon);
     //TODO: Add
-    // holder.vibeTone.setText(location.getTone());
+    //
+    ImageButton editButton;
+    editButton = (ImageButton) holder.itemView.findViewById(R.id.edit_location_icon);
+    //holder.itemView.findViewById(R.id.edit_location_icon)
+    editButton.setOnClickListener(view -> ((MainActivity) activity).setFragment(new VibeTonesFragment()));
+
   }
 
   /**

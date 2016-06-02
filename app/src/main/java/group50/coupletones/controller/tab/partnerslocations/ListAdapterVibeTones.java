@@ -57,9 +57,6 @@ public class ListAdapterVibeTones extends RecyclerView.Adapter<ListAdapterVibeTo
   public void onBindViewHolder(ListViewHolder holder, int position) {
     PartnerLocation tone = data.get(position);
     holder.name.setText(tone.getName());
-
-    holder.itemView.findViewById(R.id.edit_location_icon)
-        .setOnClickListener(view -> ((MainActivity) activity).setFragment(new VibeTonesFragment()));
   }
 
   /**

@@ -7,9 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import group50.coupletones.R;
+import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.TabFragment;
 
 /**
@@ -48,6 +50,11 @@ public class VibeTonesFragment extends TabFragment<Object> {
     vibeTonesList.setLayoutManager(new LinearLayoutManager(getActivity()));
     adapter = new ListAdapterVibeTones(VibeTonesData.getVibeTones(), getActivity());
     vibeTonesList.setAdapter(adapter);
+
+    ImageButton backButton;
+    backButton = (ImageButton) v.findViewById(R.id.btn_backarrow);
+    backButton.setOnClickListener(view -> ((MainActivity) getActivity()).setFragment(new PartnersFavoritesFragment()));
+
     return v;
   }
 }

@@ -13,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
+import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.partnerslocations.VibeTonesFragment;
 
 import javax.inject.Inject;
 
@@ -98,9 +100,9 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
 
     holder.itemView.findViewById(R.id.delete_location_icon)
       .setOnClickListener(evt -> {
-        app.getLocalUser().removeFavoriteLocation(location);
-          fragment.adapter.notifyDataSetChanged();
-        }
+            app.getLocalUser().removeFavoriteLocation(location);
+            fragment.adapter.notifyDataSetChanged();
+          }
       );
   }
 

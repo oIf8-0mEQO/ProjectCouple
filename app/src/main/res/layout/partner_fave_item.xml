@@ -77,6 +77,16 @@
                     android:layout_marginEnd="22dp"
                     android:layout_alignBottom="@+id/list_item_name"
                     android:layout_alignParentEnd="true"/>
+
+                <!-- Edit VibeTone Button-->
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edit_location_icon"
+                    android:src="@drawable/edit_loc_icon"
+                    android:background="@color/transparentBg"
+                    android:layout_alignTop="@+id/list_item_address"
+                    android:layout_alignEnd="@+id/list_item_vibetone"/>
             </RelativeLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

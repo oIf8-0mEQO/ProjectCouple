@@ -1,6 +1,6 @@
 package group50.coupletones.controller.tab.partnerslocations;
 
-import android.content.Context;
+import android.app.Activity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import group50.coupletones.R;
+import group50.coupletones.controller.MainActivity;
 
 import java.util.List;
 
@@ -22,6 +23,7 @@ import java.util.List;
  */
 public class ListAdapterVibeTones extends RecyclerView.Adapter<ListAdapterVibeTones.ListViewHolder> {
 
+  private Activity activity;
   private List<PartnerLocation> data;
   private LayoutInflater inflater;
 
@@ -29,9 +31,10 @@ public class ListAdapterVibeTones extends RecyclerView.Adapter<ListAdapterVibeTo
    * Partner list adapter
    * @param data - VibeTones location data
    */
-  public ListAdapterVibeTones(List<PartnerLocation> data, Context context) {
+  public ListAdapterVibeTones(List<PartnerLocation> data, Activity context) {
     this.inflater = LayoutInflater.from(context);
     this.data = data;
+    this.activity = context;
   }
 
   /**
@@ -54,6 +57,9 @@ public class ListAdapterVibeTones extends RecyclerView.Adapter<ListAdapterVibeTo
   public void onBindViewHolder(ListViewHolder holder, int position) {
     PartnerLocation tone = data.get(position);
     holder.name.setText(tone.getName());
+
+    holder.itemView.findViewById(R.id.edit_location_icon)
+        .setOnClickListener(view -> ((MainActivity) activity).setFragment(new VibeTonesFragment()));
   }
 
   /**

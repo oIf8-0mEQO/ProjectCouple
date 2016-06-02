@@ -1,7 +1,11 @@
 package group50.coupletones.controller.tab.favoritelocations.map;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.Marker;
 
+import javax.inject.Inject;
+
+import group50.coupletones.CoupleTones;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 
 /**
@@ -11,6 +15,22 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Favorit
  */
 public class LocationDragMediator implements GoogleMap.OnMarkerDragListener {
 
-  private FavoriteLocation loc
+  @Inject
+  CoupleTones app;
+
+  private FavoriteLocation location;
+  private 
+
+  public LocationDragMediator(FavoriteLocation location, Marker marker)
+  {
+    this.location = location;
+    CoupleTones.global().inject(this);
+  }
+
+  @Override
+  public void onMarkerDragEnd(Marker marker)
+  {
+
+  }
 
 }

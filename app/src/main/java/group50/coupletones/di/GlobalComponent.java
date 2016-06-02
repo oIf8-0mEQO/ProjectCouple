@@ -13,6 +13,7 @@ import group50.coupletones.controller.PartnerResponseActivity;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsListAdapter;
 import group50.coupletones.controller.tab.favoritelocations.map.LocationClickHandler;
+import group50.coupletones.controller.tab.favoritelocations.map.LocationDragMediator;
 import group50.coupletones.controller.tab.favoritelocations.map.LocationNotificationMediator;
 import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
@@ -104,4 +105,6 @@ public interface GlobalComponent {
   void inject(ProfileBehavior behavior);
 
   void inject(ListAdapterPartnerVisited list);
+
+  void inject(LocationDragMediator mediator);
 }

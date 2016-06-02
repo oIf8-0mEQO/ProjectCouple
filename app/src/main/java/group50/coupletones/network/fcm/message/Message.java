@@ -3,13 +3,16 @@ package group50.coupletones.network.fcm.message;
 import java.util.Map;
 
 /**
- * @author Sharmaine Manalo
- * @since 5/4/16
- */
-
-/**
  * Message interface represents the
  * message sent to partner on the app.
+ *
+ * Notifications must have:
+ * title
+ * body
+ * icon
+ * in order to notify the partner.
+ * @author Sharmaine Manalo
+ * @since 5/4/16
  */
 public interface Message {
   /**

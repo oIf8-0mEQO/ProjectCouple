@@ -56,6 +56,7 @@ public class LocationNotificationMediator implements Taggable {
                     location.getName()
                 )
                 .setBody(formatUtility.formatDate(location.getTimeVisited()))
+                .setIcon("logo")
                 .setTo(partner.getFcmToken())
             );
         });

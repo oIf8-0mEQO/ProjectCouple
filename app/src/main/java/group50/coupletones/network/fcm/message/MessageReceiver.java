@@ -1,4 +1,4 @@
-package group50.coupletones.network.message;
+package group50.coupletones.network.fcm.message;
 
 /**
  * Represents an object that can handle a message reception

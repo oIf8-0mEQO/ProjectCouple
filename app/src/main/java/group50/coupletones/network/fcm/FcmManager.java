@@ -5,19 +5,16 @@ package group50.coupletones.network.fcm;
  * @since 5/4/16
  */
 
-import android.content.Context;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import com.google.android.gms.gcm.GoogleCloudMessaging;
-import group50.coupletones.network.NetworkManager;
-import group50.coupletones.network.message.IncomingMessage;
-import group50.coupletones.network.message.MessageReceiver;
-import group50.coupletones.network.message.OutgoingMessage;
+import android.util.Log;
+import group50.coupletones.network.fcm.message.Message;
 import group50.coupletones.util.Taggable;
+import org.json.JSONObject;
+import rx.subjects.PublishSubject;
 
 import javax.inject.Inject;
-import java.io.IOException;
-import java.util.HashMap;
+import java.io.DataOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * GCM Manager for the app
@@ -27,127 +24,59 @@ public class FcmManager implements NetworkManager, Taggable {
   /**
    * FCM key
    */
+  private static final String ENDPOINT = "https://fcm.googleapis.com/fcm/send";
   private static final String KEY = "AIzaSyCyMy2k4cpGNsqqvcilg2GyFjXQSAZ_qbE";
+  private static final String AUTH_HEADER = "key=" + KEY;
 
   /**
-   * Project number registered with Google API
+   * Subject that is observed by objects that want to listen to incoming messages
    */
-  private static final String PROJECT_NUMBER = "794558589013";
+  final PublishSubject<Message> incomingStream;
 
   /**
-   * The GCM endpoint to communicate with Google
+   * Subject that is observed by objects that want to listen to outgoing messages
    */
-  private static final String GCM_ENDPOINT = PROJECT_NUMBER + "@gcm.googleapis.com";
-
-  /**
-   * A map of all message receivers
-   */
-  private final HashMap<String, MessageReceiver> receivers = new HashMap<>();
-
-  /**
-   * GCM instance
-   */
-  private GoogleCloudMessaging gcm;
-
-  /**
-   * The device registration ID
-   */
-  private String regid;
+  final PublishSubject<Message> outgoingStream;
 
   @Inject
   public FcmManager() {
+    incomingStream = PublishSubject.create();
+    outgoingStream = PublishSubject.create();
 
+    // Register the default sending behavior
+    outgoingStream.subscribe(this::onSendMessage);
   }
 
-  //TODO: Potential concurrency issue
+  private void onSendMessage(Message message) {
+    try {
+      URL url = new URL(ENDPOINT);
+      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+      conn.setDoOutput(true);
+      conn.setInstanceFollowRedirects(false);
+      conn.setRequestMethod("POST");
+      conn.setRequestProperty("Content-Type", "application/json");
+      conn.setRequestProperty("Authorization", AUTH_HEADER);
+      conn.setUseCaches(false);
 
-  /**
-   * send
-   * @param message - the outgoing message
-   * @return
-   */
-  @Override
-  public AsyncTask<Void, Void, Boolean> send(OutgoingMessage message) {
-    return new AsyncTask<Void, Void, Boolean>() {
-      @Override
-      protected Boolean doInBackground(Void... params) {
-        try {
-          gcm.send(GCM_ENDPOINT, message.getId(), message.getData());
-        } catch (IOException ex) {
-          ex.printStackTrace();
-          return false;
-        }
-        return true;
-      }
-    }.execute(null, null, null);
-  }
+      JSONObject jsonObject = new JSONObject(message.getData());
 
-  //TODO: Potential concurrency issue
-
-  /**
-   * register
-   * @param context - the context to register the manager with
-   * @return
-   */
-  @Override
-  public AsyncTask<Void, Void, Boolean> register(Context context) {
-    return new AsyncTask<Void, Void, Boolean>() {
-      @Override
-      protected Boolean doInBackground(Void... params) {
-        try {
-          if (gcm == null) {
-            gcm = GoogleCloudMessaging.getInstance(context.getApplicationContext());
-          }
-
-          regid = gcm.register(PROJECT_NUMBER);
-        } catch (IOException ex) {
-          ex.printStackTrace();
-          return false;
-        }
-        return true;
+      try (DataOutputStream wr = new DataOutputStream(conn.getOutputStream())) {
+        wr.write(jsonObject.toString().getBytes());
       }
 
-    }.execute(null, null, null);
-  }
-
-  /**
-   * register
-   * @param type     - the type of receiver to register
-   * @param receiver - the receiver to register
-   */
-  @Override
-  public void register(String type, MessageReceiver receiver) {
-    if (receivers.containsKey(type)) {
-      throw new RuntimeException("Attempt to register a GCM with duplicate type: " + type);
-    } else {
-      receivers.put(type, receiver);
+    } catch (Exception e) {
+      Log.e(getTag(), "Unable to send FCM message.");
+      e.printStackTrace();
     }
   }
 
-  /**
-   * Unregisters a GCM with invalid type
-   * @param type - the type of receiver to unregister
-   */
   @Override
-  public void unregister(String type) {
-    if (receivers.containsKey(type)) {
-      receivers.remove(type);
-    } else {
-      throw new RuntimeException("Attempt to unregister a GCM with invalid type: " + type);
-    }
+  public PublishSubject<Message> getIncomingStream() {
+    return incomingStream;
   }
 
-  /**
-   * Handles receive for messages
-   * @param extras - bundle
-   */
-  void handleReceive(Bundle extras) {
-    IncomingMessage msg = new IncomingMessage(extras.getString("type"), extras);
-    MessageReceiver messageReceiver = receivers.get(msg.getType());
-
-    if (messageReceiver != null)
-      messageReceiver.onReceive(msg);
-    else
-      throw new RuntimeException("Attempt to handle GCM of invalid type: " + extras.getString("type"));
+  @Override
+  public PublishSubject<Message> getOutgoingStream() {
+    return outgoingStream;
   }
 }

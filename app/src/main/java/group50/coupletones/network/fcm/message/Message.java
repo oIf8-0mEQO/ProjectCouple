@@ -1,6 +1,6 @@
-package group50.coupletones.network.message;
+package group50.coupletones.network.fcm.message;
 
-import android.os.Bundle;
+import java.util.Map;
 
 /**
  * @author Sharmaine Manalo
@@ -14,53 +14,53 @@ import android.os.Bundle;
 public interface Message {
   String getType();
 
-  Bundle getData();
+  Map<String, Object> getData();
 
   /**
    * Short-hand functions to getCollection various data from the message.
    */
   default String getString(String key) {
-    return getData().getString(key);
+    return (String) getData().get(key);
   }
 
   default float getFloat(String key) {
-    return getData().getFloat(key);
+    return (float) getData().get(key);
   }
 
   default double getDouble(String key) {
-    return getData().getDouble(key);
+    return (double) getData().get(key);
   }
 
   default boolean getBoolean(String key) {
-    return getData().getBoolean(key);
+    return (boolean) getData().get(key);
   }
 
   default int getInt(String key) {
-    return getData().getInt(key);
+    return (int) getData().get(key);
   }
 
   default Message setString(String key, String value) {
-    getData().putString(key, value);
+    getData().put(key, value);
     return this;
   }
 
   default Message setFloat(String key, float value) {
-    getData().putFloat(key, value);
+    getData().put(key, value);
     return this;
   }
 
   default Message setDouble(String key, double value) {
-    getData().putDouble(key, value);
+    getData().put(key, value);
     return this;
   }
 
   default Message setInt(String key, int value) {
-    getData().putInt(key, value);
+    getData().put(key, value);
     return this;
   }
 
   default Message setBoolean(String key, boolean value) {
-    getData().putBoolean(key, value);
+    getData().put(key, value);
     return this;
   }
 }

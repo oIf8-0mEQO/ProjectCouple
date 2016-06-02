@@ -1,4 +1,4 @@
-package group50.coupletones.network.message;
+package group50.coupletones.network.fcm.message;
 
 /**
  * Contains all types of messages used in the app

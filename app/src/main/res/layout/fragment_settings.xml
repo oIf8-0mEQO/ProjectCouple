@@ -161,12 +161,11 @@
                         />
 
                     <!-- Partner name -->
-                    <EditText
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
                         android:text="@string/partner_name"
-                        android:ems="10"
+                        android:textSize="18sp"
                         android:textColor="@color/subtitleColor"
                         android:id="@+id/partner_name"
                         android:layout_centerVertical="true"

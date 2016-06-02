@@ -10,6 +10,7 @@ import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
+import group50.coupletones.network.fcm.FcmManager;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -71,7 +72,7 @@ public class PartnerResponseActivityTest {
     // Click on the button
     onView(withId(R.id.accept_button)).perform(click());
     // Verify response message
-    verify(CoupleTones.global().network(), times(1)).send(any());
+    verify((FcmManager) CoupleTones.global().network(), times(1)).sendMessage(any());
 
     // Verify that the user partner is set
     verify(user, times(1)).setPartner("1234");
@@ -81,7 +82,7 @@ public class PartnerResponseActivityTest {
     // Click on the button
     onView(withId(R.id.reject_button)).perform(click());
     // Verify response message
-    verify(CoupleTones.global().network(), times(1)).send(any());
+    verify((FcmManager) CoupleTones.global().network(), times(1)).sendMessage(any());
 
     // Verify that the user partner not set
     assertThat(user.getPartner()).isNull();

@@ -13,6 +13,7 @@ import group50.coupletones.controller.PartnerResponseActivity;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsListAdapter;
 import group50.coupletones.controller.tab.favoritelocations.map.LocationClickHandler;
+import group50.coupletones.controller.tab.favoritelocations.map.LocationNotificationMediator;
 import group50.coupletones.controller.tab.favoritelocations.map.MapFragment;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityService;
@@ -63,6 +64,8 @@ public interface GlobalComponent {
   TimeUtility timeUtility();
 
   FormatUtility formatUtility();
+
+  void inject(LocationNotificationMediator obj);
 
   void inject(InstanceIDService obj);
 

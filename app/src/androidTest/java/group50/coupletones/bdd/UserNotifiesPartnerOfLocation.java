@@ -17,6 +17,8 @@ import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
+import group50.coupletones.network.fcm.FcmManager;
+import group50.coupletones.network.fcm.message.FcmMessage;
 import group50.coupletones.util.sound.VibeTone;
 import org.junit.Before;
 import org.junit.Rule;
@@ -63,7 +65,7 @@ public class UserNotifiesPartnerOfLocation {
 
     // Create an instance of MapProxManager and register a network handler
     proximityManager = new MapProximityManager(app);
-    LocationNotificationMediator locationNotificationMediator = new LocationNotificationMediator(app, CoupleTones.global().network());
+    LocationNotificationMediator locationNotificationMediator = new LocationNotificationMediator();
     proximityManager.getEnterSubject().subscribe(locationNotificationMediator::onEnterLocation);
 
     //List of the user's favorite locations.
@@ -106,7 +108,7 @@ public class UserNotifiesPartnerOfLocation {
 
   private void thenMyPartnerIsNotified() {
     // Check message sent to server
-    verify(CoupleTones.global().network(), times(1)).send(any());
+    verify((FcmManager) CoupleTones.global().network(), times(1)).sendMessage(any());
   }
 
   @Test

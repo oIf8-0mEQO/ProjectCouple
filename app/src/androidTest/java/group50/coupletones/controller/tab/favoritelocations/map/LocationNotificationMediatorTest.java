@@ -2,28 +2,29 @@ package group50.coupletones.controller.tab.favoritelocations.map;
 
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
+import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
-import group50.coupletones.di.DaggerMockAppComponent;
-import group50.coupletones.di.MockProximityModule;
 import group50.coupletones.mocker.ConcreteUserTestUtil;
 import group50.coupletones.mocker.UserTestUtil;
 import group50.coupletones.network.fcm.NetworkManager;
-import group50.coupletones.network.fcm.message.OutgoingMessage;
+import group50.coupletones.network.fcm.message.Message;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import rx.subjects.Subject;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.argThat;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -34,54 +35,49 @@ import static org.mockito.Mockito.verify;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 public class LocationNotificationMediatorTest {
-
-  private LocationNotificationMediator locationNotificationMediator;
-  private UserTestUtil testUtil;
+  private LocationNotificationMediator mediator;
+  private UserTestUtil testUtil = new ConcreteUserTestUtil();
 
   @Before
   public void setup() {
-
-    // Setup DI
-    CoupleTones.setGlobal(
-      DaggerMockAppComponent
-        .builder()
-        .mockProximityModule(new MockProximityModule())
-        .build()
-    );
-
-    testUtil = new ConcreteUserTestUtil()
-      .injectLocalUser();
-
+    testUtil.injectLocalUser();
     testUtil.injectSpyPartner();
-
-    locationNotificationMediator = new LocationNotificationMediator(CoupleTones.global().app(), CoupleTones.global().network());
+    mediator = new LocationNotificationMediator();
   }
 
   @Test
   public void testEnterLocation() {
-    VisitedLocationEvent location = new VisitedLocationEvent("Home", new LatLng(0, 0), new Date(), new Date(), null);
-    locationNotificationMediator.onEnterLocation(location);
-
-    // Make sure GCM message is sent
+    // Make sure FCM message is sent
     NetworkManager network = CoupleTones.global().network();
+    Subject<Message, Message> spySubject = spy(Subject.class);
+    doReturn(spySubject).when(network).getOutgoingStream();
+
+    VisitedLocationEvent location = new VisitedLocationEvent("Home", new LatLng(0, 0), new Date(), new Date(), null);
+    mediator.onEnterLocation(location);
+
     // Verify the GCM message has exactly the correct arguments.
-    verify(network, times(1)).send(argThat(new Matcher<OutgoingMessage>() {
+    verify(spySubject, times(1)).onNext(argThat(new Matcher<Message>() {
       @Override
       public boolean matches(Object item) {
-        if (item instanceof OutgoingMessage) {
-          OutgoingMessage msg = (OutgoingMessage) item;
-          return msg.getString("name").equals("Home") &&
-            msg.getDouble("lat") == 0 &&
-            msg.getDouble("long") == 0 &&
-            msg.getString("time").equals((new SimpleDateFormat("HH:mm", Locale.US)).format(location.getTimeVisited())) &&
-            msg.getString("partner").equals("henry@email.com");
+        if (item instanceof Message) {
+          Message msg = (Message) item;
+          Map<String, Object> notification = msg.getNotification();
+          return "Henry visited Home".equals(notification.get("title")) &&
+            mediator.formatUtility.formatDate(location.getTimeVisited()).equals(notification.get("body")) &&
+            !((String) notification.get("icon")).isEmpty();
         }
         return false;
       }
 
       @Override
       public void describeMismatch(Object item, Description mismatchDescription) {
-
+        if (item instanceof Message) {
+          Message msg = (Message) item;
+          Map<String, Object> notification = msg.getNotification();
+          mismatchDescription.appendText((String) notification.get("title"));
+          mismatchDescription.appendText((String) notification.get("body"));
+          mismatchDescription.appendText((String) notification.get("icon"));
+        }
       }
 
       @Override

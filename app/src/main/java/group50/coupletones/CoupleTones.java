@@ -122,7 +122,7 @@ public class CoupleTones extends Application {
 
     // Register location observer
     ProximityManager proximity = global().proximity();
-    LocationNotificationMediator mediator = new LocationNotificationMediator(this, network, global().formatUtility());
+    LocationNotificationMediator mediator = new LocationNotificationMediator();
     proximity.getEnterSubject().subscribe(mediator::onEnterLocation);
     proximity.getExitSubject().subscribe(mediator::onLeaveLocation);
   }

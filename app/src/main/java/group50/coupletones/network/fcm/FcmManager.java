@@ -10,8 +10,11 @@ import com.google.firebase.messaging.RemoteMessage;
 import group50.coupletones.network.fcm.message.Message;
 import group50.coupletones.util.Taggable;
 import org.json.JSONObject;
+import rx.Observable;
+import rx.Scheduler;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
+import rx.subjects.Subject;
 
 import javax.inject.Inject;
 import java.io.DataOutputStream;
@@ -42,20 +45,24 @@ public class FcmManager implements NetworkManager, Taggable {
 
   @Inject
   public FcmManager() {
+    this(Schedulers.newThread());
+  }
+
+  public FcmManager(Scheduler scheduler) {
     incomingStream = PublishSubject.create();
     outgoingStream = PublishSubject.create();
 
     // Register the default sending behavior
     outgoingStream
-      .observeOn(Schedulers.newThread())
-      .subscribe(this::onSendMessage);
+      .observeOn(scheduler)
+      .subscribe(this::sendMessage);
   }
 
   /**
    * Handles sending outgoing messages
    * @param message The outgoing message. Must have a destination fcm token to send to.
    */
-  private void onSendMessage(Message message) {
+  public void sendMessage(Message message) {
     if (message.getTo() == null) {
       Log.e(getTag(), "Message must have a destination.");
       return;
@@ -88,12 +95,12 @@ public class FcmManager implements NetworkManager, Taggable {
   }
 
   @Override
-  public PublishSubject<RemoteMessage> getIncomingStream() {
+  public Observable<RemoteMessage> getIncomingStream() {
     return incomingStream;
   }
 
   @Override
-  public PublishSubject<Message> getOutgoingStream() {
+  public Subject<Message, Message> getOutgoingStream() {
     return outgoingStream;
   }
 }

@@ -198,6 +198,12 @@ public class SettingsFragment extends TabFragment<Object> {
         .subscribe(tonesSwitch::setChecked)
     );
 
+    subs.add(
+      localUser
+        .observable("vibrationIsOn", Boolean.TYPE)
+        .subscribe(vibrationSwitch::setChecked)
+    );
+
     CompositeSubscription partnerSubs = new CompositeSubscription();
     Observable<Partner> partnerObservable = localUser.getPartner();
 
@@ -273,9 +279,16 @@ public class SettingsFragment extends TabFragment<Object> {
         app.getLocalUser().setGlobalNotificationsSetting(isChecked)
     );
 
+    // Tones setting handler
     tonesSwitch.setOnCheckedChangeListener(
       (CompoundButton buttonView, boolean isChecked) ->
         app.getLocalUser().setTonesSetting(isChecked)
+    );
+
+    // Vibration setting handler
+    vibrationSwitch.setOnCheckedChangeListener(
+      (CompoundButton buttonView, boolean isChecked) ->
+        app.getLocalUser().setVibrationSetting(isChecked)
     );
   }
 

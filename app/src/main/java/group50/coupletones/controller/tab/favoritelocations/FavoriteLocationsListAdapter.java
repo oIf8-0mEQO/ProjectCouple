@@ -60,9 +60,7 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
     // Observe update
     app
       .getLocalUser()
-      .getProperties()
-      .property("favoriteLocations", List.class)
-      .observable()
+      .observable("favoriteLocations", List.class)
       .subscribe(this::setLocations);
   }
 

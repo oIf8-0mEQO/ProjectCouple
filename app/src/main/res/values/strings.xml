@@ -43,7 +43,8 @@
     <string name="partner_vibetone">Custom Vibetone</string>
     <string name="notif_settings_tite">NOTIFICATION SETTINGS</string>
     <string name="notif_title">Notifications:</string>
-    <string name="notif_vibetone_title">VibeTones:</string>
+    <string name="notif_tone_title">Tone:</string>
+    <string name="notif_vibe_title">Vibration:</string>
     <string name="notif_on_off">On/Off</string>
 
 

@@ -68,7 +68,6 @@ public class AddPartnerActivity extends AppCompatActivity implements Taggable {
 
     userFactory
       .withEmail(email)  // Get user by email
-      .subscribeOn(Schedulers.newThread())
       .flatMap(buildable -> buildable.build().load())
       .subscribe(
         partner -> {

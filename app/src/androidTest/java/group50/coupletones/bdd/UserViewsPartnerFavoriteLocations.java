@@ -2,14 +2,12 @@ package group50.coupletones.bdd;
 
 import android.support.test.rule.ActivityTestRule;
 import com.google.android.gms.maps.model.LatLng;
-import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
-import group50.coupletones.di.DaggerMockAppComponent;
-import group50.coupletones.di.MockProximityModule;
 import group50.coupletones.mocker.ConcreteUserTestUtil;
 import group50.coupletones.mocker.UserTestUtil;
+import group50.coupletones.util.properties.Property;
 import group50.coupletones.util.sound.VibeTone;
 import org.junit.Before;
 import org.junit.Rule;
@@ -21,7 +19,10 @@ import java.util.List;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.*;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.mockito.Mockito.doAnswer;
 
 /**
@@ -31,39 +32,30 @@ import static org.mockito.Mockito.doAnswer;
 public class UserViewsPartnerFavoriteLocations {
 
   @Rule
-  public ActivityTestRule<MainActivity> testRule = new ActivityTestRule<>(MainActivity.class);
+  public ActivityTestRule<MainActivity> testRule = new ActivityTestRule(MainActivity.class) {
+    @Override
+    protected void beforeActivityLaunched() {
+      FavoriteLocation partnerFavorite = new FavoriteLocation("name", new LatLng(10, 10), 0, VibeTone.getTone());
+      List<FavoriteLocation> locationList = new LinkedList<>();
+      locationList.add(partnerFavorite);
 
-  @Before
-  public void setup() {
-    CoupleTones.setGlobal(
-      DaggerMockAppComponent
-        .builder()
-        .mockProximityModule(new MockProximityModule())
-        .build()
-    );
+      UserTestUtil userTestUtil =
+        new ConcreteUserTestUtil()
+          .injectLocalUser()
+          .injectSpyPartner();
 
-    FavoriteLocation partnerFavorite = new FavoriteLocation("name", new LatLng(10, 10), 0, VibeTone.getTone());
-    List<FavoriteLocation> locationList = new LinkedList<>();
-    locationList.add(partnerFavorite);
-
-    UserTestUtil userTestUtil = new ConcreteUserTestUtil()
-      .injectLocalUser()
-      .mockProperty("name", "Henry")
-      .mockProperty("email", "henry@email.com");
-
-    userTestUtil.injectSpyPartner();
-
-    doAnswer(act -> locationList)
-      .when(userTestUtil.getPartner())
-      .getFavoriteLocations();
-  }
+      Property<Object> favoriteLocations = userTestUtil.getPartner().getProperties().property("favoriteLocations");
+      favoriteLocations.set(locationList);
+      super.beforeActivityLaunched();
+    }
+  };
 
   private void givenUserNotOnPartnerFavoriteLocationList() {
-    onView(withId(R.id.favorite_locations)).perform(click());
+    onView(withId(R.id.partner_locations)).perform(click());
   }
 
   private void whenUserClicksPartnerFavoriteLocationList() {
-    onView(withId(R.id.partner_locations)).perform(click());
+    onView(withId(R.id.partners_list_button)).perform(click());
   }
 
   private void thenUserSeesPartnerFavoriteLocations() {

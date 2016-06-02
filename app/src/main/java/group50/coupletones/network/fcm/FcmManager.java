@@ -7,7 +7,6 @@ package group50.coupletones.network.fcm;
 
 import android.util.Log;
 import com.google.firebase.messaging.RemoteMessage;
-import com.google.firebase.messaging.SendException;
 import group50.coupletones.network.fcm.message.Message;
 import group50.coupletones.util.Taggable;
 import org.json.JSONObject;
@@ -51,11 +50,11 @@ public class FcmManager implements NetworkManager, Taggable {
 
   /**
    * Handles sending outgoing messages
-   * @param message The outgoing message.
+   * @param message The outgoing message. Must have a destination fcm token to send to.
    */
   private void onSendMessage(Message message) {
-    if (message.getType() == null || message.getTo() == null) {
-      throw new IllegalArgumentException("Message must have a destination");
+    if (message.getTo() == null) {
+      Log.e(getTag(), "Message must have a destination.");
     }
 
     try {

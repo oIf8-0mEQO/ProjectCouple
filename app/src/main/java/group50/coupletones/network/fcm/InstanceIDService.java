@@ -1,9 +1,11 @@
 package group50.coupletones.network.fcm;
 
-import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import group50.coupletones.CoupleTones;
 import group50.coupletones.util.Taggable;
+
+import javax.inject.Inject;
 
 /**
  * FCM ID refresher
@@ -11,12 +13,21 @@ import group50.coupletones.util.Taggable;
  */
 public class InstanceIDService extends FirebaseInstanceIdService implements Taggable {
 
+  @Inject
+  public CoupleTones app;
+
+  public InstanceIDService() {
+    CoupleTones.global().inject(this);
+  }
+
   @Override
   public void onTokenRefresh() {
     // Get updated InstanceID token.
-    String refreshedToken = FirebaseInstanceId.getInstance().getToken();
-    Log.d(getTag(), "Token refresh: " + refreshedToken);
+    String token = FirebaseInstanceId.getInstance().getToken();
 
-    //TODO: Update user instance?
+    // Update the token on the user
+    if (app.getLocalUser() != null) {
+      app.getLocalUser().setFcmToken(token);
+    }
   }
 }

@@ -26,6 +26,7 @@ import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.NetworkModule;
 import group50.coupletones.di.module.ProximityModule;
 import group50.coupletones.di.module.UserFactoryModule;
+import group50.coupletones.network.fcm.InstanceIDService;
 import group50.coupletones.network.fcm.MessagingService;
 import group50.coupletones.network.fcm.NetworkManager;
 import group50.coupletones.util.FormatUtility;
@@ -62,6 +63,8 @@ public interface GlobalComponent {
   TimeUtility timeUtility();
 
   FormatUtility formatUtility();
+
+  void inject(InstanceIDService obj);
 
   void inject(MessagingService obj);
 

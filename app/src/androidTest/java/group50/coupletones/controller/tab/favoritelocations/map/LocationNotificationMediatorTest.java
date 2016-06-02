@@ -10,8 +10,8 @@ import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
 import group50.coupletones.mocker.ConcreteUserTestUtil;
 import group50.coupletones.mocker.UserTestUtil;
-import group50.coupletones.network.NetworkManager;
-import group50.coupletones.network.message.OutgoingMessage;
+import group50.coupletones.network.fcm.NetworkManager;
+import group50.coupletones.network.fcm.message.OutgoingMessage;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.Before;
@@ -33,9 +33,9 @@ import static org.mockito.Mockito.verify;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class ProximityNetworkHandlerTest {
+public class LocationNotificationMediatorTest {
 
-  private ProximityNetworkHandler proximityNetworkHandler;
+  private LocationNotificationMediator locationNotificationMediator;
   private UserTestUtil testUtil;
 
   @Before
@@ -54,13 +54,13 @@ public class ProximityNetworkHandlerTest {
 
     testUtil.injectSpyPartner();
 
-    proximityNetworkHandler = new ProximityNetworkHandler(CoupleTones.global().app(), CoupleTones.global().network());
+    locationNotificationMediator = new LocationNotificationMediator(CoupleTones.global().app(), CoupleTones.global().network());
   }
 
   @Test
   public void testEnterLocation() {
     VisitedLocationEvent location = new VisitedLocationEvent("Home", new LatLng(0, 0), new Date(), new Date(), null);
-    proximityNetworkHandler.onEnterLocation(location);
+    locationNotificationMediator.onEnterLocation(location);
 
     // Make sure GCM message is sent
     NetworkManager network = CoupleTones.global().network();

@@ -2,8 +2,8 @@ package group50.coupletones.di.module;
 
 import dagger.Module;
 import dagger.Provides;
-import group50.coupletones.network.NetworkManager;
-import group50.coupletones.network.gcm.GcmManager;
+import group50.coupletones.network.fcm.NetworkManager;
+import group50.coupletones.network.fcm.FcmManager;
 
 import javax.inject.Singleton;
 
@@ -21,7 +21,7 @@ public class NetworkModule {
    */
   @Singleton
   @Provides
-  NetworkManager provide(GcmManager manager) {
+  NetworkManager provide(FcmManager manager) {
     return manager;
   }
 }

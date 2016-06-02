@@ -2,7 +2,7 @@ package group50.coupletones.di;
 
 import dagger.Module;
 import dagger.Provides;
-import group50.coupletones.network.NetworkManager;
+import group50.coupletones.network.fcm.NetworkManager;
 
 import javax.inject.Singleton;
 

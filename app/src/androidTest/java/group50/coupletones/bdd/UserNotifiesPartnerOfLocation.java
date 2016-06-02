@@ -11,9 +11,9 @@ import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.MainActivity;
+import group50.coupletones.controller.tab.favoritelocations.map.LocationNotificationMediator;
 import group50.coupletones.controller.tab.favoritelocations.map.MapProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
-import group50.coupletones.controller.tab.favoritelocations.map.ProximityNetworkHandler;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.di.DaggerMockAppComponent;
 import group50.coupletones.di.MockProximityModule;
@@ -63,8 +63,8 @@ public class UserNotifiesPartnerOfLocation {
 
     // Create an instance of MapProxManager and register a network handler
     proximityManager = new MapProximityManager(app);
-    ProximityNetworkHandler proximityNetworkHandler = new ProximityNetworkHandler(app, CoupleTones.global().network());
-    proximityManager.getEnterSubject().subscribe(proximityNetworkHandler::onEnterLocation);
+    LocationNotificationMediator locationNotificationMediator = new LocationNotificationMediator(app, CoupleTones.global().network());
+    proximityManager.getEnterSubject().subscribe(locationNotificationMediator::onEnterLocation);
 
     //List of the user's favorite locations.
     List<FavoriteLocation> list = new LinkedList<>();

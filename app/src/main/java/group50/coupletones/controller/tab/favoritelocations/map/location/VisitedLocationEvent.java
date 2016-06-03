@@ -79,7 +79,7 @@ public class VisitedLocationEvent {
 
   @Exclude
   public boolean hasDeparted() {
-    return getTimeLeft().after(getTimeVisited());
+    return getLeaveTime() != -1;
   }
 
   /**
@@ -102,8 +102,10 @@ public class VisitedLocationEvent {
   }
 
   public long getLeaveTime() {
-    if (timeLeft != null) return timeLeft.getTime();
-    else return -1;
+    if (timeLeft != null)
+      return timeLeft.getTime();
+    else
+      return -1;
   }
 
   public void setLeaveTime(long timeLeft) {

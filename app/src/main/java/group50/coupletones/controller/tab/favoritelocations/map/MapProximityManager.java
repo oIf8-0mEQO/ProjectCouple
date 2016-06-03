@@ -15,8 +15,9 @@ import rx.subjects.PublishSubject;
 
 import javax.inject.Inject;
 import java.util.Date;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * The map proximity manager
@@ -32,7 +33,7 @@ public class MapProximityManager implements ProximityManager, Taggable {
   private final PublishSubject<VisitedLocationEvent> exitSubject = PublishSubject.create();
   private CoupleTones app;
   private TimeUtility timeUtility;
-  private List<FavoriteLocation> currentlyIn;
+  private Set<FavoriteLocation> currentlyIn;
 
   /**
    * Map Proximity Manager
@@ -43,7 +44,7 @@ public class MapProximityManager implements ProximityManager, Taggable {
   public MapProximityManager(CoupleTones app, TimeUtility timeUtility) {
     this.app = app;
     this.timeUtility = timeUtility;
-    currentlyIn = new LinkedList<>();
+    currentlyIn = new HashSet<>();
   }
 
   /**
@@ -88,13 +89,15 @@ public class MapProximityManager implements ProximityManager, Taggable {
   public void onLeaveLocation(FavoriteLocation location) {
     Log.d(getTag(), "Departing location: " + location.getName() + " cooldown = " + location.isOnCooldown());
     currentlyIn.remove(location);
-    VisitedLocationEvent loc = null;
+
+    VisitedLocationEvent lastVisitedLocation = null;
     for (VisitedLocationEvent i : app.getLocalUser().getVisitedLocations()) {
       if (location.equals(i.getLocation()) && i.getLeaveTime() == -1)
-        loc = i;
+        lastVisitedLocation = i;
     }
-    if (loc != null) {
-      exitSubject.onNext(loc);
+
+    if (lastVisitedLocation != null) {
+      exitSubject.onNext(lastVisitedLocation);
     } else {
       Log.e(getTag(), "Invalid visited location! (May have been removed)");
     }
@@ -115,10 +118,8 @@ public class MapProximityManager implements ProximityManager, Taggable {
         // Check distance
         if (distanceInMiles(loc.getPosition(), new LatLng(location.getLatitude(), location.getLongitude())) < 0.1) {
           onEnterLocation(loc);
-        }
-      }
-      for (FavoriteLocation loc : currentlyIn) {
-        if (distanceInMiles(new LatLng(location.getLatitude(), location.getLongitude()), loc.getPosition()) > .1) {
+        } else if (currentlyIn.contains(loc)) {
+          // We aren't within the location's radius, but we're currently in the location! Must have left!
           onLeaveLocation(loc);
         }
       }

@@ -123,11 +123,6 @@ public class ConcreteLocalUser implements LocalUser {
   }
 
   @Override
-  public void requestPartner(User requester) {
-    requestBehavior.requestPartner(requester);
-  }
-
-  @Override
   public void handlePartnerRequest(String partnerId, boolean accept) {
     partnerBehavior.handlePartnerRequest(partnerId, accept);
   }

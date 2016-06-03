@@ -34,7 +34,7 @@ public class LocationNotificationMediator implements Taggable {
    * @param location - Visited Location
    */
   public void onEnterLocation(VisitedLocationEvent location) {
-    if (app.getLocalUser().getPartner() != null) {
+    if (app.getLocalUser() != null && app.getLocalUser().getPartner() != null) {
       // Adds the location as a visited location
       app.getLocalUser().arriveVisitedLocation(location);
     } else {
@@ -43,7 +43,7 @@ public class LocationNotificationMediator implements Taggable {
   }
 
   public void onLeaveLocation(VisitedLocationEvent location) {
-    if (app.getLocalUser().getPartner() != null) {
+    if (app.getLocalUser() != null && app.getLocalUser().getPartner() != null) {
       // Adds the location as a visited location
       app.getLocalUser().leaveVisitedLocation(location);
     } else {

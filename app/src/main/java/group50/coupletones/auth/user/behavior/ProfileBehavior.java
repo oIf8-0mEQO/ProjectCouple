@@ -355,14 +355,6 @@ public class ProfileBehavior implements PropertiesProvider {
     }
   }
 
-  public void updateCooldownOfFavorite(FavoriteLocation location) {
-    location.setTimeLastVisited(System.currentTimeMillis());
-
-    Property<Object> prop = properties.property("favoriteLocations");
-    sync.update(prop);
-    prop.update();
-  }
-
   @Override
   public Properties getProperties() {
     return properties;

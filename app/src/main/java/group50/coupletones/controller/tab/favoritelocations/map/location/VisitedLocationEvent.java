@@ -78,9 +78,8 @@ public class VisitedLocationEvent {
   }
 
   @Exclude
-  public boolean getArrival()
-  {
-    return (timeLeft == null);
+  public boolean hasDeparted() {
+    return getTimeLeft().after(getTimeVisited());
   }
 
   /**

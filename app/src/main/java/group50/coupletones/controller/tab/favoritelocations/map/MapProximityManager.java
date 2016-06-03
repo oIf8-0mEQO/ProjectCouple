@@ -9,6 +9,7 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.util.Taggable;
+import group50.coupletones.util.TimeUtility;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
@@ -19,6 +20,7 @@ import java.util.List;
 
 /**
  * The map proximity manager
+ *
  * @author Joseph Cox
  * @since 5/1/2016
  */
@@ -28,7 +30,8 @@ public class MapProximityManager implements ProximityManager, Taggable {
   private static final double conversion = (1.0) / (1609.0);
   private final PublishSubject<VisitedLocationEvent> enterSubject = PublishSubject.create();
   private final PublishSubject<VisitedLocationEvent> exitSubject = PublishSubject.create();
-  public CoupleTones app;
+  private CoupleTones app;
+  private TimeUtility timeUtility;
   private List<FavoriteLocation> currentlyIn;
 
   /**
@@ -37,8 +40,9 @@ public class MapProximityManager implements ProximityManager, Taggable {
    * @param app - CoupleTones app
    */
   @Inject
-  public MapProximityManager(CoupleTones app) {
+  public MapProximityManager(CoupleTones app, TimeUtility timeUtility) {
     this.app = app;
+    this.timeUtility = timeUtility;
     currentlyIn = new LinkedList<>();
   }
 
@@ -61,29 +65,31 @@ public class MapProximityManager implements ProximityManager, Taggable {
    * Called when a user enters a favorite location.
    * Notifies all observers.
    *
-   * @param favoriteLocation The favorite location entered
+   * @param location The favorite location entered
    */
-  public void onEnterLocation(FavoriteLocation favoriteLocation) {
-    Log.d(getTag(), "Entering location: " + favoriteLocation.getName() + " cooldown = " + favoriteLocation.isOnCooldown());
-    if (!favoriteLocation.isOnCooldown() && !currentlyIn.contains(favoriteLocation)) {
-      VisitedLocationEvent newLoc = new VisitedLocationEvent(favoriteLocation, new Date());
+  public void onEnterLocation(FavoriteLocation location) {
+    Log.d(getTag(), "Entering location: " + location.getName() + " cooldown = " + location.isOnCooldown());
+    if (!location.isOnCooldown() && !currentlyIn.contains(location)) {
+      VisitedLocationEvent newLoc = new VisitedLocationEvent(location, new Date());
 
-      // Update cooldown
+      // Update cool down
       List<FavoriteLocation> favoriteLocations = app.getLocalUser().getFavoriteLocations();
-      int i = favoriteLocations.indexOf(favoriteLocation);
-      if (i >= 0 && i < favoriteLocations.size())
-        app.getLocalUser().setFavoriteLocation(i, favoriteLocation);
+      int i = favoriteLocations.indexOf(location);
+      if (i >= 0 && i < favoriteLocations.size()) {
+        location.setTime(timeUtility.systemTime());
+        app.getLocalUser().setFavoriteLocation(i, location);
+      }
 
       enterSubject.onNext(newLoc);
-      currentlyIn.add(favoriteLocation);
+      currentlyIn.add(location);
     }
   }
 
   public void onLeaveLocation(FavoriteLocation location) {
+    Log.d(getTag(), "Departing location: " + location.getName() + " cooldown = " + location.isOnCooldown());
     currentlyIn.remove(location);
     VisitedLocationEvent loc = new VisitedLocationEvent();
-    for (VisitedLocationEvent i : app.getLocalUser().getVisitedLocations())
-    {
+    for (VisitedLocationEvent i : app.getLocalUser().getVisitedLocations()) {
       if (location.equals(i.getLocation()) && i.getLeaveTime() == -1) loc = i;
     }
     exitSubject.onNext(loc);
@@ -99,7 +105,8 @@ public class MapProximityManager implements ProximityManager, Taggable {
     Log.d(getTag(), "Location changed: " + location);
     // Make sure the user is logged in
     if (app.isLoggedIn()) {
-      for (FavoriteLocation loc : app.getLocalUser().getFavoriteLocations()) {
+      List<FavoriteLocation> favoriteLocations = app.getLocalUser().getFavoriteLocations();
+      for (FavoriteLocation loc : favoriteLocations) {
         // Check distance
         if (distanceInMiles(loc.getPosition(), new LatLng(location.getLatitude(), location.getLongitude())) < 0.1) {
           onEnterLocation(loc);

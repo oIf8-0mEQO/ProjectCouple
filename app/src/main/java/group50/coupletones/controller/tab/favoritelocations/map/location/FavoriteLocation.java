@@ -77,6 +77,10 @@ public class FavoriteLocation implements Location {
     return timeLastVisited;
   }
 
+  public void setTime(long timeLastVisited) {
+    this.timeLastVisited = timeLastVisited;
+  }
+
   @Exclude
   public VibeTone getVibetone() {
     return VibeTone.getTone(vibeToneId);
@@ -98,10 +102,6 @@ public class FavoriteLocation implements Location {
     location.setLongitude(value);
   }
 
-  public void setTimeLastVisited(long timeLastVisited) {
-    this.timeLastVisited = timeLastVisited;
-  }
-
   public int getVibeToneId() {
     return vibeToneId;
   }
@@ -115,7 +115,7 @@ public class FavoriteLocation implements Location {
    */
   @Exclude
   public boolean isOnCooldown() {
-    return (timeUtility.systemTime() - timeLastVisited < COOL_DOWN_TIME);
+    return timeUtility.systemTime() - timeLastVisited < COOL_DOWN_TIME;
   }
 
   /**

@@ -85,13 +85,6 @@ public interface LocalUser extends User {
   void removeFavoriteLocation(FavoriteLocation location);
 
   /**
-   * Requests to partner with this user.
-   *
-   * @param requester The user sending the request
-   */
-  void requestPartner(User requester);
-
-  /**
    * Handles the partner request, either accepting or rejecting it
    *
    * @param partnerId The partner ID

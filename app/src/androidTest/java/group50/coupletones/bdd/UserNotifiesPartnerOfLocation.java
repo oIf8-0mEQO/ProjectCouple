@@ -32,6 +32,7 @@ import static org.mockito.Mockito.*;
 
 /**
  * BDD style test for user notifies partner of location
+ *
  * @author Henry Mao
  * @since 5/8/16
  */
@@ -60,7 +61,7 @@ public class UserNotifiesPartnerOfLocation {
     app = CoupleTones.global().app();
 
     // Create an instance of MapProxManager and register a network handler
-    proximityManager = new MapProximityManager(app);
+    proximityManager = new MapProximityManager(app, CoupleTones.global().timeUtility());
     LocationNotificationMediator locationNotificationMediator = new LocationNotificationMediator();
     proximityManager.getEnterSubject().subscribe(locationNotificationMediator::onEnterLocation);
 

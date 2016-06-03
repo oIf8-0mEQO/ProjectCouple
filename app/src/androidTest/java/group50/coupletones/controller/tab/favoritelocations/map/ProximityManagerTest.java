@@ -60,7 +60,7 @@ public class ProximityManagerTest {
     when(CoupleTones.global().app().getLocalUser()).thenReturn(localUser);
     when(CoupleTones.global().app().isLoggedIn()).thenReturn(true);
 
-    proximity = new MapProximityManager(CoupleTones.global().app());
+    proximity = new MapProximityManager(CoupleTones.global().app(), CoupleTones.global().timeUtility());
     mockObserver = mock(ProximityObserver.class);
     proximity.getEnterSubject().subscribe(mockObserver::onLocationChange);
   }

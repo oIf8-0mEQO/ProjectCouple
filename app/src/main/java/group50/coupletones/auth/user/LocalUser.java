@@ -29,6 +29,10 @@ public interface LocalUser extends User {
   void addVisitedLocation(VisitedLocationEvent visitedLocation);
 
   /**
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 7e0a84268ab31ca36604c2a7632f462a1ed6cb50
    * @return Global notifications setting
    */
   boolean getGlobalNotificationsSetting();

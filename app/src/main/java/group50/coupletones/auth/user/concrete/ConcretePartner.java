@@ -39,7 +39,7 @@ public class ConcretePartner implements Partner, Taggable {
    */
   public ConcretePartner(Sync sync) {
     properties = new ConcreteProperties();
-    profile = new ProfileBehavior(properties, sync);
+    profile = new ProfileBehavior(properties, sync, this);
     request = new PartnerRequestBehavior(properties, sync);
     properties.property("partnerId").bind(this);
     sync.watchAll(properties);

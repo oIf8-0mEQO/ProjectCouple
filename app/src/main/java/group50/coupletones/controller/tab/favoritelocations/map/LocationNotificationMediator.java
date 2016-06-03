@@ -17,9 +17,6 @@ import javax.inject.Inject;
  */
 public class LocationNotificationMediator implements Taggable {
 
-  private static final String NOTIFY_TITLE = "%1$s visited %2$s";
-  private static final String NOTIFY_ICON = "icon";
-
   @Inject
   public CoupleTones app;
   @Inject
@@ -42,21 +39,6 @@ public class LocationNotificationMediator implements Taggable {
     if (app.getLocalUser().getPartner() != null) {
       // Adds the location as a visited location
       app.getLocalUser().addVisitedLocation(location);
-
-      // Send notification to partner about location visit
-      app.getLocalUser().getPartner()
-        .filter(partner -> partner != null)
-        .subscribe(partner -> {
-          network
-            .getOutgoingStream()
-            .onNext(
-              new FcmMessage(MessageType.LOCATION_NOTIFICATION.value)
-                .setTitle(String.format(NOTIFY_TITLE, app.getLocalUser().getName(), location.getName()))
-                .setBody(formatUtility.formatDate(location.getTimeVisited()))
-                .setIcon(NOTIFY_ICON)
-                .setTo(partner.getFcmToken())
-            );
-        });
     } else {
       Log.e(getTag(), "Attempt to send location notification to null partner.");
     }

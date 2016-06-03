@@ -70,7 +70,6 @@ public class MapProximityManager implements ProximityManager, Taggable {
 
       // Update cooldown
       List<FavoriteLocation> favoriteLocations = app.getLocalUser().getFavoriteLocations();
-      app.getLocalUser().addVisitedLocation(newLoc);
       int i = favoriteLocations.indexOf(favoriteLocation);
       if (i >= 0 && i < favoriteLocations.size())
         app.getLocalUser().setFavoriteLocation(i, favoriteLocation);

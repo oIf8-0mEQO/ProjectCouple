@@ -116,4 +116,6 @@ public interface GlobalComponent {
   void inject(ProfileBehavior behavior);
 
   void inject(ListAdapterPartnerVisited list);
+
+  void inject(LocationDragMediator mediator);
 }

@@ -313,6 +313,32 @@ public class ProfileBehavior implements PropertiesProvider {
     }
   }
 
+  public void userLeaveLocation(VisitedLocationEvent event)
+  {
+    event.setLeaveTime(System.currentTimeMillis());
+
+    Property<Object> prop = properties.property("visitedLocations");
+    sync.update(prop);
+    prop.update();
+
+    if (user instanceof LocalUser) {
+      ((LocalUser) user).getPartner()
+        .filter(partner -> partner != null)
+        .subscribe(partner -> {
+          network
+            .getOutgoingStream()
+            .onNext(
+              new FcmMessage(MessageType.LOCATION_DEPARTURE.value)
+                .setTitle(String.format(NOTIFY_TITLE, user.getName(), event.getName()))
+                .setBody(formatUtility.formatDate(event.getTimeLeft()))
+                .setIcon(NOTIFY_ICON)
+                .setString("locationIndex", user.getFavoriteLocations().indexOf(event.getLocation()))
+                .setTo(partner.getFcmToken())
+            );
+        });
+    }
+  }
+
   /**
    * Removes a favorite location
    *
@@ -333,15 +359,6 @@ public class ProfileBehavior implements PropertiesProvider {
     location.setTimeLastVisited(System.currentTimeMillis());
 
     Property<Object> prop = properties.property("favoriteLocations");
-    sync.update(prop);
-    prop.update();
-  }
-
-  public void userLeaveLocation(VisitedLocationEvent event)
-  {
-    event.setLeaveTime(System.currentTimeMillis());
-
-    Property<Object> prop = properties.property("visitedLocations");
     sync.update(prop);
     prop.update();
   }

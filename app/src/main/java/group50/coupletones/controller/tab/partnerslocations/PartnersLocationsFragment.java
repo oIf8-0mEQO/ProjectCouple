@@ -50,7 +50,7 @@ public class PartnersLocationsFragment extends TabFragment<Object> {
     CoupleTones app = CoupleTones.global().app();
 
     View v = inflater.inflate(R.layout.fragment_partners_locations, container, false);
-    partnersList = (RecyclerView) v.findViewById(R.id.partners_location_list);
+    partnersList = (RecyclerView) v.findViewById(R.id.vibetone_recycler_view);
     partnersList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
     adapter = new ListAdapterPartnerVisited(

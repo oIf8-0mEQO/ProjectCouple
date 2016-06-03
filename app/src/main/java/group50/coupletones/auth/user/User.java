@@ -14,6 +14,9 @@ import java.util.List;
 
 /**
  * Represents a user
+ *
+ * @author Ranlin Huang
+ * @since 5/23/16
  */
 public interface User extends PropertiesProvider {
   /**

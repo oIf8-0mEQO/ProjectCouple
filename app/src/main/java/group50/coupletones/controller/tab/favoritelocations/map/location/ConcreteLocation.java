@@ -8,7 +8,7 @@ import group50.coupletones.CoupleTones;
 import javax.inject.Inject;
 
 /**
- * @Author Joseph
+ * @Author Joseph Cox
  * @Since 5/21/16
  */
 public class ConcreteLocation implements Location {
@@ -33,6 +33,7 @@ public class ConcreteLocation implements Location {
     this(null, new LatLng(0, 0));
   }
 
+  //Constructor
   public ConcreteLocation(String name, LatLng pos) {
     this.name = name;
     this.latitude = pos.latitude;
@@ -41,6 +42,7 @@ public class ConcreteLocation implements Location {
     CoupleTones.global().inject(this);
   }
 
+  //Methods accessing fields of ConcreteLocation
   @Exclude
   public LatLng getPosition() {
     return new LatLng(latitude, longitude);
@@ -77,6 +79,11 @@ public class ConcreteLocation implements Location {
   public Address getAddress() {
     return addressProvider.getAddressFromPosition(getPosition());
   }
+
+  /**
+   * @param o ConcreteLocation to be compared
+   * @return boolean value checking if equal
+   */
   @Override
   public boolean equals(Object o) {
     if (!(o instanceof ConcreteLocation)) {
@@ -96,6 +103,10 @@ public class ConcreteLocation implements Location {
     return true;
   }
 
+  /**
+   * Generate hashCode for the location object
+   * @return Hash code.
+   */
   @Override
   public int hashCode() {
     int hashCode = 1;

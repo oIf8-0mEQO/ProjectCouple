@@ -49,10 +49,10 @@
 
             <!-- Recycler View for the Page -->
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/partners_location_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="6dp"/>
+                    android:id="@+id/vibetone_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="6dp"/>
 
         </LinearLayout>
 

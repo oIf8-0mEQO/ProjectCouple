@@ -1,22 +1,17 @@
 package group50.coupletones.controller.tab.partnerslocations;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.Partner;
 import group50.coupletones.controller.MainActivity;
-import group50.coupletones.controller.tab.favoritelocations.EditLocationActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
@@ -73,6 +68,7 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
     this.locations = locations != null ? locations : Collections.emptyList();
     notifyDataSetChanged();
   }
+
   /**
    * List view holder for partner's favorite locations
    *
@@ -98,12 +94,12 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
     holder.name.setText(location.getName());
     holder.address.setText(location.getAddress() != null ? location.getAddress().getLocality() : "");
     holder.icon.setImageResource(R.drawable.target_icon);
-    //TODO: Add
+    holder.vibeTone.setText(location.getVibetone().getName());
 
     // Clicking the Edit Button takes user to the List of VibeTones to choose from
     ImageButton editButton;
     editButton = (ImageButton) holder.itemView.findViewById(R.id.edit_location_icon);
-    editButton.setOnClickListener(view -> ((MainActivity) activity).setFragment(new VibeTonesFragment()));
+    editButton.setOnClickListener(view -> ((MainActivity) activity).setFragment(new VibeTonesFragment(position)));
 
   }
 
@@ -144,7 +140,7 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
       cv = (CardView) itemView.findViewById(R.id.cv);
       name = (TextView) itemView.findViewById(R.id.list_item_name);
       address = (TextView) itemView.findViewById(R.id.list_item_address);
-      icon = (ImageView) itemView.findViewById(R.id.list_item_icon);
+      icon = (ImageView) itemView.findViewById(R.id.list_vibetone_icon);
       vibeTone = (TextView) itemView.findViewById(R.id.list_item_vibetone);
       container = itemView.findViewById(R.id.list_item);
     }

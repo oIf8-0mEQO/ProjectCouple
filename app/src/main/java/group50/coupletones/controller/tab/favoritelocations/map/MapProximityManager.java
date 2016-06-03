@@ -9,7 +9,6 @@ import group50.coupletones.CoupleTones;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.util.Taggable;
-import group50.coupletones.util.properties.Property;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
@@ -20,7 +19,6 @@ import java.util.List;
 
 /**
  * The map proximity manager
- *
  * @author Joseph Cox
  * @since 5/1/2016
  */
@@ -35,6 +33,7 @@ public class MapProximityManager implements ProximityManager, Taggable {
 
   /**
    * Map Proximity Manager
+   *
    * @param app - CoupleTones app
    */
   @Inject
@@ -50,13 +49,11 @@ public class MapProximityManager implements ProximityManager, Taggable {
     return (conversion * SphericalUtil.computeDistanceBetween(location1, location2));
   }
 
-  public Observable<VisitedLocationEvent> getEnterSubject()
-  {
+  public Observable<VisitedLocationEvent> getEnterSubject() {
     return enterSubject;
   }
 
-  public Observable<VisitedLocationEvent> getExitSubject()
-  {
+  public Observable<VisitedLocationEvent> getExitSubject() {
     return exitSubject;
   }
 
@@ -69,22 +66,30 @@ public class MapProximityManager implements ProximityManager, Taggable {
   public void onEnterLocation(FavoriteLocation favoriteLocation) {
     Log.d(getTag(), "Entering location: " + favoriteLocation.getName() + " cooldown = " + favoriteLocation.isOnCooldown());
     if (!favoriteLocation.isOnCooldown() && !currentlyIn.contains(favoriteLocation)) {
-      enterSubject.onNext(new VisitedLocationEvent(favoriteLocation, new Date()));
-      //TODO: Make this a member function? Update the server?
-      favoriteLocation.setTimeLastVisited(System.currentTimeMillis());
+      VisitedLocationEvent newLoc = new VisitedLocationEvent(favoriteLocation, new Date());
+
+      // Update cooldown
+      List<FavoriteLocation> favoriteLocations = app.getLocalUser().getFavoriteLocations();
+      app.getLocalUser().addVisitedLocation(newLoc);
+      int i = favoriteLocations.indexOf(favoriteLocation);
+      if (i >= 0 && i < favoriteLocations.size())
+        app.getLocalUser().setFavoriteLocation(i, favoriteLocation);
+
+      enterSubject.onNext(newLoc);
       currentlyIn.add(favoriteLocation);
     }
   }
 
-  public void onLeaveLocation(FavoriteLocation location)
-  {
+  public void onLeaveLocation(FavoriteLocation location) {
     currentlyIn.remove(location);
     VisitedLocationEvent newLoc = new VisitedLocationEvent(location, new Date(location.getTime()), new Date());
+    app.getLocalUser().addVisitedLocation(newLoc);
     exitSubject.onNext(newLoc);
   }
 
   /**
    * Handles the location change event
+   *
    * @param location - The changed location
    */
   @Override
@@ -98,10 +103,8 @@ public class MapProximityManager implements ProximityManager, Taggable {
           onEnterLocation(loc);
         }
       }
-      for (FavoriteLocation loc : currentlyIn)
-      {
-        if (distanceInMiles(new LatLng(location.getLatitude(), location.getLongitude()), loc.getPosition()) > .1)
-        {
+      for (FavoriteLocation loc : currentlyIn) {
+        if (distanceInMiles(new LatLng(location.getLatitude(), location.getLongitude()), loc.getPosition()) > .1) {
           onLeaveLocation(loc);
         }
       }

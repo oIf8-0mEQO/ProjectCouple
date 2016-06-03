@@ -19,6 +19,7 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Concret
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.controller.tab.partnerslocations.ListAdapterPartnerVisited;
+import group50.coupletones.controller.tab.partnerslocations.ListAdapterVibeTones;
 import group50.coupletones.controller.tab.settings.SettingsFragment;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.NetworkModule;
@@ -29,6 +30,7 @@ import group50.coupletones.network.fcm.MessagingService;
 import group50.coupletones.network.fcm.NetworkManager;
 import group50.coupletones.util.FormatUtility;
 import group50.coupletones.util.TimeUtility;
+import group50.coupletones.util.sound.VibeTone;
 
 import javax.inject.Singleton;
 
@@ -62,6 +64,8 @@ public interface GlobalComponent {
   TimeUtility timeUtility();
 
   FormatUtility formatUtility();
+
+  void inject(ListAdapterVibeTones obj);
 
   void inject(EditLocationActivity obj);
 
@@ -100,6 +104,8 @@ public interface GlobalComponent {
   void inject(SettingsFragment fragment);
 
   void inject(ConcreteLocation location);
+
+  void inject(VibeTone vibeTone);
 
   void inject(ProfileBehavior behavior);
 

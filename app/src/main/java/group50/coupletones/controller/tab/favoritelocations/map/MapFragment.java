@@ -24,6 +24,7 @@ import static android.location.LocationManager.GPS_PROVIDER;
 
 /**
  * Map Fragment Class
+ * @author Joseph Cox
  */
 public class MapFragment extends SupportMapFragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks {
 

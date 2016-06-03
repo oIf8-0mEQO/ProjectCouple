@@ -9,7 +9,6 @@ import group50.coupletones.mocker.ConcreteUserTestUtil;
 import group50.coupletones.mocker.UserTestUtil;
 import group50.coupletones.util.properties.Property;
 import group50.coupletones.util.sound.VibeTone;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -19,11 +18,7 @@ import java.util.List;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static org.mockito.Mockito.doAnswer;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
 
 /**
  * @author Joseph
@@ -35,7 +30,7 @@ public class UserViewsPartnerFavoriteLocations {
   public ActivityTestRule<MainActivity> testRule = new ActivityTestRule(MainActivity.class) {
     @Override
     protected void beforeActivityLaunched() {
-      FavoriteLocation partnerFavorite = new FavoriteLocation("name", new LatLng(10, 10), 0, VibeTone.getTone());
+      FavoriteLocation partnerFavorite = new FavoriteLocation("name", new LatLng(10, 10), 0, VibeTone.getDefaultTone().getIndex());
       List<FavoriteLocation> locationList = new LinkedList<>();
       locationList.add(partnerFavorite);
 
@@ -69,5 +64,4 @@ public class UserViewsPartnerFavoriteLocations {
     whenUserClicksPartnerFavoriteLocationList();
     thenUserSeesPartnerFavoriteLocations();
   }
-
 }

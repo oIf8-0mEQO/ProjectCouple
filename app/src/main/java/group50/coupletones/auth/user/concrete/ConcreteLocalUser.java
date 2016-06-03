@@ -33,12 +33,15 @@ public class ConcreteLocalUser implements LocalUser {
 
   public ConcreteLocalUser(Sync sync) {
     properties = new ConcreteProperties();
-    profile = new ProfileBehavior(properties, sync);
+    profile = new ProfileBehavior(properties, sync, this);
     requestBehavior = new PartnerRequestBehavior(properties, sync);
     partnerBehavior = new PartnerBehavior(properties, this, sync, requestBehavior);
     sync.watchAll(properties);
   }
 
+  /**
+   * Implements LocalUser
+   */
   @Override
   public Observable<Partner> getPartner() {
     return partnerBehavior.getPartner();
@@ -67,6 +70,36 @@ public class ConcreteLocalUser implements LocalUser {
   @Override
   public List<FavoriteLocation> getFavoriteLocations() {
     return profile.getFavoriteLocations();
+  }
+
+  @Override
+  public boolean getGlobalNotificationsSetting() {
+    return profile.getGlobalNotificationsSetting();
+  }
+
+  @Override
+  public boolean getTonesSetting() {
+    return profile.getTonesSetting();
+  }
+
+  @Override
+  public boolean getVibrationSetting() {
+    return profile.getVibrationSetting();
+  }
+
+  @Override
+  public boolean setGlobalNotificationsSetting(boolean setting) {
+    return profile.setGlobalNotificationsSetting(setting);
+  }
+
+  @Override
+  public boolean setTonesSetting(boolean setting) {
+    return profile.setTonesSetting(setting);
+  }
+
+  @Override
+  public boolean setVibrationSetting(boolean setting) {
+    return profile.setVibrationSetting(setting);
   }
 
   @Override

@@ -57,10 +57,11 @@ public class SystemClearsLocationHistory {
     // Simulate a time the favorite location was visited.
     Calendar june1ElevenPM = Calendar.getInstance();
     june1ElevenPM.set(2016, Calendar.JUNE, 1, 11 + 12, 0, 0);
-    FavoriteLocation partnerFavorite = new FavoriteLocation("name",
+    FavoriteLocation partnerFavorite = new FavoriteLocation(
+      "name",
       new LatLng(10, 10),
       0,
-      VibeTone.getTone()
+      VibeTone.getDefaultTone().getIndex()
     );
 
     timeUtility = CoupleTones.global().timeUtility();

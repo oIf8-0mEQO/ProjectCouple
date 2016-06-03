@@ -29,6 +29,7 @@ public class PartnerBehavior implements PropertiesProvider {
   private final Sync sync;
   @Inject
   public UserFactory userFactory;
+
   /**
    * User's partner cache
    */

@@ -4,73 +4,57 @@ import android.location.Address;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
-
-import java.sql.Time;
-
-import javax.inject.Inject;
-
 import group50.coupletones.CoupleTones;
 import group50.coupletones.util.TimeUtility;
 import group50.coupletones.util.sound.VibeTone;
 
+import javax.inject.Inject;
+
 /**
- * @author Joseph
+ * @author Joseph Cox
  * @since 5/21/16
  */
 //TODO: Clean up all the constructors
 @IgnoreExtraProperties
 public class FavoriteLocation implements Location {
+  /**
+   * Time it takes to cooldown
+   */
   private static int COOL_DOWN_TIME = 600000;
+
   @Inject
   @Exclude
   public TimeUtility timeUtility;
+
+  /**
+   * Reference to the concrete location object
+   */
   private ConcreteLocation location;
-  private VibeTone tone;
+
+  /**
+   * ID of the vibeToneId
+   */
+  private int vibeToneId;
+
+  /**
+   * The last time the user visited this location
+   */
   private long timeLastVisited;
 
   //Should only be used when loading.
   public FavoriteLocation() {
-    this(null, new LatLng(0, 0), 0, null);
-    CoupleTones.global().inject(this);
+    this(null, new LatLng(0, 0), 0, 0);
 
   }
 
-  public FavoriteLocation(String name, LatLng position, long timeLastVisited, VibeTone tone) {
+  public FavoriteLocation(String name, LatLng position, long timeLastVisited, int vibeTone) {
     this.location = new ConcreteLocation(name, position);
     this.timeLastVisited = timeLastVisited;
-    this.tone = tone;
-
+    this.vibeToneId = vibeTone;
     CoupleTones.global().inject(this);
   }
 
-  /**
-   * Recreates the previous location with a different name.
-   */
-  public FavoriteLocation(FavoriteLocation previous, String name) {
-    this(name, previous.location.getPosition(), previous.timeLastVisited, previous.getTone());
-  }
-
-  /**
-   * Recreates the previous location with a different position.
-   */
-  public FavoriteLocation(FavoriteLocation previous, LatLng position) {
-    this(previous.location.getName(), position, previous.timeLastVisited, previous.tone);
-  }
-
-  /**
-   * Recreates the previous location with a different time.
-   */
-  public FavoriteLocation(FavoriteLocation previous, long timeLastVisited) {
-    this(previous.getName(), previous.getPosition(), timeLastVisited, previous.tone);
-  }
-
-  /**
-   * Recreates the previous location with a different tone.
-   */
-  public FavoriteLocation(FavoriteLocation previous, VibeTone tone) {
-    this(previous.getName(), previous.getPosition(), previous.timeLastVisited, tone);
-  }
-
+  //Methods accessing and modifying fields of FavoriteLocation
   public String getName() {
     return location.getName();
   }
@@ -94,8 +78,8 @@ public class FavoriteLocation implements Location {
   }
 
   @Exclude
-  public VibeTone getTone() {
-    return tone;
+  public VibeTone getVibetone() {
+    return VibeTone.getTone(vibeToneId);
   }
 
   public double getLat() {
@@ -118,6 +102,14 @@ public class FavoriteLocation implements Location {
     this.timeLastVisited = timeLastVisited;
   }
 
+  public int getVibeToneId() {
+    return vibeToneId;
+  }
+
+  public void setVibeToneId(int vibeTone) {
+    this.vibeToneId = vibeTone;
+  }
+
   /**
    * @return true if the location is on cooldown, otherwise false.
    */
@@ -126,6 +118,10 @@ public class FavoriteLocation implements Location {
     return (timeUtility.systemTime() - timeLastVisited < COOL_DOWN_TIME);
   }
 
+  /**
+   * @param o FavoriteLocation to be compared
+   * @return boolean value checking if equal
+   */
   @Override
   public boolean equals(Object o) {
     if (!(o instanceof FavoriteLocation)) {
@@ -140,18 +136,22 @@ public class FavoriteLocation implements Location {
     if (timeLastVisited != other.timeLastVisited) {
       return false;
     }
-    if (tone != null && !tone.equals(other.tone)) {
+    if (vibeToneId != other.vibeToneId) {
       return false;
     }
     return true;
   }
 
+  /**
+   * Generate hashCode for the location object
+   * @return Hash code.
+   */
   @Override
   public int hashCode() {
     int hashCode = 1;
     hashCode = 31 * hashCode + location.hashCode();
     hashCode = 31 * hashCode + Long.valueOf(timeLastVisited).hashCode();
-    hashCode = 31 * hashCode + (tone != null ? tone.hashCode() : 0);
+    hashCode = 31 * hashCode + Integer.valueOf(vibeToneId).hashCode();
     return hashCode;
   }
 }

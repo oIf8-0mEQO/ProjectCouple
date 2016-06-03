@@ -8,7 +8,7 @@ import group50.coupletones.util.sound.VibeTone;
 import java.util.Date;
 
 /**
- * @Author Joseph
+ * @Author Joseph Cox
  * @Since 5/21/16
  */
 //TODO: Add properties
@@ -23,7 +23,7 @@ public class VisitedLocationEvent {
     location = new FavoriteLocation();
   }
 
-  public VisitedLocationEvent(String name, LatLng position, Date timeEnter, Date timeLeft, VibeTone tone) {
+  public VisitedLocationEvent(String name, LatLng position, Date timeEnter, Date timeLeft, int tone) {
     location = new FavoriteLocation(name, position, 0, tone);
     this.timeEnter = timeEnter;
     this.timeLeft = timeLeft;
@@ -46,6 +46,7 @@ public class VisitedLocationEvent {
     this.timeLeft = timeLeft;
   }
 
+  //Getters and setters.
   @Exclude
   public String getName() {
     return location.getName();
@@ -63,7 +64,7 @@ public class VisitedLocationEvent {
 
   @Exclude
   public VibeTone getVibeTone() {
-    return location.getTone();
+    return location.getVibetone();
   }
 
   @Exclude
@@ -74,6 +75,12 @@ public class VisitedLocationEvent {
   @Exclude
   public Date getTimeLeft() {
     return timeLeft;
+  }
+
+  @Exclude
+  public boolean getArrival()
+  {
+    return (timeLeft == null);
   }
 
   /**
@@ -104,6 +111,10 @@ public class VisitedLocationEvent {
     this.timeLeft = new Date(timeLeft);
   }
 
+  /**
+   * @param object VisitedLocationEvent to be compared
+   * @return boolean value checking if equal
+   */
   @Override
   public boolean equals(Object object) {
     try {

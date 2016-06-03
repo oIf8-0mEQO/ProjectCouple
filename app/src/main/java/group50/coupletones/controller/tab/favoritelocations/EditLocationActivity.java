@@ -27,7 +27,6 @@ public class EditLocationActivity extends AppCompatActivity {
   public FormatUtility formatUtility;
 
   private TextView textLocationName;
-  private TextView textAddress;
   private TextView textSaveChange;
 
   @Override
@@ -59,12 +58,10 @@ public class EditLocationActivity extends AppCompatActivity {
 
     // Setting custom font
     textLocationName = (TextView) findViewById(R.id.location_name);
-    textAddress = (TextView) findViewById(R.id.location_address);
     textSaveChange = (TextView) findViewById(R.id.save_changes_button);
 
     Typeface pierSans = Typeface.createFromAsset(getAssets(), getString(R.string.pier_sans));
     textLocationName.setTypeface(pierSans);
-    textAddress.setTypeface(pierSans);
     textSaveChange.setTypeface(pierSans);
   }
 
@@ -75,7 +72,6 @@ public class EditLocationActivity extends AppCompatActivity {
   private void bindData(FavoriteLocation location) {
     textLocationName.setText(location.getName());
     //TODO: Address won't be saved!
-    textAddress.setText(formatUtility.formatAddress(location.getAddress()));
   }
 
   /**

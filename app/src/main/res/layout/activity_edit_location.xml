@@ -82,19 +82,6 @@
             android:layout_below="@+id/location_icon"
             android:layout_centerHorizontal="true" />
 
-        <!-- Text Field for Location Address -->
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="textPersonName"
-            android:hint="@string/location_address"
-            android:ems="12"
-            android:id="@+id/location_address"
-            android:textColor="@color/subtitleColor"
-            android:layout_below="@+id/location_name"
-            android:layout_marginTop="25dp"
-            android:layout_alignStart="@+id/location_name" />
-
         <!-- Save Changes Button -->
         <Button
             android:layout_width="wrap_content"
@@ -107,11 +94,11 @@
             android:textSize="16dp"
             android:textColor="@color/white"
             android:background="@color/colorPrimary"
-            android:layout_below="@+id/location_address"
+            android:layout_below="@+id/location_name"
             android:layout_centerInParent="true"
             android:layout_marginTop="30dp"
-            android:layout_alignStart="@+id/location_address"
-            android:layout_alignEnd="@+id/location_address" />
+            android:layout_alignStart="@+id/location_name"
+            android:layout_alignEnd="@+id/location_name" />
 
     </RelativeLayout>
 

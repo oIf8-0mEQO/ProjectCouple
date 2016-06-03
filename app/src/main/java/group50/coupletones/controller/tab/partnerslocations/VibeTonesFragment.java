@@ -26,8 +26,13 @@ public class VibeTonesFragment extends TabFragment<Object> {
    */
   private int locationIndex;
 
-  public VibeTonesFragment(int locationIndex) {
+
+  public VibeTonesFragment() {
     super(Object.class);
+  }
+
+  public VibeTonesFragment(int locationIndex) {
+    this();
     this.locationIndex = locationIndex;
   }
 

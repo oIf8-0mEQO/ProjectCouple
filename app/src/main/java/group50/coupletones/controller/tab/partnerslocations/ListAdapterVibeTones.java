@@ -87,7 +87,7 @@ public class ListAdapterVibeTones extends RecyclerView.Adapter<ListAdapterVibeTo
         });
 
       // Go back to Partner's favorite location fragment
-      ((MainActivity) fragment.getActivity()).setFragment(new PartnersLocationsFragment());
+      ((MainActivity) fragment.getActivity()).setFragment(new PartnersFavoritesFragment());
     });
   }
 

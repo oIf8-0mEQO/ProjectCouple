@@ -8,7 +8,8 @@ package group50.coupletones.network.fcm.message;
  */
 public enum MessageType {
 
-  LOCATION_NOTIFICATION("locationNotification");
+  LOCATION_ARRIVAL("locationArrival"),
+  LOCATION_DEPARTURE("locationDeparture");
 
   public final String value;
 

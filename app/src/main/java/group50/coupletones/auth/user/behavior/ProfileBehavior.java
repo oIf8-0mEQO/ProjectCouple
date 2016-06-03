@@ -27,6 +27,7 @@ import java.util.List;
  * Holds the behavior of user's profile. Strategy pattern.
  */
 public class ProfileBehavior implements PropertiesProvider {
+
   /**
    * Object responsible for syncing the object with database
    */
@@ -41,6 +42,7 @@ public class ProfileBehavior implements PropertiesProvider {
    * Google user id
    */
   private String id;
+
   /**
    * Booleans that handle settings toggling
    */
@@ -51,18 +53,22 @@ public class ProfileBehavior implements PropertiesProvider {
    * ID for FCM
    */
   private String fcmToken;
+
   /**
    * Name of the user
    */
   private String name;
+
   /**
    * Email of the user
    */
   private String email;
+
   /**
    * The user's list of favorite location.
    */
   private List<FavoriteLocation> favoriteLocations = new LinkedList<>();
+
   /**
    * The user's list of visited locations.
    */

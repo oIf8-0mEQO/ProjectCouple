@@ -161,18 +161,17 @@
                         />
 
                     <!-- Partner name -->
-                    <EditText
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPersonName"
-                        android:text="@string/partner_name"
-                        android:ems="10"
-                        android:textColor="@color/subtitleColor"
+                    <TextView
                         android:id="@+id/partner_name"
                         android:layout_centerVertical="true"
                         android:layout_alignParentStart="true"
                         android:layout_alignLeft="@+id/partner_name_header"
-                        android:layout_below="@+id/partner_name_header" />
+                        android:layout_below="@+id/partner_name_header"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/subtitleColor"
+                        android:textSize="18sp"
+                        android:layout_marginTop="6dp"/>
 
                     <!-- Google Account: -->
                     <TextView

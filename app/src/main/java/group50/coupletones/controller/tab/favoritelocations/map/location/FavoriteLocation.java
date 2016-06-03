@@ -14,7 +14,7 @@ import group50.coupletones.util.TimeUtility;
 import group50.coupletones.util.sound.VibeTone;
 
 /**
- * @author Joseph
+ * @author Joseph Cox
  * @since 5/21/16
  */
 //TODO: Clean up all the constructors
@@ -71,6 +71,7 @@ public class FavoriteLocation implements Location {
     this(previous.getName(), previous.getPosition(), previous.timeLastVisited, tone);
   }
 
+  //Methods accessing and modifying fields of FavoriteLocation
   public String getName() {
     return location.getName();
   }
@@ -126,6 +127,10 @@ public class FavoriteLocation implements Location {
     return (timeUtility.systemTime() - timeLastVisited < COOL_DOWN_TIME);
   }
 
+  /**
+   * @param o FavoriteLocation to be compared
+   * @return boolean value checking if equal
+   */
   @Override
   public boolean equals(Object o) {
     if (!(o instanceof FavoriteLocation)) {
@@ -146,6 +151,10 @@ public class FavoriteLocation implements Location {
     return true;
   }
 
+  /**
+   * Generate hashCode for the location object
+   * @return Hash code.
+   */
   @Override
   public int hashCode() {
     int hashCode = 1;

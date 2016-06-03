@@ -87,6 +87,12 @@ public class UserLogsIntoCoupleTones extends ActivityInstrumentationTestCase2<Lo
     when(CoupleTones.global().app().isLoggedIn()).thenReturn(false);
   }
 
+  private void thenIWillSeeTheLoginPage(){
+    // Verify some Authenticator methods were called
+    verify(activity.auth).onSuccess(any());
+    verify(activity.auth).autoSignIn();
+  }
+
   // See only the login page
   private void thenIWillSeeTheLoginPage(Instrumentation.ActivityMonitor activityMonitor) {
     //Watch for the timeout
@@ -103,9 +109,7 @@ public class UserLogsIntoCoupleTones extends ActivityInstrumentationTestCase2<Lo
   public void userNotLoggedIntoCoupleTones() {
     givenThatIAmNotLoggedIn();
     whenISeeTheLoginPage();
-    // Verify some Authenticator methods were called
-    verify(activity.auth).onSuccess(any());
-    verify(activity.auth).autoSignIn();
+    thenIWillSeeTheLoginPage();
   }
 
   private void thenICanOpenMyGoogleCredentials() {

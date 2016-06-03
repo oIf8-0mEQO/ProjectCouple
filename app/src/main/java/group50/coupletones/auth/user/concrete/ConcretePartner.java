@@ -2,7 +2,10 @@ package group50.coupletones.auth.user.concrete;
 
 import android.util.Log;
 import group50.coupletones.auth.user.Partner;
+import group50.coupletones.auth.user.User;
 import group50.coupletones.auth.user.behavior.PartnerRequestBehavior;
+import group50.coupletones.auth.user.behavior.ProfileBehavior;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.network.sync.Sync;
 import group50.coupletones.util.Taggable;

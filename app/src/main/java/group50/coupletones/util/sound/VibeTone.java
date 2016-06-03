@@ -123,14 +123,13 @@ public class VibeTone {
 
   @Override
   public boolean equals(Object object) {
-    try {
+    if (object instanceof VibeTone) {
       VibeTone other = (VibeTone) object;
       if (!sound.equals(other.sound)) return false;
-      if (!vibration.equals(other.vibration)) return false;
+      if (!Arrays.equals(vibration, other.vibration)) return false;
       return true;
-    } catch (ClassCastException e) {
-      return false;
     }
+    return false;
   }
 
 }

@@ -1,5 +1,6 @@
 package group50.coupletones.auth.user;
 
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import rx.Observable;
 

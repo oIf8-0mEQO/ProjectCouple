@@ -3,7 +3,9 @@ package group50.coupletones.controller.tab.favoritelocations.map;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import com.google.android.gms.maps.model.LatLng;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
+import group50.coupletones.util.sound.VibeTone;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

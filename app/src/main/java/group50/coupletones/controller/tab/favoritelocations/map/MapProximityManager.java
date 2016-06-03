@@ -88,11 +88,16 @@ public class MapProximityManager implements ProximityManager, Taggable {
   public void onLeaveLocation(FavoriteLocation location) {
     Log.d(getTag(), "Departing location: " + location.getName() + " cooldown = " + location.isOnCooldown());
     currentlyIn.remove(location);
-    VisitedLocationEvent loc = new VisitedLocationEvent();
+    VisitedLocationEvent loc = null;
     for (VisitedLocationEvent i : app.getLocalUser().getVisitedLocations()) {
-      if (location.equals(i.getLocation()) && i.getLeaveTime() == -1) loc = i;
+      if (location.equals(i.getLocation()) && i.getLeaveTime() == -1)
+        loc = i;
     }
-    exitSubject.onNext(loc);
+    if (loc != null) {
+      exitSubject.onNext(loc);
+    } else {
+      Log.e(getTag(), "Invalid visited location! (May have been removed)");
+    }
   }
 
   /**

@@ -17,7 +17,7 @@ import javax.inject.Inject;
 import java.util.List;
 
 /**
- * Edit location activity
+ * Activity for Editing Location
  */
 public class EditLocationActivity extends AppCompatActivity {
 
@@ -49,6 +49,9 @@ public class EditLocationActivity extends AppCompatActivity {
     }
   }
 
+  /**
+   * Setup up Activity page for Location Editing
+   */
   private void setup() {
     setContentView(R.layout.activity_edit_location);
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -65,12 +68,21 @@ public class EditLocationActivity extends AppCompatActivity {
     textSaveChange.setTypeface(pierSans);
   }
 
+  /**
+   * Should save Location's address data
+   * @param location
+   */
   private void bindData(FavoriteLocation location) {
     textLocationName.setText(location.getName());
     //TODO: Address won't be saved!
     textAddress.setText(formatUtility.formatAddress(location.getAddress()));
   }
 
+  /**
+   * Handles all button clicks(bindings)
+   * @param index To identify which location on the list
+   * @param location To identify the location
+   */
   private void bindEvents(int index, FavoriteLocation location) {
     // Clicking the back button takes you to the previous activity
     ImageButton backButton = (ImageButton) findViewById(R.id.btn_backarrow);

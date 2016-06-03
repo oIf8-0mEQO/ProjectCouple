@@ -20,7 +20,6 @@ import java.util.List;
 
 /**
  * The map proximity manager
- *
  * @author Joseph Cox
  * @since 5/1/2016
  */

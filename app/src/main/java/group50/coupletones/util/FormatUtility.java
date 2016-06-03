@@ -13,9 +13,9 @@ import java.util.Date;
 public class FormatUtility {
 
   /**
-   * Formats date
-   * @param date
-   * @return
+   * Formats date for syntax
+   * @param date The date to format
+   * @return Formatted string of the date.
    */
   public String formatDate(Date date) {
     Format formatter = new SimpleDateFormat("EEE, h:mm a");
@@ -24,9 +24,9 @@ public class FormatUtility {
   }
 
   /**
-   *
-   * @param address
-   * @return
+   * Formats address for display
+   * @param address The address to format
+   * @return Formatted string of the address.
    */
   public String formatAddress(Address address) {
     if (address != null) {

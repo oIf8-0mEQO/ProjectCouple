@@ -29,8 +29,11 @@ public class NotificationBuilder {
    */
   private NotificationCompat.Builder builder;
 
+  private boolean playSound;
+
   /**
    * Notification Constructor
+   *
    * @param context
    */
   public NotificationBuilder(Context context) {
@@ -41,6 +44,7 @@ public class NotificationBuilder {
 
   /**
    * Sets the intent
+   *
    * @return - Notification user receives
    */
   public NotificationBuilder setIntent(Intent intent) {
@@ -50,6 +54,7 @@ public class NotificationBuilder {
 
   /**
    * Sets the title of notification
+   *
    * @param title - title of notification
    * @return - the Notification
    */
@@ -60,6 +65,7 @@ public class NotificationBuilder {
 
   /**
    * Sets the message of the notification
+   *
    * @param msg - Notification message
    * @return - the Notification
    */
@@ -68,8 +74,14 @@ public class NotificationBuilder {
     return this;
   }
 
+  public NotificationBuilder playSound() {
+    playSound = true;
+    return this;
+  }
+
   /**
    * Shows the notification
+   *
    * @return - the Notification
    */
   public NotificationBuilder show() {
@@ -81,11 +93,15 @@ public class NotificationBuilder {
     );
 
     // Generate phone notification
-    Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+    if (playSound) {
+      Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+      builder
+        .setSound(defaultSoundUri);
+    }
+
     builder
       .setSmallIcon(R.drawable.faves_icon)
       .setAutoCancel(true)
-      .setSound(defaultSoundUri)
       .setContentIntent(pendingIntent);
 
     NotificationManager notificationManager =

@@ -117,12 +117,12 @@ public class CoupleTones extends Application {
 
     network
       .getIncomingStream()
-      .filter(msg -> MessageType.LOCATION_ARRIVAL.value.equals(msg.getMessageType()))
+      .filter(msg -> MessageType.LOCATION_ARRIVAL.value.equals(msg.getData().get("type")))
       .subscribe(new LocationArrivalHandler()::onReceive);
 
     network
       .getIncomingStream()
-      .filter(msg -> MessageType.LOCATION_DEPARTURE.value.equals(msg.getMessageType()))
+      .filter(msg -> MessageType.LOCATION_DEPARTURE.value.equals(msg.getData().get("type")))
       .subscribe(new LocationDepartureHandler()::onReceive);
 
     // Register location observer

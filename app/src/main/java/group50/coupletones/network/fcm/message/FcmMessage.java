@@ -17,7 +17,7 @@ public class FcmMessage implements Message {
 
   public FcmMessage(String type) {
     this(new HashMap<>());
-    payload.put("type", type);
+    getData().put("type", type);
   }
 
   public FcmMessage(Map<String, Object> payload) {

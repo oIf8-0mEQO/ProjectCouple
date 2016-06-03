@@ -62,7 +62,7 @@ public interface GlobalComponent {
 
   FormatUtility formatUtility();
 
-  void inject(LocationNotificationHandler obj);
+  void inject(LocationArrivalHandler obj);
 
   void inject(ListAdapterVibeTones obj);
 

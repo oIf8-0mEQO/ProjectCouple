@@ -11,14 +11,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.controller.tab.favoritelocations.map.LocationNotificationMediator;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
-import group50.coupletones.controller.tab.favoritelocations.map.location.LocationNotificationHandler;
+import group50.coupletones.controller.tab.favoritelocations.map.location.LocationArrivalHandler;
 import group50.coupletones.di.DaggerGlobalComponent;
 import group50.coupletones.di.DaggerInstanceComponent;
 import group50.coupletones.di.GlobalComponent;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.ProximityModule;
 import group50.coupletones.network.fcm.NetworkManager;
-import group50.coupletones.network.fcm.message.MessageType;
 
 /**
  * A singleton object that holds global data.
@@ -114,7 +113,7 @@ public class CoupleTones extends Application {
     // Register network
     NetworkManager network = global().network();
 
-    LocationNotificationHandler handler = new LocationNotificationHandler();
+    LocationArrivalHandler handler = new LocationArrivalHandler();
     network
       .getIncomingStream()
       //.filter(msg -> MessageType.LOCATION_NOTIFICATION.value.equals(msg.getMessageType()))

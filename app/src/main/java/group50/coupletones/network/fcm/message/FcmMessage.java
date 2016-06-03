@@ -73,6 +73,12 @@ public class FcmMessage implements Message {
     return this;
   }
 
+  public FcmMessage setString(String key, Object value)
+  {
+    payload.put(key, value);
+    return this;
+  }
+
   @Override
   public String getTo() {
     return (String) payload.get("to");

@@ -306,6 +306,7 @@ public class ProfileBehavior implements PropertiesProvider {
                 .setTitle(String.format(NOTIFY_TITLE, user.getName(), visitedLocation.getName()))
                 .setBody(formatUtility.formatDate(visitedLocation.getTimeVisited()))
                 .setIcon(NOTIFY_ICON)
+                .setString("locationIndex", user.getFavoriteLocations().indexOf(visitedLocation.getLocation()))
                 .setTo(partner.getFcmToken())
             );
         });

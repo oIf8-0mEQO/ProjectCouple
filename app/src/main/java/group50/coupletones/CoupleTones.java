@@ -9,14 +9,16 @@ import android.app.Application;
 import android.location.Geocoder;
 import com.google.firebase.database.FirebaseDatabase;
 import group50.coupletones.auth.user.LocalUser;
-import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.LocationNotificationMediator;
+import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
+import group50.coupletones.controller.tab.favoritelocations.map.location.LocationNotificationHandler;
 import group50.coupletones.di.DaggerGlobalComponent;
 import group50.coupletones.di.DaggerInstanceComponent;
 import group50.coupletones.di.GlobalComponent;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.ProximityModule;
 import group50.coupletones.network.fcm.NetworkManager;
+import group50.coupletones.network.fcm.message.MessageType;
 
 /**
  * A singleton object that holds global data.
@@ -49,6 +51,7 @@ public class CoupleTones extends Application {
 
   /**
    * Should ONLY be set for unit testing
+   *
    * @param component The global to set
    */
   public static void setGlobal(GlobalComponent component) {
@@ -75,6 +78,7 @@ public class CoupleTones extends Application {
   /**
    * Sets the local user of the app. This method should only be
    * during login/logout events.
+   *
    * @param localUser The local user object
    */
   public void setLocalUser(LocalUser localUser) {
@@ -110,15 +114,11 @@ public class CoupleTones extends Application {
     // Register network
     NetworkManager network = global().network();
 
-    //TODO: May need in future
-    /*
-    LocationNotificationReceiver locationNotificationReceiver = new LocationNotificationReceiver(this, this);
-    network.getOutgoingStream()
-      .filter(msg -> MessageType.LOCATION_NOTIFICATION.value.equals(msg.getType()))
-      .subscribe(locationNotificationReceiver::onReceive);
-    //network.register(MessageType.RECEIVE_PARTNER_ERROR.value, new ErrorReceiver(this));
-    //network.register(MessageType.RECEIVE_MAP_REJECT.value, new ErrorReceiver(this));
-    */
+    LocationNotificationHandler handler = new LocationNotificationHandler();
+    network
+      .getIncomingStream()
+      //.filter(msg -> MessageType.LOCATION_NOTIFICATION.value.equals(msg.getMessageType()))
+      .subscribe(handler::onReceive);
 
     // Register location observer
     ProximityManager proximity = global().proximity();

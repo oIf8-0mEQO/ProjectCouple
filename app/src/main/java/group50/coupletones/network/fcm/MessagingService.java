@@ -11,12 +11,15 @@ import javax.inject.Inject;
 
 /**
  * FCM service
+ *
  * @author Henry Mao
  */
 public class MessagingService extends FirebaseMessagingService implements Taggable {
 
   @Inject
   public NetworkManager network;
+  @Inject
+  public CoupleTones app;
 
   public MessagingService() {
     CoupleTones.global().inject(this);
@@ -30,15 +33,5 @@ public class MessagingService extends FirebaseMessagingService implements Taggab
     // Publish the received message
     ((Subject<RemoteMessage, RemoteMessage>) network.getIncomingStream())
       .onNext(remoteMessage);
-
-    // Show the notification anyway (in foreground)
-    RemoteMessage.Notification notification = remoteMessage.getNotification();
-    if (notification != null) {
-      Log.v(getTag(), "Generating notification.");
-      new NotificationBuilder(this)
-        .setTitle(notification.getTitle())
-        .setMsg(notification.getBody())
-        .show();
-    }
   }
 }

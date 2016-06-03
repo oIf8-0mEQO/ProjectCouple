@@ -55,7 +55,7 @@ public class VibeTone {
   /**
    * @return the default vibetone.
    */
-  public static VibeTone getTone() {
+  public static VibeTone getDefaultTone() {
     return tones[0];
   }
 

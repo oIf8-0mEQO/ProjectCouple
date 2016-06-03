@@ -50,7 +50,7 @@ public class VibeTonesFragment extends TabFragment<Object> {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_edit_vibetone, container, false);
-    vibeTonesList = (RecyclerView) v.findViewById(R.id.partners_location_list);
+    vibeTonesList = (RecyclerView) v.findViewById(R.id.vibetone_recycler_view);
     vibeTonesList.setLayoutManager(new LinearLayoutManager(getActivity()));
     adapter = new ListAdapterVibeTones(locationIndex, VibeTone.getVibeTones(), this);
     vibeTonesList.setAdapter(adapter);

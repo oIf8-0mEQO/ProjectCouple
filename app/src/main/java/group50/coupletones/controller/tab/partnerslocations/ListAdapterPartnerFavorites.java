@@ -139,7 +139,7 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
       cv = (CardView) itemView.findViewById(R.id.cv);
       name = (TextView) itemView.findViewById(R.id.list_item_name);
       address = (TextView) itemView.findViewById(R.id.list_item_address);
-      icon = (ImageView) itemView.findViewById(R.id.list_item_icon);
+      icon = (ImageView) itemView.findViewById(R.id.list_vibetone_icon);
       vibeTone = (TextView) itemView.findViewById(R.id.list_item_vibetone);
       container = itemView.findViewById(R.id.list_item);
     }

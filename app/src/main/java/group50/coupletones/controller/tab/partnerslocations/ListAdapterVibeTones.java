@@ -74,7 +74,8 @@ public class ListAdapterVibeTones extends RecyclerView.Adapter<ListAdapterVibeTo
     holder.name.setText(tone.getName());
 
     // Set the VibeTone for this location.
-    holder.container.setOnClickListener(view -> {
+    View icon = holder.container.findViewById(R.id.list_vibetone_icon);
+    icon.setOnClickListener(view -> {
       Log.v(getTag(), "Clicked on VibeTone item");
       // Set the vibe tone for this location
       app.getLocalUser()

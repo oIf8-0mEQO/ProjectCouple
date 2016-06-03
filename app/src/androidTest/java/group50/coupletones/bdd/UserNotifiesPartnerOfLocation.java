@@ -45,7 +45,7 @@ public class UserNotifiesPartnerOfLocation {
   private LocalUser mockUser;
   private ProximityManager proximityManager;
   private LatLng zoneLatLng = new LatLng(32.882, -117.233);
-  private FavoriteLocation zone = new FavoriteLocation("Home", zoneLatLng, 0, VibeTone.getTone().getIndex());
+  private FavoriteLocation zone = new FavoriteLocation("Home", zoneLatLng, 0, VibeTone.getDefaultTone().getIndex());
   private Subject<Message, Message> outgoingStream;
 
   @Before

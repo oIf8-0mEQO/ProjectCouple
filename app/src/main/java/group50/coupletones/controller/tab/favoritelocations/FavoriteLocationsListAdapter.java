@@ -145,7 +145,7 @@ public class FavoriteLocationsListAdapter extends RecyclerView.Adapter<FavoriteL
       cv = (CardView) itemView.findViewById(R.id.cv);
       name = (TextView) itemView.findViewById(R.id.list_item_name);
       address = (TextView) itemView.findViewById(R.id.list_item_address);
-      icon = (ImageView) itemView.findViewById(R.id.list_item_icon);
+      icon = (ImageView) itemView.findViewById(R.id.list_vibetone_icon);
       container = itemView.findViewById(R.id.list_item);
     }
   }

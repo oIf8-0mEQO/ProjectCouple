@@ -31,7 +31,7 @@ public class VibeToneTest {
   @Test
   public void testVibeToneEquality()
   {
-    VibeTone vib1 = VibeTone.getTone();
+    VibeTone vib1 = VibeTone.getDefaultTone();
     VibeTone vib2 = VibeTone.getTone(0);
     VibeTone vib3 = VibeTone.getTone(1);
     assertThat(vib1).isEqualTo(vib2);
@@ -41,7 +41,7 @@ public class VibeToneTest {
   @Test
   public void testVibeTonePlay()
   {
-    VibeTone tone = VibeTone.getTone();
+    VibeTone tone = VibeTone.getDefaultTone();
     tone.playArrival();
     //TODO: Consider rewriting test so it tests more.
   }

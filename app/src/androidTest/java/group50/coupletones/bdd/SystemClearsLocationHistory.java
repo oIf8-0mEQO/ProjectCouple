@@ -61,7 +61,7 @@ public class SystemClearsLocationHistory {
       "name",
       new LatLng(10, 10),
       0,
-      VibeTone.getTone().getIndex()
+      VibeTone.getDefaultTone().getIndex()
     );
 
     timeUtility = CoupleTones.global().timeUtility();

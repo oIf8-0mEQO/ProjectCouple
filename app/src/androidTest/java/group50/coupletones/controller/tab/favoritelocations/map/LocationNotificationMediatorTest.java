@@ -49,7 +49,7 @@ public class LocationNotificationMediatorTest {
     Subject<Message, Message> spySubject = spy(Subject.class);
     doReturn(spySubject).when(network).getOutgoingStream();
 
-    VisitedLocationEvent location = new VisitedLocationEvent("Home", new LatLng(0, 0), new Date(), new Date(), VibeTone.getTone().getIndex());
+    VisitedLocationEvent location = new VisitedLocationEvent("Home", new LatLng(0, 0), new Date(), new Date(), VibeTone.getDefaultTone().getIndex());
     mediator.onEnterLocation(location);
 
     // Verify the GCM message has exactly the correct arguments.

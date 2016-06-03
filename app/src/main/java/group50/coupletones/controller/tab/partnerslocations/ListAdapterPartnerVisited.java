@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.Partner;
@@ -17,11 +16,10 @@ import group50.coupletones.util.FormatUtility;
 import rx.Observable;
 import rx.subscriptions.CompositeSubscription;
 
+import javax.inject.Inject;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 /**
  * @author Joanne Cho
@@ -126,7 +124,7 @@ public class ListAdapterPartnerVisited extends RecyclerView.Adapter<ListAdapterP
       cv = (CardView) itemView.findViewById(R.id.cv);
       name = (TextView) itemView.findViewById(R.id.list_item_name);
       address = (TextView) itemView.findViewById(R.id.list_item_address);
-      icon = (ImageView) itemView.findViewById(R.id.list_item_icon);
+      icon = (ImageView) itemView.findViewById(R.id.list_vibetone_icon);
       arrivalValue = (TextView) itemView.findViewById(R.id.list_item_arrival);
       departureValue = (TextView) itemView.findViewById(R.id.list_item_departure);
       container = itemView.findViewById(R.id.list_item);

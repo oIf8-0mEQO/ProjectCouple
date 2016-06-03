@@ -30,7 +30,7 @@ public class UserViewsPartnerFavoriteLocations {
   public ActivityTestRule<MainActivity> testRule = new ActivityTestRule(MainActivity.class) {
     @Override
     protected void beforeActivityLaunched() {
-      FavoriteLocation partnerFavorite = new FavoriteLocation("name", new LatLng(10, 10), 0, VibeTone.getTone().getIndex());
+      FavoriteLocation partnerFavorite = new FavoriteLocation("name", new LatLng(10, 10), 0, VibeTone.getDefaultTone().getIndex());
       List<FavoriteLocation> locationList = new LinkedList<>();
       locationList.add(partnerFavorite);
 

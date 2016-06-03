@@ -10,6 +10,7 @@ import group50.coupletones.CoupleTones;
 import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -28,6 +29,7 @@ public class VibeTone {
   private Ringtone sound;
   private long[] vibration;
   private String name;
+
   private VibeTone(String fileName, long[] vibration, String name) {
     CoupleTones.global().inject(this);
     this.vibration = vibration;
@@ -69,7 +71,11 @@ public class VibeTone {
   }
 
   public static List<VibeTone> getVibeTones() {
-    return Collections.unmodifiableList(Arrays.asList(tones));
+    List<VibeTone> availableTones = new LinkedList<>();
+    for (int i = 0; i < MAX_VIBETONE_COUNT; i++)
+      availableTones.add(tones[i]);
+
+    return Collections.unmodifiableList(availableTones);
   }
 
   public void playArrival() {

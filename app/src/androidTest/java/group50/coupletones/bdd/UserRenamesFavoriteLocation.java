@@ -1,6 +1,7 @@
 package group50.coupletones.bdd;
 
 import android.os.Bundle;
+import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -25,21 +26,25 @@ import group50.coupletones.mocker.ConcreteUserTestUtil;
 import group50.coupletones.mocker.UserTestUtil;
 import group50.coupletones.util.sound.VibeTone;
 
-import static org.mockito.Mockito.*;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.typeText;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * Created by Joseph on 6/2/2016.
  */
-public class UserDragsFavoriteLocationMarker {
+public class UserRenamesFavoriteLocation {
 
-  private Marker marker;
-  private LocationDragMediator dragHandler;
   private FavoriteLocation location;
   private UserTestUtil userTestUtil;
-  private MapFragment map;
-  private User user;
+  private LocalUser user;
   private CoupleTones app;
 
   @Rule
@@ -50,52 +55,46 @@ public class UserDragsFavoriteLocationMarker {
       app = CoupleTones.global().app();
 
       // Mock the local user
-      userTestUtil  = new ConcreteUserTestUtil();
+      userTestUtil = new ConcreteUserTestUtil();
       user = (LocalUser) userTestUtil
-                               .injectLocalUser()
-                               .get();
+                           .injectLocalUser()
+                           .get();
     }
 
     @Override
     protected void afterActivityLaunched() {
       super.afterActivityLaunched();
-      map = (MapFragment) rule.getActivity().getTabs().get(R.id.map);
     }
   };
 
   @Before
-  public void setup()
-  {
-    dragHandler = new LocationDragMediator();
+  public void setup() {
     LinkedList<FavoriteLocation> list = new LinkedList<>();
-    user = userTestUtil.mockFavoriteLocations(() -> list).get();
+    userTestUtil.mockFavoriteLocations(() -> list);
   }
 
-  public void givenUserHasAFavoriteLocation()
-  {
+  public void givenUserHasAFavoriteLocation() {
     location = new FavoriteLocation("test name", new LatLng(10, 10), 0, VibeTone.getTone(1));
-    marker = map.addMarker(new LatLng(10, 10));
-    dragHandler.bindPair(marker, location);
+    user.addFavoriteLocation(location);
   }
 
-  public void whenUserDragsLocationMarker()
-  {
-    dragHandler.onMarkerDragStart(marker);
-    marker = map.addMarker(new LatLng(20, 20));
-    dragHandler.onMarkerDragEnd(marker);
+  public void whenUserInputsNewName() throws Throwable {
+    onView(withId(R.id.favorite_locations)).perform(click());
+    onView(withId(R.id.edit_location_icon)).perform(click());
+    onView(withId(R.id.location_name)).perform(typeText("qwerty"));
+    Espresso.closeSoftKeyboard();
+    onView(withId(R.id.save_changes_button)).perform(click());
   }
 
-  public void thenLocationsPositionWillChange()
-  {
-    assertThat(user.getFavoriteLocations().get(0).getPosition().equals(new LatLng(20, 20)));
+  public void thenLocationsNameWillChange() throws Throwable {
+    onView(withId(R.id.list_item_name)).check(matches(withText("qwerty")));
   }
 
   @Test
-  public void userDragsMarker()
-  {
+  public void userRenamesLocation() throws Throwable {
     givenUserHasAFavoriteLocation();
-    whenUserDragsLocationMarker();
-    thenLocationsPositionWillChange();
+    whenUserInputsNewName();
+    thenLocationsNameWillChange();
   }
 
 }

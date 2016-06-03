@@ -10,7 +10,7 @@ public class UserDragsFavoriteLocationMarker {
   @Test
   public void userDragsMarker()
   {
-    given
+    //given
   }
 
 }

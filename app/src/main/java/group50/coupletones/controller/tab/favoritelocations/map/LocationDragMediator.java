@@ -40,7 +40,7 @@ public class LocationDragMediator implements GoogleMap.OnMarkerDragListener {
     FavoriteLocation location = null;
     for (Pair p : pairs)
     {
-      if (p.marker.equals(marker))
+      if (p.marker == marker)
       {
         location = p.location;
         break;

@@ -6,6 +6,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,12 +15,16 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
+import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.mocker.ConcreteUserTestUtil;
 import group50.coupletones.mocker.UserTestUtil;
+import group50.coupletones.network.fcm.NetworkManager;
+import group50.coupletones.network.fcm.message.Message;
+import rx.subjects.Subject;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -27,6 +32,11 @@ import static android.support.test.espresso.action.ViewActions.scrollTo;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author Sharmaine Manalo
@@ -38,15 +48,25 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 public class UserEnablesDisablesGlobalNotifications {
   private UserTestUtil testUtil = new ConcreteUserTestUtil();
   FavoriteLocation home;
+  private Subject<Message, Message> outgoingStream;
 
   @Rule
   public ActivityTestRule<MainActivity> rule = new ActivityTestRule(MainActivity.class) {
     @Override
     protected void beforeActivityLaunched() {
       testUtil.injectLocalUser();
+      testUtil.injectSpyPartner();
       super.beforeActivityLaunched();
     }
   };
+
+  @Before
+  public void setup() {
+    // Make sure FCM message is sent
+    NetworkManager network = CoupleTones.global().network();
+    outgoingStream = spy(Subject.class);
+    doReturn(outgoingStream).when(network).getOutgoingStream();
+  }
 
   /** Scenario 1: User turns on notifications
    Given that the user is on the Settings page
@@ -71,7 +91,7 @@ public class UserEnablesDisablesGlobalNotifications {
   private void andUserPartnerGoesToFavoriteLocation() {
     home = new FavoriteLocation("Home", new LatLng(0, 0), 0, null);
     VisitedLocationEvent evt = new VisitedLocationEvent(home, new Date(), new Date());
-    List<VisitedLocationEvent> visitedLocations = new LinkedList<VisitedLocationEvent>();
+    List<VisitedLocationEvent> visitedLocations = new LinkedList<>();
     visitedLocations.add(evt);
     testUtil.getPartner()
       .getProperties()
@@ -79,7 +99,7 @@ public class UserEnablesDisablesGlobalNotifications {
   }
 
   private void thenUserWillReceiveNotification() {
-
+    //verify(outgoingStream, times(1)).onNext(any());
   }
 
   @Test
@@ -87,7 +107,7 @@ public class UserEnablesDisablesGlobalNotifications {
     givenUserIsOnSettingsPage();
     andNotificationsAreOff();
     whenUserTogglesNotificationsOn();
-    //andUserPartnerGoesToFavoriteLocation();
+    andUserPartnerGoesToFavoriteLocation();
     //thenUserWillReceiveNotification();
   }
 
@@ -107,7 +127,7 @@ public class UserEnablesDisablesGlobalNotifications {
   }
 
   private void thenUserWillNotReceiveNotification() {
-    // TODO
+    verify(outgoingStream, times(0)).onNext(any());
   }
 
   @Test
@@ -115,8 +135,8 @@ public class UserEnablesDisablesGlobalNotifications {
     givenUserIsOnSettingsPage();
     andNotificationsAreOn();
     whenUserTogglesNotificationsOff();
-    //andUserPartnerGoesToFavoriteLocation();
-    //thenUserWillNotReceiveNotification();
+    andUserPartnerGoesToFavoriteLocation();
+    thenUserWillNotReceiveNotification();
   }
 
    /**Scenario 3: User turns on sound notifications

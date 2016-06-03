@@ -70,7 +70,6 @@ public class MapProximityManager implements ProximityManager, Taggable {
 
       // Update cooldown
       List<FavoriteLocation> favoriteLocations = app.getLocalUser().getFavoriteLocations();
-      app.getLocalUser().addVisitedLocation(newLoc);
       int i = favoriteLocations.indexOf(favoriteLocation);
       if (i >= 0 && i < favoriteLocations.size())
         app.getLocalUser().setFavoriteLocation(i, favoriteLocation);
@@ -82,9 +81,12 @@ public class MapProximityManager implements ProximityManager, Taggable {
 
   public void onLeaveLocation(FavoriteLocation location) {
     currentlyIn.remove(location);
-    VisitedLocationEvent newLoc = new VisitedLocationEvent(location, new Date(location.getTime()), new Date());
-    app.getLocalUser().addVisitedLocation(newLoc);
-    exitSubject.onNext(newLoc);
+    VisitedLocationEvent loc = new VisitedLocationEvent();
+    for (VisitedLocationEvent i : app.getLocalUser().getVisitedLocations())
+    {
+      if (location.equals(i.getLocation()) && i.getLeaveTime() == -1) loc = i;
+    }
+    exitSubject.onNext(loc);
   }
 
   /**

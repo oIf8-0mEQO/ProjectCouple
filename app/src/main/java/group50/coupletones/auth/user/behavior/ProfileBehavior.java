@@ -34,11 +34,8 @@ import java.util.List;
  * Holds the behavior of user's profile. Strategy pattern.
  */
 public class ProfileBehavior implements PropertiesProvider {
-<<<<<<< HEAD
-=======
   private static final String NOTIFY_TITLE = "%1$s visited %2$s";
   private static final String NOTIFY_ICON = "icon";
->>>>>>> 4b2ff6e20c5384fe644203cbea4782ab7918c5b3
 
   /**
    * Object responsible for syncing the object with database

@@ -5,7 +5,6 @@
 
 package group50.coupletones.auth.user.behavior;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.GenericTypeIndicator;
 import group50.coupletones.CoupleTones;
@@ -52,7 +51,10 @@ public class ProfileBehavior implements PropertiesProvider {
 
   @Inject
   public NetworkManager network;
-
+  /**
+   * User object
+   */
+  User user;
   /**
    * Google user id
    */
@@ -67,12 +69,6 @@ public class ProfileBehavior implements PropertiesProvider {
    * ID for FCM
    */
   private String fcmToken;
-
-  /**
-   * User object
-   */
-  User user;
-
   /**
    * Name of the user
    */

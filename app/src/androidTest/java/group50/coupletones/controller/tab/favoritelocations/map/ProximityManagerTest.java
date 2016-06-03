@@ -46,7 +46,7 @@ public class ProximityManagerTest {
         .build()
     );
 
-    favLocation = new FavoriteLocation("", new LatLng(32.880315, -117.236288), 0, VibeTone.getTone());
+    favLocation = new FavoriteLocation("", new LatLng(32.880315, -117.236288), 0, VibeTone.getTone().getIndex());
     loc = new Location("");
 
     // Stub the user

@@ -3,10 +3,7 @@ package group50.coupletones.controller.tab.favoritelocations.map;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import com.google.android.gms.maps.model.LatLng;
-import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
-import group50.coupletones.util.sound.VibeTone;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -30,7 +27,7 @@ public class VisitedLocationEventTest {
   @Test
   public void testVisitedLocationCreation()
   {
-    FavoriteLocation favLocation = new FavoriteLocation("Name", new LatLng(10, 15), 100, VibeTone.getTone());
+    FavoriteLocation favLocation = new FavoriteLocation("Name", new LatLng(10, 15), 100, VibeTone.getTone().getIndex());
     VisitedLocationEvent visLocation = new VisitedLocationEvent(favLocation, new Date());
     VisitedLocationEvent mock = mock(VisitedLocationEvent.class);
     when(mock.getPosition()).thenReturn(new LatLng(10, 15));
@@ -41,9 +38,9 @@ public class VisitedLocationEventTest {
   @Test
   public void testEquality()
   {
-    VisitedLocationEvent locRef = new VisitedLocationEvent("name", new LatLng(10, 10), new Date(100), new Date(0), VibeTone.getTone());
-    VisitedLocationEvent locTest1 = new VisitedLocationEvent("name", new LatLng(10, 10), new Date(100), new Date(0),  VibeTone.getTone());
-    VisitedLocationEvent locTest2 = new VisitedLocationEvent("name", new LatLng(10, 10), new Date(250), new Date(0),  VibeTone.getTone());
+    VisitedLocationEvent locRef = new VisitedLocationEvent("name", new LatLng(10, 10), new Date(100), new Date(0), VibeTone.getTone().getIndex());
+    VisitedLocationEvent locTest1 = new VisitedLocationEvent("name", new LatLng(10, 10), new Date(100), new Date(0), VibeTone.getTone().getIndex());
+    VisitedLocationEvent locTest2 = new VisitedLocationEvent("name", new LatLng(10, 10), new Date(250), new Date(0), VibeTone.getTone().getIndex());
     assert (locRef.equals(locTest1));
     assert (!locRef.equals(locTest2));
   }

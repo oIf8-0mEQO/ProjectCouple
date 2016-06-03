@@ -4,8 +4,6 @@ import android.util.Log;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
 import group50.coupletones.network.fcm.NetworkManager;
-import group50.coupletones.network.fcm.message.FcmMessage;
-import group50.coupletones.network.fcm.message.MessageType;
 import group50.coupletones.util.FormatUtility;
 import group50.coupletones.util.Taggable;
 

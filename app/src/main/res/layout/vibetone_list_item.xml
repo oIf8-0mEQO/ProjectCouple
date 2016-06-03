@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/list_item"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="72dp"
-    android:orientation="horizontal"
-    android:paddingLeft="6dp">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/list_item"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:orientation="horizontal"
+        android:paddingLeft="6dp">
 
-    <android.support.v7.widget.CardView android:id="@+id/cv"
-                                        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                        android:id="@+id/cv"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:layout_marginBottom="1dp"
@@ -34,15 +34,15 @@
 
                 <!-- List Item VibeTone Icon -->
                 <ImageView
-                    android:id="@+id/list_item_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="20dp"
-                    android:src="@drawable/ringtone_icon"
-                    android:layout_marginStart="77dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentStart="true"/>
+                        android:id="@+id/list_vibetone_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="20dp"
+                        android:src="@drawable/ringtone_icon"
+                        android:layout_marginStart="77dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentStart="true"/>
 
                 <!-- List Item VibeTone Name -->
                 <TextView

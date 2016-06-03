@@ -1,18 +1,14 @@
 package group50.coupletones.util;
 
 import android.content.Context;
-
+import group50.coupletones.CoupleTones;
+import group50.coupletones.util.sound.VibeTone;
 import org.junit.Before;
 import org.junit.Test;
 
-import group50.coupletones.CoupleTones;
-import group50.coupletones.di.DaggerMockAppComponent;
-import group50.coupletones.di.MockProximityModule;
-import group50.coupletones.util.sound.VibeTone;
-
-import static org.assertj.core.api.Assertions.*;
-
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Joseph
@@ -35,7 +31,7 @@ public class VibeToneTest {
   @Test
   public void testVibeToneEquality()
   {
-    VibeTone vib1 = VibeTone.getTone();
+    VibeTone vib1 = VibeTone.getDefaultTone();
     VibeTone vib2 = VibeTone.getTone(0);
     VibeTone vib3 = VibeTone.getTone(1);
     assertThat(vib1).isEqualTo(vib2);
@@ -45,9 +41,9 @@ public class VibeToneTest {
   @Test
   public void testVibeTonePlay()
   {
-    VibeTone tone = VibeTone.getTone();
+    VibeTone tone = VibeTone.getDefaultTone();
     tone.playArrival();
-    verify(mockContext).getApplicationContext();//TODO: Consider rewriting test so it tests more.
+    //TODO: Consider rewriting test so it tests more.
   }
 
 }

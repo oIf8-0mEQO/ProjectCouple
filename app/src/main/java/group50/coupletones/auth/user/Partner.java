@@ -12,4 +12,6 @@ public interface Partner extends User {
   void setPartnerId(String partnerId);
 
   void requestPartner(User requester);
+
+  void setVibeTone(int locationId, int vibeToneId);
 }

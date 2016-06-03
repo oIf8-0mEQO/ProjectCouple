@@ -12,6 +12,7 @@ import android.util.Log;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.User;
@@ -219,4 +220,15 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
     }
     mMap.setOnMarkerDragListener(locationDragHandler);
   }
+
+  /**
+   * Should not be used in live code. Used for testing.
+   */
+  public Marker addMarker(LatLng position)
+  {
+    MarkerOptions markerSettings = new MarkerOptions();
+    markerSettings.position(position);
+    return mMap.addMarker(markerSettings);
+  }
+
 }

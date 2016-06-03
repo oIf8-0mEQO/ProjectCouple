@@ -89,7 +89,7 @@ public class UserEnablesDisablesGlobalNotifications {
   }
 
   private void andUserPartnerGoesToFavoriteLocation() {
-    home = new FavoriteLocation("Home", new LatLng(0, 0), 0, null);
+    home = new FavoriteLocation("Home", new LatLng(0, 0), 0, 0);
     VisitedLocationEvent evt = new VisitedLocationEvent(home, new Date(), new Date());
     List<VisitedLocationEvent> visitedLocations = new LinkedList<>();
     visitedLocations.add(evt);

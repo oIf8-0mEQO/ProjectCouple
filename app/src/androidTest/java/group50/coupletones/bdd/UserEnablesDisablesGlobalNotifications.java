@@ -24,6 +24,7 @@ import group50.coupletones.mocker.ConcreteUserTestUtil;
 import group50.coupletones.mocker.UserTestUtil;
 import group50.coupletones.network.fcm.NetworkManager;
 import group50.coupletones.network.fcm.message.Message;
+import group50.coupletones.util.sound.VibeTone;
 import rx.subjects.Subject;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -154,7 +155,9 @@ public class UserEnablesDisablesGlobalNotifications {
   }
 
   private void thenUserWillReceiveSoundNotification() {
-    // TODO
+    verify(VibeTone.getTone(0), times(1)).playArrival();
+    verify(VibeTone.getTone(10), times(1)).playSound();
+    verify(VibeTone.getTone(10), times(1)).playVibrate();
   }
 
   @Test
@@ -162,7 +165,7 @@ public class UserEnablesDisablesGlobalNotifications {
     givenUserIsOnSettingsPage();
     andSoundNotificationsAreOff();
     whenUserTogglesSoundNotificationsOn();
-    //andUserPartnerGoesToFavoriteLocation();
+    andUserPartnerGoesToFavoriteLocation();
     //thenUserWillReceiveSoundNotification();
   }
 

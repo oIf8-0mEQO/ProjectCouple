@@ -20,6 +20,8 @@ import java.util.List;
 public class VibeTone {
 
   public static final int MAX_VIBETONE_COUNT = 10;
+  public static final int ARRIVAL_VIBETONE = 10;
+  public static final int DEPARTURE_VIBETONE = 11;
   private static VibeTone[] tones = {
     new VibeTone("/assets/tones/vibetone1.mps", new long[]{0, 2000}, "Pikachu"),//Index 0 / default tone.
     new VibeTone("/assets/tones/vibetone2.mps", new long[]{0, 400, 400, 400, 400, 400}, "Coin"),//Index 1.
@@ -71,25 +73,33 @@ public class VibeTone {
 
   public void playArrival() {
     try {
-      Vibrator vib = (Vibrator) app.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-      if (app.getLocalUser().getVibrationSetting()) vib.vibrate(tones[10].vibration, 0);
-      if (app.getLocalUser().getTonesSetting()) tones[10].sound.play();
+      if (app.getLocalUser().getVibrationSetting()) tones[ARRIVAL_VIBETONE].playVibrate();
+      if (app.getLocalUser().getTonesSetting()) tones[ARRIVAL_VIBETONE].playSound();
       wait(delay);
-      if (app.getLocalUser().getVibrationSetting()) vib.vibrate(vibration, 0);
-      if (app.getLocalUser().getTonesSetting()) sound.play();
+      if (app.getLocalUser().getVibrationSetting()) playVibrate();
+      if (app.getLocalUser().getTonesSetting()) playSound();
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }
   }
 
+  public void playVibrate() {
+    Vibrator vib = (Vibrator) app.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+    vib.vibrate(vibration, 0);
+  }
+
+  public void playSound() {
+    sound.play();
+  }
+
   public void playDeparture() {
     try {
       Vibrator vib = (Vibrator) app.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-      if (app.getLocalUser().getVibrationSetting()) vib.vibrate(tones[11].vibration, 0);
-      if (app.getLocalUser().getTonesSetting()) tones[11].sound.play();
+      if (app.getLocalUser().getVibrationSetting()) tones[DEPARTURE_VIBETONE].playVibrate();
+      if (app.getLocalUser().getTonesSetting()) tones[DEPARTURE_VIBETONE].playSound();
       wait(delay);
-      if (app.getLocalUser().getVibrationSetting()) vib.vibrate(vibration, 0);
-      if (app.getLocalUser().getTonesSetting()) sound.play();
+      if (app.getLocalUser().getVibrationSetting()) playVibrate();
+      if (app.getLocalUser().getTonesSetting()) playSound();
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }

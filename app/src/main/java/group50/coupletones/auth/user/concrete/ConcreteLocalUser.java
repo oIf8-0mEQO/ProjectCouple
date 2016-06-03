@@ -113,8 +113,8 @@ public class ConcreteLocalUser implements LocalUser {
   }
 
   @Override
-  public void addVisitedLocation(VisitedLocationEvent visitedLocation) {
-    profile.addVisitedLocation(visitedLocation);
+  public void arriveVisitedLocation(VisitedLocationEvent visitedLocation) {
+    profile.arriveVisitedLocation(visitedLocation);
   }
 
   @Override
@@ -158,7 +158,7 @@ public class ConcreteLocalUser implements LocalUser {
   }
 
   @Override
-  public void userLeaveLocation(VisitedLocationEvent event) {
-    profile.userLeaveLocation(event);
+  public void leaveVisitedLocation(VisitedLocationEvent event) {
+    profile.leaveVisitedLocation(event);
   }
 }

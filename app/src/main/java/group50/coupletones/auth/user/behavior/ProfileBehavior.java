@@ -283,7 +283,7 @@ public class ProfileBehavior implements PropertiesProvider {
    *
    * @param visitedLocation The visited location to add.
    */
-  public void addVisitedLocation(VisitedLocationEvent visitedLocation) {
+  public void arriveVisitedLocation(VisitedLocationEvent visitedLocation) {
     if (visitedLocations == null) {
       visitedLocations = new LinkedList<>();
     }
@@ -313,7 +313,7 @@ public class ProfileBehavior implements PropertiesProvider {
     }
   }
 
-  public void userLeaveLocation(VisitedLocationEvent event)
+  public void leaveVisitedLocation(VisitedLocationEvent event)
   {
     event.setLeaveTime(System.currentTimeMillis());
 

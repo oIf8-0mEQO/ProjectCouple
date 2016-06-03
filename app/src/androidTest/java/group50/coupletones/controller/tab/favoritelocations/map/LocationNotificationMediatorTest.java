@@ -90,7 +90,7 @@ public class LocationNotificationMediatorTest {
 
     // Make sure the visited location is added.
     LocalUser localUser = CoupleTones.global().app().getLocalUser();
-    verify(localUser, times(1)).addVisitedLocation(location);
+    verify(localUser, times(1)).arriveVisitedLocation(location);
     assertThat(localUser.getVisitedLocations()).hasSize(1);
     assertThat(localUser.getVisitedLocations()).contains(location);
   }

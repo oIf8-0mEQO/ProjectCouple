@@ -26,12 +26,12 @@ public interface LocalUser extends User {
    *
    * @param visitedLocation The location to add
    */
-  void addVisitedLocation(VisitedLocationEvent visitedLocation);
+  void arriveVisitedLocation(VisitedLocationEvent visitedLocation);
 
   /**
    * Updates a VisitedLocation with a leave time.
    */
-  void userLeaveLocation(VisitedLocationEvent event);
+  void leaveVisitedLocation(VisitedLocationEvent event);
 
   /**
    * @return Global notifications setting

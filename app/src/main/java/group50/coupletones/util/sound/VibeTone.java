@@ -125,7 +125,10 @@ public class VibeTone {
   public boolean equals(Object object) {
     if (object instanceof VibeTone) {
       VibeTone other = (VibeTone) object;
-      if (!sound.equals(other.sound)) return false;
+      if (sound != null && other.sound != null && !sound.equals(other.sound))
+        return false;
+      if ((sound == null && other.sound != null) || (sound != null && other.sound == null))
+        return false;
       if (!Arrays.equals(vibration, other.vibration)) return false;
       return true;
     }

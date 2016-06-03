@@ -7,6 +7,7 @@ package group50.coupletones.auth.user.behavior;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.GenericTypeIndicator;
+
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.LocalUser;
 import group50.coupletones.auth.user.User;
@@ -23,6 +24,7 @@ import group50.coupletones.util.properties.PropertiesProvider;
 import group50.coupletones.util.properties.Property;
 
 import javax.inject.Inject;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -136,6 +138,7 @@ public class ProfileBehavior implements PropertiesProvider {
 
   /**
    * This function turns on/off the global notifications setting
+   *
    * @return globalNotificationsAreOn true if notifications are on, false if turned off
    */
   public Boolean setGlobalNotificationsSetting(boolean setting) {
@@ -150,6 +153,7 @@ public class ProfileBehavior implements PropertiesProvider {
 
   /**
    * This function turns on/off tones
+   *
    * @return tonesAreOn true if tones are on, false if turned off
    */
   public Boolean setTonesSetting(boolean setting) {
@@ -164,6 +168,7 @@ public class ProfileBehavior implements PropertiesProvider {
 
   /**
    * This function turns on/off vibration
+   *
    * @return vibrationIsOn true if vibration is on, false if turned off
    */
   public Boolean setVibrationSetting(boolean setting) {
@@ -293,19 +298,21 @@ public class ProfileBehavior implements PropertiesProvider {
 
     // Send notification to partner about location visit
     if (user instanceof LocalUser) {
-      ((LocalUser) user).getPartner()
-        .filter(partner -> partner != null)
-        .subscribe(partner -> {
-          network
-            .getOutgoingStream()
-            .onNext(
-              new FcmMessage(MessageType.LOCATION_NOTIFICATION.value)
-                .setTitle(String.format(NOTIFY_TITLE, ((LocalUser) user).getName(), visitedLocation.getName()))
-                .setBody(formatUtility.formatDate(visitedLocation.getTimeVisited()))
-                .setIcon(NOTIFY_ICON)
-                .setTo(partner.getFcmToken())
-            );
-        });
+      if (((LocalUser) user).getGlobalNotificationsSetting()) {
+        ((LocalUser) user).getPartner()
+          .filter(partner -> partner != null)
+          .subscribe(partner -> {
+            network
+              .getOutgoingStream()
+              .onNext(
+                new FcmMessage(MessageType.LOCATION_NOTIFICATION.value)
+                  .setTitle(String.format(NOTIFY_TITLE, ((LocalUser) user).getName(), visitedLocation.getName()))
+                  .setBody(formatUtility.formatDate(visitedLocation.getTimeVisited()))
+                  .setIcon(NOTIFY_ICON)
+                  .setTo(partner.getFcmToken())
+              );
+          });
+      }
     }
   }
 
@@ -325,8 +332,7 @@ public class ProfileBehavior implements PropertiesProvider {
     }
   }
 
-  public void updateCooldownOfFavorite(FavoriteLocation location)
-  {
+  public void updateCooldownOfFavorite(FavoriteLocation location) {
     location.setTimeLastVisited(System.currentTimeMillis());
 
     Property<Object> prop = properties.property("favoriteLocations");

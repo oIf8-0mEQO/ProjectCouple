@@ -165,7 +165,7 @@ public class UserEnablesDisablesGlobalNotifications {
     andSoundNotificationsAreOff();
     whenUserTogglesSoundNotificationsOn();
     andUserPartnerGoesToFavoriteLocation();
-    //thenUserWillReceiveSoundNotification();
+    thenUserWillReceiveSoundNotification();
   }
 
   /**

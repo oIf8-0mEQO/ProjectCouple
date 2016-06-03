@@ -337,6 +337,15 @@ public class ProfileBehavior implements PropertiesProvider {
     prop.update();
   }
 
+  public void userLeaveLocation(VisitedLocationEvent event)
+  {
+    event.setLeaveTime(System.currentTimeMillis());
+
+    Property<Object> prop = properties.property("visitedLocations");
+    sync.update(prop);
+    prop.update();
+  }
+
   @Override
   public Properties getProperties() {
     return properties;

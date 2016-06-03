@@ -43,6 +43,11 @@ public class LocationNotificationMediator implements Taggable {
   }
 
   public void onLeaveLocation(VisitedLocationEvent location) {
-    //TODO: Remove?
+    if (app.getLocalUser().getPartner() != null) {
+      // Adds the location as a visited location
+      app.getLocalUser().userLeaveLocation(location);
+    } else {
+      Log.e(getTag(), "Attempt to send location notification to null partner.");
+    }
   }
 }

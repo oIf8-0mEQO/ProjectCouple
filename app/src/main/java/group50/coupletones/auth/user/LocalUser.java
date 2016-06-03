@@ -29,6 +29,11 @@ public interface LocalUser extends User {
   void addVisitedLocation(VisitedLocationEvent visitedLocation);
 
   /**
+   * Updates a VisitedLocation with a leave time.
+   */
+  void userLeaveLocation(VisitedLocationEvent event);
+
+  /**
    * @return Global notifications setting
    */
   boolean getGlobalNotificationsSetting();

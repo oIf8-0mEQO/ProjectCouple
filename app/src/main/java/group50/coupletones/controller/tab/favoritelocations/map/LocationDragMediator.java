@@ -22,6 +22,7 @@ public class LocationDragMediator implements GoogleMap.OnMarkerDragListener {
   CoupleTones app;
 
   private List<Pair> pairs;
+  private Marker currentMarker;
 
   public LocationDragMediator()
   {
@@ -40,7 +41,7 @@ public class LocationDragMediator implements GoogleMap.OnMarkerDragListener {
     FavoriteLocation location = null;
     for (Pair p : pairs)
     {
-      if (p.marker == marker)
+      if (p.marker.equals(currentMarker))
       {
         location = p.location;
         break;
@@ -55,7 +56,7 @@ public class LocationDragMediator implements GoogleMap.OnMarkerDragListener {
   @Override
   public void onMarkerDragStart(Marker marker)
   {
-
+    currentMarker = marker;
   }
 
   @Override

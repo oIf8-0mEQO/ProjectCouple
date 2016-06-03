@@ -30,7 +30,7 @@ public class LocationNotificationMediator implements Taggable {
   }
 
   /**
-   * onEnterLocation
+   * whileInLocation
    * @param location - Visited Location
    */
   public void onEnterLocation(VisitedLocationEvent location) {

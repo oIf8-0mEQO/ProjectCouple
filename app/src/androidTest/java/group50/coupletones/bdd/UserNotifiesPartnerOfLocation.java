@@ -7,14 +7,13 @@ import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.CoupleTones;
-import group50.coupletones.auth.user.LocalUser;
-import group50.coupletones.auth.user.Partner;
-import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.controller.tab.favoritelocations.map.LocationNotificationMediator;
 import group50.coupletones.controller.tab.favoritelocations.map.MapProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.ProximityManager;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.mocker.ConcreteUserTestUtil;
+import group50.coupletones.mocker.UserTestUtil;
 import group50.coupletones.network.fcm.NetworkManager;
 import group50.coupletones.network.fcm.message.Message;
 import group50.coupletones.util.sound.VibeTone;
@@ -22,7 +21,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import rx.Observable;
 import rx.subjects.Subject;
 
 import java.util.LinkedList;
@@ -40,10 +38,17 @@ import static org.mockito.Mockito.*;
 @LargeTest
 public class UserNotifiesPartnerOfLocation {
 
+  private UserTestUtil testUtil = new ConcreteUserTestUtil();
   @Rule
-  public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
+  public ActivityTestRule<MainActivity> rule = new ActivityTestRule(MainActivity.class) {
+    @Override
+    protected void beforeActivityLaunched() {
+      testUtil.injectLocalUser();
+      testUtil.injectSpyPartner();
+      super.beforeActivityLaunched();
+    }
+  };
   private CoupleTones app;
-  private LocalUser mockUser;
   private ProximityManager proximityManager;
   private LatLng zoneLatLng = new LatLng(32.882, -117.233);
   private FavoriteLocation zone = new FavoriteLocation("Home", zoneLatLng, 0, VibeTone.getDefaultTone().getIndex());
@@ -56,8 +61,6 @@ public class UserNotifiesPartnerOfLocation {
     outgoingStream = spy(Subject.class);
     doReturn(outgoingStream).when(network).getOutgoingStream();
 
-    // Mock the user
-    mockUser = mock(LocalUser.class);
     app = CoupleTones.global().app();
 
     // Create an instance of MapProxManager and register a network handler
@@ -69,14 +72,7 @@ public class UserNotifiesPartnerOfLocation {
     List<FavoriteLocation> list = new LinkedList<>();
     list.add(zone);
 
-    when(app.isLoggedIn()).thenReturn(true);
-    when(app.getLocalUser()).thenReturn(mockUser);
-    when(mockUser.getFavoriteLocations()).thenReturn(list);
-    User mock = mock(User.class);
-    when(mock.getName()).thenReturn("Henry");
-    when(mock.getEmail()).thenReturn("henry@email.com");
-    when(mockUser.getPartner()).thenReturn(Observable.just(mock(Partner.class)));
-
+    testUtil.mockFavoriteLocations(() -> list);
   }
 
   private android.location.Location givenIWasNotPreviousInTheZone() {

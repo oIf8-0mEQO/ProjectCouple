@@ -114,7 +114,7 @@ public class ProximityManagerTest {
     };
     proximity.getEnterSubject().subscribe(observer::onLocationChange);
     FavoriteLocation shouldNotifyOnce = new FavoriteLocation();
-    proximity.onEnterLocation(shouldNotifyOnce);
-    proximity.onEnterLocation(shouldNotifyOnce);
+    proximity.whileInLocation(shouldNotifyOnce);
+    proximity.whileInLocation(shouldNotifyOnce);
   }
 }

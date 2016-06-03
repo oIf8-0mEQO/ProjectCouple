@@ -68,7 +68,7 @@ public class MapProximityManager implements ProximityManager, Taggable {
    *
    * @param location The favorite location entered
    */
-  public void onEnterLocation(FavoriteLocation location) {
+  public void whileInLocation(FavoriteLocation location) {
     Log.d(getTag(), "Entering location: " + location.getName() + " cooldown = " + location.isOnCooldown());
     if (!location.isOnCooldown() && !currentlyIn.contains(location)) {
       VisitedLocationEvent newLoc = new VisitedLocationEvent(location, new Date());
@@ -86,20 +86,23 @@ public class MapProximityManager implements ProximityManager, Taggable {
     }
   }
 
-  public void onLeaveLocation(FavoriteLocation location) {
-    Log.d(getTag(), "Departing location: " + location.getName() + " cooldown = " + location.isOnCooldown());
-    currentlyIn.remove(location);
+  public void whileOutsideLocation(FavoriteLocation location) {
+    if (currentlyIn.contains(location)) {
+      Log.d(getTag(), "Departing location: " + location.getName() + " cooldown = " + location.isOnCooldown());
 
-    VisitedLocationEvent lastVisitedLocation = null;
-    for (VisitedLocationEvent i : app.getLocalUser().getVisitedLocations()) {
-      if (location.equals(i.getLocation()) && i.getLeaveTime() == -1)
-        lastVisitedLocation = i;
-    }
+      currentlyIn.remove(location);
 
-    if (lastVisitedLocation != null) {
-      exitSubject.onNext(lastVisitedLocation);
-    } else {
-      Log.e(getTag(), "Invalid visited location! (May have been removed)");
+      VisitedLocationEvent lastVisitedLocation = null;
+      for (VisitedLocationEvent i : app.getLocalUser().getVisitedLocations()) {
+        if (location.equals(i.getLocation()) && i.getLeaveTime() == -1)
+          lastVisitedLocation = i;
+      }
+
+      if (lastVisitedLocation != null) {
+        exitSubject.onNext(lastVisitedLocation);
+      } else {
+        Log.e(getTag(), "Invalid visited location! (May have been removed)");
+      }
     }
   }
 
@@ -117,10 +120,10 @@ public class MapProximityManager implements ProximityManager, Taggable {
       for (FavoriteLocation loc : favoriteLocations) {
         // Check distance
         if (distanceInMiles(loc.getPosition(), new LatLng(location.getLatitude(), location.getLongitude())) < 0.1) {
-          onEnterLocation(loc);
-        } else if (currentlyIn.contains(loc)) {
+          whileInLocation(loc);
+        } else {
           // We aren't within the location's radius, but we're currently in the location! Must have left!
-          onLeaveLocation(loc);
+          whileOutsideLocation(loc);
         }
       }
     }

@@ -10,6 +10,7 @@ import group50.coupletones.mocker.ConcreteUserTestUtil;
 import group50.coupletones.mocker.UserTestUtil;
 import group50.coupletones.network.fcm.NetworkManager;
 import group50.coupletones.network.fcm.message.Message;
+import group50.coupletones.util.sound.VibeTone;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.junit.Before;
@@ -22,10 +23,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.argThat;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Henry Mao
@@ -51,7 +49,7 @@ public class LocationNotificationMediatorTest {
     Subject<Message, Message> spySubject = spy(Subject.class);
     doReturn(spySubject).when(network).getOutgoingStream();
 
-    VisitedLocationEvent location = new VisitedLocationEvent("Home", new LatLng(0, 0), new Date(), new Date(), null);
+    VisitedLocationEvent location = new VisitedLocationEvent("Home", new LatLng(0, 0), new Date(), new Date(), VibeTone.getDefaultTone().getIndex());
     mediator.onEnterLocation(location);
 
     // Verify the GCM message has exactly the correct arguments.

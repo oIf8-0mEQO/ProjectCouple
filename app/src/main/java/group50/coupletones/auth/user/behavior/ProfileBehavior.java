@@ -7,16 +7,24 @@ package group50.coupletones.auth.user.behavior;
 
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.GenericTypeIndicator;
+
 import group50.coupletones.CoupleTones;
+import group50.coupletones.auth.user.LocalUser;
+import group50.coupletones.auth.user.User;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
+import group50.coupletones.network.fcm.NetworkManager;
+import group50.coupletones.network.fcm.message.FcmMessage;
+import group50.coupletones.network.fcm.message.MessageType;
 import group50.coupletones.network.sync.Sync;
+import group50.coupletones.util.FormatUtility;
 import group50.coupletones.util.TimeUtility;
 import group50.coupletones.util.properties.Properties;
 import group50.coupletones.util.properties.PropertiesProvider;
 import group50.coupletones.util.properties.Property;
 
 import javax.inject.Inject;
+
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -26,6 +34,11 @@ import java.util.List;
  * Holds the behavior of user's profile. Strategy pattern.
  */
 public class ProfileBehavior implements PropertiesProvider {
+<<<<<<< HEAD
+=======
+  private static final String NOTIFY_TITLE = "%1$s visited %2$s";
+  private static final String NOTIFY_ICON = "icon";
+>>>>>>> 4b2ff6e20c5384fe644203cbea4782ab7918c5b3
 
   /**
    * Object responsible for syncing the object with database
@@ -37,11 +50,27 @@ public class ProfileBehavior implements PropertiesProvider {
   @Exclude
   public TimeUtility timeUtility;
 
+  @Inject
+  @Exclude
+  public FormatUtility formatUtility;
+
+  @Inject
+  public NetworkManager network;
+  /**
+   * User object
+   */
+  User user;
   /**
    * Google user id
    */
   private String id;
 
+  /**
+   * Booleans that handle settings toggling
+   */
+  private boolean globalNotificationsAreOn = true;
+  private boolean tonesAreOn = true;
+  private boolean vibrationIsOn = true;
   /**
    * ID for FCM
    */
@@ -70,14 +99,18 @@ public class ProfileBehavior implements PropertiesProvider {
   /**
    * Creates a ConcreteUser
    */
-  public ProfileBehavior(Properties properties, Sync sync) {
+  public ProfileBehavior(Properties properties, Sync sync, User user) {
     CoupleTones.global().inject(this);
 
+    this.user = user;
     this.properties = properties
       .property("id").bind(this)
       .property("fcmToken").bind(this)
       .property("name").bind(this)
       .property("email").bind(this)
+      .property("globalNotificationsAreOn").bind(this)
+      .property("tonesAreOn").bind(this)
+      .property("vibrationIsOn").bind(this)
       .property("favoriteLocations")
       .mark(new GenericTypeIndicator<List<FavoriteLocation>>() {
       })
@@ -88,6 +121,72 @@ public class ProfileBehavior implements PropertiesProvider {
       .bind(this);
 
     this.sync = sync;
+  }
+
+  /**
+   * @return Global notifications setting
+   */
+  public boolean getGlobalNotificationsSetting() {
+    return globalNotificationsAreOn;
+  }
+
+  /**
+   * @return Tones setting
+   */
+  public boolean getTonesSetting() {
+    return tonesAreOn;
+  }
+
+  /**
+   * @return Vibration setting
+   */
+  public boolean getVibrationSetting() {
+    return vibrationIsOn;
+  }
+
+  /**
+   * This function turns on/off the global notifications setting
+   *
+   * @return globalNotificationsAreOn true if notifications are on, false if turned off
+   */
+  public Boolean setGlobalNotificationsSetting(boolean setting) {
+    globalNotificationsAreOn = setting;
+
+    Property<Object> prop = properties.property("globalNotificationsAreOn");
+    sync.update(prop);
+    prop.update();
+
+    return globalNotificationsAreOn;
+  }
+
+  /**
+   * This function turns on/off tones
+   *
+   * @return tonesAreOn true if tones are on, false if turned off
+   */
+  public Boolean setTonesSetting(boolean setting) {
+    tonesAreOn = setting;
+
+    Property<Object> prop = properties.property("tonesAreOn");
+    sync.update(prop);
+    prop.update();
+
+    return tonesAreOn;
+  }
+
+  /**
+   * This function turns on/off vibration
+   *
+   * @return vibrationIsOn true if vibration is on, false if turned off
+   */
+  public Boolean setVibrationSetting(boolean setting) {
+    vibrationIsOn = setting;
+
+    Property<Object> prop = properties.property("vibrationIsOn");
+    sync.update(prop);
+    prop.update();
+
+    return vibrationIsOn;
   }
 
   /**
@@ -198,12 +297,31 @@ public class ProfileBehavior implements PropertiesProvider {
     if (visitedLocations == null) {
       visitedLocations = new LinkedList<>();
     }
-    visitedLocations.add(visitedLocation);
+    visitedLocations.add(0, visitedLocation);
 
     Property<Object> prop = properties.property("visitedLocations");
     prop.set(this.visitedLocations);
     sync.update(prop);
     prop.update();
+
+    // Send notification to partner about location visit
+    if (user instanceof LocalUser) {
+      if (((LocalUser) user).getGlobalNotificationsSetting()) {
+        ((LocalUser) user).getPartner()
+          .filter(partner -> partner != null)
+          .subscribe(partner -> {
+            network
+              .getOutgoingStream()
+              .onNext(
+                new FcmMessage(MessageType.LOCATION_NOTIFICATION.value)
+                  .setTitle(String.format(NOTIFY_TITLE, ((LocalUser) user).getName(), visitedLocation.getName()))
+                  .setBody(formatUtility.formatDate(visitedLocation.getTimeVisited()))
+                  .setIcon(NOTIFY_ICON)
+                  .setTo(partner.getFcmToken())
+              );
+          });
+      }
+    }
   }
 
   /**
@@ -220,6 +338,14 @@ public class ProfileBehavior implements PropertiesProvider {
       sync.update(prop);
       prop.update();
     }
+  }
+
+  public void updateCooldownOfFavorite(FavoriteLocation location) {
+    location.setTimeLastVisited(System.currentTimeMillis());
+
+    Property<Object> prop = properties.property("favoriteLocations");
+    sync.update(prop);
+    prop.update();
   }
 
   @Override

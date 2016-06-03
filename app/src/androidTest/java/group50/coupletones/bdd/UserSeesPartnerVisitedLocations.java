@@ -1,6 +1,8 @@
 package group50.coupletones.bdd;
 
 import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
+import android.test.suitebuilder.annotation.LargeTest;
 import com.google.android.gms.maps.model.LatLng;
 import group50.coupletones.R;
 import group50.coupletones.auth.user.Partner;
@@ -12,6 +14,7 @@ import group50.coupletones.mocker.UserTestUtil;
 import group50.coupletones.util.properties.Property;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Collections;
 import java.util.Date;
@@ -26,6 +29,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.*;
  * @author Henry Mao
  * @since 5/29/16
  */
+@RunWith(AndroidJUnit4.class)
+@LargeTest
 public class UserSeesPartnerVisitedLocations {
 
   private FavoriteLocation home;
@@ -44,7 +49,7 @@ public class UserSeesPartnerVisitedLocations {
   }
 
   private void whenThePartnerVisitsAZone() throws Throwable {
-    home = new FavoriteLocation("Home", new LatLng(0, 0), 0, null);
+    home = new FavoriteLocation("Home", new LatLng(0, 0), 0, 0);
     VisitedLocationEvent evt = new VisitedLocationEvent(home, new Date(), new Date());
     Partner partner = testUtil.getPartner();
     Property<Object> prop = partner

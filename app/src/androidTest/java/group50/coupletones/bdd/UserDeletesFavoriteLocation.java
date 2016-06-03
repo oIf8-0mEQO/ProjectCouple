@@ -41,7 +41,7 @@ public class UserDeletesFavoriteLocation {
   public ActivityTestRule<MainActivity> rule = new ActivityTestRule<>(MainActivity.class);
   private UserTestUtil testUtil;
   private LatLng zoneLatLng = new LatLng(32.882, -117.233);
-  private FavoriteLocation zone = new FavoriteLocation("Home", zoneLatLng, 0, VibeTone.getTone());
+  private FavoriteLocation zone = new FavoriteLocation("Home", zoneLatLng, 0, VibeTone.getDefaultTone().getIndex());
   private List<FavoriteLocation> emptyData;
 
   @Before

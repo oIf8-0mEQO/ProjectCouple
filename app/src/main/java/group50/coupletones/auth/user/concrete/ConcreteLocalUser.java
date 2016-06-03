@@ -39,6 +39,9 @@ public class ConcreteLocalUser implements LocalUser {
     sync.watchAll(properties);
   }
 
+  /**
+   * Implements LocalUser
+   */
   @Override
   public Observable<Partner> getPartner() {
     return partnerBehavior.getPartner();

@@ -8,7 +8,6 @@ import android.os.Vibrator;
 import group50.coupletones.CoupleTones;
 
 import javax.inject.Inject;
-import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -22,34 +21,48 @@ public class VibeTone {
   public static final int MAX_VIBETONE_COUNT = 10;
   public static final int ARRIVAL_VIBETONE = 10;
   public static final int DEPARTURE_VIBETONE = 11;
-  private static VibeTone[] tones = {
-    new VibeTone("/assets/tones/vibetone1.mps", new long[]{0, 2000}, "Pikachu"),//Index 0 / default tone.
-    new VibeTone("/assets/tones/vibetone2.mps", new long[]{0, 400, 400, 400, 400, 400}, "Coin"),//Index 1.
-    new VibeTone("/assets/tones/vibetone3.mps", new long[]{0, 800, 400, 800}, "Super Mario"),//Index 2.
-    new VibeTone("/assets/tones/vibetone4.mps", new long[]{0, 1200, 400, 400}, "Pokemon Battle"),//Index 3.
-    new VibeTone("/assets/tones/vibetone5.mps", new long[]{0, 400, 400, 1200}, "Kim Possible"),//Index 4.
-    new VibeTone("/assets/tones/vibetone6.mps", new long[]{0, 800, 400, 200, 400, 200}, "Kakao"),//Index 5.
-    new VibeTone("/assets/tones/vibetone7.mps", new long[]{0, 200, 400, 800, 400, 200}, "Bling"),//Index 6.
-    new VibeTone("/assets/tones/vibetone8.mps", new long[]{0, 200, 400, 200, 400, 800}, "1 Up"),//Index 7.
-    new VibeTone("/assets/tones/vibetone9.mps", new long[]{0, 800, 400, 800, 400, 800}, "Windows"),//Index 8.
-    new VibeTone("/assets/tones/vibetone10.mps", new long[]{0, 800, 400, 800, 400, 800, 400, 800}, "Zelda"),//Index 9.
-    new VibeTone("/assets/tones/arrivaltone.mp3", new long[]{0, 1000}, "Arrival"),//Index 10 / Arrival.
-    new VibeTone("/assets/tones/departuretone.mps", new long[]{0, 400, 200, 400}, "Departure"),//Index 11 / Departure.
-  };
+  private static VibeTone[] tones;
   private static long delay = 1500;//The amount of time in milliseconds to wait between arrival/departure global sound and specific sound.
+
+
   @Inject
   public CoupleTones app;
   private Ringtone sound;
   private long[] vibration;
-  private String name;
 
-
-  private VibeTone(String filePath, long[] vibration, String name) {
+  private VibeTone(String fileName, long[] vibration, String name) {
     CoupleTones.global().inject(this);
     this.vibration = vibration;
     this.name = name;
-    Uri file = Uri.fromFile(new File(filePath));
-    RingtoneManager.getRingtone(app.getApplicationContext(), file);
+    Uri file = Uri.parse("android.resource://group50.coupletones/raw/tones" + fileName);
+    sound = RingtoneManager.getRingtone(app.getApplicationContext(), file);
+  }
+
+  private String name;
+
+  public static void loadTones() {
+    tones = new VibeTone[]{
+      new VibeTone("vibetone1.mp3", new long[]{0, 2000}, "Pikachu"),//Index 0 / default tone.
+      new VibeTone("vibetone2.mp3", new long[]{0, 400, 400, 400, 400, 400}, "Coin"),//Index 1.
+      new VibeTone("vibetone3.mp3", new long[]{0, 800, 400, 800}, "Super Mario"),//Index 2.
+      new VibeTone("vibetone4.mp3", new long[]{0, 1200, 400, 400}, "Pokemon Battle"),//Index 3.
+      new VibeTone("vibetone5.mp3", new long[]{0, 400, 400, 1200}, "Kim Possible"),//Index 4.
+      new VibeTone("vibetone6.mp3", new long[]{0, 800, 400, 200, 400, 200}, "Kakao"),//Index 5.
+      new VibeTone("vibetone7.mp3", new long[]{0, 200, 400, 800, 400, 200}, "Bling"),//Index 6.
+      new VibeTone("vibetone8.mp3", new long[]{0, 200, 400, 200, 400, 800}, "1 Up"),//Index 7.
+      new VibeTone("vibetone9.mp3", new long[]{0, 800, 400, 800, 400, 800}, "Windows"),//Index 8.
+      new VibeTone("vibetone10.mp3", new long[]{0, 800, 400, 800, 400, 800, 400, 800}, "Zelda"),//Index 9.
+      new VibeTone("arrivaltone.mp3", new long[]{0, 1000}, "Arrival"),//Index 10 / Arrival.
+      new VibeTone("departuretone.mp3", new long[]{0, 400, 200, 400}, "Departure"),//Index 11 / Departure.
+    };
+  }
+
+  private VibeTone(String fileName, long[] vibration, String name) {
+    CoupleTones.global().inject(this);
+    this.vibration = vibration;
+    this.name = name;
+    Uri file = Uri.parse("android.resource://group50.coupletones/raw/tones" + fileName);
+    sound = RingtoneManager.getRingtone(app.getApplicationContext(), file);
   }
 
   /**
@@ -73,14 +86,29 @@ public class VibeTone {
 
   public void playArrival() {
     try {
-      if (app.getLocalUser().getVibrationSetting()) tones[ARRIVAL_VIBETONE].playVibrate();
-      if (app.getLocalUser().getTonesSetting()) tones[ARRIVAL_VIBETONE].playSound();
-      wait(delay);
-      if (app.getLocalUser().getVibrationSetting()) playVibrate();
-      if (app.getLocalUser().getTonesSetting()) playSound();
+      tones[ARRIVAL_VIBETONE].play();
+      Thread.sleep(delay);
+      play();
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }
+  }
+
+  public void playDeparture() {
+    try {
+      tones[DEPARTURE_VIBETONE].play();
+      Thread.sleep(delay);
+      play();
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  private void play() {
+    if (app.getLocalUser().getVibrationSetting())
+      playVibrate();
+    if (app.getLocalUser().getTonesSetting())
+      playSound();
   }
 
   public void playVibrate() {
@@ -90,19 +118,6 @@ public class VibeTone {
 
   public void playSound() {
     sound.play();
-  }
-
-  public void playDeparture() {
-    try {
-      Vibrator vib = (Vibrator) app.getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-      if (app.getLocalUser().getVibrationSetting()) tones[DEPARTURE_VIBETONE].playVibrate();
-      if (app.getLocalUser().getTonesSetting()) tones[DEPARTURE_VIBETONE].playSound();
-      wait(delay);
-      if (app.getLocalUser().getVibrationSetting()) playVibrate();
-      if (app.getLocalUser().getTonesSetting()) playSound();
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
   }
 
   public String getName() {

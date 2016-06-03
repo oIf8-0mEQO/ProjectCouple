@@ -5,6 +5,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 import group50.coupletones.util.Taggable;
+import rx.schedulers.Schedulers;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -32,9 +33,12 @@ public abstract class AbstractLocationHandler implements Taggable {
       try {
         int favoriteLocationIndex = Integer.parseInt(data.get("locationIndex"));
 
+        Log.d(getTag(), "Attempting to play VibeTone for " + favoriteLocationIndex);
+
         app.getLocalUser()
           .getPartner()
           .filter(partner -> partner != null)
+          .observeOn(Schedulers.newThread())
           .subscribe(partner -> {
             List<FavoriteLocation> favoriteLocations = partner.getFavoriteLocations();
             if (favoriteLocationIndex < favoriteLocations.size()) {

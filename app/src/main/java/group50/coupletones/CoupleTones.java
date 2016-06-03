@@ -20,6 +20,7 @@ import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.ProximityModule;
 import group50.coupletones.network.fcm.NetworkManager;
 import group50.coupletones.network.fcm.message.MessageType;
+import group50.coupletones.util.sound.VibeTone;
 
 /**
  * A singleton object that holds global data.
@@ -130,5 +131,7 @@ public class CoupleTones extends Application {
     LocationNotificationMediator mediator = new LocationNotificationMediator();
     proximity.getEnterSubject().subscribe(mediator::onEnterLocation);
     proximity.getExitSubject().subscribe(mediator::onLeaveLocation);
+
+    VibeTone.loadTones();
   }
 }

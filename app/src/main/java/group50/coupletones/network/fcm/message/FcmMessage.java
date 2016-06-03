@@ -5,6 +5,7 @@ import java.util.Map;
 
 /**
  * A concrete message object
+ *
  * @author Sharmaine Manalo
  * @since 5/4/16
  */
@@ -26,6 +27,7 @@ public class FcmMessage implements Message {
 
   /**
    * Gets type
+   *
    * @return - incoming message
    */
   @Override
@@ -35,6 +37,7 @@ public class FcmMessage implements Message {
 
   /**
    * Gets data
+   *
    * @return - data of message
    */
   @Override
@@ -73,9 +76,8 @@ public class FcmMessage implements Message {
     return this;
   }
 
-  public FcmMessage setString(String key, Object value)
-  {
-    payload.put(key, value);
+  public FcmMessage setString(String key, Object value) {
+    getData().put(key, value);
     return this;
   }
 

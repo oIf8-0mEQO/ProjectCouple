@@ -88,7 +88,7 @@ public class ListAdapterPartnerVisited extends RecyclerView.Adapter<ListAdapterP
   public void onBindViewHolder(ListViewHolder holder, int position) {
     VisitedLocationEvent visitedLocation = locations.get(position);
     holder.name.setText(visitedLocation.getName());
-    holder.address.setText(visitedLocation.getAddress() != null ? visitedLocation.getAddress().getLocality() : "");
+    holder.address.setText(formatUtility.formatAddress(visitedLocation.getAddress()));
     holder.icon.setImageResource(R.drawable.target_icon);
     holder.arrivalValue.setText(formatUtility.formatDate(visitedLocation.getTimeVisited()));
     holder.departureValue.setText(formatUtility.formatDate(visitedLocation.getTimeLeft()));

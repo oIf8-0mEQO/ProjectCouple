@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.user.User;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
 
 import javax.inject.Inject;
 
@@ -202,15 +203,21 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
    */
   private void populateMap(User user) {
     mMap.clear();
+    mMap.setOnMarkerDragListener(null);
+    LocationDragMediator locationDragHandler = null;
 
     if (user != null) {
       MarkerOptions markerSettings = new MarkerOptions();
-      markerSettings.draggable(false);
-      for (group50.coupletones.controller.tab.favoritelocations.map.location.Location i : user.getFavoriteLocations()) {
+      if (isUser) markerSettings.draggable(true);
+      else markerSettings.draggable(false);
+      locationDragHandler = new LocationDragMediator();
+      for (FavoriteLocation i : user.getFavoriteLocations()) {
         markerSettings.position(i.getPosition());
         markerSettings.title(i.getName());
         mMap.addMarker(markerSettings);
+        locationDragHandler.bindPair(mMap.addMarker(markerSettings), i);
       }
     }
+    mMap.setOnMarkerDragListener(locationDragHandler);
   }
 }

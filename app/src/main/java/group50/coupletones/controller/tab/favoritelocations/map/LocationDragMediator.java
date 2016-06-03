@@ -46,7 +46,22 @@ public class LocationDragMediator implements GoogleMap.OnMarkerDragListener {
         break;
       }
     }
-    app.getLocalUser().setFavoriteLocation(app.getLocalUser().getFavoriteLocations().indexOf(location), location);
+    int index = app.getLocalUser().getFavoriteLocations().indexOf(location);
+    location.setLat(marker.getPosition().latitude);
+    location.setLong(marker.getPosition().longitude);
+    app.getLocalUser().setFavoriteLocation(index, location);
+  }
+
+  @Override
+  public void onMarkerDragStart(Marker marker)
+  {
+
+  }
+
+  @Override
+  public void onMarkerDrag(Marker marker)
+  {
+
   }
 
   private class Pair

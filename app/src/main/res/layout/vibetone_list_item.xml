@@ -39,10 +39,25 @@
                         android:layout_height="wrap_content"
                         android:padding="20dp"
                         android:src="@drawable/ringtone_icon"
-                        android:layout_marginStart="77dp"
+                        android:layout_marginStart="1dp"
                         android:layout_marginTop="15dp"
                         android:layout_centerVertical="true"
                         android:layout_alignParentStart="true"/>
+
+                <!-- Set VibeTone Button -->
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/set_button_title"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/set_button"
+                    android:layout_alignEnd="@+id/list_vibetone_name"
+                    android:minHeight="30dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/roundedbutton"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="36dp"/>
 
                 <!-- List Item VibeTone Name -->
                 <TextView
@@ -52,13 +67,14 @@
                     android:layout_marginTop="12dp"
                     android:paddingTop="14dp"
                     android:singleLine="true"
-                    android:gravity="center"
                     android:text="@string/partner_vibetone"
+                    android:layout_marginStart="55dp"
                     android:textColor="@color/textColor"
                     android:textSize="16sp"/>
 
             </RelativeLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
+
 
 </RelativeLayout>

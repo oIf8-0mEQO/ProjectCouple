@@ -1,11 +1,13 @@
 package group50.coupletones.util.sound;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Vibrator;
 import group50.coupletones.CoupleTones;
+import group50.coupletones.R;
 
 import javax.inject.Inject;
 import java.util.Arrays;
@@ -34,24 +36,24 @@ public class VibeTone {
     CoupleTones.global().inject(this);
     this.vibration = vibration;
     this.name = name;
-    Uri file = Uri.parse("android.resource://group50.coupletones/raw/tones" + fileName);
+    Uri file = Uri.parse("android.resource://group50.coupletones/res/raw/" + fileName);
     sound = RingtoneManager.getRingtone(app.getApplicationContext(), file);
   }
 
   public static void loadTones() {
     tones = new VibeTone[]{
-      new VibeTone("vibetone1.mp3", new long[]{0, 2000}, "Pikachu"),//Index 0 / default tone.
-      new VibeTone("vibetone2.mp3", new long[]{0, 400, 400, 400, 400, 400}, "Coin"),//Index 1.
-      new VibeTone("vibetone3.mp3", new long[]{0, 800, 400, 800}, "Super Mario"),//Index 2.
-      new VibeTone("vibetone4.mp3", new long[]{0, 1200, 400, 400}, "Pokemon Battle"),//Index 3.
-      new VibeTone("vibetone5.mp3", new long[]{0, 400, 400, 1200}, "Kim Possible"),//Index 4.
-      new VibeTone("vibetone6.mp3", new long[]{0, 800, 400, 200, 400, 200}, "Kakao"),//Index 5.
-      new VibeTone("vibetone7.mp3", new long[]{0, 200, 400, 800, 400, 200}, "Bling"),//Index 6.
-      new VibeTone("vibetone8.mp3", new long[]{0, 200, 400, 200, 400, 800}, "1 Up"),//Index 7.
-      new VibeTone("vibetone9.mp3", new long[]{0, 800, 400, 800, 400, 800}, "Windows"),//Index 8.
-      new VibeTone("vibetone10.mp3", new long[]{0, 800, 400, 800, 400, 800, 400, 800}, "Zelda"),//Index 9.
-      new VibeTone("arrivaltone.mp3", new long[]{0, 1000}, "Arrival"),//Index 10 / Arrival.
-      new VibeTone("departuretone.mp3", new long[]{0, 400, 200, 400}, "Departure"),//Index 11 / Departure.
+        new VibeTone("R.raw.vibetone1", new long[]{0, 2000}, "Pikachu"),//Index 0 / default tone.
+        new VibeTone("R.raw.vibetone2", new long[]{0, 400, 400, 400, 400, 400}, "Coin"),//Index 1.
+        new VibeTone("R.raw.vibetone3", new long[]{0, 800, 400, 800}, "Super Mario"),//Index 2.
+        new VibeTone("R.raw.vibetone4", new long[]{0, 1200, 400, 400}, "Pokemon Battle"),//Index 3.
+        new VibeTone("R.raw.vibetone5", new long[]{0, 400, 400, 1200}, "Kim Possible"),//Index 4.
+        new VibeTone("R.raw.vibetone6", new long[]{0, 800, 400, 200, 400, 200}, "Kakao"),//Index 5.
+        new VibeTone("R.raw.vibetone7", new long[]{0, 200, 400, 800, 400, 200}, "Bling"),//Index 6.
+        new VibeTone("R.raw.vibetone8", new long[]{0, 200, 400, 200, 400, 800}, "1 Up"),//Index 7.
+        new VibeTone("R.raw.vibetone9", new long[]{0, 800, 400, 800, 400, 800}, "Windows"),//Index 8.
+        new VibeTone("R.raw.vibetone10", new long[]{0, 800, 400, 800, 400, 800, 400, 800}, "Zelda"),//Index 9.
+        new VibeTone("R.raw.arrivaltone", new long[]{0, 1000}, "Arrival"),//Index 10 / Arrival.
+        new VibeTone("R.raw.departuretone", new long[]{0, 400, 200, 400}, "Departure"),//Index 11 / Departure.
     };
   }
 

@@ -31,6 +31,6 @@ public class VibeTone {
   @Override
   public boolean equals(Object o) {
     return o instanceof VibeTone;//TODO: Implement this.
-  }
 
+  }
 }

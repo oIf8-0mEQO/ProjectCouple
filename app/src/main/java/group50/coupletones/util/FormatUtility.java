@@ -11,12 +11,23 @@ import java.util.Date;
  * @since 5/30/16
  */
 public class FormatUtility {
+
+  /**
+   * Formats date
+   * @param date
+   * @return
+   */
   public String formatDate(Date date) {
     Format formatter = new SimpleDateFormat("EEE, h:mm a");
     String s = formatter.format(date);
     return s;
   }
 
+  /**
+   *
+   * @param address
+   * @return
+   */
   public String formatAddress(Address address) {
     if (address != null) {
       if (address.getLocality() != null) {

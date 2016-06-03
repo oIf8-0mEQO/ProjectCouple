@@ -214,7 +214,6 @@ public class MapFragment extends SupportMapFragment implements OnMapReadyCallbac
       for (FavoriteLocation i : user.getFavoriteLocations()) {
         markerSettings.position(i.getPosition());
         markerSettings.title(i.getName());
-        mMap.addMarker(markerSettings);
         locationDragHandler.bindPair(mMap.addMarker(markerSettings), i);
       }
     }

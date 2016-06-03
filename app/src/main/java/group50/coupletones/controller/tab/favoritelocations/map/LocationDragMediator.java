@@ -57,6 +57,15 @@ public class LocationDragMediator implements GoogleMap.OnMarkerDragListener {
   public void onMarkerDragStart(Marker marker)
   {
     currentMarker = marker;
+    boolean isBound = false;
+    for (Pair p : pairs)
+    {
+      if (p.marker.equals(currentMarker))
+      {
+        isBound = true;
+      }
+    }
+    if (!isBound) System.out.println("Marker not bound.");
   }
 
   @Override

@@ -156,4 +156,9 @@ public class ConcreteLocalUser implements LocalUser {
   public void setFavoriteLocation(int index, FavoriteLocation location) {
     profile.setFavoriteLocation(index, location);
   }
+
+  @Override
+  public void userLeaveLocation(VisitedLocationEvent event) {
+    profile.userLeaveLocation(event);
+  }
 }

@@ -2,6 +2,7 @@ package group50.coupletones.controller.tab.partnerslocations;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,11 +74,14 @@ public class ListAdapterVibeTones extends RecyclerView.Adapter<ListAdapterVibeTo
     holder.name.setText(tone.getName());
 
     // Set the VibeTone for this location.
-    holder.itemView.setOnClickListener(view -> {
+    holder.container.setOnClickListener(view -> {
+      Log.v(getTag(), "Clicked on VibeTone item");
       // Set the vibe tone for this location
       app.getLocalUser()
         .getPartner()
+        .filter(partner -> partner != null)
         .subscribe(partner -> {
+          Log.v(getTag(), "Setting VibeTone: " + position);
           partner.setVibeTone(locationIndex, position);
         });
 

@@ -35,7 +35,7 @@ public class PartnerResponseActivity extends Activity {
 
     setContentView(R.layout.activity_partner_request);
 
-    //TODO this is the custom font setup
+    // Custom font setup
     TextView partnerName = (TextView) findViewById(R.id.requested_partner);
     TextView requestText = (TextView) findViewById(R.id.request_text);
     Button acceptButton = (Button) findViewById(R.id.accept_button);
@@ -60,10 +60,12 @@ public class PartnerResponseActivity extends Activity {
       partnerName.setText(name);
       requestText.setText(email + " " + getString(R.string.partner_up_text));
 
+      // Accepted
       acceptButton.setOnClickListener(click -> {
         app.getLocalUser().handlePartnerRequest(id, true);
         finish();
       });
+      // Rejected
       rejectButton.setOnClickListener(click -> {
         app.getLocalUser().handlePartnerRequest(id, false);
         finish();

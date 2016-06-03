@@ -6,6 +6,7 @@ import group50.coupletones.controller.tab.favoritelocations.map.location.Visited
 import rx.Observable;
 
 /**
+ * Proximity Manager interface
  * @author Joseph Cox
  * @since 5/28/2016
  */

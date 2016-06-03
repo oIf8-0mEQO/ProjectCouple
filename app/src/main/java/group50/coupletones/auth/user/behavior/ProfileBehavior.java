@@ -302,7 +302,7 @@ public class ProfileBehavior implements PropertiesProvider {
           network
             .getOutgoingStream()
             .onNext(
-              new FcmMessage(MessageType.LOCATION_NOTIFICATION.value)
+              new FcmMessage(MessageType.LOCATION_ARRIVAL.value)
                 .setTitle(String.format(NOTIFY_TITLE, user.getName(), visitedLocation.getName()))
                 .setBody(formatUtility.formatDate(visitedLocation.getTimeVisited()))
                 .setIcon(NOTIFY_ICON)

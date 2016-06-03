@@ -14,7 +14,12 @@ import group50.coupletones.controller.tab.favoritelocations.EditLocationActivity
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsFragment;
 import group50.coupletones.controller.tab.favoritelocations.FavoriteLocationsListAdapter;
 import group50.coupletones.controller.tab.favoritelocations.map.*;
-import group50.coupletones.controller.tab.favoritelocations.map.location.*;
+import group50.coupletones.controller.tab.favoritelocations.map.location.AddressProvider;
+import group50.coupletones.controller.tab.favoritelocations.map.location.ConcreteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.FavoriteLocation;
+import group50.coupletones.controller.tab.favoritelocations.map.location.VisitedLocationEvent;
+import group50.coupletones.controller.tab.favoritelocations.map.location.handler.AbstractLocationHandler;
+import group50.coupletones.controller.tab.favoritelocations.map.location.handler.LocationArrivalHandler;
 import group50.coupletones.controller.tab.partnerslocations.ListAdapterPartnerVisited;
 import group50.coupletones.controller.tab.partnerslocations.ListAdapterVibeTones;
 import group50.coupletones.controller.tab.settings.SettingsFragment;
@@ -61,6 +66,8 @@ public interface GlobalComponent {
   TimeUtility timeUtility();
 
   FormatUtility formatUtility();
+
+  void inject(AbstractLocationHandler obj);
 
   void inject(LocationArrivalHandler obj);
 

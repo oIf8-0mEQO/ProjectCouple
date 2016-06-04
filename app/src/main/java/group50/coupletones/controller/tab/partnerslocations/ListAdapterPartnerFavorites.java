@@ -93,7 +93,7 @@ public class ListAdapterPartnerFavorites extends RecyclerView.Adapter<ListAdapte
     FavoriteLocation location = locations.get(position);
     holder.name.setText(location.getName());
     holder.address.setText(location.getAddress() != null ? location.getAddress().getLocality() : "");
-    holder.icon.setImageResource(R.drawable.target_icon);
+    holder.icon.setImageResource(R.drawable.partnerfave_icon);
     holder.vibeTone.setText(location.getVibetone().getName());
 
     // Clicking the Edit Button takes user to the List of VibeTones to choose from

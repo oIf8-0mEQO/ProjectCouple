@@ -116,7 +116,7 @@ public class UserCustomizesLocationNotificationVibeTone {
     Thread.sleep(1000);
     onView(withId(R.id.vibetone_recycler_view)).check(matches(isDisplayed()));
     onView(withId(R.id.vibetone_recycler_view)).perform(
-      RecyclerViewActions.actionOnItemAtPosition(1, ListItemViewAction.clickChildViewWithId(R.id.list_vibetone_icon)));
+      RecyclerViewActions.actionOnItemAtPosition(1, ListItemViewAction.clickChildViewWithId(R.id.set_button)));
   }
 
   public void thenThatVibeToneWillBeAssignedToTheLocationBeingEdited() {

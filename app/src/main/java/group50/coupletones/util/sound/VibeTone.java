@@ -23,7 +23,7 @@ public class VibeTone {
   public static final int ARRIVAL_VIBETONE = 10;
   public static final int DEPARTURE_VIBETONE = 11;
   private static VibeTone[] tones;
-  private static long delay = 1500;//The amount of time in milliseconds to wait between arrival/departure global sound and specific sound.
+  private static long delay = 2000;//The amount of time in milliseconds to wait between arrival/departure global sound and specific sound.
   @Inject
   public CoupleTones app;
   private Ringtone sound;

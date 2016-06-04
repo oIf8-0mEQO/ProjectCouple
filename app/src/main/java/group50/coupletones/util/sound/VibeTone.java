@@ -43,8 +43,7 @@ public class VibeTone {
     arrivalFile = Uri.parse("android.resource://"
       + app.getApplicationContext().getPackageName() + "/"
       + R.raw.arrivaltone);
-    departFile = Uri.parse("android.resource://" + "/"
-      + app.getApplicationContext().getPackageName()
+    departFile = Uri.parse("android.resource://" + app.getApplicationContext().getPackageName() + "/"
       + R.raw.departuretone);
 
     sound = RingtoneManager.getRingtone(app.getApplicationContext(), file);

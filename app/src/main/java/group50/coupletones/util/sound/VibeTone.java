@@ -25,6 +25,8 @@ public class VibeTone {
   public static final int ARRIVAL_VIBETONE = 10;
   public static final int DEPARTURE_VIBETONE = 11;
   private static VibeTone[] tones;
+  Uri arrivalFile, departFile;
+  Ringtone arrivalTone, departureTone;
   private static long delay = 1500;//The amount of time in milliseconds to wait between arrival/departure global sound and specific sound.
   @Inject
   public CoupleTones app;
@@ -36,7 +38,13 @@ public class VibeTone {
     CoupleTones.global().inject(this);
     this.vibration = vibration;
     this.name = name;
-    Uri file = Uri.parse("android.resource://group50.coupletones/res/raw/" + fileName);
+    Uri file = Uri.parse("android.resource://" + app.getApplicationContext().getPackageName() + fileName);
+    arrivalFile = Uri.parse("android.resource://"
+      + app.getApplicationContext().getPackageName()
+      + R.raw.arrivaltone);
+    departFile = Uri.parse("android.resource://"
+      + app.getApplicationContext().getPackageName()
+      + R.raw.departuretone);
     sound = RingtoneManager.getRingtone(app.getApplicationContext(), file);
   }
 
@@ -82,7 +90,7 @@ public class VibeTone {
 
   public void playArrival() {
     try {
-      tones[ARRIVAL_VIBETONE].play();
+      arrivalTone.play();
       Thread.sleep(delay);
       play();
     } catch (Exception e) {
@@ -92,7 +100,7 @@ public class VibeTone {
 
   public void playDeparture() {
     try {
-      tones[DEPARTURE_VIBETONE].play();
+      departureTone.play();
       Thread.sleep(delay);
       play();
     } catch (Exception e) {

@@ -41,18 +41,18 @@ public class VibeTone {
   }
   public static void loadTones() {
     tones = new VibeTone[]{
-      new VibeTone(R.raw.vibetone1, new long[]{0, 2000}, "Pikachu"),//Index 0 / default tone.
-      new VibeTone(R.raw.vibetone2, new long[]{0, 400, 400, 400, 400, 400}, "Coin"),//Index 1.
-      new VibeTone(R.raw.vibetone3, new long[]{0, 800, 400, 800}, "Super Mario"),//Index 2.
-      new VibeTone(R.raw.vibetone4, new long[]{0, 1200, 400, 400}, "Pokemon Battle"),//Index 3.
-      new VibeTone(R.raw.vibetone5, new long[]{0, 400, 400, 1200}, "Kim Possible"),//Index 4.
-      new VibeTone(R.raw.vibetone6, new long[]{0, 800, 400, 200, 400, 200}, "Kakao"),//Index 5.
-      new VibeTone(R.raw.vibetone7, new long[]{0, 200, 400, 800, 400, 200}, "Bling"),//Index 6.
-      new VibeTone(R.raw.vibetone8, new long[]{0, 200, 400, 200, 400, 800}, "1 Up"),//Index 7.
-      new VibeTone(R.raw.vibetone9, new long[]{0, 800, 400, 800, 400, 800}, "Windows"),//Index 8.
-      new VibeTone(R.raw.vibetone10, new long[]{0, 800, 400, 800, 400, 800, 400, 800}, "Zelda"),//Index 9.
-      new VibeTone(R.raw.arrivaltone, new long[]{0, 1000}, "Arrival"),//Index 10 / Arrival.
-      new VibeTone(R.raw.departuretone, new long[]{0, 400, 200, 400}, "Departure"),//Index 11 / Departure.
+      new VibeTone(R.raw.vibetone1, new long[]{0, 100}, "Pikachu"),//Index 0 / default tone.
+      new VibeTone(R.raw.vibetone2, new long[]{0, 100, 400}, "Coin"),//Index 1.
+      new VibeTone(R.raw.vibetone3, new long[]{0, 100, 400, 100}, "Super Mario"),//Index 2.
+      new VibeTone(R.raw.vibetone4, new long[]{0, 400, 100}, "Pokemon Battle"),//Index 3.
+      new VibeTone(R.raw.vibetone5, new long[]{0, 400}, "Kim Possible"),//Index 4.
+      new VibeTone(R.raw.vibetone6, new long[]{0, 100}, "Kakao"),//Index 5.
+      new VibeTone(R.raw.vibetone7, new long[]{0, 200, 400}, "Bling"),//Index 6.
+      new VibeTone(R.raw.vibetone8, new long[]{0, 200, 400, 300}, "1 Up"),//Index 7.
+      new VibeTone(R.raw.vibetone9, new long[]{0, 100, 300}, "Windows"),//Index 8.
+      new VibeTone(R.raw.vibetone10, new long[]{0, 300, 100}, "Zelda"),//Index 9.
+      new VibeTone(R.raw.arrivaltone, new long[]{0, 200}, "Arrival"),//Index 10 / Arrival.
+      new VibeTone(R.raw.departuretone, new long[]{0, 300}, "Departure"),//Index 11 / Departure.
     };
   }
   /**

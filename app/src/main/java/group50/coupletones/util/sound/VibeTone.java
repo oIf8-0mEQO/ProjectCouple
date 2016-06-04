@@ -38,14 +38,18 @@ public class VibeTone {
     CoupleTones.global().inject(this);
     this.vibration = vibration;
     this.name = name;
-    Uri file = Uri.parse("android.resource://" + app.getApplicationContext().getPackageName() + fileName);
+    Uri file = Uri.parse("android.resource://" + app.getApplicationContext().getPackageName() + "/" + fileName);
+
     arrivalFile = Uri.parse("android.resource://"
-      + app.getApplicationContext().getPackageName()
+      + app.getApplicationContext().getPackageName() + "/"
       + R.raw.arrivaltone);
-    departFile = Uri.parse("android.resource://"
+    departFile = Uri.parse("android.resource://" + "/"
       + app.getApplicationContext().getPackageName()
       + R.raw.departuretone);
+
     sound = RingtoneManager.getRingtone(app.getApplicationContext(), file);
+    arrivalTone = RingtoneManager.getRingtone(app.getApplicationContext(), arrivalFile);
+    departureTone = RingtoneManager.getRingtone(app.getApplicationContext(), departFile);
   }
 
   public static void loadTones() {

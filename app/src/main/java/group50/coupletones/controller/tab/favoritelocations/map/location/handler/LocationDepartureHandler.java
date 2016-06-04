@@ -13,7 +13,9 @@ public class LocationDepartureHandler extends AbstractLocationHandler {
 
   @Override
   protected void handleNotifyFor(FavoriteLocation favoriteLocation) {
-    VibeTone vibetone = favoriteLocation.getVibetone();
-    vibetone.playDeparture();
+    if (app.getLocalUser().getTonesSetting()) {
+      VibeTone vibetone = favoriteLocation.getVibetone();
+      vibetone.playDeparture();
+    }
   }
 }

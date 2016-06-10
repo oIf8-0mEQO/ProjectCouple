@@ -1,5 +1,7 @@
 package group50.coupletones.di;
 
+import com.google.android.gms.maps.SupportMapFragment;
+
 import dagger.Component;
 import group50.coupletones.CoupleTones;
 import group50.coupletones.auth.Authenticator;
@@ -7,6 +9,7 @@ import group50.coupletones.auth.User;
 import group50.coupletones.controller.LoginActivity;
 import group50.coupletones.di.module.ApplicationModule;
 import group50.coupletones.di.module.AuthenticatorModule;
+import group50.coupletones.map.Map;
 
 import javax.inject.Singleton;
 
@@ -30,4 +33,6 @@ public interface AppComponent {
   CoupleTones app();
 
   void inject(LoginActivity activity);
+
+  void inject(Map fragment);
 }

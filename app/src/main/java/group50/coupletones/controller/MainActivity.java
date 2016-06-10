@@ -93,12 +93,17 @@ public class MainActivity extends AppCompatActivity implements
    * Sets the content of the MainActivity with the given fragment
    * @param fragment The fragment to set for the main content
    */
-  private void setFragment(Fragment fragment) {
+  public void setFragment(Fragment fragment) {
     getSupportFragmentManager()
       .beginTransaction()
       .replace(R.id.fragment_container, fragment) // Replace whatever is in the fragment_container view
       .addToBackStack(null)                       // Add the transaction to the back stack if needed
       .commit();                                  // Commit the transaction
+  }
+
+  public HashMap<Integer, Fragment> getTabs()
+  {
+    return tabs;
   }
 
 }

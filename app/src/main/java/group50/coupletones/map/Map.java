@@ -1,6 +1,9 @@
 package group50.coupletones.map;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.Service;
+import android.content.ContextWrapper;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -13,6 +16,7 @@ import android.location.LocationManager;
 import android.content.pm.PackageManager;
 import android.content.Context;
 
+import com.google.android.gms.fitness.data.Application;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -29,12 +33,23 @@ import java.util.List;
 import group50.coupletones.R;
 import group50.coupletones.map.FavoriteLocation;
 
-public class Map extends MapFragment implements OnMapReadyCallback {
+public class Map extends SupportMapFragment implements OnMapReadyCallback {
 
   private GoogleMap mMap;
   private List<FavoriteLocation> favLocations = new LinkedList<FavoriteLocation>();
-  private Geocoder geocoder = new Geocoder(this.getContext());
+  //private Geocoder geocoder;
   private ProximityHandler proximityHandler = new NearbyLocationHandler();
+
+  /**
+   * Use this factory method to create a new instance of Map.
+   */
+  public static Map build() {
+    Map fragment = new Map();
+    Bundle args = new Bundle();
+    // TODO: Set arguments
+    fragment.setArguments(args);
+    return fragment;
+  }
 
   GoogleMap.OnMapClickListener clickListener = new GoogleMap.OnMapClickListener() {
     @Override
@@ -49,6 +64,7 @@ public class Map extends MapFragment implements OnMapReadyCallback {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     getMapAsync(this);
+    //geocoder = new Geocoder(getActivity().getApplicationContext());
   }
 
 
@@ -94,9 +110,9 @@ public class Map extends MapFragment implements OnMapReadyCallback {
     }
   }
 
-  public List<Address> search(String nameLocation) {
+  /*public List<Address> search(String nameLocation) {
     try {
-      List<Address> locations = geocoder.getFromLocationName(nameLocation, 10);
+     List<Address> locations = geocoder.getFromLocationName(nameLocation, 10);
       if (locations.size() == 0) {
         return locations;
       }
@@ -107,7 +123,7 @@ public class Map extends MapFragment implements OnMapReadyCallback {
       return null;
       //TODO: write exception handling code
     }
-  }
+  }*/
 
   public void addLocation(FavoriteLocation location) {
     favLocations.add(location);

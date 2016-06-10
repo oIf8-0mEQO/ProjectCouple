@@ -7,15 +7,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import group50.coupletones.R;
+import group50.coupletones.controller.MainActivity;
+import group50.coupletones.map.Map;
 
 /**
  * A simple {@link Fragment} subclass for the Favorite Locations tab.
  * Activities that contain this fragment must implement the {@link Listener} interface to handle interaction events.
  * Use the {@link FavoriteLocationsFragment#build} factory class to create an instance of this fragment.
  */
-public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFragment.Listener> {
+public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFragment.Listener>
+  implements View.OnClickListener {
 
   public FavoriteLocationsFragment() {
     super(Listener.class);
@@ -48,9 +52,11 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
 
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
-    View v = inflater.inflate(R.layout.fragment_settings, container, false);
+    View v = inflater.inflate(R.layout.fragment_favorite_locations, container, false);
     Typeface pierSans = Typeface.createFromAsset(getActivity().getAssets(),
       getString(R.string.pier_sans));
+
+    v.findViewById(R.id.btn_search).setOnClickListener(this);
     return v;
   }
 
@@ -60,6 +66,8 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
     switch (v.getId())
     {
       case R.id.btn_search:
+        MainActivity act = (MainActivity)getActivity();
+        act.setFragment(act.getTabs().get(R.id.map));
 
     }
   }

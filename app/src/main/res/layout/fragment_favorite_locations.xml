@@ -1,54 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- Toolbar Settings for Your Locations Page -->
-<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="65dp"
-    android:background="?attr/colorPrimary"
-    app:layout_collapseMode="pin"
-    app:layout_scrollFlags="scroll|enterAlways"
-    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <FrameLayout
+    <!-- Toolbar Settings for Settings Page -->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="65dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:minHeight="?attr/actionBarSize">
 
-        <!-- Centered Your Locations title -->
+        <!-- Title of the Page on the Toolbar -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:layout_marginBottom="4dp"
-            android:layout_marginEnd="7dp"
             android:layout_marginLeft="?attr/actionBarSize"
             android:layout_marginRight="?attr/actionBarSize"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="6dp"
-            android:src="@drawable/yourlocations_title" />
+            android:src="@drawable/yourlocations_title"/>
 
-        <!-- Left side search button -->
-        <!--
+        <!-- Add Location Button on Upper Right-->
         <ImageButton
-            android:id="@+id/btn_settings"
-            android:layout_width="?attr/actionBarSize"
-            android:layout_height="?attr/actionBarSize"
-            android:layout_marginRight="?attr/actionBarSize"
-            android:layout_gravity="start|center_vertical"
-            android:src="@drawable/backarrow"
-            style="@style/Widget.AppCompat.ActionButton" />-->
-
-        <!-- Right side add button -->
-
-        <ImageButton
-            android:id="@+id/btn_search"
+            android:id="@+id/btn_add"
             style="@style/Widget.AppCompat.ActionButton"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="right|center_vertical"
             android:layout_marginRight="15dp"
-            android:src="@drawable/add_icon" />
+            android:src="@drawable/add_icon"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <!-- Scroll View for the Page -->
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <!-- Recycler View for the Page -->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/favorite_locations_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
 
 
-    </FrameLayout>
-</android.support.v7.widget.Toolbar>
+

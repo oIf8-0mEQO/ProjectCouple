@@ -9,6 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import group50.coupletones.FaveLocationsData;
+import group50.coupletones.ListAdapter;
 import group50.coupletones.R;
 import group50.coupletones.controller.MainActivity;
 import group50.coupletones.map.Map;
@@ -20,43 +29,49 @@ import group50.coupletones.map.Map;
  */
 public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFragment.Listener>
   implements View.OnClickListener {
+    private RecyclerView favesList;
+    private ListAdapter adapter;
+    private CardView cv;
 
-  public FavoriteLocationsFragment() {
-    super(Listener.class);
-  }
-
-
-  /**
-   * Use this factory method to create a new instance of FavoriteLocationsFragment.
-   */
-  public static FavoriteLocationsFragment build() {
-    FavoriteLocationsFragment fragment = new FavoriteLocationsFragment();
-    Bundle args = new Bundle();
-    // TODO: Set arguments
-    fragment.setArguments(args);
-    return fragment;
-  }
-
-  @Override
-  protected int getResourceId() {
-    return R.layout.fragment_favorite_locations;
-  }
-
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    if (getArguments() != null) {
-      //TODO: Read arguments
+    public FavoriteLocationsFragment() {
+        super(Listener.class);
     }
-  }
+
+
+    /**
+     * Use this factory method to create a new instance of FavoriteLocationsFragment.
+     */
+    public static FavoriteLocationsFragment build() {
+        FavoriteLocationsFragment fragment = new FavoriteLocationsFragment();
+        Bundle args = new Bundle();
+        // TODO: Set arguments
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    protected int getResourceId() {
+        return R.layout.fragment_favorite_locations;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            //TODO: Read arguments
+        }
+    }
 
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_favorite_locations, container, false);
     Typeface pierSans = Typeface.createFromAsset(getActivity().getAssets(),
       getString(R.string.pier_sans));
-
-    v.findViewById(R.id.btn_search).setOnClickListener(this);
+    favesList = (RecyclerView) v.findViewById(R.id.favorite_locations_list);
+    favesList.setLayoutManager(new LinearLayoutManager(getActivity()));
+    adapter = new ListAdapter(FaveLocationsData.getFaveLocations(), getActivity());
+    favesList.setAdapter(adapter);
+    v.findViewById(R.id.btn_add).setOnClickListener(this);
     return v;
   }
 
@@ -65,7 +80,7 @@ public class FavoriteLocationsFragment extends TabFragment<FavoriteLocationsFrag
   {
     switch (v.getId())
     {
-      case R.id.btn_search:
+      case R.id.btn_add:
         MainActivity act = (MainActivity)getActivity();
         act.setFragment(act.getTabs().get(R.id.map));
 

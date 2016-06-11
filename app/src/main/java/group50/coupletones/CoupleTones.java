@@ -6,6 +6,7 @@
 package group50.coupletones;
 
 import android.app.Application;
+
 import group50.coupletones.auth.User;
 import group50.coupletones.di.AppComponent;
 import group50.coupletones.di.DaggerAppComponent;
@@ -36,6 +37,7 @@ public class CoupleTones extends Application {
 
   /**
    * Should ONLY be set for unit testing
+   *
    * @param component The component to set
    */
   public static void setComponent(AppComponent component) {
@@ -71,8 +73,8 @@ public class CoupleTones extends Application {
     super.onCreate();
 
     component = DaggerAppComponent
-      .builder()
-      .applicationModule(new ApplicationModule(this))
-      .build();
+        .builder()
+        .applicationModule(new ApplicationModule(this))
+        .build();
   }
 }

@@ -74,6 +74,8 @@ dependencies {
     compile 'com.google.android.gms:play-services-gcm:8.4.0'
     compile 'com.android.support:cardview-v7:23.2.+'
     compile 'com.android.support:recyclerview-v7:23.2.+'
+    compile 'org.hashids:hashids:1.0.1'
+
     // Dagger DI
     apt 'com.google.dagger:dagger-compiler:2.4'
     compile 'com.google.dagger:dagger:2.4'

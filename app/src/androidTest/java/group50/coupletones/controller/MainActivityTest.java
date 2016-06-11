@@ -5,8 +5,11 @@ import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.test.ActivityInstrumentationTestCase2;
+import group50.coupletones.CoupleTones;
 import group50.coupletones.R;
+import group50.coupletones.auth.User;
 import group50.coupletones.controller.tab.PartnersLocationsFragment;
+import group50.coupletones.di.DaggerMockAppComponent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +17,7 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Henry Mao
@@ -36,6 +40,31 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
   @Before
   public void setUp() throws Exception {
     super.setUp();
+
+    CoupleTones.setComponent(
+      DaggerMockAppComponent
+        .builder()
+        .build());
+
+    //TODO: DRY
+    // Stub getLocalUser method
+    when(CoupleTones.component().app().getLocalUser())
+      .thenReturn(new User() {
+        @Override
+        public String getId() {
+          return "mockuser";
+        }
+
+        @Override
+        public String getName() {
+          return "Mock User";
+        }
+
+        @Override
+        public String getEmail() {
+          return "mock@mock.com";
+        }
+      });
 
     // Injecting the Instrumentation instance is required
     // for your test to run with AndroidJUnitRunner.
@@ -82,14 +111,16 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
   /*
   @Test
   public void testTabTap2() throws Exception {
-    FragmentManager supportFragmentManager = activity.getSupportFragmentManager();
+    activity.runOnUiThread(() -> {
+      FragmentManager supportFragmentManager = activity.getSupportFragmentManager();
 
-    activity.onMenuTabSelected(R.id.favoriteLocations);
-    List<Fragment> fragments = supportFragmentManager.getFragments();
-    // There should be only one fragment active upon launch
-    assertThat(fragments).hasSize(2);
-    // Test to make sure the fragment is a PartnersLocationsFragment
-    assertThat(fragments.get(1)).isOfAnyClassIn(FavoriteLocationsFragment.class);
+      activity.onMenuTabSelected(R.id.favoriteLocations);
+      List<Fragment> fragments = supportFragmentManager.getFragments();
+      // There should be only one fragment active upon launch
+      assertThat(fragments).hasSize(2);
+      // Test to make sure the fragment is a PartnersLocationsFragment
+      assertThat(fragments.get(1)).isOfAnyClassIn(FavoriteLocationsFragment.class);
+    });
   }*/
 
   /**

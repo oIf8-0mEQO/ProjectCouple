@@ -2,6 +2,7 @@ package group50.coupletones.map;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Service;
 import android.content.ContextWrapper;
 import android.location.Address;
@@ -33,6 +34,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import group50.coupletones.CoupleTones;
+import group50.coupletones.R;
 import group50.coupletones.auth.GoogleUser;
 import group50.coupletones.map.FavoriteLocation;
 
@@ -59,6 +61,8 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
   GoogleMap.OnMapClickListener clickListener = new GoogleMap.OnMapClickListener() {
     @Override
     public void onMapClick(LatLng latLng) {
+      AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+      builder.setTitle(R.string.location_name_box);
       String name = mockMethod2();//TODO: properly implement this method call
       FavoriteLocation clickedLocation = new FavoriteLocation(name, latLng);
       app.getLocalUser().getFavoriteLocations().add(clickedLocation);

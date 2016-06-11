@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#fff"
+    tools:context="group50.coupletones.controller.AddPartnerActivity">
+
+    <!-- CoupleTones text -->
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="47dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:id="@+id/logotext"
+        android:src="@drawable/loginpg"
+        android:layout_below="@+id/logo"
+        android:layout_centerHorizontal="true" />
+
+    <!-- CoupleTones logo -->
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="45dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:id="@+id/logo"
+        android:src="@drawable/logo"
+        android:layout_marginTop="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp" />
+
+    <!-- Connect with Your Partner Text-->
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="45dp"
+        android:text="@string/connect_message"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/connect_message"
+        android:gravity="center"
+        android:layout_below="@+id/logotext"
+        android:textSize="17dp"
+        android:textColor="@color/subtitleColor"
+        android:layout_marginTop="20dp"/>
+
+    <!-- Text Field for Email Address -->
+    <EditText
+        android:layout_width="280dp"
+        android:layout_height="50dp"
+        android:inputType="textEmailAddress"
+        android:text="@string/email_address"
+        android:textSize="17sp"
+        android:ems="10"
+        android:textColor="@color/subtitleColor"
+        android:layout_below="@+id/connect_message"
+        android:id="@+id/email_address"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true" />
+
+    <!-- Connect Button -->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/connection"
+        android:textAllCaps="false"
+        android:id="@+id/connect_button"
+        android:minWidth="150dp"
+        android:minHeight="35dp"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@drawable/roundedbutton"
+        android:layout_below="@+id/email_address"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="30dp" />
+
+    <!-- Skip this step Button -->
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/skip"
+        android:textAllCaps="false"
+        android:id="@+id/skip_button"
+        android:minWidth="150dp"
+        android:minHeight="35dp"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:background="@drawable/roundedbutton"
+        android:layout_below="@+id/connect_button"
+        android:layout_marginTop="30dp"
+        android:layout_alignStart="@+id/connect_button"
+        android:layout_centerInParent="true" />
+
+
+</RelativeLayout>

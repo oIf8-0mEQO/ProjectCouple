@@ -33,7 +33,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import group50.coupletones.CoupleTones;
-import group50.coupletones.R;
 import group50.coupletones.auth.GoogleUser;
 import group50.coupletones.map.FavoriteLocation;
 
